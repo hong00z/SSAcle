@@ -1,4 +1,6 @@
-[TYPE] mr 제목
+[Part/Type] MR 제목
+
+
 ## ⚠️ 관련 이슈 번호
 
 close
