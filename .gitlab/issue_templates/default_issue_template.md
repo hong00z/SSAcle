@@ -1,4 +1,4 @@
-[PART/TYPE] 이슈 제목
+[Part/Type] 이슈 제목
 
 
 ## 🚨 Issue
