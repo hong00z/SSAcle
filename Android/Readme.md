@@ -26,3 +26,9 @@
 ![img_3.png](img_3.png)
 
 
+
+7. Gradle PlugIn Version = 8.7.3
+
+
+8. Gradle Version = 8.9
+![img_4.png](img_4.png)
