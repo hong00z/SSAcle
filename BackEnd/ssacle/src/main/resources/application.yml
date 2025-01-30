@@ -1,0 +1,8 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/ssacle
+      database: ssacle
+logging:
+  level:
+    org.springframework.security: DEBUG
