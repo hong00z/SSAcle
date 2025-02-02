@@ -319,7 +319,35 @@ const SocketHandlers = {
       }
     })
 
-    // 7) 클라이언트 연결 해제
+    // 7) 채팅 메시지 처리
+    socket.on("chatMessage", ({ message }, callback) => {
+      console.log(`[${socket.id}] chatMessage: ${message}`)
+
+      if (!peer.roomId) {
+        return callback({ ok: false, error: "방에 입장하지 않았습니다." })
+      }
+
+      const room = SocketHandlers.rooms.get(peer.roomId)
+      if (!room) {
+        return callback({ ok: false, error: "방을 찾을 수 없습니다." })
+      }
+
+      room.forEach((peerId) => {
+        if (peerId !== socket.id) {
+          const otherPeer = SocketHandlers.peers.get(peerId)
+          if (otherPeer) {
+            otherPeer.socket.emit("newChatMessage", {
+              peerId: socket.id,
+              message,
+            })
+          }
+        }
+      })
+
+      callback({ ok: true })
+    })
+
+    // 8) 클라이언트 연결 해제
     socket.on("disconnect", () => {
       console.log(`[${socket.id}] disconnected`)
       this.cleanupPeer(socket.id)
