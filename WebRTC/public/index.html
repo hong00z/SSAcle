@@ -49,10 +49,54 @@
       button.danger:hover {
         background: #d32f2f;
       }
+      .chat-container {
+        position: fixed;
+        right: 20px;
+        top: 20px;
+        width: 300px;
+        max-height: 500px;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+      }
+      .chat-messages {
+        flex: 1;
+        padding: 10px;
+        overflow-y: auto;
+        border-bottom: 1px solid #ccc;
+      }
+      .chat-input {
+        display: flex;
+      }
+      .chat-input input {
+        flex: 1;
+        padding: 8px;
+        border: none;
+        border-top: 1px solid #ccc;
+        outline: none;
+      }
+      .chat-input button {
+        border: none;
+        padding: 8px 12px;
+        background: #2196f3;
+        color: white;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
     <div class="video-container" id="videoContainer"></div>
+
+    <!-- 채팅 UI 추가 -->
+    <div class="chat-container" id="chatContainer">
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="chat-input">
+        <input type="text" id="chatInput" placeholder="메시지를 입력하세요..." />
+        <button id="sendChatBtn">전송</button>
+      </div>
+    </div>
 
     <div class="controls">
       <button id="joinBtn">방 참가</button>
