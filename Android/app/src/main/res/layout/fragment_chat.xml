@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChatFragment">
+    tools:context=".ui.chat.ChatFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
@@ -11,4 +11,8 @@
         android:layout_height="match_parent"
         android:text="chat" />
 
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/chat_compose_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </FrameLayout>
