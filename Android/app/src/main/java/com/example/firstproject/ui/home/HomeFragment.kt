@@ -1,10 +1,11 @@
-package com.example.firstproject
+package com.example.firstproject.ui.home
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
 import com.example.firstproject.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -12,11 +13,16 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding.root
+        val composeView = ComposeView(requireContext()).apply {
+            setContent {
+                HomeScreen()
+            }
+        }
+        return composeView
     }
 
     companion object {
