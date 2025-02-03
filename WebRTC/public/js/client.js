@@ -46,12 +46,15 @@ class VideoChat {
     this.muteBtn = document.getElementById("muteBtn")
     this.videoBtn = document.getElementById("videoBtn")
     this.leaveBtn = document.getElementById("leaveBtn") // 초기 숨김 상태 (CSS에서 display: none)
+    this.controlsContainer = document.getElementById("controlsContainer")
 
     // 채팅 UI 요소 초기화 (초기 숨김 상태)
     this.chatContainer = document.getElementById("chatContainer")
     this.chatMessages = document.getElementById("chatMessages")
     this.chatInput = document.getElementById("chatInput")
     this.sendChatBtn = document.getElementById("sendChatBtn")
+
+    this.makeChatDraggable()
 
     // 방 목록 UI 요소 초기화
     this.roomList = document.getElementById("roomList")
@@ -547,15 +550,61 @@ class VideoChat {
 
   // UI 상태를 업데이트하는 함수
   toggleUIOnJoinRoom(isJoined) {
-    const controlsContainer = document.getElementById("controlsContainer") // 컨트롤 박스
-    controlsContainer.style.display = isJoined ? "flex" : "none" // ✅ 컨트롤 박스도 숨김
+    this.controlsContainer.style.display = isJoined ? "flex" : "none" // ✅ 컨트롤 박스도 숨김
 
     this.chatContainer.style.display = isJoined ? "block" : "none"
+    this.videoContainer.style.maxWidth = isJoined ? "calc(100% - 320px)" : "100%"
     this.leaveBtn.style.display = isJoined ? "block" : "none"
     this.muteBtn.style.display = isJoined ? "inline-block" : "none"
     this.videoBtn.style.display = isJoined ? "inline-block" : "none"
     this.roomList.parentElement.style.display = isJoined ? "none" : "block"
     this.roomInput.parentElement.style.display = isJoined ? "none" : "block"
+  }
+
+  // 채팅창 드래그 가능하게 하는 함수
+  makeChatDraggable() {
+    let isDragging = false
+    let offsetX = 0
+    let offsetY = 0
+    let lastX = 0
+    let lastY = 0
+    let animationFrameId = null
+
+    const updatePosition = () => {
+      this.chatContainer.style.left = `${lastX}px`
+      this.chatContainer.style.top = `${lastY}px`
+      animationFrameId = null
+    }
+
+    // 마우스 눌렀을 때 (드래그 시작)
+    this.chatContainer.addEventListener("mousedown", (event) => {
+      isDragging = true
+      offsetX = event.clientX - chatContainer.getBoundingClientRect().left
+      offsetY = event.clientY - chatContainer.getBoundingClientRect().top
+      this.chatContainer.style.cursor = "grabbing"
+    })
+
+    // 마우스를 움직일 때 (드래그 중)
+    document.addEventListener("mousemove", (event) => {
+      if (!isDragging) return
+
+      lastX = Math.max(0, Math.min(event.clientX - offsetX, window.innerWidth - this.chatContainer.offsetWidth))
+      lastY = Math.max(0, Math.min(event.clientY - offsetY, window.innerHeight - this.chatContainer.offsetHeight))
+
+      if (!animationFrameId) {
+        animationFrameId = requestAnimationFrame(updatePosition)
+      }
+    })
+
+    // 마우스를 떼었을 때 (드래그 종료)
+    document.addEventListener("mouseup", () => {
+      isDragging = false
+      this.chatContainer.style.cursor = "grab"
+    })
+
+    // 기본 커서 스타일 설정
+    this.chatContainer.style.cursor = "grab"
+    this.chatContainer.style.position = "fixed" // 반드시 fixed로 설정
   }
 }
 
