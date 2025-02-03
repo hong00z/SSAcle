@@ -10,6 +10,8 @@
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 1rem;
         padding: 1rem;
+        max-width: calc(100% - 320px); /* ✅ 채팅창과 겹치지 않도록 오른쪽 여백 확보 */
+        transition: max-width 0.3s ease; /* 애니메이션 효과 */
       }
       .video-wrapper {
         position: relative;
@@ -55,17 +57,20 @@
         top: 20px;
         width: 300px;
         max-height: 500px;
-        background: rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.95);
         border: 1px solid #ccc;
         border-radius: 4px;
-        display: none; /* 초기에는 숨김 */
+        display: none; /* ✅ 기본적으로 숨김 */
         flex-direction: column;
+        z-index: 10; /* ✅ 비디오보다 위로 */
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
       }
       .chat-messages {
         flex: 1;
         padding: 10px;
         overflow-y: auto;
         border-bottom: 1px solid #ccc;
+        height: 250px; /* ✅ 고정 높이 설정 */
       }
       .chat-input {
         display: flex;
@@ -83,17 +88,6 @@
         background: #2196f3;
         color: white;
         cursor: pointer;
-      }
-      /* 방 목록 UI */
-      .room-list-container {
-        position: fixed;
-        left: 20px;
-        top: 20px;
-        width: 200px;
-        background: rgba(255, 255, 255, 0.9);
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        padding: 10px;
       }
       .room-list-container h3 {
         margin-top: 0;
@@ -114,11 +108,17 @@
         margin-top: 10px;
         width: 100%;
       }
-      /* 방 생성 UI */
-      .room-create-container {
+      /* 방 목록과 방 생성 UI를 나란히 배치 */
+      .room-container {
         position: fixed;
         left: 20px;
-        bottom: 20px;
+        top: 20px;
+        display: flex; /* 가로 정렬 */
+        gap: 10px; /* 간격 조절 */
+      }
+      /* 방 목록과 방 생성 UI */
+      .room-list-container,
+      .room-create-container {
         width: 200px;
         background: rgba(255, 255, 255, 0.9);
         border: 1px solid #ccc;
@@ -126,13 +126,25 @@
         padding: 10px;
       }
       .room-create-container input {
-        width: 100%;
+        width: 90%;
         padding: 5px;
         margin-bottom: 5px;
       }
       /* 제어 버튼 중 나가기 버튼은 초기 숨김 */
       #leaveBtn {
         display: none;
+      }
+      /* ✅ 화면이 작을 때 채팅창이 너무 크지 않도록 조정 */
+      @media (max-width: 900px) {
+        .video-container {
+          max-width: 100%; /* 작은 화면에서는 가득 차게 */
+        }
+
+        .chat-container {
+          width: 250px;
+          right: 10px;
+          top: 10px;
+        }
       }
     </style>
   </head>
@@ -149,18 +161,21 @@
       </div>
     </div>
 
-    <!-- 방 목록 UI (방 입장 전 보임) -->
-    <div class="room-list-container">
-      <h3>현재 방 목록</h3>
-      <ul id="roomList"></ul>
-      <button id="refreshRoomsBtn">새로고침</button>
-    </div>
+    <!-- 방 목록과 방 생성 UI를 감싸는 컨테이너 -->
+    <div class="room-container">
+      <!-- 방 목록 UI (방 입장 전 보임) -->
+      <div class="room-list-container">
+        <h3>현재 방 목록</h3>
+        <ul id="roomList"></ul>
+        <button id="refreshRoomsBtn">새로고침</button>
+      </div>
 
-    <!-- 방 생성 UI (방 입장 전 보임) -->
-    <div class="room-create-container">
-      <h3>방 생성</h3>
-      <input type="text" id="roomInput" placeholder="방 이름 입력" />
-      <button id="createRoomBtn">방 생성</button>
+      <!-- 방 생성 UI (방 입장 전 보임) -->
+      <div class="room-create-container">
+        <h3>방 생성</h3>
+        <input type="text" id="roomInput" placeholder="방 이름 입력" />
+        <button id="createRoomBtn">방 생성</button>
+      </div>
     </div>
 
     <!-- 제어 버튼 (나가기 버튼은 초기 숨김) -->
