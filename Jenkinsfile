@@ -16,6 +16,7 @@ pipeline {
                     steps {
                         dir('Android') {
                             // 예시: Gradle Wrapper를 사용하여 클린 빌드 및 테스트 수행
+                            sh 'chmod +x gradlew'
                             sh './gradlew clean assembleDebug'
                             sh './gradlew test'
                         }
@@ -27,6 +28,7 @@ pipeline {
                     steps {
                         dir('BackEnd/ssacle') {
                             // Spring Boot 애플리케이션 빌드 (예: bootJar 생성) 및 테스트
+                            sh 'chmod +x gradlew'
                             sh './gradlew clean bootJar'
                             sh './gradlew test'
                         }
@@ -35,6 +37,12 @@ pipeline {
                 
                 // Node.js 빌드 및 테스트 단계
                 stage('Node.js Build & Test') {
+                    agent {
+                        docker {
+                            image 'node:20.12.1'
+                            // 필요에 따라 추가 옵션 설정 가능
+                        }
+                    }
                     steps {
                         dir('WebRTC') {
                             // Node.js 프로젝트의 의존성 설치 및 테스트 실행
