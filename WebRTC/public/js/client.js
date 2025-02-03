@@ -42,10 +42,23 @@ class VideoChat {
     this.videoBtn = document.getElementById("videoBtn")
     this.leaveBtn = document.getElementById("leaveBtn")
 
+    // 채팅 UI 요소 추가
+    this.chatMessages = document.getElementById("chatMessages")
+    this.chatInput = document.getElementById("chatInput")
+    this.sendChatBtn = document.getElementById("sendChatBtn")
+
     this.joinBtn.addEventListener("click", () => this.joinRoom())
     this.muteBtn.addEventListener("click", () => this.toggleMute())
     this.videoBtn.addEventListener("click", () => this.toggleVideo())
     this.leaveBtn.addEventListener("click", () => this.leaveRoom())
+    this.sendChatBtn.addEventListener("click", () => this.sendChatMessage())
+
+    // 엔터키로 채팅 전송 처리
+    this.chatInput.addEventListener("keyup", (e) => {
+      if (e.key === "Enter") {
+        this.sendChatMessage()
+      }
+    })
   }
 
   // 소켓 이벤트 등록
@@ -79,6 +92,12 @@ class VideoChat {
     // producer가 종료됨
     this.socket.on("producerClosed", ({ producerId }) => {
       console.log(`[client] producerClosed -> producerId=${producerId}`)
+    })
+
+    // 채팅 메시지 수신 이벤트 처리
+    this.socket.on("newChatMessage", ({ peerId, message }) => {
+      console.log(`[client] newChatMessage: ${peerId} : ${message}`)
+      this.displayChatMessage(peerId, message)
     })
   }
 
@@ -436,6 +455,39 @@ class VideoChat {
 
     // 버튼 리셋
     this.joinBtn.disabled = false
+  }
+
+  // 채팅 메시지 전송 함수
+  sendChatMessage() {
+    const message = this.chatInput.value.trim()
+    if (!message) return
+
+    // 서버에 채팅 메시지 전송
+    this.socket.emit("chatMessage", { message }, (response) => {
+      if (response.ok) {
+        // 전송 성공하면 입력창 초기화 및 자신의 메시지 표시
+        this.chatInput.value = ""
+        this.displayChatMessage("나", message)
+      } else {
+        console.error("채팅 메시지 전송 실패:", response.error)
+        alert("메시지 전송 실패: " + response.error)
+      }
+    })
+  }
+
+  // 채팅 메시지를 chatMessages 영역에 표시
+  displayChatMessage(peerId, message) {
+    const messageElem = document.createElement("div")
+    messageElem.style.padding = "4px 0"
+    // 자신의 메시지일 경우 스타일 강조
+    if (peerId === "나") {
+      messageElem.style.fontWeight = "bold"
+    }
+    messageElem.textContent = `[${peerId}] ${message}`
+    this.chatMessages.appendChild(messageElem)
+
+    // 스크롤을 가장 아래로 이동
+    this.chatMessages.scrollTop = this.chatMessages.scrollHeight
   }
 
   // 서버 emit을 Promise 기반으로 호출
