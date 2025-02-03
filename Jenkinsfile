@@ -17,8 +17,8 @@ pipeline {
                     steps {
                         dir('BackEnd/ssacle') {
                             // Spring Boot 애플리케이션 빌드 (예: bootJar 생성) 및 테스트
-                            sh './gradlew clean bootJar'
-                            sh './gradlew test'
+                            sh './gradlew --no-daemon clean bootJar'
+                            sh './gradlew --no-daemon test'
                         }
                     }
                 }
