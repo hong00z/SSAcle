@@ -11,16 +11,6 @@ pipeline {
         
         stage ('Parallel Build & Test') {
             parallel {
-                // 안드로이드 빌드 및 테스트 단계
-                stage('Android Build & Test') {
-                    steps {
-                        dir('Android') {
-                            // 예시: Gradle Wrapper를 사용하여 클린 빌드 및 테스트 수행
-                            sh './gradlew clean assembleDebug'
-                            sh './gradlew test'
-                        }
-                    }
-                }
                 
                 // Spring Boot 빌드 및 테스트 단계
                 stage('Spring Boot Build & Test') {
