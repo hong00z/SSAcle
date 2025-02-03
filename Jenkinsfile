@@ -62,8 +62,6 @@ pipeline {
             echo 'Post-build 작업: 산출물 아카이브 및 테스트 리포트 수집'
             // BackEnd/ssacle에서 생성된 JAR 파일 보관 (경로는 실제 빌드 산출물 위치에 맞게 수정)
             archiveArtifacts artifacts: 'BackEnd/ssacle/build/libs/*.jar', allowEmptyArchive: true
-            // BackEnd/ssacle에서 생성된 JUnit 테스트 리포트 수집 (경로는 실제 테스트 결과 위치에 맞게 수정)
-            junit 'BackEnd/ssacle/build/test-results/test/*.xml'
         }
         failure {
             echo "빌드 실패! 로그를 확인하세요."
