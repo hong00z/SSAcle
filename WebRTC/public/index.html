@@ -58,7 +58,7 @@
         background: rgba(255, 255, 255, 0.9);
         border: 1px solid #ccc;
         border-radius: 4px;
-        display: flex;
+        display: none; /* 초기에는 숨김 */
         flex-direction: column;
       }
       .chat-messages {
@@ -84,13 +84,64 @@
         color: white;
         cursor: pointer;
       }
+      /* 방 목록 UI */
+      .room-list-container {
+        position: fixed;
+        left: 20px;
+        top: 20px;
+        width: 200px;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 10px;
+      }
+      .room-list-container h3 {
+        margin-top: 0;
+      }
+      .room-list-container ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .room-list-container li {
+        padding: 5px;
+        cursor: pointer;
+      }
+      .room-list-container li:hover {
+        background: #f0f0f0;
+      }
+      .room-list-container button {
+        margin-top: 10px;
+        width: 100%;
+      }
+      /* 방 생성 UI */
+      .room-create-container {
+        position: fixed;
+        left: 20px;
+        bottom: 20px;
+        width: 200px;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 10px;
+      }
+      .room-create-container input {
+        width: 100%;
+        padding: 5px;
+        margin-bottom: 5px;
+      }
+      /* 제어 버튼 중 나가기 버튼은 초기 숨김 */
+      #leaveBtn {
+        display: none;
+      }
     </style>
   </head>
   <body>
+    <!-- 비디오 스트림을 표시할 영역 -->
     <div class="video-container" id="videoContainer"></div>
 
-    <!-- 채팅 UI 추가 -->
-    <div class="chat-container" id="chatContainer">
+    <!-- 채팅 UI (초기에는 숨김) -->
+    <div class="chat-container" id="chatContainer" style="display: none">
       <div class="chat-messages" id="chatMessages"></div>
       <div class="chat-input">
         <input type="text" id="chatInput" placeholder="메시지를 입력하세요..." />
@@ -98,11 +149,25 @@
       </div>
     </div>
 
-    <div class="controls">
-      <button id="joinBtn">방 참가</button>
-      <button id="muteBtn">음소거</button>
-      <button id="videoBtn">비디오 끄기</button>
-      <button id="leaveBtn" class="danger">나가기</button>
+    <!-- 방 목록 UI (방 입장 전 보임) -->
+    <div class="room-list-container">
+      <h3>현재 방 목록</h3>
+      <ul id="roomList"></ul>
+      <button id="refreshRoomsBtn">새로고침</button>
+    </div>
+
+    <!-- 방 생성 UI (방 입장 전 보임) -->
+    <div class="room-create-container">
+      <h3>방 생성</h3>
+      <input type="text" id="roomInput" placeholder="방 이름 입력" />
+      <button id="createRoomBtn">방 생성</button>
+    </div>
+
+    <!-- 제어 버튼 (나가기 버튼은 초기 숨김) -->
+    <div class="controls" id="controlsContainer" style="display: none">
+      <button id="muteBtn" style="display: none">음소거</button>
+      <button id="videoBtn" style="display: none">비디오 끄기</button>
+      <button id="leaveBtn" class="danger" style="display: none">나가기</button>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
