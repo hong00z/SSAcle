@@ -10,7 +10,7 @@
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 1rem;
         padding: 1rem;
-        max-width: calc(100% - 320px); /* ✅ 채팅창과 겹치지 않도록 오른쪽 여백 확보 */
+        max-width: calc(100% - 320px); /* 채팅창과 겹치지 않도록 오른쪽 여백 확보 */
         transition: max-width 0.3s ease; /* 애니메이션 효과 */
       }
       .video-wrapper {
@@ -89,8 +89,9 @@
         color: white;
         cursor: pointer;
       }
-      .room-list-container h3 {
-        margin-top: 0;
+      .room-list-container h3,
+      .room-create-container h3 {
+        margin-top: 5px;
       }
       .room-list-container ul {
         list-style: none;
@@ -115,9 +116,20 @@
         top: 20px;
         display: flex; /* 가로 정렬 */
         gap: 10px; /* 간격 조절 */
+        align-items: flex-start; /* 방 목록이 커져도 방 생성 컨테이너 영향을 주지 않음 */
+      }
+      .room-list-container ul {
+        max-height: 300px; /* ✅ 최대 높이 설정 */
+        overflow-y: auto; /* ✅ 내부 스크롤 */
       }
       /* 방 목록과 방 생성 UI */
-      .room-list-container,
+      .room-list-container {
+        width: 200px;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 10px;
+      }
       .room-create-container {
         width: 200px;
         background: rgba(255, 255, 255, 0.9);
@@ -126,9 +138,12 @@
         padding: 10px;
       }
       .room-create-container input {
-        width: 90%;
+        width: 93%;
         padding: 5px;
         margin-bottom: 5px;
+      }
+      .room-create-container button {
+        width: 100%;
       }
       /* 제어 버튼 중 나가기 버튼은 초기 숨김 */
       #leaveBtn {
