@@ -17,7 +17,7 @@ public interface StudyRepository extends MongoRepository<Study, String> {
     List<Study> findAll();
 
     // 해당 조건의 스터디 그룹 조회
-    List<Study> findByTopicAndMeetingDayIn(List<Study.Topic> topic, List<Study.MeetingDay>meetingDay);
+    List<Study> findByTopicAndMeetingDaysIn(List<Study.Topic> topic, List<Study.MeetingDays>meetingDays);
 
     // findById(string id): ID로 스터디 그룹 조회
     Optional<Study> findById(String id);

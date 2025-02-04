@@ -36,7 +36,7 @@ public class RecommendStudyService {
                         entry.getValue(), // 유사도
                         entry.getKey().getStudyName(),
                         entry.getKey().getTopic(),
-                        entry.getKey().getMeetingDay()
+                        entry.getKey().getMeetingDays()
                 ))
                 .collect(Collectors.toList());
     }
@@ -45,12 +45,12 @@ public class RecommendStudyService {
     public double calculateCosineSimilarity(UserConditionDTO userCondition , StudyDTO study){
         // 1. 유저와 스터디의 주제 및 모임 요일 백터화
         Set<String> userFeatures = new HashSet<>();
-        userFeatures.addAll(userCondition.getTopic().stream().map(Enum::name).collect(Collectors.toList()));
-        userFeatures.addAll(userCondition.getMeetingDay().stream().map(Enum::name).collect(Collectors.toList()));
+        userFeatures.addAll(userCondition.getTopics().stream().map(Enum::name).collect(Collectors.toList()));
+        userFeatures.addAll(userCondition.getMeetingDays().stream().map(Enum::name).collect(Collectors.toList()));
 
         Set<String> studyFeatures = new HashSet<>();
         study.getTopic().forEach(topic -> studyFeatures.add(topic.name()));
-        study.getMeetingDay().forEach(day -> studyFeatures.add(day.name()));
+        study.getMeetingDays().forEach(day -> studyFeatures.add(day.name()));
 
         // 2. 교집합 및 합집합 크기를 계산
         Set<String> intersection = new HashSet<>(userFeatures);

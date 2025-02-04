@@ -9,11 +9,12 @@ import java.util.Set;
 
 @Data
 @Builder
+//스터디 정보를 담은 DTO
 public class StudyDTO {
     private String studyId;
     private String studyName;
     private List<Study.Topic> topic;
-    private List<Study.MeetingDay> meetingDay;
+    private List<Study.MeetingDays> meetingDays;
     private int count;
     private Set<String> members;
 }
