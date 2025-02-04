@@ -17,7 +17,26 @@
         android:id="@+id/chatFragment"
         android:name="com.example.firstproject.ui.chat.ChatFragment"
         android:label="채팅"
-        tools:layout="@layout/fragment_chat" />
+        tools:layout="@layout/fragment_chat" >
+        <action
+            android:id="@+id/action_chatFragment_to_chatDetailFragment"
+            app:destination="@id/chatDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/chatDetailFragment"
+        android:name="com.example.firstproject.ui.chat.ChatDetailFragment"
+        android:label="Chat Detail"
+        tools:layout="@layout/fragment_chat_detail">
+        <argument
+            android:name="roomName"
+            app:argType="string" />
+        <argument
+            android:name="messages"
+            app:argType="com.example.firstproject.ui.chat.ChatMessage[]"
+            app:nullable="false" />
+    </fragment>
+
     <fragment
         android:id="@+id/aiFragment"
         android:name="com.example.firstproject.ui.ai.AiFragment"
@@ -28,10 +47,12 @@
         android:name="com.example.firstproject.ui.live.LiveFragment"
         android:label="fragment_live"
         tools:layout="@layout/fragment_live" />
+
     <fragment
         android:id="@+id/mypageFragment"
         android:name="com.example.firstproject.ui.mypage.MypageFragment"
         android:label="fragment_mypage"
         tools:layout="@layout/fragment_mypage" />
+
 
 </navigation>
