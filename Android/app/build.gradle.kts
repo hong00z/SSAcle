@@ -22,11 +22,17 @@ android {
 
     buildTypes {
         release {
+            //openaiAPI key 가져오려고 씁니다.
+            buildConfigField("String", "OPENAI_API_KEY", "\"${project.findProperty("OPENAI_API_KEY")}\"")
+
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        debug {
+            buildConfigField("String", "OPENAI_API_KEY", "\"${project.findProperty("OPENAI_API_KEY")}\"")
         }
     }
     compileOptions {
@@ -40,6 +46,8 @@ android {
     buildFeatures {
         compose = true
         viewBinding = true
+        buildConfig = true  // BuildConfig 활성화
+
     }
 
     composeOptions {
@@ -81,6 +89,17 @@ dependencies {
     // 개발 편의성 및 디버깅 (선택 사항)
     implementation("androidx.compose.ui:ui-tooling-preview")
     debugImplementation("androidx.compose.ui:ui-tooling")
+
+    // pdf 변환을 위한 의존성
+    implementation ("com.itextpdf:itext7-core:7.2.5") // 최신 버전 확인 후 변경 가능
+    implementation("com.tom-roush:pdfbox-android:2.0.24.0")
+    implementation("com.itextpdf:html2pdf:6.0.0")
+
+    // 웹과 연동 및 코루틴 관련 의존성
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
