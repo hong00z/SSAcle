@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firstproject.MainActivity
+import com.example.firstproject.R
 import com.example.firstproject.databinding.FragmentChatBinding
 
 class ChatFragment : Fragment() {
@@ -22,17 +23,35 @@ class ChatFragment : Fragment() {
     ): View {
         _binding = FragmentChatBinding.inflate(inflater, container, false)
 
+        // 리로딩 할때
+        val swipeRefreshLayout = binding.swipeRefreshLayout
+
+        swipeRefreshLayout.setOnRefreshListener {
+            refreshChatList()
+            swipeRefreshLayout.isRefreshing = false
+        }
+
+
         // 샘플
         val chatRooms = listOf(
             ChatRoom(
                 roomName = "이거슨 알고리즘 스터디여",
                 messages = listOf(
-                    ChatMessage("god of 알고리즘", "이번주 알고리즘 문제는 이거 어떠신가요?", "오전 10:21",false),
-                    ChatMessage("나", "네! 좋아요. 그렇게 합시다.", "오전 11:01",true),
-                    ChatMessage("알고리즘 갓커", "안녕하세요! 열심히 참가하겠습니다 ㅎㅎ", "오후 3:00",false),
-                    ChatMessage("god of 알고리즘", "환영합니다~", "오후 3:00",false),
-                    ChatMessage("나", "알고리즘 갓커님 안녕하세요! 저희 피드에 보시면 참가사항 있습니다~", "오후 3:01",true),
-                    ChatMessage("알고리즘 갓커", "넵 확인했습니다~", "오후 3:02", false)
+                    ChatMessage("god of 알고리즘", "이번주 알고리즘 문제는 이거 어떠신가요?", "오전 10:21", false, R.drawable.default_profile),
+                    ChatMessage("나", "네! 좋아요. 그렇게 합시다.", "오전 11:01", true),
+                    ChatMessage("알고리즘 갓커", "안녕하세요! 열심히 참가하겠습니다 ㅎㅎ", "오후 3:00", false, R.drawable.default_profile),
+                    ChatMessage("god of 알고리즘", "환영합니다~", "오후 3:00", false,R.drawable.default_profile),
+                    ChatMessage("나", "알고리즘 갓커님 안녕하세요!", "오후 3:01", true),
+                    ChatMessage("god of 알고리즘", "이번주 알고리즘 문제는 이거 어떠신가요?", "오전 10:21", false, R.drawable.default_profile),
+                    ChatMessage("나", "네! 좋아요. 그렇게 합시다.", "오전 11:01", true),
+                    ChatMessage("알고리즘 갓커", "안녕하세요! 열심히 참가하겠습니다 ㅎㅎ", "오후 3:00", false, R.drawable.default_profile),
+                    ChatMessage("god of 알고리즘", "환영합니다~", "오후 3:00", false,R.drawable.default_profile),
+                    ChatMessage("나", "알고리즘 갓커님 안녕하세요!", "오후 3:01", true),
+                    ChatMessage("god of 알고리즘", "이번주 알고리즘 문제는 이거 어떠신가요?", "오전 10:21", false, R.drawable.default_profile),
+                    ChatMessage("나", "네! 좋아요. 그렇게 합시다.", "오전 11:01", true),
+                    ChatMessage("알고리즘 갓커", "안녕하세요! 열심히 참가하겠습니다 ㅎㅎ", "오후 3:00", false, R.drawable.default_profile),
+                    ChatMessage("god of 알고리즘", "환영합니다~", "오후 3:00", false,R.drawable.default_profile),
+                    ChatMessage("나", "알고리즘 갓커님 안녕하세요!", "오후 3:01", true)
                 )
             ),
             ChatRoom(
@@ -49,7 +68,7 @@ class ChatFragment : Fragment() {
             )
         )
 
-// ChatRoom 데이터를 ChatItem으로 변환합니다.
+        // item..!!
         val chatItems = chatRooms.map { chatRoom ->
             ChatItem(
                 title = chatRoom.roomName,
@@ -84,6 +103,10 @@ class ChatFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun refreshChatList() {
+        // 기능은 안만들었습니다.
     }
 
 

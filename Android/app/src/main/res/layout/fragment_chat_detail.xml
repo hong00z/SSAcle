@@ -24,7 +24,19 @@
             android:titleTextColor="@color/chat_blue" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- RecyclerView -->
+    <!-- ProgressBar (로딩 표시) -->
+    <ProgressBar
+        android:id="@+id/loading"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appBarLayout" />
+
+    <!-- RecyclerView (채팅 메시지 목록) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messagesRecycler"
         android:layout_width="0dp"
