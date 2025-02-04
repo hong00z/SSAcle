@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController //RESTful API 개발에 사용
 @RequiredArgsConstructor
@@ -52,6 +53,7 @@ public class userController {
         studyService.editInvitedStudyWishMembers(userId, studyId);
         return ResponseEntity.ok().build();
     }
+
 
 
 }

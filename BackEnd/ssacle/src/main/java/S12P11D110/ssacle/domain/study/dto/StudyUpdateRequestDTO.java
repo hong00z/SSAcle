@@ -11,7 +11,7 @@ public class StudyUpdateRequestDTO {
 
     private String studyName;                   // 스터디 이름
     private List<Study.Topic> topic;            // 주제 목록
-    private List<Study.MeetingDay> meetingDay;  // 모임 요일
+    private List<Study.MeetingDays> meetingDays;  // 모임 요일
     private int count;                          //정원
     private String studyContent;                // 스터디 소개
 

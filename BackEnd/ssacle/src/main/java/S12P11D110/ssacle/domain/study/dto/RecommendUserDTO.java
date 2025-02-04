@@ -14,6 +14,6 @@ public class RecommendUserDTO {
     private String userId;
     private double similarity;
     private String nickName;
-    private List<User.Topic> topic;
-    private List<User.MeetingDay> meetingDay;
+    private List<User.Topics> topics;
+    private List<User.MeetingDays> meetingDays;
 }
