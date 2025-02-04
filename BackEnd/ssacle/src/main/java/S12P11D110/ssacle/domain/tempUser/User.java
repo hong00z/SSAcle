@@ -11,24 +11,25 @@ import java.util.Set;
 @Data
 public class User {
     @Id
-    private String userId;
+    private String id;
     private String nickname;
     private int ssafyNum;
-    private List<Topic> topic;
-    private List<MeetingDay> meetingDay;
+    private List<Topics> topics;
+    private List<MeetingDays> meetingDays;
     private Set<String> joinedStudies;
-    private Set<String> wishStudy;
-    private Set<String> invitedStudy;
+    private Set<String> wishStudies;
+    private Set<String> invitedStudies;
 
     // 토큰은 로그인 기능 완성된 후 추가하기
 //    private String accessToken;
 //    private String refreshToken;
 
-    public enum Topic{
+    public enum Topics{
         cs, algorithm
     }
 
-    public enum MeetingDay{
+    public enum MeetingDays{
         MON, TUE, WED, THU, FRI, SAT, SUN
     }
+
 }

@@ -16,6 +16,6 @@ public class RecommendStudyDTO {
     private double similarity;
     private String studyName;
     private List<Study.Topic> topic;
-    private List<Study.MeetingDay> meetingDay;
+    private List<Study.MeetingDays> meetingDays;
 
 }

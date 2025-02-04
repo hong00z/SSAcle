@@ -11,5 +11,5 @@ import java.util.List;
 public class StudyConditionDTO {
     private String id;
     private List<Study.Topic> topic;
-    private List<Study.MeetingDay> meetingDay;
+    private List<Study.MeetingDays> meetingDays;
 }
