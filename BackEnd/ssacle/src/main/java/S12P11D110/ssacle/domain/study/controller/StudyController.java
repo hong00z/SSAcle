@@ -1,7 +1,6 @@
 package S12P11D110.ssacle.domain.study.controller;
 
 import S12P11D110.ssacle.domain.study.dto.*;
-import S12P11D110.ssacle.domain.study.dto.*;
 import S12P11D110.ssacle.domain.study.service.StudyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,7 +13,7 @@ import java.util.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/studies")
 @Tag(name = "study Controller", description = "This is Study Controller")
-public class studyController {
+public class StudyController {
 
     private final StudyService studyService;
 //    private final
@@ -24,9 +23,10 @@ public class studyController {
     @PostMapping("/{userId}") // 로그인 기능 만들어지면 ("/{userId}") 이 부분 없애기
     @Operation(summary = "스터디 개설", description = "새로운 스터디를 개설합니다.")
     // 로그인 기능 만들어지면 @PathVariable String userId 이 부분 없애기
-    public void createStudy(@PathVariable String userId, @RequestBody StudyCreateRequestDTO studyCreateRequestDTO){  // 클라이언트로부터 전달받은 JSON 형식의 데이터를 @RequestBody를 통해 Java의 객체(StudyCreateRequestDTO)로 자동 변환
+    public ResponseEntity<Void> createStudy(@PathVariable String userId, @RequestBody StudyCreateRequestDTO studyCreateRequestDTO){  // 클라이언트로부터 전달받은 JSON 형식의 데이터를 @RequestBody를 통해 Java의 객체(StudyCreateRequestDTO)로 자동 변환
 //        String userId = authentication.getName();  // 로그인된 사용자 ID 가져오기
         studyService.saveStudy(userId, studyCreateRequestDTO);
+        return ResponseEntity.ok().build();
     }
 
     // 전체 스터디 조회 GET
@@ -52,9 +52,8 @@ public class studyController {
     // 스터디 상세보기 GET
     @GetMapping("/{studyId}")
     @Operation(summary = "특정 스터디 조회", description = "스터디 ID를 통해 특정 스터디를 조회합니다.")
-    public StudyResponseDTO getstudyById(@PathVariable String studyId){
-        return studyService.getStudyById(studyId)
-                .orElseThrow(()->new NoSuchElementException("스터디 ID"+ studyId +"에 해당하는 스터디가 존재하지 않습니다."));
+    public StudyDetailDTO getstudyById(@PathVariable String studyId){
+        return studyService.getStudyById(studyId);
     }
 
 
