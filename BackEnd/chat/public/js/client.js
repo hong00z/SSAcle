@@ -5,139 +5,101 @@ import io from "socket.io-client"
 const socket = io()
 console.log("Socket.IO client initialized.")
 
-// 기존 DOM 요소 참조
+// DOM 요소 참조
 const joinRoomBtn = document.getElementById("joinRoom")
 const sendMessageBtn = document.getElementById("sendMessage")
-const roomIdInput = document.getElementById("roomId")
-const senderIdInput = document.getElementById("senderId")
+const studyIdInput = document.getElementById("studyId")
+const userIdInput = document.getElementById("userId")
 const messageInput = document.getElementById("messageInput")
-const chatDiv = document.getElementById("chat")
+const messagesDiv = document.getElementById("messages")
+const studyListUl = document.getElementById("studyList")
+const refreshStudiesBtn = document.getElementById("refreshStudies")
 
-// 신규: 채팅방 생성 폼 관련 요소
-const createChatRoomForm = document.getElementById("createChatRoomForm")
-const chatRoomNameInput = document.getElementById("chatRoomName")
-const isGroupCheckbox = document.getElementById("isGroup")
-const membersInput = document.getElementById("members")
-const chatRoomResultDiv = document.getElementById("chatRoomResult")
-
-console.log("DOM elements loaded.")
-
-/**
- * 채팅방 생성 폼 제출 이벤트 처리
- * - 폼에 입력한 정보를 바탕으로 REST API의 POST /chatrooms 엔드포인트 호출
- * - 생성된 채팅방 정보를 화면에 출력합니다.
- */
-createChatRoomForm.addEventListener("submit", async (e) => {
-  console.log("Create Chat Room form submitted.")
-  e.preventDefault() // 폼 제출 시 페이지 리로딩 방지
-
-  const name = chatRoomNameInput.value.trim()
-  const isGroup = isGroupCheckbox.checked
-  // 쉼표로 구분된 문자열을 배열로 변환 (빈 값은 제거)
-  const members = membersInput.value
-    .split(",")
-    .map((str) => str.trim())
-    .filter((str) => str !== "")
-
-  console.log("Chat Room creation data:", { name, isGroup, members })
-
-  if (members.length < 2) {
-    alert("최소 2명의 멤버 정보를 입력해야 합니다.")
-    return
-  }
-  if (!isGroup && members.length !== 2) {
-    alert("갠톡(1:1 채팅)은 정확히 2명의 멤버 정보가 필요합니다.")
-    return
-  }
-
-  try {
-    const response = await fetch("/chatrooms", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name, isGroup, members }),
-    })
-    console.log("Fetch response received:", response)
-    const result = await response.json()
-    console.log("Fetch result:", result)
-    if (!response.ok) {
-      chatRoomResultDiv.innerHTML = `<p style="color:red;">에러: ${result.error}</p>`
-      console.error("Error creating chat room:", result.error)
-    } else {
-      chatRoomResultDiv.innerHTML = `<p style="color:green;">채팅방 생성 성공! ID: ${result._id}, 이름: ${result.name}</p>`
-      console.log("Chat room created successfully:", result)
-      // 필요에 따라 생성 후 자동 참가 등의 추가 로직을 구현할 수 있습니다.
-    }
-  } catch (error) {
-    chatRoomResultDiv.innerHTML = `<p style="color:red;">에러 발생: ${error.message}</p>`
-    console.error("Fetch error:", error)
-  }
-})
-
-/**
- * 채팅방 참가 버튼 클릭 이벤트
- * - 입력한 채팅방 ID와 사용자 ID를 사용해 서버에 'joinRoom' 이벤트 전송
- */
+// 스터디 입장 버튼 클릭 시 (방에 입장하고 이전 메시지 불러오기)
 joinRoomBtn.addEventListener("click", () => {
-  console.log("Join Room button clicked.")
-  const roomId = roomIdInput.value.trim()
-  const senderId = senderIdInput.value.trim()
-  console.log("Attempting to join room with data:", { roomId, senderId })
-  if (!roomId || !senderId) {
-    alert("채팅방 ID와 사용자 ID를 모두 입력하세요.")
+  const studyId = studyIdInput.value.trim()
+  const userId = userIdInput.value.trim()
+  if (!studyId || !userId) {
+    alert("스터디 ID와 사용자 ID를 모두 입력하세요.")
     return
   }
-  socket.emit("joinRoom", { chatRoomId: roomId, userId: senderId })
-  console.log("joinRoom event emitted.")
-  appendMessage(`채팅방 ${roomId}에 참가하였습니다.`)
+  // Socket.IO를 통해 스터디(채팅방)에 입장
+  socket.emit("joinRoom", { studyId, userId })
+  console.log(`사용자 ${userId}가 스터디 ${studyId}에 입장 요청`)
+  // 입장 후 해당 스터디의 이전 메시지 불러오기
+  loadPreviousMessages(studyId)
 })
 
-/**
- * 메시지 전송 버튼 클릭 이벤트
- * - 입력한 정보를 바탕으로 서버에 'sendMessage' 이벤트 전송
- */
+// 메시지 전송 버튼 클릭 시
 sendMessageBtn.addEventListener("click", () => {
-  console.log("Send Message button clicked.")
-  const roomId = roomIdInput.value.trim()
-  const senderId = senderIdInput.value.trim()
-  const content = messageInput.value.trim()
-  console.log("Message data:", { roomId, senderId, content })
-  if (!roomId || !senderId || !content) {
-    alert("채팅방 ID, 사용자 ID, 메시지를 모두 입력하세요.")
+  const studyId = studyIdInput.value.trim()
+  const userId = userIdInput.value.trim()
+  const message = messageInput.value.trim()
+  if (!studyId || !userId || !message) {
+    alert("스터디 ID, 사용자 ID, 메시지를 모두 입력하세요.")
     return
   }
-  socket.emit("sendMessage", { chatRoomId: roomId, senderId, content })
-  console.log("sendMessage event emitted.")
+  // Socket.IO를 통해 메시지 전송 (서버의 sendMessage 이벤트 호출)
+  socket.emit("sendMessage", { studyId, userId, message })
+  console.log(`메시지 전송 요청 - studyId: ${studyId}, userId: ${userId}, content: ${message}`)
   messageInput.value = ""
 })
 
-/**
- * 서버로부터 'newMessage' 이벤트를 수신하면 메시지를 화면에 출력합니다.
- */
-socket.on("newMessage", (message) => {
-  console.log("Received newMessage event:", message)
-  const { senderId, content, createdAt } = message
-  const time = new Date(createdAt).toLocaleTimeString()
-  appendMessage(`[${time}] ${senderId}: ${content}`)
+// 새로고침 버튼에 이벤트 리스너 추가
+refreshStudiesBtn.addEventListener("click", loadStudyList)
+loadStudyList()
+
+// 서버로부터 새 메시지 이벤트 수신
+socket.on("newMessage", (msg) => {
+  console.log("Received newMessage:", msg)
+  displayMessage(msg)
 })
 
-/**
- * 서버 에러 발생 시 알림창으로 표시합니다.
- */
-socket.on("error", (error) => {
-  console.error("Received error event:", error)
-  alert(`에러: ${error.error}`)
-})
-
-/**
- * 채팅 영역에 메시지를 추가하는 헬퍼 함수입니다.
- * @param {string} text - 출력할 메시지 텍스트
- */
-function appendMessage(text) {
-  console.log("Appending message:", text)
+// 메시지 표시 함수: 새로운 <p> 요소를 생성해 메시지 영역에 추가
+function displayMessage(msg) {
   const p = document.createElement("p")
-  p.textContent = text
-  chatDiv.appendChild(p)
-  chatDiv.scrollTop = chatDiv.scrollHeight
+  // createdAt은 ISO 문자열 형태일 수 있으므로 Date 객체로 변환
+  const time = new Date(msg.createdAt).toLocaleTimeString()
+  // msg.message는 메시지 내용, msg.userId는 발신자 ID입니다.
+  p.textContent = `[${time}] ${msg.userId} - ${msg.nickname}: ${msg.message}`
+  messagesDiv.appendChild(p)
+  messagesDiv.scrollTop = messagesDiv.scrollHeight // 스크롤을 맨 아래로
+}
+
+// 이전 메시지 불러오기 함수 (REST API 호출)
+function loadPreviousMessages(studyId) {
+  fetch(`/api/chat/${studyId}/messages`)
+    .then((response) => response.json())
+    .then((data) => {
+      messagesDiv.innerHTML = "" // 기존 메시지 초기화
+      data.forEach((msg) => {
+        displayMessage(msg)
+      })
+    })
+    .catch((error) => {
+      console.error("Error loading previous messages:", error)
+    })
+}
+
+// 스터디 목록 불러오기 함수
+function loadStudyList() {
+  fetch("/api/studies")
+    .then((response) => response.json())
+    .then((studies) => {
+      studyListUl.innerHTML = "" // 기존 목록 초기화
+      studies.forEach((study) => {
+        const li = document.createElement("li")
+        // 예: 스터디 이름과 스터디 ID를 함께 표시
+        li.textContent = `${study.studyName} (ID: ${study._id})`
+        // 클릭 시 스터디 ID를 studyId input에 자동 입력하는 기능 등 추가 가능
+        li.addEventListener("click", () => {
+          document.getElementById("studyId").value = study._id
+        })
+        studyListUl.appendChild(li)
+      })
+      console.log("스터디 목록 불러오기 완료:", studies)
+    })
+    .catch((error) => {
+      console.error("스터디 목록 불러오기 에러:", error)
+    })
 }

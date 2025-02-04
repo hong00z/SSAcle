@@ -8,84 +8,50 @@
         font-family: Arial, sans-serif;
         margin: 20px;
       }
-      #chat {
+      #messages {
         border: 1px solid #ccc;
         height: 300px;
         overflow-y: auto;
         padding: 10px;
         margin-bottom: 10px;
       }
-      #chat p {
+      #messages p {
         margin: 5px 0;
       }
-      input[type="text"],
-      input[type="checkbox"] {
-        padding: 5px;
-        margin-right: 5px;
-      }
+      input,
       button {
         padding: 5px 10px;
-      }
-      section {
-        margin-bottom: 20px;
-        padding: 10px;
-        border: 1px solid #ddd;
+        margin: 5px;
       }
     </style>
   </head>
   <body>
     <h1>실시간 채팅 클라이언트</h1>
-
-    <!-- 채팅방 생성 영역 -->
-    <section id="createChatRoomSection">
-      <h2>채팅방 생성</h2>
-      <form id="createChatRoomForm">
-        <label>
-          채팅방 이름:
-          <input type="text" id="chatRoomName" placeholder="채팅방 이름 입력" />
-        </label>
-        <br /><br />
-        <label>
-          단체 채팅:
-          <input type="checkbox" id="isGroup" />
-        </label>
-        <br /><br />
-        <label>
-          참여 멤버 (쉼표로 구분):
-          <input type="text" id="members" placeholder="예: user1,user2,..." />
-        </label>
-        <br /><br />
-        <button type="submit">채팅방 생성</button>
-      </form>
-      <div id="chatRoomResult"></div>
+    <!-- 스터디 목록 표시 영역 추가 -->
+    <section id="studyListSection">
+      <h2>스터디 목록</h2>
+      <ul id="studyList"></ul>
+      <button id="refreshStudies">목록 새로고침</button>
     </section>
-
-    <!-- 채팅방 참가 영역 -->
-    <section id="joinChatRoomSection">
-      <h2>채팅방 참가</h2>
+    <div>
       <label>
-        채팅방 ID:
-        <input type="text" id="roomId" placeholder="채팅방 ID 입력" />
+        스터디 ID:
+        <input type="text" id="studyId" placeholder="스터디 ID 입력" />
       </label>
       <label>
         사용자 ID:
-        <input type="text" id="senderId" placeholder="내 ID 입력" />
+        <input type="text" id="userId" placeholder="사용자 ID 입력" />
       </label>
-      <button id="joinRoom">채팅방 참가</button>
-    </section>
-
-    <!-- 채팅 메시지 표시 영역 -->
-    <section>
-      <h2>채팅 메시지</h2>
-      <div id="chat"></div>
-    </section>
-
-    <!-- 메시지 전송 영역 -->
-    <section id="sendMessageSection">
-      <h2>메시지 전송</h2>
+      <button id="joinRoom">스터디 입장</button>
+    </div>
+    <hr />
+    <div id="messages">
+      <!-- 메시지들이 여기에 표시됩니다. -->
+    </div>
+    <div>
       <input type="text" id="messageInput" placeholder="메시지 입력" />
       <button id="sendMessage">전송</button>
-    </section>
+    </div>
     <script src="/dist/bundle.js"></script>
   </body>
 </html>
