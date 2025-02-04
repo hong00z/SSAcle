@@ -8,6 +8,7 @@ data class ChatMessage(
     val sender: String, // 메시지 보낸 사람
     val content: String, // 메시지 내용
     val time: String, // 보낸 시간
-    val isMine: Boolean // 내가 보낸 메시지인지 여부
+    val isMine: Boolean, // 내가 보낸 메시지인지 여부
+    val imageResId: Int? = null // 이미지 리소스 ID (nullable)
 
 ) : Parcelable

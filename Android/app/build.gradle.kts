@@ -50,6 +50,7 @@ android {
 dependencies {
 
     implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.swiperefreshlayout)
 
     val nav_version = "2.8.6"
     // Jetpack Compose integration
