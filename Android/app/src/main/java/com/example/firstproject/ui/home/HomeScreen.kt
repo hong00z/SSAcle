@@ -18,7 +18,7 @@ fun HomeScreen() {
         verticalArrangement = Arrangement.Center
     ) {
         Text(text = "asdf",
-            fontSize = 30.sp)
+            fontSize = 48.sp)
     }
 }
 

@@ -18,5 +18,20 @@
         android:name="com.example.firstproject.ui.chat.ChatFragment"
         android:label="채팅"
         tools:layout="@layout/fragment_chat" />
+    <fragment
+        android:id="@+id/aiFragment"
+        android:name="com.example.firstproject.ui.ai.AiFragment"
+        android:label="fragment_ai"
+        tools:layout="@layout/fragment_ai" />
+    <fragment
+        android:id="@+id/liveFragment"
+        android:name="com.example.firstproject.ui.live.LiveFragment"
+        android:label="fragment_live"
+        tools:layout="@layout/fragment_live" />
+    <fragment
+        android:id="@+id/mypageFragment"
+        android:name="com.example.firstproject.ui.mypage.MypageFragment"
+        android:label="fragment_mypage"
+        tools:layout="@layout/fragment_mypage" />
 
 </navigation>
