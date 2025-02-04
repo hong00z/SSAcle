@@ -1,12 +1,13 @@
 package com.example.firstproject.ui.chat
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.firstproject.databinding.ItemMessageReceivedBinding
 import com.example.firstproject.databinding.ItemMessageSentBinding
 
-class MessageAdapter(private val messages: List<ChatMessage>) :
+class MessageAdapter(private val messages: MutableList<ChatMessage>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -46,12 +47,23 @@ class MessageAdapter(private val messages: List<ChatMessage>) :
     }
 
     override fun getItemCount(): Int = messages.size
-
+    fun addMessages(newMessages: List<ChatMessage>) {
+        messages.addAll(0, newMessages) // 상단에 추가
+        notifyItemRangeInserted(0, newMessages.size) // RecyclerView에 반영
+    }
     inner class SentMessageViewHolder(private val binding: ItemMessageSentBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(message: ChatMessage) {
             binding.messageContent.text = message.content
             binding.messageTime.text = message.time
+
+
+            if (message.imageResId != null) {
+                binding.messageProfile.visibility = View.VISIBLE
+                binding.messageProfile.setImageResource(message.imageResId)
+            } else {
+                binding.messageProfile.visibility = View.GONE
+            }
         }
     }
 
@@ -61,6 +73,13 @@ class MessageAdapter(private val messages: List<ChatMessage>) :
             binding.senderName.text = message.sender
             binding.messageContent.text = message.content
             binding.messageTime.text = message.time
+
+            if (message.imageResId != null) {
+                binding.messageProfile.visibility = View.VISIBLE
+                binding.messageProfile.setImageResource(message.imageResId)
+            } else {
+                binding.messageProfile.visibility = View.GONE
+            }
         }
     }
 }
