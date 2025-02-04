@@ -7,9 +7,29 @@
         />
 
     <item
+        android:id="@+id/aiFragment"
+        android:icon="@drawable/ai_file_24"
+        android:title="AI"
+        />
+
+    <item
+        android:id="@+id/liveFragment"
+        android:icon="@drawable/podcasts_24"
+        android:title="라이브"
+        />
+
+    <item
         android:id="@+id/chatFragment"
         android:icon="@drawable/chat_24"
         android:title="채팅"
         />
+
+    <item
+        android:id="@+id/mypageFragment"
+        android:icon="@drawable/person_24"
+        android:title="내 정보"
+        />
+
+
 
 </menu>
