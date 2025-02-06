@@ -21,5 +21,3 @@ EXPOSE 4000
 
 # 컨테이너 시작 시 실행할 명령어 (package.json에 start 스크립트가 정의되어 있어야 함)
 CMD ["npm", "start"]
-
-# 1. docker compose .yml
