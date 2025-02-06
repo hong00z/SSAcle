@@ -32,7 +32,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -46,7 +46,7 @@ import com.example.firstproject.ui.theme.pretendard
 @Composable
 fun HomeScreen() {
 
-    var studyList = mutableListOf("첫 번쨰 스터디", "스프링 입문", "스터디 제목은 과연 몇 글자까지 가능할까요?")
+    val studyList = mutableListOf("첫 번쨰 스터디", "스프링 입문", "스터디 제목은 과연 몇 글자까지 가능할까요?")
 
     Scaffold(
         topBar = { TopBarMain() },
@@ -75,7 +75,9 @@ fun HomeScreen() {
         }
 
     ) { contentPadding ->
-        Column(Modifier.fillMaxSize().padding(contentPadding)) {
+        Column(Modifier
+            .fillMaxSize()
+            .padding(contentPadding)) {
 
 
             Column(
@@ -96,7 +98,23 @@ fun HomeScreen() {
                 FindActionButton()
                 Spacer(Modifier.height(36.dp))
 
-                TitleTextView("현재 모집 중인 스터디")
+
+                Row(Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.Bottom) {
+                    TitleTextView("현재 모집 중인 스터디")
+
+                    Spacer(Modifier.weight(1f))
+                    Text(
+                        "전체보기",
+                        fontFamily = pretendard,
+                        fontWeight = FontWeight(400),
+                        fontSize = 12.sp
+                    )
+                    Icon(painter = painterResource(id = R.drawable.ic_right_arrow), null, Modifier.size(14.dp))
+                }
+                Spacer(Modifier.height(16.dp))
+                StudyListCard()
+
 
             }
 
