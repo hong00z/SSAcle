@@ -1,7 +1,9 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("androidx.navigation.safeargs.kotlin") version "2.6.0"
+    id("androidx.navigation.safeargs.kotlin") version "2.8.6"
     id("kotlin-parcelize")
 
 }
@@ -12,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.firstproject"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -20,10 +22,18 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    val localProperties = Properties().apply {
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            load(localPropertiesFile.inputStream())
+        }
+    }
+    val openaiApiKey: String = localProperties.getProperty("OPENAI_API_KEY", "")
+
     buildTypes {
         release {
             //openaiAPI key 가져오려고 씁니다.
-            buildConfigField("String", "OPENAI_API_KEY", "\"${project.findProperty("OPENAI_API_KEY")}\"")
+            buildConfigField("String", "OPENAI_API_KEY", "\"$openaiApiKey\"")
 
             isMinifyEnabled = false
             proguardFiles(
@@ -32,7 +42,7 @@ android {
             )
         }
         debug {
-            buildConfigField("String", "OPENAI_API_KEY", "\"${project.findProperty("OPENAI_API_KEY")}\"")
+            buildConfigField("String", "OPENAI_API_KEY", "\"$openaiApiKey\"")
         }
     }
     compileOptions {
@@ -91,7 +101,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
 
     // pdf 변환을 위한 의존성
-    implementation ("com.itextpdf:itext7-core:7.2.5") // 최신 버전 확인 후 변경 가능
+    implementation("com.itextpdf:itext7-core:7.2.5") // 최신 버전 확인 후 변경 가능
     implementation("com.tom-roush:pdfbox-android:2.0.24.0")
     implementation("com.itextpdf:html2pdf:6.0.0")
 
@@ -113,3 +123,4 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 }
+
