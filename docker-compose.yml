@@ -53,7 +53,7 @@ services:
   # spring Backend
   backend:
     build:
-      context: ./ssacle
+      context: ./BackEnd/ssacle
       dockerfile: Dockerfile
 
     container_name: spring
