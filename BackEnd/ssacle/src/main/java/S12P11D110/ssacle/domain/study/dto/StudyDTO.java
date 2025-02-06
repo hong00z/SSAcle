@@ -17,4 +17,6 @@ public class StudyDTO {
     private List<Study.MeetingDays> meetingDays;
     private int count;
     private Set<String> members;
+    private Set<String> wishMembers;
+    private Set<String> preMembers;
 }

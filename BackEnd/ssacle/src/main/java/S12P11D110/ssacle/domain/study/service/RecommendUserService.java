@@ -14,15 +14,18 @@ public class RecommendUserService {
 
     public List<RecommendUserDTO> recommendUsers(StudyConditionDTO studyCondition, List<SearchUserDTO> allUsers){
 
+        Set<String> studyTopic = studyCondition.getTopic().stream()
+                .map(Enum::name)
+                .collect(Collectors.toSet());
         // 1. 유저 필터링
         List<SearchUserDTO> filteredUsers = allUsers.stream()
                 .filter(user-> user.getTopics()!=null && user.getMeetingDays()!=null) // topic과 meetingDay가 등록된 유저
+                .filter(user-> user.getTopics().stream().map(Enum::name).anyMatch(studyTopic::contains))
                 .filter(user -> {
                     // 가입된 스터디가 없는 유저는 Collections.emptyList()을 반환(null 방지)
                     Set<String> joinedStudies = user.getJoinedStudies() != null ? user.getJoinedStudies() : Collections.emptySet();
                     Set<String> wishStudies = user.getWishStudies() != null ? user.getWishStudies() : Collections.emptySet();
                     Set<String> invitedStudies = user.getInvitedStudies() != null ? user.getInvitedStudies() : Collections.emptySet();
-
 
                     boolean isAlreadyJoined = joinedStudies.contains(studyCondition.getId().toString());
                     boolean isAlreadyWish = wishStudies.contains(studyCondition.getId().toString());
