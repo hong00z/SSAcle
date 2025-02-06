@@ -9,5 +9,6 @@
     <color name="blue_ai">#0074BD</color>
 
     <color name="primary_color">#0084BD</color>
+    <color name="border_card_color">#BCBCBC</color>
 
 </resources>

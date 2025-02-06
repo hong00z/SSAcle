@@ -2,6 +2,7 @@ package com.example.firstproject.ui.home
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -53,9 +55,18 @@ fun HomeScreen() {
         ) {
             Spacer(Modifier.height(20.dp))
             TitleTextView("내 스터디 목록")
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(16.dp))
 
             MyStudyItem(studyList)
+            Spacer(Modifier.height(36.dp))
+
+            TitleTextView("스터디 매칭")
+            Spacer(Modifier.height(16.dp))
+
+            FindActionButton()
+            Spacer(Modifier.height(36.dp))
+
+            TitleTextView("현재 모집 중인 스터디")
 
         }
 
@@ -64,7 +75,7 @@ fun HomeScreen() {
 
 
 @Composable
-fun TopBarMain(
+private fun TopBarMain(
     tint: Color = colorResource(R.color.primary_color)
 ) {
 
@@ -105,18 +116,19 @@ private fun TitleTextView(title: String) {
         text = title,
         fontFamily = pretendard,
         fontWeight = FontWeight(600),
-        fontSize = 24.sp
+        fontSize = 24.sp,
+        letterSpacing = 1.sp
     )
 }
 
 @Composable
 fun MyStudyItem(
     // 스터디 리스트
-    studyList: List<String>
+    itemList: List<String>
 ) {
     val pagerState = rememberPagerState(initialPage = 0) {
         // 크기
-        3
+        itemList.size
     }
     Column(
         modifier = Modifier.wrapContentSize(),
@@ -143,7 +155,7 @@ fun MyStudyItem(
                     elevation = CardDefaults.elevatedCardElevation(2.dp)
                 ) {
                     Column(modifier = Modifier.fillMaxSize()) {
-                        Text(text = studyList[it])
+                        Text(text = itemList[it])
                     }
                 }
             }
@@ -160,7 +172,7 @@ fun MyStudyItem(
 
 @Composable
 private fun PageIndicator(pageCount: Int, currentPage: Int) {
-    Row (
+    Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -183,6 +195,74 @@ private fun IndicatorDots(isSelected: Boolean) {
                 else Color(0xFFD9D9D9)
             )
     )
+}
+
+@Composable
+private fun FindActionButton() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(horizontal = 28.dp)
+    ) {
+        Card(
+            modifier = Modifier
+                .width(110.dp)
+                .height(120.dp),
+            shape = RoundedCornerShape(10.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            border = BorderStroke(1.dp, colorResource(R.color.border_card_color)),
+            elevation = CardDefaults.elevatedCardElevation(4.dp)
+        ) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.img_find_person),
+                    "",
+                    modifier = Modifier.size(64.dp)
+                )
+                Spacer(Modifier.height(12.dp))
+                Text(
+                    "스터디원 찾기",
+                    fontFamily = pretendard,
+                    fontWeight = FontWeight(400),
+                    fontSize = 12.sp
+                )
+            }
+        }
+        Spacer(Modifier.weight(1f))
+        Card(
+            modifier = Modifier
+                .width(110.dp)
+                .height(120.dp),
+            shape = RoundedCornerShape(10.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            border = BorderStroke(1.dp, colorResource(R.color.border_card_color)),
+            elevation = CardDefaults.elevatedCardElevation(4.dp)
+        ) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.img_find_study),
+                    "",
+                    modifier = Modifier.size(64.dp)
+                )
+                Spacer(Modifier.height(12.dp))
+                Text(
+                    "스터디 찾기",
+                    fontFamily = pretendard,
+                    fontWeight = FontWeight(400),
+                    fontSize = 12.sp
+                )
+            }
+        }
+    }
 }
 
 
