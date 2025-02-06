@@ -33,6 +33,7 @@ public class StudyController {
     @GetMapping
     @Operation(summary = "모든 스터디 조회", description = "등록된 모든 스터디를 조회합니다.")
     public List<StudyResponseDTO> getAllStudies(){
+
         return studyService.getAllStudy();
     }
 
