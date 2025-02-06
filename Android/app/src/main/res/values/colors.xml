@@ -24,5 +24,8 @@
     <color name="primary_color">#0084BD</color>
     <color name="border_card_color">#BCBCBC</color>
     <color name="border_input_color">#888888</color>
+    <color name="border_light_color">#ECECEC</color>
+
+
 
 </resources>
