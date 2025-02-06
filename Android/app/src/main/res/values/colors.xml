@@ -8,7 +8,21 @@
     <color name="chat_received">#F4F4F4</color>
     <color name="blue_ai">#0074BD</color>
 
+    <color name="frontend_stack_tag">#017ACB</color>
+    <color name="backend_stack_tag">#7ACF5C</color>
+    <color name="mobile_stack_tag">#3DDC84</color>
+    <color name="ai_stack_tag">#FE438A</color>
+    <color name="data_stack_tag">#FF7062</color>
+    <color name="embaded_stack_tag">#9B4F96</color>
+    <color name="infra_stack_tag">#2F9EF4</color>
+    <color name="cs_stack_tag">#E3492F</color>
+    <color name="algo_stack_tag">#802BEC</color>
+    <color name="game_stack_tag">#888888</color>
+    <color name="etc_stack_tag">#222222</color>
+
+
     <color name="primary_color">#0084BD</color>
     <color name="border_card_color">#BCBCBC</color>
+    <color name="border_input_color">#888888</color>
 
 </resources>
