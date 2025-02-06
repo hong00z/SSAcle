@@ -4,6 +4,7 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,8 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Scaffold
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -45,32 +48,62 @@ fun HomeScreen() {
 
     var studyList = mutableListOf("첫 번쨰 스터디", "스프링 입문", "스터디 제목은 과연 몇 글자까지 가능할까요?")
 
-    Column(Modifier.fillMaxSize()) {
-        TopBarMain()
+    Scaffold(
+        topBar = { TopBarMain() },
+        floatingActionButton = {
+            Column(horizontalAlignment = Alignment.End) {
+                FloatingActionButton(
+                    onClick = {
 
-        Column(
-            Modifier
-                .fillMaxSize()
-                .padding(horizontal = 32.dp)
-        ) {
-            Spacer(Modifier.height(20.dp))
-            TitleTextView("내 스터디 목록")
-            Spacer(Modifier.height(16.dp))
+                    },
+                    backgroundColor = colorResource(id = R.color.primary_color),
+                    modifier = Modifier.border(
+                        (0.5).dp, Color(0xFFBFE0EF),
+                        RoundedCornerShape(30.dp)
+                    ),
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_add_plus),
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(32.dp)
+                    )
 
-            MyStudyItem(studyList)
-            Spacer(Modifier.height(36.dp))
+                }
 
-            TitleTextView("스터디 매칭")
-            Spacer(Modifier.height(16.dp))
+            }
+        }
 
-            FindActionButton()
-            Spacer(Modifier.height(36.dp))
+    ) { contentPadding ->
+        Column(Modifier.fillMaxSize().padding(contentPadding)) {
 
-            TitleTextView("현재 모집 중인 스터디")
+
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 32.dp)
+            ) {
+                Spacer(Modifier.height(20.dp))
+                TitleTextView("내 스터디 목록")
+                Spacer(Modifier.height(16.dp))
+
+                MyStudyItem(studyList)
+                Spacer(Modifier.height(36.dp))
+
+                TitleTextView("스터디 매칭")
+                Spacer(Modifier.height(16.dp))
+
+                FindActionButton()
+                Spacer(Modifier.height(36.dp))
+
+                TitleTextView("현재 모집 중인 스터디")
+
+            }
 
         }
 
     }
+
 }
 
 
