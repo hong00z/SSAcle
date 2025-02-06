@@ -8,5 +8,6 @@
     <color name="chat_received">#F4F4F4</color>
     <color name="blue_ai">#0074BD</color>
 
+    <color name="primary_color">#0084BD</color>
 
 </resources>
