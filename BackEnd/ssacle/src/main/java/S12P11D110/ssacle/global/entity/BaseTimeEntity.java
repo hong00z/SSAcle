@@ -1,7 +1,6 @@
 package S12P11D110.ssacle.global.entity;
 
 import lombok.Getter;
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -19,8 +18,4 @@ public abstract class BaseTimeEntity {
     // Entity 변경 시간 자동 저장
     @LastModifiedDate
     private LocalDateTime updatedAt;
-
-    // 작성자
-    @CreatedBy
-    private String createdBy;
 }

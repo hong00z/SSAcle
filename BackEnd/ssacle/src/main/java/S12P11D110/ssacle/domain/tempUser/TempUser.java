@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Document(collection = "users")
 @Data
-public class User {
+public class TempUser {
     @Id
     private String id;
     private String nickname;

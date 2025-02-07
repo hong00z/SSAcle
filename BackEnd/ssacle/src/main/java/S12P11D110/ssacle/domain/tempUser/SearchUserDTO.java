@@ -11,8 +11,8 @@ import java.util.Set;
 public class SearchUserDTO {
     private String userId;
     private String nickName;
-    private List<User.Topics> topics;
-    private List<User.MeetingDays> meetingDays;
+    private List<TempUser.Topics> topics;
+    private List<TempUser.MeetingDays> meetingDays;
     private Set<String> joinedStudies;
     private Set<String> wishStudies;
     private Set<String> invitedStudies;

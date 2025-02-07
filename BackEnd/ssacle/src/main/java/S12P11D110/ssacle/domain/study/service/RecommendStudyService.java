@@ -51,7 +51,7 @@ public class RecommendStudyService {
 
             System.out.println(study + ": " + similarity); // 디버깅
         }
-        System.out.println("User Similarity Map: " + studySimilarityMap); // 디버깅
+        System.out.println("TempUser Similarity Map: " + studySimilarityMap); // 디버깅
 
         //3. 유사도 순으로 내림차순 -> 상위 3개 스터디 추출
         return studySimilarityMap.entrySet().stream()

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController //RESTful API 개발에 사용
 @RequiredArgsConstructor
 @RequestMapping("/api")
-@Tag(name = "feed Controller", description = "This is Feed Controller")
+@Tag(name = "Feed Controller", description = "This is Feed Controller")
 public class FeedController {
 
     private final FeedService feedService;
