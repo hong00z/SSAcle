@@ -3,14 +3,4 @@ spring:
     mongodb:
       uri: mongodb://localhost:27017/ssacle
       database: ssacle
-  profiles:
-    include: jwt, aws
-cloud:
-  aws:
-    credentials:
-      accessKey:
-      secretKey:
-    s3:
-      bucket: s3-ssacle
-    stack.auto: false
-    region.static: ap-northeast-2
+
