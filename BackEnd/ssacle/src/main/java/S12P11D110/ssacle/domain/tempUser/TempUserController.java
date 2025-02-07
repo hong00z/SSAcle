@@ -11,13 +11,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
-@RestController //RESTful API 개발에 사용
+@RestController("tempUserController") //RESTful API 개발에 사용
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
-@Tag(name = "user Controller", description = "This is user Controller")
-public class userController {
+@Tag(name = "TempUser Controller", description = "사용자 관련 임시 controller (문경 ver.)")
+public class TempUserController {
 
     private final StudyService studyService;
 

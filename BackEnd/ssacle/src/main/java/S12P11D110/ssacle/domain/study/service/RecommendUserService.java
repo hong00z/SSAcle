@@ -51,14 +51,14 @@ public class RecommendUserService {
             System.out.println("Similarity: " + similarity); // 디버깅
         }
 
-        System.out.println("User Similarity Map: " + userSimilarityMap); // 디버깅
+        System.out.println("TempUser Similarity Map: " + userSimilarityMap); // 디버깅
 
         // 3. 유사도 순으로 내림차순 정렬 -> 상위 3명 유저 추출
         return userSimilarityMap.entrySet().stream()
                 .sorted((entry1, entry2) -> Double.compare(entry2.getValue(), entry1.getValue())) // 유사도 내림차순
                 .limit(3) // 상위 3명 추출
                 .map(entry -> new RecommendUserDTO(
-                        entry.getKey().getUserId(), // User ID
+                        entry.getKey().getUserId(), // TempUser ID
                         entry.getValue(), // 유사도 점수
                         entry.getKey().getNickName(), // Nickname
                         entry.getKey().getTopics(), // Topic

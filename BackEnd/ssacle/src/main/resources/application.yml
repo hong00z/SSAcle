@@ -1,16 +1,37 @@
 spring:
+  # DB
   data:
     mongodb:
       uri: mongodb://localhost:27017/ssacle
       database: ssacle
-  profiles:
-    include: jwt, aws
-cloud:
-  aws:
-    credentials:
-      accessKey:
-      secretKey:
-    s3:
-      bucket: s3-ssacle
-    stack.auto: false
-    region.static: ap-northeast-2
+    redis:
+      host: localhost
+      port: 6379
+  # Logger Text Color
+  output:
+    ansi:
+      enabled: always
+
+jwt:
+  # Access Token Expired Time (1시간=60*60)
+  access:
+    token:
+      expiration:
+        seconds: 3600
+  # Refresh Token Expired Time (7일=60*60*24*7)
+  refresh:
+    token:
+      expiration:
+        seconds: 604800
+  # JWT Signature Secret Key
+  token:
+    secret:
+      key: "ENjvzmJQpugoOGaEqVV6uKYSHw3pg/xYtQOo3YQBi5Y="
+
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+server:
+  port: 5001
