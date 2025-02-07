@@ -43,7 +43,7 @@ class ChatFragment : Fragment() {
                     ChatMessage("god of 알고리즘", "환영합니다~", "오후 3:00", false,R.drawable.default_profile),
                     ChatMessage("나", "알고리즘 갓커님 안녕하세요!", "오후 3:01", true),
                     ChatMessage("god of 알고리즘", "이번주 알고리즘 문제는 이거 어떠신가요?", "오전 10:21", false, R.drawable.default_profile),
-                    ChatMessage("나", "네! 좋아요. 그렇게 합시다.", "오전 11:01", true),
+                    ChatMessage("나", "네! 좋아요. 그렇게  합시다.", "오전 11:01", true),
                     ChatMessage("알고리즘 갓커", "안녕하세요! 열심히 참가하겠습니다 ㅎㅎ", "오후 3:00", false, R.drawable.default_profile),
                     ChatMessage("god of 알고리즘", "환영합니다~", "오후 3:00", false,R.drawable.default_profile),
                     ChatMessage("나", "알고리즘 갓커님 안녕하세요!", "오후 3:01", true),
