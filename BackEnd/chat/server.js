@@ -6,6 +6,9 @@ const http = require("http")
 const socketIo = require("socket.io")
 const mongoose = require("mongoose")
 
+const swaggerUi = require("swagger-ui-express")
+const swaggerSpec = require("./swagger")
+
 const admin = require("firebase-admin")
 const serviceAccount = require(process.env.FIREBASE_SERVICE_ACCOUNT_KEY)
 
@@ -42,43 +45,71 @@ mongoose
 app.use(express.static("public"))
 app.use(express.json()) // JSON 요청 본문 파싱 미들웨어
 
-// 예: 사용자 토큰 업데이트 엔드포인트
-app.post("/users/:userId/token", async (req, res) => {
-  const { userId } = req.params
-  const { fcmToken } = req.body
-  // 사용자 모델을 만들어 fcmToken 필드를 저장하거나 업데이트합니다.
-  console.log(`토큰 등록 요청: userId=${userId}, fcmToken=${fcmToken}`)
-  res.status(200).json({ message: "토큰 등록 성공" })
-})
+// // Swagger UI 설정
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
-// 특정 채팅방의 이전 메시지 내역 조회 (생성 시간 기준 오름차순 정렬)
-app.get("/api/chat/:studyId/messages", async (req, res) => {
-  const { studyId } = req.params
+// 라우트 모듈 연결
+const userRouter = require("./routes/user")
+app.use("/api/users", userRouter)
 
-  // TODO jwt로 토큰 받아서 user 인증 후에 메시지 조회 기능 수행해야함
+const messageRouter = require("./routes/message")
+app.use("/api/message", messageRouter)
 
-  try {
-    const messages = await Message.find({ studyId }).sort({ createdAt: 1 })
-    console.log(`메시지 내역 조회 - 스터디 ID: ${studyId}, 조회된 메시지 수: ${messages.length}`)
-    res.json(messages)
-  } catch (err) {
-    console.error("메시지 조회 중 에러 발생:", err)
-    res.status(500).json({ error: err.message })
-  }
-})
+const studyRouter = require("./routes/study")
+app.use("/api/studies", studyRouter)
 
-// 모든 스터디 목록 조회 엔드포인트
-app.get("/api/studies", async (req, res) => {
-  try {
-    // _id, studyName, members 필드만 반환 (필요에 따라 수정 가능)
-    const studies = await Study.find({})
-    console.log(`스터디 목록 조회 - 총 ${studies.length}개`)
-    res.json(studies)
-  } catch (err) {
-    console.error("스터디 목록 조회 중 에러 발생:", err)
-    res.status(500).json({ error: err.message })
-  }
-})
+// // 예: 사용자 토큰 업데이트 엔드포인트
+// app.post("/users/:userId/token", async (req, res) => {
+//   const { userId } = req.params
+//   const { fcmToken } = req.body
+//   // 사용자 모델을 만들어 fcmToken 필드를 저장하거나 업데이트합니다.
+//   console.log(`토큰 등록 요청: userId=${userId}, fcmToken=${fcmToken}`)
+//   res.status(200).json({ message: "토큰 등록 성공" })
+// })
+
+// // 클라이언트에서 GET /api/users/:userId/studies 요청을 보내면 해당 사용자가 가입한 스터디 목록을 반환합니다.
+// app.get("/api/users/:userId/studies", async (req, res) => {
+//   const { userId } = req.params
+
+//   try {
+//     // Study 모델의 members 배열에 userId가 포함된 스터디들을 조회
+//     const studies = await User.find({ members: userId })
+//     console.log(`사용자 ${userId}가 가입한 스터디 조회 - 총 ${studies.length}개`)
+//     res.status(200).json(studies)
+//   } catch (err) {
+//     console.error("가입한 스터디 조회 중 에러 발생:", err)
+//     res.status(500).json({ error: err.message })
+//   }
+// })
+
+// // 특정 채팅방의 이전 메시지 내역 조회 (생성 시간 기준 오름차순 정렬)
+// app.get("/api/chat/:studyId/messages", async (req, res) => {
+//   const { studyId } = req.params
+
+//   // TODO jwt로 토큰 받아서 user 인증 후에 메시지 조회 기능 수행해야함
+
+//   try {
+//     const messages = await Message.find({ studyId }).sort({ createdAt: 1 })
+//     console.log(`메시지 내역 조회 - 스터디 ID: ${studyId}, 조회된 메시지 수: ${messages.length}`)
+//     res.json(messages)
+//   } catch (err) {
+//     console.error("메시지 조회 중 에러 발생:", err)
+//     res.status(500).json({ error: err.message })
+//   }
+// })
+
+// // 모든 스터디 목록 조회 엔드포인트
+// app.get("/api/studies", async (req, res) => {
+//   try {
+//     // _id, studyName, members 필드만 반환 (필요에 따라 수정 가능)
+//     const studies = await Study.find({})
+//     console.log(`스터디 목록 조회 - 총 ${studies.length}개`)
+//     res.json(studies)
+//   } catch (err) {
+//     console.error("스터디 목록 조회 중 에러 발생:", err)
+//     res.status(500).json({ error: err.message })
+//   }
+// })
 
 // Socket.IO 예제: 클라이언트와의 실시간 통신
 io.on("connection", (socket) => {
@@ -121,7 +152,7 @@ io.on("connection", (socket) => {
       const nickname = user.nickname
 
       // 메시지 생성 및 저장
-      const newMsg = new Message({ studyId, userId, nickname, message })
+      const newMsg = new Message({ studyId, userId, nickname, message, isInOut: false })
       await newMsg.save()
       console.log(`\n메시지 저장 성공: \nchatRoomId = ${studyId}\nsenderId = ${userId}\nmessage = ${message}`)
 
