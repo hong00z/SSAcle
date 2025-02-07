@@ -46,7 +46,7 @@ public class RecommendStudyService {
 
         Map<StudyDTO, Double> studySimilarityMap = new HashMap<>();
         for(StudyDTO study : filteredStudies){
-            double similarity = calculateCosineSimilarity(userCondition, study);
+            double similarity = calculateFiltering(userCondition, study);
             studySimilarityMap.put(study, similarity);
 
             System.out.println(study + ": " + similarity); // 디버깅
@@ -68,7 +68,7 @@ public class RecommendStudyService {
     }
 
     // 코사인 유사도 계산
-    public double calculateCosineSimilarity(UserConditionDTO userCondition , StudyDTO study){
+    public double calculateFiltering(UserConditionDTO userCondition , StudyDTO study){
         // 1. 유저와 스터디의 주제 및 모임 요일 백터화
         Set<String> userFeatures = new HashSet<>();
         userFeatures.addAll(userCondition.getTopics().stream().map(Enum::name).collect(Collectors.toList()));
@@ -87,6 +87,42 @@ public class RecommendStudyService {
 
         // 3. 코사인 유사도 계산
         if(union.isEmpty()) return 0.0;
-        return (double) intersection.size() / Math.sqrt(studyFeatures.size() * userFeatures.size());
+        double cosineResult =  intersection.size() / Math.sqrt(studyFeatures.size() * userFeatures.size());
+
+
+        //--------- 필터링 계산-----------
+
+        // 1. user 의 topic 개수, meetingDay 개수
+        int topicsCount = userCondition.getTopics().size();
+        int meetingDaysCount = userCondition.getMeetingDays().size();
+
+        // 2. eachOfTopic / eachOfMeetingDay 값 구하기
+        double  eachOfTopic = 0.5/ topicsCount;
+        double  eachOfMeetingDays = 0/5/meetingDaysCount;
+
+        // 3.겹치는 topic 안겹치는 topic 겹치는 meetingday 안겹치는 meetingday 개수 구하기
+        Set<String> userTopics = new HashSet<>(userCondition.getTopics().stream().map(Enum::name).collect(Collectors.toList()));
+        Set<String> studyTopics = new HashSet<>(study.getTopic().stream().map(Enum::name).collect(Collectors.toList()));
+
+        Set<String> userMeetingDays = new HashSet<>(userCondition.getMeetingDays().stream().map(Enum::name).collect(Collectors.toList()));
+        Set<String> studyMeetingDays = new HashSet<>(study.getMeetingDays().stream().map(Enum::name).collect(Collectors.toList()));
+        // topic의 교집합 구하기
+        Set<String> topicIntersection = new HashSet<>(userTopics);
+        topicIntersection.retainAll(studyTopics);
+        //meetingDay의 교집합 구하기
+        Set<String> meetingDaysIntersection = new HashSet<>(userMeetingDays);
+        meetingDaysIntersection.retainAll(studyMeetingDays);
+
+        int sameTopics = topicIntersection.size();
+        int diffTopics = topicsCount - sameTopics;
+        int sameMeetingDays = meetingDaysIntersection.size();
+        int diffMeetingDays = meetingDaysCount - sameMeetingDays;
+
+        // 4. 점수 더하기고 평균 내기
+        double filterResut = (topicsCount * eachOfTopic - (diffTopics * eachOfTopic + 0.001))
+                +(meetingDaysCount * eachOfMeetingDays -(diffMeetingDays * 0.001));
+
+        return (cosineResult + filterResut) /2 ;
+
     }
 }
