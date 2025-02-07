@@ -45,7 +45,7 @@ fun CommonTopBar(
                 painter = painterResource(id = R.drawable.ic_arrow_back),
                 contentDescription = null,
                 tint = tint,
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(22.dp)
             )
         }
         Text(

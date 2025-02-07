@@ -40,11 +40,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.firstproject.R
 import com.example.firstproject.ui.theme.pretendard
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavController) {
 
     val studyList = mutableListOf("첫 번쨰 스터디", "스프링 입문", "스터디 제목은 과연 몇 글자까지 가능할까요?")
 
@@ -52,9 +53,11 @@ fun HomeScreen() {
         topBar = { TopBarMain() },
         floatingActionButton = {
             Column(horizontalAlignment = Alignment.End) {
+
                 FloatingActionButton(
                     onClick = {
-
+                        // 스터디 등록 화면으로 이동
+                        navController.navigate("registerStudyScreen")
                     },
                     backgroundColor = colorResource(id = R.color.primary_color),
                     modifier = Modifier.border(
@@ -166,7 +169,7 @@ private fun TitleTextView(title: String) {
     Text(
         text = title,
         fontFamily = pretendard,
-        fontWeight = FontWeight(600),
+        fontWeight = FontWeight(700),
         fontSize = 24.sp,
         letterSpacing = 1.sp
     )
@@ -320,5 +323,5 @@ private fun FindActionButton() {
 @Preview(showBackground = true)
 @Composable
 fun TestPreview() {
-    HomeScreen()
+//    HomeScreen()
 }
