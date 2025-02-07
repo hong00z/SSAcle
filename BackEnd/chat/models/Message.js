@@ -2,30 +2,41 @@
 const mongoose = require("mongoose")
 const { Schema } = mongoose
 
-const MessageSchema = new Schema({
-  studyId: {
-    type: Schema.Types.ObjectId,
-    ref: "Study",
-    required: true,
+const messageSchema = new Schema(
+  {
+    studyId: {
+      type: Schema.Types.ObjectId,
+      ref: "Study",
+      swaggertype: "string",
+      required: true,
+    },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      swaggertype: "string",
+      required: true,
+    },
+    nickname: {
+      type: Schema.Types.String,
+      ref: "User",
+      swaggertype: "string",
+      required: true,
+    },
+    message: {
+      type: String,
+      required: true,
+    },
+    isInOut: {
+      type: Boolean,
+      required: true,
+    },
   },
-  userId: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  nickname: {
-    type: Schema.Types.String,
-    ref: "User",
-    required: true,
-  },
-  message: {
-    type: String,
-    required: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-})
+  {
+    timestamps: {
+      createdAt: true,
+      updatedAt: false,
+    },
+  }
+)
 
-module.exports = mongoose.model("Message", MessageSchema)
+module.exports = mongoose.model("Message", messageSchema)
