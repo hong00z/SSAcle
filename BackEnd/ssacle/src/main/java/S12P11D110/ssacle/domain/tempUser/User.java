@@ -3,6 +3,7 @@ package S12P11D110.ssacle.domain.tempUser;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Set;
@@ -14,6 +15,8 @@ public class User {
     private String id;
     private String nickname;
     private int ssafyNum;
+    private String email;
+    private String image;
     private List<Topics> topics;
     private List<MeetingDays> meetingDays;
     private Set<String> joinedStudies;
