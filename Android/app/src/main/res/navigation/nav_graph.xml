@@ -10,7 +10,9 @@
         android:name="com.example.firstproject.ui.home.HomeFragment"
         android:label="홈"
         tools:layout="@layout/fragment_home" >
-
+        <action
+            android:id="@+id/action_homeFragment_to_studyRegisterFragment"
+            app:destination="@id/studyRegisterFragment" />
     </fragment>
 
     <fragment
@@ -53,6 +55,16 @@
         android:name="com.example.firstproject.ui.mypage.MypageFragment"
         android:label="fragment_mypage"
         tools:layout="@layout/fragment_mypage" />
+
+    <fragment
+        android:id="@+id/studyRegisterFragment"
+        android:name="com.example.firstproject.ui.matching.StudyRegisterFragment"
+        android:label="fragment_register_study"
+        tools:layout="@layout/fragment_register_study" >
+        <action
+            android:id="@+id/action_studyRegisterFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 
 
 </navigation>
