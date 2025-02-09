@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_medium"
+            android:textSize="14.sp"
+            android:text="최소 인원"/>
+        <NumberPicker
+            android:id="@+id/min_num_picker"
+            android:layout_width="120dp"
+            android:layout_height="108dp"
+            android:theme="@style/NumberPickerStyle"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:text="~"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/gmarketsans_bold"
+        android:textSize="24sp"
+        android:gravity="center"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_medium"
+            android:textSize="14.sp"
+            android:text="최대 인원"/>
+        <NumberPicker
+            android:id="@+id/max_num_picker"
+            android:layout_width="120dp"
+            android:layout_height="108dp"
+            android:theme="@style/NumberPickerStyle"
+            />
+    </LinearLayout>
+
+
+
+</LinearLayout>
