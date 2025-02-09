@@ -2,6 +2,8 @@ package S12P11D110.ssacle.domain.study.service;
 
 import S12P11D110.ssacle.domain.study.dto.RecommendUserDTO;
 import S12P11D110.ssacle.domain.study.dto.StudyConditionDTO;
+import S12P11D110.ssacle.domain.study.dto.StudyDTO;
+import S12P11D110.ssacle.domain.study.dto.UserConditionDTO;
 import S12P11D110.ssacle.domain.tempUser.SearchUserDTO;
 import org.springframework.stereotype.Service;
 
@@ -14,22 +16,20 @@ public class RecommendUserService {
 
     public List<RecommendUserDTO> recommendUsers(StudyConditionDTO studyCondition, List<SearchUserDTO> allUsers){
 
-        Set<String> studyTopic = studyCondition.getTopic().stream()
-                .map(Enum::name)
-                .collect(Collectors.toSet());
+        String studyTopic = studyCondition.getTopic();
         // 1. 유저 필터링
         List<SearchUserDTO> filteredUsers = allUsers.stream()
                 .filter(user-> user.getTopics()!=null && user.getMeetingDays()!=null) // topic과 meetingDay가 등록된 유저
-                .filter(user-> user.getTopics().stream().map(Enum::name).anyMatch(studyTopic::contains)) // 스터디 주제에 해당 안되는 유저는 제외
+                .filter(user-> user.getTopics().contains(studyTopic)) // 스터디 주제에 해당 안되는 유저는 제외
                 .filter(user -> {
                     // 가입된 스터디가 없는 유저는 Collections.emptyList()을 반환(null 방지)
                     Set<String> joinedStudies = user.getJoinedStudies() != null ? user.getJoinedStudies() : Collections.emptySet();
                     Set<String> wishStudies = user.getWishStudies() != null ? user.getWishStudies() : Collections.emptySet();
                     Set<String> invitedStudies = user.getInvitedStudies() != null ? user.getInvitedStudies() : Collections.emptySet();
 
-                    boolean isAlreadyJoined = joinedStudies.contains(studyCondition.getId().toString());
-                    boolean isAlreadyWish = wishStudies.contains(studyCondition.getId().toString());
-                    boolean isAlreadyInvited = invitedStudies.contains(studyCondition.getId().toString());
+                    boolean isAlreadyJoined = joinedStudies.contains(studyCondition.getId());
+                    boolean isAlreadyWish = wishStudies.contains(studyCondition.getId());
+                    boolean isAlreadyInvited = invitedStudies.contains(studyCondition.getId());
 
                     // 가입 여부, 초대 여부 확인
                     System.out.println("유저 Id: "+user.getUserId()+", 이미 가입된 유저인가?"+isAlreadyJoined);
@@ -38,7 +38,7 @@ public class RecommendUserService {
 
                     return !(isAlreadyJoined ||isAlreadyWish||isAlreadyInvited);
                 }) // 해당 스터디에 가입된 유저 Or 이미 스터디에 가입 요청 받은 유저 or 이미 요청온 유저 제외
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("스터디의 topic 원본 데이터: " + studyCondition.getTopic());
         System.out.println("스터디의 topic 실제 타입: " + studyCondition.getTopic().getClass().getName());
 
@@ -73,12 +73,13 @@ public class RecommendUserService {
     private double calculateFiltering(StudyConditionDTO studyCondition, SearchUserDTO user) {
         // 1. 스터디와 유저의 주제 및 모임 요일 벡터화
         Set<String> studyFeatures = new HashSet<>();
-        studyFeatures.addAll(studyCondition.getTopic().stream().map(Enum::name).collect(Collectors.toList())); // Enum → String 변환
-        studyFeatures.addAll(studyCondition.getMeetingDays().stream().map(Enum::name).collect(Collectors.toList())); // Enum → String 변환
+        studyFeatures.add(studyCondition.getTopic());
+        studyFeatures.addAll(studyCondition.getMeetingDays());
 
         Set<String> userFeatures = new HashSet<>();
-        user.getTopics().forEach(topic -> userFeatures.add(topic.name())); // Enum → String 변환
-        user.getMeetingDays().forEach(day -> userFeatures.add(day.name())); // Enum → String 변환
+        userFeatures.addAll(user.getTopics());
+        userFeatures.addAll(user.getMeetingDays());
+
 
         // 2. 교집합 및 합집합 크기를 계산
         Set<String> intersection = new HashSet<>(studyFeatures);
@@ -91,10 +92,17 @@ public class RecommendUserService {
         if (union.isEmpty()) return 0.0;
         double cosineResult = intersection.size() / Math.sqrt(studyFeatures.size() * userFeatures.size());
 
-        //------ 필터링 계산법 -------
+
+        double filterResult = calculateFilterResult(studyCondition, user);
+        return (cosineResult + filterResult) / 2;
+    }
+
+
+    private double calculateFilterResult(StudyConditionDTO studyCondition, SearchUserDTO user) {
+
 
         // 1. study의topic 개수, meetingDay 개수
-        int topicCount = studyCondition.getTopic().size();
+        int topicCount = 1;
         int meetingDaysCount = studyCondition.getMeetingDays().size();
 
         // 2. eachOfTopic / eachOfMeetingDay 값 구하기
@@ -102,11 +110,11 @@ public class RecommendUserService {
         double eachOfMeetingDays = 0.5 / meetingDaysCount;
 
         // 3.겹치는 topic 안겹치는 topic 겹치는 meetingday 안겹치는 meetingday 개수 구하기
-        Set<String> studyTopic = new HashSet<>(studyCondition.getTopic().stream().map(Enum::name).collect(Collectors.toList()));
-        Set<String> userTopic = new HashSet<>(user.getTopics().stream().map(Enum::name).collect(Collectors.toList()));
+        Set<String> studyTopic = new HashSet<>(Set.of(studyCondition.getTopic()));
+        Set<String> userTopic = new HashSet<>(user.getTopics());
 //        user.getTopics().forEach(topics -> userTopic.add(topics.name()));
-        Set<String> studyMeetingDays = new HashSet<>(studyCondition.getMeetingDays().stream().map(Enum::name).collect(Collectors.toList()));
-        Set<String> userMeetingDays = new HashSet<>(user.getMeetingDays().stream().map(Enum::name).collect(Collectors.toList()));
+        Set<String> studyMeetingDays = new HashSet<>(studyCondition.getMeetingDays());
+        Set<String> userMeetingDays = new HashSet<>(user.getMeetingDays());
 //        user.getMeetingDays().forEach(meetingDays -> userMeetingDays.add(meetingDays.name()));
         // topic의 교집합 구하기
         Set<String> topicIntersection = new HashSet<>(studyTopic);
@@ -121,9 +129,9 @@ public class RecommendUserService {
         int diffMeetingDays = meetingDaysCount - sameMeetingDays;
 
         // 4. 점수 더하기고 평균 내기
-        double filterResult = (topicCount * eachOfTopic - (diffTopics * eachOfTopic * 0.001))
+        return  (topicCount * eachOfTopic - (diffTopics * eachOfTopic * 0.001))
                 + (meetingDaysCount * eachOfMeetingDays - (diffMeetingDays * 0.001));
 
-        return (cosineResult + filterResult) / 2;
+
     }
 }
