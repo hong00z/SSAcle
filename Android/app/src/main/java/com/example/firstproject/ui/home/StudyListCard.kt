@@ -41,30 +41,37 @@ fun StudyListCard() {
 
     )
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
-        shape = RoundedCornerShape(5.dp),
-        border = BorderStroke(1.dp, color = colorResource(id = R.color.primary_color)),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .wrapContentHeight()
+        .padding(horizontal = 8.dp)
     ) {
-        Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 14.dp)) {
-            openStudyList.take(3).forEachIndexed { index, study ->
-                Log.d("에러 추적", study[1])
-                StudyItem(title = study.first(), topic = study[1])
+        Card(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .wrapContentHeight(),
+            shape = RoundedCornerShape(5.dp),
+//            border = BorderStroke(1.dp, color = colorResource(id = R.color.primary_color)),
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            elevation = CardDefaults.elevatedCardElevation(4.dp)
+        ) {
+            Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 14.dp)) {
+                openStudyList.take(3).forEachIndexed { index, study ->
+                    Log.d("에러 추적", study[1])
+                    StudyItem(title = study.first(), topic = study[1])
 
-                if (index < 2) {
-                    Divider(
-                        modifier = Modifier.padding(vertical = 12.dp),
-                        color = colorResource(R.color.border_light_color),
-                        thickness = 1.dp
-                    )
+                    if (index < 2) {
+                        Divider(
+                            modifier = Modifier.padding(vertical = 12.dp),
+                            color = colorResource(R.color.border_light_color),
+                            thickness = 1.dp
+                        )
+                    }
                 }
+
             }
 
         }
-
     }
 }
 
@@ -77,17 +84,19 @@ private fun StudyItem(title: String, topic: String) {
             .wrapContentHeight(),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        ListStackTag(
+            stackTitle = tag!!.title,
+            tint = colorResource(tag.colorId)
+        )
+        Spacer(Modifier.width(12.dp))
         Text(
             title,
             fontFamily = pretendard,
             fontWeight = FontWeight(500),
             fontSize = 14.sp
         )
-        Spacer(Modifier.weight(1f))
-        ListStackTag(
-            stackTitle = tag!!.title,
-            tint = colorResource(tag.colorId)
-        )
+
+
 
     }
 

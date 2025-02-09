@@ -32,7 +32,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
- import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -40,11 +40,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.firstproject.R
+import com.example.firstproject.ui.theme.notosans
 import com.example.firstproject.ui.theme.pretendard
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    navController: NavController,
+    onNavigateToFragment: () -> Unit
+) {
 
     val studyList = mutableListOf("첫 번쨰 스터디", "스프링 입문", "스터디 제목은 과연 몇 글자까지 가능할까요?")
 
@@ -52,9 +58,11 @@ fun HomeScreen() {
         topBar = { TopBarMain() },
         floatingActionButton = {
             Column(horizontalAlignment = Alignment.End) {
+
                 FloatingActionButton(
                     onClick = {
-
+                        // 스터디 등록 화면으로 이동
+                        onNavigateToFragment()
                     },
                     backgroundColor = colorResource(id = R.color.primary_color),
                     modifier = Modifier.border(
@@ -75,20 +83,19 @@ fun HomeScreen() {
         }
 
     ) { contentPadding ->
-        Column(Modifier
-            .fillMaxSize()
-            .padding(contentPadding)) {
-
-
+        Column(
+            Modifier
+                .fillMaxSize()
+                .padding(contentPadding)
+        ) {
             Column(
                 Modifier
                     .fillMaxSize()
                     .padding(horizontal = 32.dp)
             ) {
-                Spacer(Modifier.height(20.dp))
+                Spacer(Modifier.height(12.dp))
                 TitleTextView("내 스터디 목록")
                 Spacer(Modifier.height(16.dp))
-
                 MyStudyItem(studyList)
                 Spacer(Modifier.height(36.dp))
 
@@ -99,9 +106,11 @@ fun HomeScreen() {
                 Spacer(Modifier.height(36.dp))
 
 
-                Row(Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.Bottom) {
-                    TitleTextView("현재 모집 중인 스터디")
+                Row(
+                    Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.Bottom
+                ) {
+                    TitleTextView("모집 중인 스터디")
 
                     Spacer(Modifier.weight(1f))
                     Text(
@@ -110,11 +119,14 @@ fun HomeScreen() {
                         fontWeight = FontWeight(400),
                         fontSize = 12.sp
                     )
-                    Icon(painter = painterResource(id = R.drawable.ic_right_arrow), null, Modifier.size(14.dp))
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_right_arrow),
+                        null,
+                        Modifier.size(14.dp)
+                    )
                 }
                 Spacer(Modifier.height(16.dp))
                 StudyListCard()
-
 
             }
 
@@ -129,21 +141,20 @@ fun HomeScreen() {
 private fun TopBarMain(
     tint: Color = colorResource(R.color.primary_color)
 ) {
-
     Box(
         Modifier
             .fillMaxWidth()
-            .height(52.dp)
+            .height(60.dp)
     ) {
         Text(
             modifier = Modifier
                 .align(Alignment.CenterStart)
                 .padding(start = 20.dp),
             text = "SSAcle",
-            fontFamily = pretendard,
-            fontSize = 28.sp,
+            fontFamily = notosans,
+            fontSize = 30.sp,
             fontWeight = FontWeight(700),
-            color = colorResource(R.color.primary_color)
+            color = Color(0xFF1181F0)
         )
         IconButton(
             modifier = Modifier
@@ -166,7 +177,7 @@ private fun TitleTextView(title: String) {
     Text(
         text = title,
         fontFamily = pretendard,
-        fontWeight = FontWeight(600),
+        fontWeight = FontWeight(700),
         fontSize = 24.sp,
         letterSpacing = 1.sp
     )
@@ -198,16 +209,21 @@ fun MyStudyItem(
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(80.dp)
-                        .padding(horizontal = 28.dp),
+                        .height(84.dp)
+                        .padding(horizontal = 8.dp)
+//                        .shadow(elevation = 6.dp, spotColor = Color(0x40000000), ambientColor = Color(0x40000000))
+
+
+                    ,
                     shape = RoundedCornerShape(5.dp),
                     colors = CardDefaults.cardColors(containerColor = Color.White),
-                    border = BorderStroke(1.dp, colorResource(R.color.primary_color)),
+                    border = BorderStroke(1.dp, colorResource(R.color.border_light_color)),
                     elevation = CardDefaults.elevatedCardElevation(2.dp)
                 ) {
-                    Column(modifier = Modifier.fillMaxSize()) {
-                        Text(text = itemList[it])
-                    }
+//                    Column(modifier = Modifier.fillMaxSize()) {
+//                        Text(text = itemList[it])
+//                    }
+                    StudyCardInfo(itemList[it])
                 }
             }
         }
@@ -235,7 +251,7 @@ private fun PageIndicator(pageCount: Int, currentPage: Int) {
 
 @Composable
 private fun IndicatorDots(isSelected: Boolean) {
-    val dotSize = animateDpAsState(targetValue = if (isSelected) 12.dp else 10.dp, label = "")
+    val dotSize = animateDpAsState(targetValue = if (isSelected) 10.dp else 8.dp, label = "")
     Box(
         modifier = Modifier
             .padding(horizontal = 6.dp)
@@ -279,7 +295,7 @@ private fun FindActionButton() {
                 Text(
                     "스터디원 찾기",
                     fontFamily = pretendard,
-                    fontWeight = FontWeight(400),
+                    fontWeight = FontWeight(600),
                     fontSize = 12.sp
                 )
             }
@@ -291,7 +307,7 @@ private fun FindActionButton() {
                 .height(120.dp),
             shape = RoundedCornerShape(10.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White),
-            border = BorderStroke(1.dp, colorResource(R.color.border_card_color)),
+            border = BorderStroke(1.dp, colorResource(R.color.border_light_color)),
             elevation = CardDefaults.elevatedCardElevation(4.dp)
         ) {
             Column(
@@ -308,7 +324,7 @@ private fun FindActionButton() {
                 Text(
                     "스터디 찾기",
                     fontFamily = pretendard,
-                    fontWeight = FontWeight(400),
+                    fontWeight = FontWeight(600),
                     fontSize = 12.sp
                 )
             }
@@ -320,5 +336,6 @@ private fun FindActionButton() {
 @Preview(showBackground = true)
 @Composable
 fun TestPreview() {
-    HomeScreen()
+    val navController = rememberNavController()
+//    HomeScreen(navController)
 }
