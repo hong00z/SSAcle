@@ -26,11 +26,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:menu="@menu/bottom_nav_menu"
-
+        app:itemIconTint="@drawable/menu_selector_color"
+        app:itemTextColor="@drawable/menu_selector_color"
+        app:itemBackground="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_container"
-        app:itemIconSize="32dp"
+        app:itemIconSize="28dp"
+        app:labelVisibilityMode="labeled"
+        app:backgroundTint="@color/white"
+        android:elevation="8dp"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>
