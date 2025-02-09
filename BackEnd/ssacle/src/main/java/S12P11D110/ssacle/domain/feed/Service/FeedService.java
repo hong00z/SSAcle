@@ -37,14 +37,14 @@ public class FeedService {
         String feedId = savedFeed.getId();
 
         // 피드작성한 스터디의 feeds 필드에 feedId 추가
-        Study study = studyRepository.findById(studyId)
-                .orElseThrow(()-> new NoSuchElementException("스터디ID" + studyId + "에 해당하는 스터디가 없습니다."));
-        Set<String> newFeed = new HashSet<>();
-        newFeed.add(feedId);
-        study.setFeeds(newFeed);
+//        Study study = studyRepository.findById(studyId)
+//                .orElseThrow(()-> new NoSuchElementException("스터디ID" + studyId + "에 해당하는 스터디가 없습니다."));
+//        Set<String> newFeed = new HashSet<>();
+//        newFeed.add(feedId);
+//        study.setFeeds(newFeed);
 
         // study 저장
-        studyRepository.save(study);
+//        studyRepository.save(study);
 
     }
 

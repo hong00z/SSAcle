@@ -69,8 +69,14 @@ public class userController {
     @Operation(summary = "프로필 수정", description = "프로필 이미지 수정 추가")
     public ResponseEntity<UserProfileResponse> userModify(
             @PathVariable("userId") String userId,
+
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(mediaType = "multipart/form-data"))
             @RequestPart UserProfileRequest request,
-            @RequestPart(value = "file", required = false) MultipartFile file){
+
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(mediaType = "multipart/form-data"))
+            @RequestParam(value = "MultipartFile", required = false) MultipartFile file){
         return ResponseEntity.ok(userService.modifyUserProfile(userId, request, file));
     }
 

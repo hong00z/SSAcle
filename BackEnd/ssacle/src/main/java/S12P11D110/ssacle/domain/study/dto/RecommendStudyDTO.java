@@ -1,11 +1,9 @@
 package S12P11D110.ssacle.domain.study.dto;
 
-
-import S12P11D110.ssacle.domain.study.entity.Study;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.List;
+import java.util.Set;
 
 
 // 스터디를 찾는 유저에게 보여지는 추천 스터디
@@ -15,7 +13,7 @@ public class RecommendStudyDTO {
     private String studyId;
     private double similarity;
     private String studyName;
-    private List<Study.Topic> topic;
-    private List<Study.MeetingDays> meetingDays;
+    private String topic;
+    private Set<String> meetingDays;
 
 }

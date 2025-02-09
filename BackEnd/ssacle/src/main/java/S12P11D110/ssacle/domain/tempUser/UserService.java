@@ -46,20 +46,24 @@ public class UserService {
         }
         //  프로필 이미지 저장
         try{
+
             // 파일 저장 경로 생성
             String uploadDir = fileStorageServiceImpl.getUploadDir(); // getUploadDir: 저장된 파일이 들어갈 디렉토리 경로를 반환하는 함수
             // 고유 파일명 생성
+            logger.debug("Upload Directory: {}", uploadDir);
+
             String originalFileName = file.getOriginalFilename(); // 클라이언트에서 보낸 원본 파일명
             String extension = originalFileName.substring(originalFileName.lastIndexOf(".")); // 확장자 추출
             String uniqueFileName = UUID.randomUUID().toString() + extension;// UUID를 붙여 고유한 파일명 생성
 
             //최종 파일 저장 경로
             Path filePath = Paths.get(uploadDir, uniqueFileName);
+            logger.debug("Image saved at filePath={}", filePath);
 
             // 파일 저장
             Files.write(filePath, file.getBytes());
 
-            logger.debug("Image saved at filePath={}", filePath);
+            logger.info("File saved successfully: {}", filePath.toAbsolutePath());
 
             // 저장된 파일명을 User 엔티티에 반영
             user.setImage(uniqueFileName);

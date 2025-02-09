@@ -15,7 +15,7 @@ import java.util.Set;
 public class UserProfileRequest {
     private String nickname;
 //    private String image;
-    private List<User.Topics> topics;
-    private List<User.MeetingDays> meetingDays;
+    private Set<String> topics;
+    private Set<String> meetingDays;
 
 }
