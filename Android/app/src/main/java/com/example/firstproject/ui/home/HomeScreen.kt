@@ -20,8 +20,10 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.Card
@@ -42,7 +44,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import com.example.firstproject.R
+import com.example.firstproject.data.model.dto.response.StudyInfo
 import com.example.firstproject.ui.theme.notosans
 import com.example.firstproject.ui.theme.pretendard
 
@@ -52,7 +57,13 @@ fun HomeScreen(
     onNavigateToFragment: () -> Unit
 ) {
 
-    val studyList = mutableListOf("첫 번쨰 스터디", "스프링 입문", "스터디 제목은 과연 몇 글자까지 가능할까요?")
+    val myStudyList = mutableListOf<StudyInfo>(
+        StudyInfo("스프링 입문 스터디","백엔드", 8, true, true),
+
+        StudyInfo("스터디 제목은 과연 몇 글자까지 가능할까요?","알고리즘", 3, false, false),
+
+        StudyInfo("스터디 제목","모바일", 5, true, false),
+    )
 
     Scaffold(
         topBar = { TopBarMain() },
@@ -87,6 +98,7 @@ fun HomeScreen(
             Modifier
                 .fillMaxSize()
                 .padding(contentPadding)
+                .verticalScroll(rememberScrollState())
         ) {
             Column(
                 Modifier
@@ -96,7 +108,7 @@ fun HomeScreen(
                 Spacer(Modifier.height(12.dp))
                 TitleTextView("내 스터디 목록")
                 Spacer(Modifier.height(16.dp))
-                MyStudyItem(studyList)
+                MyStudyItem(myStudyList)
                 Spacer(Modifier.height(36.dp))
 
                 TitleTextView("스터디 매칭")
@@ -127,7 +139,7 @@ fun HomeScreen(
                 }
                 Spacer(Modifier.height(16.dp))
                 StudyListCard()
-
+                Spacer(Modifier.height(8.dp))
             }
 
         }
@@ -186,7 +198,7 @@ private fun TitleTextView(title: String) {
 @Composable
 fun MyStudyItem(
     // 스터디 리스트
-    itemList: List<String>
+    itemList: List<StudyInfo>
 ) {
     val pagerState = rememberPagerState(initialPage = 0) {
         // 크기
@@ -332,10 +344,3 @@ private fun FindActionButton() {
     }
 }
 
-
-@Preview(showBackground = true)
-@Composable
-fun TestPreview() {
-    val navController = rememberNavController()
-//    HomeScreen(navController)
-}
