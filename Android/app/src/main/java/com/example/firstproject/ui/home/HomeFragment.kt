@@ -12,6 +12,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.findNavController
+import com.example.firstproject.R
 import com.example.firstproject.databinding.FragmentHomeBinding
 import com.example.firstproject.ui.matching.RegisterStudyScreen
 
@@ -27,20 +29,22 @@ class HomeFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 val navController = rememberNavController()
-                // 현재 경로를 확인
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.destination?.route
+                val xmlNavController = findNavController()
 
                 NavHost(
                     navController = navController,
                     startDestination = "homeScreen"
                 ) {
                     composable("homeScreen") {
-                        HomeScreen(navController)
+                        HomeScreen(navController = navController,
+                            onNavigateToFragment = {
+                                xmlNavController.navigate(R.id.action_homeFragment_to_studyRegisterFragment)
+                            }
+                        )
                     }
-                    composable("registerStudyScreen") {
-                        RegisterStudyScreen()
-                    }
+//                    composable("registerStudyScreen") {
+//                        RegisterStudyScreen()
+//                    }
                 }
             }
         }

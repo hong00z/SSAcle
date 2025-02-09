@@ -2,6 +2,7 @@ package com.example.firstproject.ui.matching
 
 import android.view.LayoutInflater
 import android.widget.NumberPicker
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -41,6 +42,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.navigation.NavController
 import com.example.firstproject.R
 import com.example.firstproject.ui.common.CommonTopBar
 import com.example.firstproject.ui.common.SelectTopicCard
@@ -48,7 +50,8 @@ import com.example.firstproject.ui.common.SelectTopicCard
 import com.example.firstproject.ui.theme.pretendard
 
 @Composable
-fun RegisterStudyScreen() {
+fun RegisterStudyScreen(xmlNavController: NavController) {
+    val activity = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
     var weekFlag by remember { mutableStateOf(0) }
 
@@ -59,12 +62,14 @@ fun RegisterStudyScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
     ) {
-        Box() {
+        Box {
             CommonTopBar(
                 title = "스터디 개설",
                 onBackPress = {
                     //            navController.popBackStack()
+                    xmlNavController.navigate(R.id.action_studyRegisterFragment_to_homeFragment)
                 }
             )
         }
@@ -116,7 +121,7 @@ fun RegisterStudyScreen() {
 
                 TitleText("모임 요일")
                 Spacer(Modifier.height(16.dp))
-                Row(modifier = Modifier.fillMaxWidth()) {
+                Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp)) {
                     SettingWeekComponent(
                         isChecked = ((weekFlag and (1 shl 0)) == (1 shl 0)),
                         text = "일"
@@ -255,7 +260,7 @@ fun SettingWeekComponent(isChecked: Boolean, text: String, onClick: () -> Unit) 
         modifier = Modifier
             .size(34.dp)
             .border(
-                (0.5).dp,
+                (0.8).dp,
                 colorResource(id = R.color.primary_color),
                 RoundedCornerShape(50.dp)
             )
@@ -308,12 +313,4 @@ fun NumberPickerView(
             .fillMaxWidth()
             .wrapContentHeight()
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun RegistPreview() {
-    RegisterStudyScreen()
-
-//    NumberPickerView(onMinValueChange = {}, onMaxValueChange = {})
 }

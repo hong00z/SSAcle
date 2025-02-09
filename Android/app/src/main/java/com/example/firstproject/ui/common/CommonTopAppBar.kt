@@ -6,9 +6,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,7 +25,7 @@ import com.example.firstproject.ui.theme.pretendard
 fun CommonTopBar(
     title: String,
     tint: Color = colorResource(R.color.primary_color),
-    onBackPress: (() -> Unit)?
+    onBackPress: () -> Unit
 ) {
     Box (
         Modifier
@@ -38,7 +38,7 @@ fun CommonTopBar(
                 .padding(8.dp)
                 .align(Alignment.CenterStart),
             onClick = {
-                onBackPress
+                onBackPress()
             }
         ) {
             Icon(
