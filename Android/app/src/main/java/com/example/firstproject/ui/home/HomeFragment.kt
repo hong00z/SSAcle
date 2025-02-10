@@ -45,12 +45,9 @@ class HomeFragment : Fragment() {
                         )
                     }
 
-                    composable("stucyDetailScreen") {
-                        StudyDetailScreen()
+                    composable("studyDetailScreen") {
+                        StudyDetailScreen(navController = navController)
                     }
-//                    composable("registerStudyScreen") {
-//                        RegisterStudyScreen()
-//                    }
                 }
             }
         }

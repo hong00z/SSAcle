@@ -160,7 +160,7 @@ fun TestPreview() {
     )
 
 
-    MyStudyItem(myStudyList)
+//    MyStudyItem(myStudyList)
 //    JoinProfiles(myStudyList[0].personNum)
 //    JoinProfiles()
 }
