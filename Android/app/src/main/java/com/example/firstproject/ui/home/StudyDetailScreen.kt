@@ -52,6 +52,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.firstproject.R
 import com.example.firstproject.ui.theme.gmarket
 import com.example.firstproject.ui.theme.pretendard
@@ -59,7 +60,9 @@ import com.example.firstproject.utils.GradeLabelEnum
 import com.example.firstproject.utils.TopicTagEnum
 
 @Composable
-fun StudyDetailScreen() {
+fun StudyDetailScreen(
+    navController: NavController,
+) {
 
     Column(
         modifier = Modifier
@@ -68,8 +71,11 @@ fun StudyDetailScreen() {
     ) {
         Box {
             DetailTopBar(
-                title = "스터디 상세 정보",
-                onBackPress = { }
+                title = "스터디 상세보기",
+                onBackPress = {
+                    // 뒤로가기
+                    navController.popBackStack()
+                }
             )
         }
         Spacer(Modifier.height(16.dp))
@@ -111,7 +117,6 @@ fun StudyDetailScreen() {
                     .fillMaxWidth()
                     .height(IntrinsicSize.Min)
                     .padding(horizontal = 48.dp),
-//                verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 val days = listOf("월", "화", "수", "목", "금", "토", "일")
@@ -183,7 +188,7 @@ fun StudyDetailScreen() {
                 CardButton()
             }
 
-            Spacer(Modifier.height(48.dp))
+            Spacer(Modifier.height(30.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -624,7 +629,7 @@ private fun NoticeItem() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(28.dp)
+                .height(36.dp)
                 .background(backgroundColor)
                 .clickable { isChecked = !isChecked },
             verticalAlignment = Alignment.CenterVertically,
@@ -679,6 +684,5 @@ fun GradeLabel(grade: Int) {
 @Preview(showBackground = true)
 @Composable
 fun PreViewDetailScreen() {
-    StudyDetailScreen()
 
 }
