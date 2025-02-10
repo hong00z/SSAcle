@@ -1,5 +1,5 @@
 # Node.js 20.12.1 버전 (Alpine 기반) 이미지 사용
-FROM node:20.12.1
+FROM node:22.13.1
 
 # 시스템 패키지 업데이트 및 python3-pip 설치
 RUN apt-get update && apt-get install -y python3-pip
