@@ -3,9 +3,8 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("androidx.navigation.safeargs.kotlin") version "2.8.6"
+    id("androidx.navigation.safeargs.kotlin")
     id("kotlin-parcelize")
-
 }
 
 android {
@@ -111,7 +110,12 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
+    // Socket.io
+    implementation("io.socket:socket.io-client:2.1.1")
 
+    // Retrofit http 통신
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
