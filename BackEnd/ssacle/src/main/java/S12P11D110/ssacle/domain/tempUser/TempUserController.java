@@ -14,16 +14,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Set;
 
-@RestController //RESTful API 개발에 사용
+@RestController("tempUserController") //RESTful API 개발에 사용
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
-@Tag(name = "user Controller", description = "This is user Controller")
-public class userController {
+@Tag(name = "TempUser Controller", description = "사용자 관련 임시 controller (문경 ver.)")
+public class TempUserController {
 
     private final StudyService studyService;
-    private final UserService userService;
+    private final TempUserService tempUserService;
 
 //--------------------<<  내 수신함   >>---------------------------------------------------------------------------------
     // wishStudy 신청한 스터디 리스트: 나 -> 스터디
@@ -77,7 +76,7 @@ public class userController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(mediaType = "multipart/form-data"))
             @RequestParam(value = "MultipartFile", required = false) MultipartFile file){
-        return ResponseEntity.ok(userService.modifyUserProfile(userId, request, file));
+        return ResponseEntity.ok(tempUserService.modifyUserProfile(userId, request, file));
     }
 
 

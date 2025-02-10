@@ -12,7 +12,7 @@ import java.util.*;
 @RestController //RESTful API 개발에 사용
 @RequiredArgsConstructor
 @RequestMapping("/api/studies")
-@Tag(name = "study Controller", description = "This is Study Controller")
+@Tag(name = "Study Controller", description = "This is Study Controller")
 public class StudyController {
 
     private final StudyService studyService;
@@ -67,7 +67,7 @@ public class StudyController {
     // 내가 참여중인 스터디 리스트 GET
     // user 로그인 정보 받아와지면 {userId} >> users로 수정해야함
     @GetMapping("/{userId}/my-studies")
-    @Operation(summary = "내가 참여 중인 스터디 리스트 조회", description = "User Id를 통해 해당 User가 가입한 스터디 리스트를 조회합니다.")
+    @Operation(summary = "내가 참여 중인 스터디 리스트 조회", description = "TempUser Id를 통해 해당 User가 가입한 스터디 리스트를 조회합니다.")
     public List<StudyResponseDTO> getStudiesByUserId(@PathVariable String userId){
 //        String userId = authentication.getName();  // 로그인된 사용자 ID 가져오기
         return studyService.getStudiesByUserId(userId);
