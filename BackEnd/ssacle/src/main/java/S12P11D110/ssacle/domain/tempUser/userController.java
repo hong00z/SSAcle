@@ -5,10 +5,13 @@ import S12P11D110.ssacle.domain.study.dto.MyInvitedStudyListDTO;
 import S12P11D110.ssacle.domain.study.dto.MyWishStudyListDTO;
 import S12P11D110.ssacle.domain.study.service.StudyService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Set;
@@ -20,6 +23,7 @@ import java.util.Set;
 public class userController {
 
     private final StudyService studyService;
+    private final UserService userService;
 
 //--------------------<<  내 수신함   >>---------------------------------------------------------------------------------
     // wishStudy 신청한 스터디 리스트: 나 -> 스터디
@@ -55,7 +59,26 @@ public class userController {
     }
 
 
-    //
+    // 유저의 프로필 수정
+    @PatchMapping(value = "/{userId}/profile",
+            // 클라이언트가 보내는 데이터 타입 ()
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,  //MULTIPART_FORM_DATA_VALUE = JSON과 파일을 동시에 전송할 때 사용하는 형식
+            // 서버가 클라이언트에게 보내는 응답 타입
+            produces = MediaType.APPLICATION_JSON_VALUE // APPLICATION_JSON_VALUE = JSON 형태의 응답을 보낼 것을 명시 )
+    )
+    @Operation(summary = "프로필 수정", description = "프로필 이미지 수정 추가")
+    public ResponseEntity<UserProfileResponse> userModify(
+            @PathVariable("userId") String userId,
+
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(mediaType = "multipart/form-data"))
+            @RequestPart UserProfileRequest request,
+
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(mediaType = "multipart/form-data"))
+            @RequestParam(value = "MultipartFile", required = false) MultipartFile file){
+        return ResponseEntity.ok(userService.modifyUserProfile(userId, request, file));
+    }
 
 
 

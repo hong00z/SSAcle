@@ -1,7 +1,6 @@
 package S12P11D110.ssacle.domain.study.dto;
 
 import S12P11D110.ssacle.domain.feed.dto.FeedDetailDTO;
-import S12P11D110.ssacle.domain.study.entity.Study;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,8 +12,8 @@ import java.util.Set;
 public class StudyDetailDTO {
     private String id;                          // MongoDB에서 자동 생성되는 고유 ID
     private String studyName;                   // 스터디 이름
-    private List<Study.Topic> topic;            // 주제 목록
-    private List<Study.MeetingDays> meetingDays;  // 모임 요일
+    private String topic;            // 주제 목록
+    private Set<String> meetingDays;  // 모임 요일
     private int count;              //정원
     private List<String> members;    // 스터디원
     private String studyContent;    // 스터디 소개

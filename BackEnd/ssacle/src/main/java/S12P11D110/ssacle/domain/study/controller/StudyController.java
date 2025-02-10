@@ -16,7 +16,13 @@ import java.util.*;
 public class StudyController {
 
     private final StudyService studyService;
-//    private final
+
+
+    @GetMapping("/create")
+    @Operation(summary = "스터디 주제, 모임목록 ", description = "새로운 스터디를 개설합니다.")
+    public Map<String, List<String>> getTopicsMeetingDays(){
+        return studyService.topicList();
+    }
 
     // GPT: 25 ~31
     // 스터디 생성 POST
@@ -82,7 +88,7 @@ public class StudyController {
     @Operation(summary = "스터디원 스카웃 제의 추가/ 내 수신함 추가", description = "추천된 유저에게 스카웃 제의에 추가")
     //ResponseEntity :  HTTP 응답을 표현하는 클래스
     public ResponseEntity<Void> comeToStudy(@PathVariable String studyId, @RequestBody StudyRequestDTO request){
-        studyService.addWishmemberinvitedStudy(studyId, request.getUserId());
+        studyService.addWishMemberInvitedStudy(studyId, request.getUserId());
         return ResponseEntity.ok().build();
     }
 //----------------------------------------------------------------------------------------------------------------------
