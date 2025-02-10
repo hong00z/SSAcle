@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-//        binding.bottomNavigationView.setupWithNavController(navController)
+        binding.bottomNavigationView.setupWithNavController(navController)
 
     }
 }

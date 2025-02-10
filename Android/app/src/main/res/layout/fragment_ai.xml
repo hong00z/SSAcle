@@ -7,120 +7,34 @@
     android:orientation="vertical"
     tools:context=".ui.ai.AiFragment">
 
-    <!-- AppBarLayout with Toolbar -->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageButton
-            android:id="@+id/back_button"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?attr/selectableItemBackground"
-            android:contentDescription="뒤로가기"
-            android:src="@drawable/baseline_arrow_back_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/toolbar_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="16dp"
-            android:text="AI 자소서 피드백"
-            android:textColor="@color/chat_blue"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@id/back_button"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!-- 선택된 PDF 파일 경로/이름 표시용 -->
-    <android.widget.Button
-        android:id="@+id/btnSelectPdf"
+    <!-- 상단 텍스트 -->
+    <TextView
         android:layout_width="wrap_content"
-        android:layout_height="33dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
-        android:background="@drawable/button_outline"
-        android:gravity="center"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:text="PDF 파일 업로드"
-        android:textColor="@android:color/black"
-        android:textStyle="bold" />
+        android:text="SSAcle"
+        android:textSize="24sp"
+        android:textColor="@color/logo_blue" />
 
-
-    <TextView
-        android:id="@+id/tvPdfPath"
+    <!-- 슬라이더 뷰 -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="16dp"
-        android:text="교정받을 자소서를 pdf 파일로 업로드 해주세요."
-        android:textSize="14sp" />
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:overScrollMode="never"
+        android:layout_margin="16dp"/>
 
-    <!-- 추가 질문/지시사항 입력 -->
-    <EditText
-        android:id="@+id/editTextPrompt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:hint="요청사항 입력" />
-    <!-- ChatGPT 수정 결과 안내 TextView -->
-    <TextView
-        android:id="@+id/tvResult"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="수정된 결과가 여기에 표시됩니다."
-        android:textSize="15sp" />
-
-    <!-- WebView: ChatGPT 교정 결과(HTML) 미리보기 -->
-    <WebView
-        android:id="@+id/webView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:padding="8dp" />
-
-    <!-- 수정 요청 버튼 -->
-    <android.widget.Button
-        android:id="@+id/btnSubmit"
+    <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
+        android:id="@+id/dotsIndicator"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="16dp"
-        android:background="@drawable/button_ai_feedback"
-        android:minWidth="200dp"
-        android:text="AI 피드백 받기"
-        android:textColor="@color/white"
-        android:textSize="20dp" />
+        app:dotsSize="7dp"/>
 
-
-    <!-- PDF 저장 & KakaoTalk 공유 버튼 -->
-    <android.widget.Button
-        android:id="@+id/btnDownloadPdf"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_gravity="center"
-        android:layout_margin="16dp"
-        android:background="@drawable/button_ai_feedback"
-        android:minWidth="200dp"
-        android:text="카카오톡으로 공유"
-        android:textColor="@color/white"
-        android:visibility="gone"
-        android:textSize="20dp" />
 
 </LinearLayout>
