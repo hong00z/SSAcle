@@ -2,7 +2,7 @@ spring:
   # DB
   data:
     mongodb:
-      uri: mongodb://localhost:27017/ssacle
+      uri: mongodb://root:password@localhost:27017/ssacle
       database: ssacle
     redis:
       host: localhost
