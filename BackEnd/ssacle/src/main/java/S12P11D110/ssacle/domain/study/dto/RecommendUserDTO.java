@@ -1,12 +1,9 @@
 package S12P11D110.ssacle.domain.study.dto;
 
 
-import S12P11D110.ssacle.domain.tempUser.User;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.List;
 import java.util.Set;
 
 

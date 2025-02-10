@@ -9,8 +9,8 @@ public enum ApiErrorStatus {
     /**
      * User Api 관련 에러 코드
      */
-    DUPLICATED_USER_NAME(HttpStatusCode.BAD_REQUEST, "중복된 닉네임입니다."),
-    NOT_EXIST_NAME(HttpStatusCode.BAD_REQUEST, "존재하지 않는 닉네임입니다."),
+    DUPLICATED_USER_NAME(HttpStatusCode.BAD_REQUEST, "이미 사용중인 닉네임입니다."),
+
 
     /**
      * Study Api 관련 에러 코드
@@ -33,6 +33,7 @@ public enum ApiErrorStatus {
      * 알림 관련 에러 코드
      */
     NOTIFICATION_CONNECTION_ERROR(HttpStatusCode.INTERNAL_SERVER_ERROR, "알림 서비스 연결 실패");
+
 
     private final HttpStatusCode code;
     private final String msg;

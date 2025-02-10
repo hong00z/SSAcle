@@ -22,7 +22,7 @@ import java.util.List;
 public class TempUserController {
 
     private final StudyService studyService;
-    private final UserService userService;
+    private final TempUserService tempUserService;
 
 //--------------------<<  내 수신함   >>---------------------------------------------------------------------------------
     // wishStudy 신청한 스터디 리스트: 나 -> 스터디
@@ -76,7 +76,7 @@ public class TempUserController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(mediaType = "multipart/form-data"))
             @RequestParam(value = "MultipartFile", required = false) MultipartFile file){
-        return ResponseEntity.ok(userService.modifyUserProfile(userId, request, file));
+        return ResponseEntity.ok(tempUserService.modifyUserProfile(userId, request, file));
     }
 
 
