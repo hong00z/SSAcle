@@ -38,19 +38,19 @@ public class SecurityConfig {
 
         return http.build();
     }
-
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:8080" ) // Swagger UI 실행 URL
-
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*")
-                        .allowCredentials(true);
-            }
-        };
-    }
+//
+//    @Bean
+//    public WebMvcConfigurer corsConfigurer() {
+//        return new WebMvcConfigurer() {
+//            @Override
+//            public void addCorsMappings(CorsRegistry registry) {
+//                registry.addMapping("/**")
+//                        .allowedOrigins("http://localhost:8080" ) // Swagger UI 실행 URL
+//
+//                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+//                        .allowedHeaders("*")
+//                        .allowCredentials(true);
+//            }
+//        };
+//    }
 }
