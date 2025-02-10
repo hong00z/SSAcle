@@ -11,56 +11,6 @@ const swaggerUserSchema = mongooseToSwagger(User)
 const swaggerStudySchema = mongooseToSwagger(Study)
 const swaggerMessageSchema = mongooseToSwagger(Message)
 
-// Study의 전체 스키마 대신, 해당 필드에는 Study의 id (문자열)만 표시하도록 재정의
-// swaggerUserSchema.properties.joinedStudies = {
-//   type: "array",
-//   items: {
-//     type: "string",
-//     description: "Study의 id",
-//   },
-// }
-// swaggerUserSchema.properties.wishStudies = {
-//   type: "array",
-//   items: {
-//     type: "string",
-//     description: "Study의 id",
-//   },
-// }
-// swaggerUserSchema.properties.invitedStudies = {
-//   type: "array",
-//   items: {
-//     type: "string",
-//     description: "Study의 id",
-//   },
-// }
-
-// swaggerStudySchema.properties.members = {
-//   type: "array",
-//   items: {
-//     type: "string",
-//     description: "User의 id",
-//   },
-// }
-// swaggerStudySchema.properties.wishMembers = {
-//   type: "array",
-//   items: {
-//     type: "string",
-//     description: "User의 id",
-//   },
-// }
-// swaggerStudySchema.properties.preMembers = {
-//   type: "array",
-//   items: {
-//     type: "string",
-//     description: "User의 id",
-//   },
-// }
-
-// swaggerMessageSchema.properties.studyId = {
-//   type: "string",
-//     description: "User의 id",
-// }
-
 // swagger-jsdoc 옵션 설정 (OpenAPI 3.0 기준)
 const options = {
   definition: {
