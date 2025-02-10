@@ -35,7 +35,7 @@ fun CommonTopBar(
         ) {
         IconButton(
             modifier = Modifier
-                .padding(8.dp)
+                .padding(start = 4.dp)
                 .align(Alignment.CenterStart),
             onClick = {
                 onBackPress()
@@ -45,7 +45,7 @@ fun CommonTopBar(
                 painter = painterResource(id = R.drawable.ic_arrow_back),
                 contentDescription = null,
                 tint = tint,
-                modifier = Modifier.size(22.dp)
+                modifier = Modifier.size(24.dp)
             )
         }
         Text(
