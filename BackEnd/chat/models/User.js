@@ -2,6 +2,12 @@
 const mongoose = require("mongoose")
 const { Schema } = mongoose
 
+// studyReadTimestamps 서브 스키마
+const studyReadTimestampSchema = new Schema({
+  studyId: { type: Schema.Types.ObjectId, ref: "Study" },
+  lastRead: { type: Date, default: Date.now },
+})
+
 const userSchema = new Schema({
   // 사용자 닉네임
   nickname: {
@@ -59,6 +65,7 @@ const userSchema = new Schema({
       default: [],
     },
   ],
+  studyReadTimestamps: [studyReadTimestampSchema],
   // 리프레시 토큰 (로그인 상태 유지 등 인증을 위해 사용)
   refreshToken: {
     type: String,
