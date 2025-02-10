@@ -18,7 +18,7 @@ services:
       # MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
-      MONGO_INITDB_DATABASE: mydatabase
+      MONGO_INITDB_DATABASE: ssacle
     volumes:
       - mongodb_data:/data/db
       - ./resources/mongodb-init.d:/docker-entrypoint-initdb.d # 초기 데이터 로드
@@ -43,7 +43,7 @@ services:
 
     container_name: spring
     ports: 
-      - "5000:5000"
+      - "5001:5001"
     depends_on:
       - mongodb # 몽고db 먼저 실행되어야 함
       - redis
@@ -51,7 +51,7 @@ services:
     environment:
       # SPRING_DATA_MONGODB_URI: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb:27017/${MONGO_DATABASE}
 
-      SPRING_DATA_MONGODB_URI: mongodb://root:password@mongodb:27017/mydatabase
+      SPRING_DATA_MONGODB_URI: mongodb://root:password@mongodb:27017/ssacle
 
 
       SPRING_REDIS_HOST: redis

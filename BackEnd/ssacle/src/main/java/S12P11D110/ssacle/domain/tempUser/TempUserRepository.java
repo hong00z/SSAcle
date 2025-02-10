@@ -14,5 +14,7 @@ public interface TempUserRepository extends MongoRepository<TempUser,String> {
     // findById(string id): ID로 유저 조회 조회
     Optional<TempUser> findById(String id);
 
+    Boolean existsByNickname(String id);
+
 
 }

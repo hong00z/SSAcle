@@ -7,23 +7,29 @@ spring:
     redis:
       host: localhost
       port: 6379
-  # Logger Text Color
+  # 이미지 파일 파일 업로드 크기 제한   + Spring이 파일 업로드를 차단 해제
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+  # 로그 창 글씨 색상 설정
   output:
     ansi:
       enabled: always
 
 jwt:
-  # Access Token Expired Time (1시간=60*60)
+  # 액세스 토큰 만료시간 (1시간=60*60)
   access:
     token:
       expiration:
         seconds: 3600
-  # Refresh Token Expired Time (7일=60*60*24*7)
+  # 리프레시 토큰 만료시간 (7일=60*60*24*7)
   refresh:
     token:
       expiration:
         seconds: 604800
-  # JWT Signature Secret Key
+  # JWT 서명 시크릿 키
   token:
     secret:
       key: "ENjvzmJQpugoOGaEqVV6uKYSHw3pg/xYtQOo3YQBi5Y="
@@ -34,6 +40,11 @@ logging:
     root: INFO
     org.springframework.security: DEBUG
 
+# 서버 포트번호
 server:
   host: 192.168.0.46
   port: 5001
+
+# 파일 업로드 주소
+file:
+  upload-dir: ./uploads
