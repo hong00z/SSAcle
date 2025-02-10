@@ -6,7 +6,7 @@
 //import lombok.extern.slf4j.Slf4j;
 //import org.springframework.beans.factory.annotation.Value;
 //import org.springframework.stereotype.Service;
-//import com.amazonaws.services.s3.AmazonS3Client;
+//import com.amazonaws.services.s3.AmazonS3;
 //import org.springframework.transaction.annotation.Transactional;
 //import org.springframework.web.multipart.MultipartFile;
 //
@@ -26,16 +26,16 @@
 //@Slf4j //AwsFileService에서 로그를 남기고 싶을 때 사용 되는 라이브러리
 //public class AwsFileService {
 //
-//    private final AmazonS3Client amazonS3Client;
+//    private final AmazonS3  amazonS3;
 //
 //    @Value("${cloud.aws.s3.bucket}")
 //    private String bucket;
 //
-//    private String PROFILE_IMG_DIR = "profile/"; // 유저 프로필
+//    private String PROFILE_IMG_DIR = "profile/"; // 유저 프로필ㅍ
 ////    private String STUDY_IMG_DIR = "Study/"; // 스터디 프로필
 //
 //
-//    // 파일 업로드: 클라이언트가 업로드한 MultipartFile을 File로 변환
+//    // 클라이언트가 업로드한 MultipartFile을 File로 변환 후 upload 함수로 전송
 //    public String savePhoto(MultipartFile multipartFile, String userId) throws IOException {
 //        File uploadFile = convert(multipartFile ) // 파일 변활 할 수 없으면 에러
 //                .orElseThrow(()->new IllegalArgumentException("error: MultipartFile -> File convert fail"));
@@ -62,14 +62,14 @@
 //        // S3에 저장될 파일 이름 설정
 //        String fileName = dirName + userId + "/" + UUID.randomUUID() + uploadfile.getName(); //  UUID.randomUUID(): 중복방지용 고유 파일명 생성
 //        // S3에 업로드
-//        amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadfile)
+//        amazonS3.putObject(new PutObjectRequest(bucket, fileName, uploadfile)
 //                .withCannedAcl(CannedAccessControlList.PublicRead));
 //
 //        // 로컬 파일 삭제
 //        removeNewFile(uploadfile);
 //
 //        // S3 URL 반환
-//        return amazonS3Client.getUrl(bucket, fileName).toString();
+//        return amazonS3.getUrl(bucket, fileName).toString();
 //    }
 //
 //    // 업로드 후 로컬 파일 삭제

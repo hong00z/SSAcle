@@ -72,6 +72,7 @@ dependencies {
     implementation(libs.androidx.material3.android)
 
     val nav_version = "2.8.6"
+    // Navigation
     // Jetpack Compose integration
     implementation("androidx.navigation:navigation-compose:$nav_version")
     // Views/Fragments integration

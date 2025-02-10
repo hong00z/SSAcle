@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 
 // gpt: 36까지
@@ -16,7 +17,7 @@ public interface StudyRepository extends MongoRepository<Study, String> {
     List<Study> findAll();
 
     // 해당 조건의 스터디 그룹 조회
-    List<Study> findByTopicAndMeetingDaysIn(List<Study.Topic> topic, List<Study.MeetingDays>meetingDays);
+    List<Study> findByTopicAndMeetingDaysIn(Set<String> topic, Set<String>meetingDays);
 
     // findById(string id): ID로 스터디 그룹 조회
     Optional<Study> findById(String id);

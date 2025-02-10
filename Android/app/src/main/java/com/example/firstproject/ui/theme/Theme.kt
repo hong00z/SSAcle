@@ -19,3 +19,7 @@ val pretendard = FontFamily(
     Font(R.font.pretendard_thin, FontWeight.Thin, FontStyle.Normal),
     Font(R.font.pretendard_extrabold, FontWeight.ExtraBold, FontStyle.Normal)
 )
+
+val notosans = FontFamily(
+    Font(R.font.notosans_black, FontWeight.Black, FontStyle.Normal)
+)
