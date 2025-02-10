@@ -11,6 +11,7 @@ import S12P11D110.ssacle.global.exception.AuthErrorStatus;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,8 +29,10 @@ import java.util.*;
 @Component
 @RequiredArgsConstructor
 public class JwtProvider {
-    @Value("${jwt.access.token.expiration.seconds}") private static long accessTokenValidationTime;
-    @Value("${jwt.token.secret.key}") private String secretKeyString;
+//    @Value("${jwt.access.token.expiration.minutes}")
+    private static long accessTokenValidationTime = 3600L;
+    @Value("${jwt.token.secret.key}")
+    private String secretKeyString;
     private Key secretKey;
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
@@ -44,12 +47,17 @@ public class JwtProvider {
      */
     public String generateAccessToken(Map<String, Object> claims, String subject) {
         // 토큰 생성시간
-        Instant now = Instant.from(OffsetDateTime.now());
+        Instant now = Instant.now();
+
+        log.info("현재 시간: " + now);
+        log.info("accessTokenValidationTime: " + accessTokenValidationTime);
+        log.info("JWT 만료 시간: " + now.plusSeconds(accessTokenValidationTime));
+
         /* claims를 subject보다 먼저 적용해야 subject가 claims에 추가된다.*/
         return Jwts.builder()
                 .setClaims(claims)      // Claims: 사용자 관련 정보
                 .setSubject(subject)    // Subject: JWT 에 대한 이름 추가(여기서는 이메일에 해당, claims에 자동으로 추가됨)
-                .setExpiration(Date.from(now.plusMillis(accessTokenValidationTime)))
+                .setExpiration(Date.from(now.plusSeconds(accessTokenValidationTime)))
                 .signWith(secretKey)
                 .compact();
     }

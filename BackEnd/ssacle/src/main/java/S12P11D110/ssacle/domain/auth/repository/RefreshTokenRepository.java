@@ -37,7 +37,7 @@ public class RefreshTokenRepository{
     public void save(RefreshToken refreshToken) {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         valueOperations.set(refreshToken.getRefreshToken(), refreshToken.getUserId());
-        redisTemplate.expire(refreshToken.getRefreshToken(), refreshTokenExpiration, TimeUnit.DAYS);
+        redisTemplate.expire(refreshToken.getRefreshToken(), refreshTokenExpiration, TimeUnit.SECONDS);
     }
 
     /* refresh token 으로 userId 조회 */

@@ -60,7 +60,6 @@ public class SecurityConfig {
                                 "/webjars/**",                  // Swagger UI에서 사용하는 WebJars 리소스 허용
                                 "/error",                       // 에러 핸들링 경로
                                 "/api/auth/**",                 // ✅ 인증 관련 API (로그인, 회원가입 등)
-
                                 "/api/studies/**"               // ✅ [수정] 모든 스터디 API JWT 없이 허용
                         ).permitAll()
                         .requestMatchers("/api/user/**").hasAnyRole("USER", "SSAFYUSER")  // 로그인 권한 필요
