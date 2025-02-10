@@ -7,6 +7,10 @@
 
     <style name="Theme.FirstProject" parent="Base.Theme.FirstProject" />
 
+    <style name="Toolbar.Title.Bold" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="NumberPickerStyle">
         <item name="android:textSize">20sp</item>
         <item name="colorControlNormal">@color/primary_color</item>
