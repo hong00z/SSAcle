@@ -5,7 +5,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-parcelize")
-
 }
 
 android {
@@ -113,11 +112,17 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
+    // Socket.io
+    implementation("io.socket:socket.io-client:2.1.1")
+
+    // Retrofit http 통신
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
 
     // 인디케이터 기능
     implementation ("com.tbuonomo:dotsindicator:4.3")
 
-    
+
     // ai 관련 (카메라)
 
     implementation("androidx.camera:camera-core:1.1.0")
@@ -127,7 +132,7 @@ dependencies {
 
     // ai 관련 tensor 계산 용
     implementation("org.tensorflow:tensorflow-lite-select-tf-ops:2.14.0")
-    
+
     // 도넛 차트 그리는것
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
 

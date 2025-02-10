@@ -61,7 +61,7 @@ fun RegisterStudyScreen(xmlNavController: NavController) {
 
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .background(Color.White)
     ) {
         Box {
@@ -75,6 +75,7 @@ fun RegisterStudyScreen(xmlNavController: NavController) {
         }
         Column(
             modifier = Modifier
+                .fillMaxWidth()
 //                .fillMaxSize()
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -121,7 +122,11 @@ fun RegisterStudyScreen(xmlNavController: NavController) {
 
                 TitleText("모임 요일")
                 Spacer(Modifier.height(16.dp))
-                Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp)) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 4.dp)
+                ) {
                     SettingWeekComponent(
                         isChecked = ((weekFlag and (1 shl 0)) == (1 shl 0)),
                         text = "일"
@@ -229,6 +234,14 @@ fun RegisterStudyScreen(xmlNavController: NavController) {
                         color = Color.White
                     )
                 }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(48.dp)
+                ) {
+
+                }
             }
         }
 
@@ -258,7 +271,7 @@ private fun TitleText(title: String) {
 fun SettingWeekComponent(isChecked: Boolean, text: String, onClick: () -> Unit) {
     Box(
         modifier = Modifier
-            .size(34.dp)
+            .size(36.dp)
             .border(
                 (0.8).dp,
                 colorResource(id = R.color.primary_color),
