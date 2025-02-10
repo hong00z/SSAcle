@@ -28,6 +28,6 @@
     <color name="border_input_color">#888888</color>
     <color name="border_light_color">#ECECEC</color>
 
-
+    <color name="red">#FF0000</color>
 
 </resources>
