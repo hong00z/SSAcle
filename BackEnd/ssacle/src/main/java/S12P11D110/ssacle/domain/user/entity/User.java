@@ -1,7 +1,7 @@
 package S12P11D110.ssacle.domain.user.entity;
 
 
-import S12P11D110.ssacle.global.entity.BaseTimeEntity;
+import S12P11D110.ssacle.global.entity.BaseEntity;
 import S12P11D110.ssacle.global.entity.MeetingDay;
 import S12P11D110.ssacle.global.entity.Topic;
 import lombok.AllArgsConstructor;
@@ -21,7 +21,7 @@ import java.util.UUID;
 @AllArgsConstructor              // GPT 도움!! (모든 필드를 포함한 생성자 추가)
 @Builder
 @Document(collection = "users")  // GPT 도움!! (MongoDB 컬렉션 이름 지정)
-public class User extends BaseTimeEntity {
+public class User extends BaseEntity {
 //------------------------------------------- << 필드 >> -------------------------------------------
     @Id
     private String userId;  // GPT 도움!! (MongoDB에서는 String 타입으로 ID를 관리할 수 있음)
@@ -40,7 +40,7 @@ public class User extends BaseTimeEntity {
     @Builder.Default
     private UserRole role = UserRole.USER;
 
-    // 프로필 (기본값 설정)
+    // 스터디 프로필 (기본값 설정)
     @Builder.Default
     private Set<Topic> topics = new HashSet<>();
     @Builder.Default

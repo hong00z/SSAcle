@@ -9,6 +9,7 @@ public enum Topic {
     EMBEDDED("임베디드"),
     INFRA("인프라"),
     CS("CS이론"),
+    ALGORITHM("알고리즘"),
     GAME("게임"),
     EXTRA("기타");
 

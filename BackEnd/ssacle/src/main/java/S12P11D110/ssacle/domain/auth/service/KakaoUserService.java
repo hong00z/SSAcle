@@ -61,22 +61,19 @@ public class KakaoUserService {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
+        // 응답 코드 확인
+        if (response.getStatusCode() != HttpStatus.OK) {
+            throw new AuthErrorException(AuthErrorStatus.SOCIAL_TOKEN_EXPIRED);
+        }
+
         try {
             // 카카오 사용자 정보
             Map<String, Object> originAttributes = objectMapper.readValue(response.getBody(), new TypeReference<>() {});
 
-            if (originAttributes.containsKey("code") && originAttributes.get("code").equals(-401)) {
-                // 토큰이 만료된 경우 예외 처리
-                throw new AuthErrorException(AuthErrorStatus.SOCIAL_TOKEN_EXPIRED);
-            }
             return new KakaoUserInfoDto(originAttributes);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        } catch (AuthErrorException e) {
-            throw new RuntimeException(e);
+            throw new AuthErrorException(AuthErrorStatus.PARSE_FAILED);
         }
-
-        return null;
     }
 
     /**
@@ -84,10 +81,19 @@ public class KakaoUserService {
      * - 이메일로 DB에 존재하는 회원인지 조회
      */
     public TokenDto joinorLogin(KakaoUserInfoDto kakaoUserInfo) {
+        log.info("✅ [Step 5] joinorLogin() 실행");
+
         String email = kakaoUserInfo.getEmail();
+        log.info("✅ [Step 6] 검색할 이메일: {}", email);
         return userRepository.findByEmail(email)
                 .map(user -> createTokens(user, "Login")) // 존재하면 로그인
-                .orElseGet(() -> createTokens(join(kakaoUserInfo), "Signup")); // 없으면 회원가입 후 토큰 발급
+                .orElseGet(() -> {
+                    log.info("🆕 [Step 7] 신규 회원가입 진행: {}", kakaoUserInfo);
+                    User newUser = join(kakaoUserInfo);
+                    log.info("🆕 [Step 8] 회원가입 완료: {}", newUser);
+                    return createTokens(newUser, "Signup");
+//                    return createTokens(join(kakaoUserInfo), "Signup"); // 없으면 회원가입 후 토큰 발급
+                });
     }
 
     /**
@@ -105,7 +111,7 @@ public class KakaoUserService {
     }
 
     /**
-     * JWT토큰 발급
+     * JWT 토큰 발급
      *@param user: 현재 로그인한 user
      *@param type: signup / login
      */

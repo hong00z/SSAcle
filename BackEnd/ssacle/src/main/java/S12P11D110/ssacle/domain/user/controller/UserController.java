@@ -1,15 +1,20 @@
 package S12P11D110.ssacle.domain.user.controller;
 
 
+import S12P11D110.ssacle.domain.auth.entity.CustomUserDetail;
 import S12P11D110.ssacle.domain.user.dto.request.SsafyAuthRequest;
+import S12P11D110.ssacle.domain.user.dto.request.UserNicknameRequest;
 import S12P11D110.ssacle.domain.user.dto.request.UserProfileRequest;
-import S12P11D110.ssacle.domain.user.dto.request.UserRegisterRequest;
 import S12P11D110.ssacle.domain.user.dto.response.SsafyAuthResponse;
 import S12P11D110.ssacle.domain.user.dto.response.UserProfileResponse;
-import S12P11D110.ssacle.domain.user.dto.response.UserRegisterResponse;
 import S12P11D110.ssacle.domain.user.service.UserService;
+import S12P11D110.ssacle.global.exception.ApiErrorException;
+import S12P11D110.ssacle.global.exception.AuthErrorException;
+import S12P11D110.ssacle.global.exception.HttpStatusCode;
+import S12P11D110.ssacle.global.exception.ResultDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,15 +24,37 @@ import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/users")
+@RequestMapping("/api/user")
 @Tag(name="User Controller", description = "사용자 관련 controller (민주 ver.)")
 public class UserController {
     private final UserService userService;
 
-    //------------------------------------------- << 임시 회원가입 >> -------------------------------------------
-    @PostMapping("/register")
-    public ResponseEntity<UserRegisterResponse> registerUser(@RequestBody UserRegisterRequest request) {
-        return ResponseEntity.ok(userService.registerUser(request));
+//------------------------------------------- << 로그아웃 & 탈퇴 >> -------------------------------------------
+    /**
+     * 로그아웃
+     */
+    @PostMapping("")
+    @Operation(summary = "로그아웃", description = "사용자의 JWT 토큰을 삭제하여 로그아웃 처리")
+    public ResultDto<Object> logout(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestHeader("Authorization") String accessToken) {
+        try {
+            userService.logout(userDetail.getId(), accessToken);
+            return ResultDto.of(HttpStatusCode.OK, "로그아웃 성공", null);
+        } catch (AuthErrorException e) {
+            return ResultDto.of(e.getCode(), e.getErrorMsg(), null);
+        } catch (Exception e) {
+            return ResultDto.of(HttpStatusCode.INTERNAL_SERVER_ERROR, "서버 에러", null);
+        }
+    }
+
+
+    /**
+     * 탈퇴
+     */
+    @DeleteMapping("")
+    @Operation(summary = "회원 탈퇴", description = "사용자의 JWT 토큰과 계정 정보 삭제 처리")
+    public ResultDto<Object> deleteUser(@AuthenticationPrincipal CustomUserDetail userDetail) {
+        userService.delete(userDetail.getId());
+        return ResultDto.of(HttpStatusCode.OK, "사용자 탈퇴 성공", null);
     }
 
 //------------------------------------------- << 프로필 >> -------------------------------------------
@@ -47,6 +74,24 @@ public class UserController {
     @Operation(summary="닉네임 중복 검사", description = "사용자가 화면에 입력한 닉네임이 중복되었는지 검사")
     public ResponseEntity<String> checkNickname(@PathVariable("nickname") String nickname){
         return ResponseEntity.ok(userService.checkNickname(nickname));
+    }
+
+    /**
+     * 닉네임 변경 (중복 검사 포함)
+     */
+    @GetMapping("/nickname")
+    @Operation(summary="닉네임 변경", description = "닉네임 중복 검사 후 변경")
+    public ResultDto<Object> updateNickname(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestBody UserNicknameRequest userNicknameRequest) {
+        try {
+            userService.updateNickname(userDetail.getId(), userNicknameRequest);
+            return ResultDto.of(HttpStatusCode.CREATED, "사용자 닉네임 설정 성공", null);
+        } catch (AuthErrorException e) {
+            return ResultDto.of(e.getCode(), e.getErrorMsg(), null);
+        } catch (ApiErrorException e) {
+            return ResultDto.of(e.getCode(), e.getErrorMsg(), null);
+        } catch (Exception e) {
+            return ResultDto.of(HttpStatusCode.INTERNAL_SERVER_ERROR, "서버 에러", null);
+        }
     }
 
     /**

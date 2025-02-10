@@ -1,7 +1,7 @@
 package S12P11D110.ssacle.domain.study.entity;
 
 
-import S12P11D110.ssacle.global.entity.BaseTimeEntity;
+import S12P11D110.ssacle.global.entity.BaseEntity;
 import lombok.Data;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Data
 
-public class Study extends BaseTimeEntity {
+public class Study extends BaseEntity {
     private String id;               // MongoDB에서 자동 생성되는 고유 ID
     private String studyName;        // 스터디 이름
     private List<Topic> topic;      // 주제 목록

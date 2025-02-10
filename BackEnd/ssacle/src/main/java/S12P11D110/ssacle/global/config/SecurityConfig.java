@@ -31,7 +31,9 @@ public class SecurityConfig {
     private final JwtRequestFilter jwtRequestFilter;
     private final JwtExceptionFilter jwtExceptionFilter;
 
-    // Spring Security 설정 : SecurityFilterChain 빈
+    /**
+     * Spring Security 설정 : SecurityFilterChain 빈
+     */
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         return http
@@ -52,47 +54,28 @@ public class SecurityConfig {
                 // Swagger UI 및 OpenAPI 관련 경로 허용
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(
-//                                "/swagger-ui/**",           // Swagger UI 관련 경로 허용
-//                                "/v3/api-docs/**",                  // OpenAPI 문서 관련 경로 허용
-//                                "/swagger-resources/**",            // Swagger 리소스 허용
-//                                "/webjars/**",                       // Swagger UI에서 사용하는 WebJars 리소스 허용
-//                                "/api/auth/**",
-//                                "/api/studies/**", "/api/users/**","/api/user/signup", "/api/user/signin", "/error"  // 임시로
-                                "/swagger-ui/**", // Swagger UI 관련 경로
-                                "/v3/api-docs/**", // OpenAPI 문서 관련 경로
-                                "/swagger-resources/**", // Swagger 리소스 허용
-                                "/webjars/**", // Swagger UI에서 사용하는 WebJars 리소스 허용
-                                "/error", // 에러 핸들링 경로
-                                "/api/auth/**",  // ✅ 인증 관련 API (로그인, 회원가입 등)
+                                "/swagger-ui/**",       // Swagger UI 관련 경로
+                                "/v3/api-docs/**",              // OpenAPI 문서 관련 경로
+                                "/swagger-resources/**",        // Swagger 리소스 허용
+                                "/webjars/**",                  // Swagger UI에서 사용하는 WebJars 리소스 허용
+                                "/error",                       // 에러 핸들링 경로
+                                "/api/auth/**",                 // ✅ 인증 관련 API (로그인, 회원가입 등)
 
-                                "/api/users/**", // ✅ [수정] 모든 사용자 API JWT 없이 허용
-                                "/api/studies/**" // ✅ [수정] 모든 스터디 API JWT 없이 허용
+                                "/api/studies/**"               // ✅ [수정] 모든 스터디 API JWT 없이 허용
                         ).permitAll()
-//                        .requestMatchers("/api/user/**").hasAnyRole("USER", "SSAFYUSER")  // '/api/user/**' 경로는 USER 권한 필요
+                        .requestMatchers("/api/user/**").hasAnyRole("USER", "SSAFYUSER")  // 로그인 권한 필요
                         .anyRequest().authenticated())              // 나머지는 인증 필요
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtExceptionFilter, JwtRequestFilter.class)
                 .build();
     }
 
-    // Spring Security 인증 관리 : AuthenticationManager 빈 등록
+    /**
+     * Spring Security 인증 관리 : AuthenticationManager 빈 등록
+     * ID/PW 로그인도 지원할 거면 유지하고, JWT만 사용할 거면 제거해도 됨!
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
-    }
-
-    // CORS 설정 : 클라이언트에서 API 호출을 허용
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:8080" ) // Swagger UI 실행 URL
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*")
-                        .allowCredentials(true);
-            }
-        };
     }
 }
