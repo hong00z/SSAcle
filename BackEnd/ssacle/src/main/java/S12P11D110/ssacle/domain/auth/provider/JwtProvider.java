@@ -29,8 +29,8 @@ import java.util.*;
 @Component
 @RequiredArgsConstructor
 public class JwtProvider {
-//    @Value("${jwt.access.token.expiration.minutes}")
-    private static long accessTokenValidationTime = 3600L;
+    @Value("${jwt.access.token.expiration.seconds}")
+    private long accessTokenValidationTime;
     @Value("${jwt.token.secret.key}")
     private String secretKeyString;
     private Key secretKey;

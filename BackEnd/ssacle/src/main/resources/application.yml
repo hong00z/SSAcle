@@ -2,9 +2,8 @@ spring:
   # DB
   data:
     mongodb:
-      #uri: mongodb://root:password@mongodb:27017/ssacle
-#      host: mongodb
-      host: localhost
+      host: mongodb
+#      host: localhost
       database: ssacle
     redis:
       host: localhost
@@ -44,7 +43,6 @@ logging:
 
 # 서버 포트번호
 server:
-#  host: 192.168.0.46
   port: 5001
 
 # 파일 업로드 주소
