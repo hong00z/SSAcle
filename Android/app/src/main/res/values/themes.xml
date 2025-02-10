@@ -6,4 +6,8 @@
     </style>
 
     <style name="Theme.FirstProject" parent="Base.Theme.FirstProject" />
+
+    <style name="Toolbar.Title.Bold" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>
