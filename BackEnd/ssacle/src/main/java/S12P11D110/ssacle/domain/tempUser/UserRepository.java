@@ -16,5 +16,7 @@ public interface UserRepository extends MongoRepository<User,String> {
     // findById(string id): ID로 유저 조회 조회
     Optional<User> findById(String id);
 
+    Boolean existsByNickname(String id);
+
 
 }

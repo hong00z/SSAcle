@@ -15,7 +15,7 @@ public interface FeedRepository extends MongoRepository<Feed, String> {
 //    Optional<Feed> findById(String id);
 
     // 스터디 에 해당하는 피드 조회
-//    List<Feed> findByStudy(String id);
+    List<Feed> findByStudy(String id);
 
     // 피드 ID에 해당하는 모든 피드 리스트 반환;
 //    List<String> findAllById(String id);

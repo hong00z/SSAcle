@@ -1,10 +1,9 @@
 package S12P11D110.ssacle.domain.study.dto;
 
-import S12P11D110.ssacle.domain.study.entity.Study;
+
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -13,8 +12,8 @@ import java.util.Set;
 public class StudyDTO {
     private String studyId;
     private String studyName;
-    private List<Study.Topic> topic;
-    private List<Study.MeetingDays> meetingDays;
+    private String topic;
+    private Set<String> meetingDays;
     private int count;
     private Set<String> members;
     private Set<String> wishMembers;

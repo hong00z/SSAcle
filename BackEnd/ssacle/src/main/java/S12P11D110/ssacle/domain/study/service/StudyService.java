@@ -1,5 +1,6 @@
 package S12P11D110.ssacle.domain.study.service;
 
+import S12P11D110.ssacle.SsacleApplication;
 import S12P11D110.ssacle.domain.feed.dto.FeedDetailDTO;
 import S12P11D110.ssacle.domain.feed.entity.Feed;
 import S12P11D110.ssacle.domain.feed.repository.FeedRepository;
@@ -26,6 +27,15 @@ public class StudyService {
     private final RecommendUserService recommendUserService;
     private final RecommendStudyService recommendStudyService;
     private final FeedRepository feedRepository;
+
+    // 스터디 토픽 리스트 & 모임요일 리스트 반환
+    public Map<String, List<String>> topicList() {
+        return Map.of(
+                "topics", Arrays.asList(SsacleApplication.Topics),
+                "meetingDays", Arrays.asList(SsacleApplication.MeetingDays)
+        );
+    }
+
 
     // 스터디 개설
     //트랜잭션을 시작, 커밋, 롤백하는 과정을 자동으로 관리
@@ -76,7 +86,7 @@ public class StudyService {
 
     //gpt: from
     //해당 조건의 스터디 그룹 조회
-    public List<StudyResponseDTO> getStudiesByConditions(List<Study.Topic> topics, List<Study.MeetingDays> meetingDays) {
+    public List<StudyResponseDTO> getStudiesByConditions(Set<String> topics, Set<String> meetingDays) {
         List<Study> studies;
 
         // 조건이 없으면 전체 스터디 조회
@@ -107,20 +117,25 @@ public class StudyService {
     // 스터디 상세보기
     @Transactional(readOnly = true)
     public StudyDetailDTO getStudyById(String studyId) {
-        // 1. 해당 스터디 찾기
+        // 1. 해당 스터디 찾기, 스터디에 해당하는 피드들 찾기
         Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new NoSuchElementException("스터디ID " + studyId + "에 해당하는 스터디가 없습니다."));
 
-        //2 Id모으기 >> 실제 엔티티 조회
-        // 스터디 내 feed 모으기, 실제 feed 엔티티 조회
-        Set<String> feedIds  = (study.getFeeds() == null) ? new HashSet<>() : study.getFeeds();
-        List<Feed> feedEntities = feedRepository.findAllById(feedIds);
+
+        //2. 스터디에 해당 하는 feed, member 찾기
+        // 스터디에 해당하는 feed 모으기
+        List<Feed> feedEntities= feedRepository.findByStudy(studyId);
+        if(feedEntities.isEmpty()){
+            feedEntities = new ArrayList<>() {
+            };
+        }
         // 스터디 멤버들 Id 모으기, 실제 User 엔티티 조회
         Set<String> userIds = study.getMembers();
         List<User> userEntities = userRepository.findAllById(userIds);
 
-        // 3. 조회된 피드, 유저를 feedListDTO, nikcknameList 변환
-        List<FeedDetailDTO> feedListDTO = feedEntities.stream()
+        // 3. 조회된 피드, 유저를 feedList, nikcknameList 변환
+        // gpt: from ---------------------------------------------------------
+        List<FeedDetailDTO> feedList = feedEntities.stream()
                 .map(feed ->{
                     // 작성자의 ID 가져오기
                     String userId = feed.getAuthor();
@@ -138,7 +153,9 @@ public class StudyService {
                             .build();
                 })
                 .collect(Collectors.toList());
+        // gpt: to ---------------------------------------------------------
 
+        // 스터디 가입 멤버 이름 리스트
         List<String> nikcknameList = userEntities.stream()
                 .map(User::getNickname)
                 .collect(Collectors.toList());
@@ -152,7 +169,7 @@ public class StudyService {
                 .count(study.getCount())
                 .members(nikcknameList)
                 .studyContent(study.getStudyContent())
-                .feeds(feedListDTO)
+                .feeds(feedList)
                 .build();
 
     }
@@ -195,7 +212,7 @@ public class StudyService {
         // 2. 모든 유저
         List<SearchUserDTO> allUsersDTO = userRepository.findAll().stream()
                 .map(user -> SearchUserDTO.builder()
-                        .userId(user.getId())
+                        .userId(user.getUserId())
                         .nickName(user.getNickname())
                         .topics(user.getTopics())
                         .meetingDays(user.getMeetingDays())
@@ -212,7 +229,7 @@ public class StudyService {
     //GPT: to
 
     // 스터디내 초대 현황 wishMembers & 내 수신함  invitedStudy 추가
-    public void addWishmemberinvitedStudy(String studyId, String userId) {
+    public void addWishMemberInvitedStudy(String studyId, String userId) {
         // 스터디조회
         Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new NoSuchElementException("스터디ID" + studyId + "에 해당하는 스터디가 없습니다."));
@@ -245,7 +262,7 @@ public class StudyService {
         // 1. 유저 조건  UserConditionDTO에 담기
         UserConditionDTO userCondition = userRepository.findById(userId)
                 .map(user -> UserConditionDTO.builder()
-                        .userId(user.getId())
+                        .userId(user.getUserId())
                         .topics(user.getTopics())
                         .meetingDays(user.getMeetingDays())
                         .build())
@@ -325,7 +342,7 @@ public class StudyService {
         //4.  MyWishStudyListDTO 최종 반환
         return userRepository.findById(userId)
                 .map(user -> MyWishStudyListDTO.builder()
-                        .userId(user.getId())
+                        .userId(user.getUserId())
                         .wishStudy(wishStudiesList)
                         .build()
                 )
@@ -361,7 +378,7 @@ public class StudyService {
 
         return userRepository.findById(userId)
                 .map(user -> MyInvitedStudyListDTO.builder()
-                        .userId(user.getId())
+                        .userId(user.getUserId())
                         .invitedStudy(invitedStudiesList)
                         .build()
                 )
@@ -391,7 +408,7 @@ public class StudyService {
         // 3. wishUsersEntities 를 UserDTO로 변환
         List<SearchUserDTO> wishUsersList = wishUsersEntities.stream()
                 .map(user-> SearchUserDTO.builder()
-                        .userId(user.getId())
+                        .userId(user.getUserId())
                         .nickName(user.getNickname())
                         .topics(user.getTopics())
                         .meetingDays(user.getMeetingDays())
@@ -424,7 +441,7 @@ public class StudyService {
         // 3. preUsersEntities 를 UserDTO로 변환
         List<SearchUserDTO> preUsersList = preUsersEntities.stream()
                 .map(user-> SearchUserDTO.builder()
-                        .userId(user.getId())
+                        .userId(user.getUserId())
                         .nickName(user.getNickname())
                         .topics(user.getTopics())
                         .meetingDays(user.getMeetingDays())

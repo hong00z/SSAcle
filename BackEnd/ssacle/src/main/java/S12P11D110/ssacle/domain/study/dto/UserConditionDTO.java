@@ -1,18 +1,15 @@
 package S12P11D110.ssacle.domain.study.dto;
 
-import S12P11D110.ssacle.domain.tempUser.User;
-import S12P11D110.ssacle.domain.tempUser.userController;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
 public class UserConditionDTO {
     private String userId;
-    private List<User.Topics> topics;
-    private List<User.MeetingDays> meetingDays;
+    private Set<String> topics;
+    private Set<String> meetingDays;
 
 
 }
