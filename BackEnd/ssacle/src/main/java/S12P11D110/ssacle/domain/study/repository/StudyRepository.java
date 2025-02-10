@@ -11,7 +11,6 @@ import java.util.Set;
 
 // gpt: 36까지
 @Repository
-
 public interface StudyRepository extends MongoRepository<Study, String> {
 
     // findAll() : 모든 스터디 그룹 조회
@@ -26,7 +25,7 @@ public interface StudyRepository extends MongoRepository<Study, String> {
     // userId로 스터디 조회
     List<Study> findByMembersContaining(String userId);
 
-    // User Id로 User가 가입한 스터디 그룹 조회
+    // TempUser Id로 User가 가입한 스터디 그룹 조회
 
     // deleteById(String id): 스터디 삭제
     void deleteById (String id);

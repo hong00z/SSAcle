@@ -2,13 +2,13 @@ spring:
   # DB
   data:
     mongodb:
-      #uri: mongodb://root:password@mongodb:27017/ssacle
       host: mongodb
+#      host: localhost
       database: ssacle
     redis:
       host: localhost
       port: 6379
-  # 이미지 파일 파일 업로드 크기 제한   + Spring이 파일 업로드를 차단 해제
+  # 이미지 파일 파일 업로드 크기 제한 + Spring이 파일 업로드를 차단 해제
   servlet:
     multipart:
       enabled: true
@@ -38,6 +38,7 @@ jwt:
 
 logging:
   level:
+    root: INFO
     org.springframework.security: DEBUG
 
 # 서버 포트번호

@@ -1,6 +1,5 @@
 package S12P11D110.ssacle.domain.tempUser;
 
-import S12P11D110.ssacle.global.service.FileStorageService;
 import S12P11D110.ssacle.global.service.FileStorageServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.LoggerFactory;
@@ -13,36 +12,34 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.UUID;
 
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class TempUserService {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+    private static final Logger logger = LoggerFactory.getLogger(TempUserService.class);
 
 
 //    private final UserProfileRequest userProfileRequest;
-    private final UserRepository userRepository;
+    private final TempUserRepository userRepository;
     private final FileStorageServiceImpl fileStorageServiceImpl;
 
 
     @Transactional
     public UserProfileResponse modifyUserProfile(String userId, UserProfileRequest request, MultipartFile file) {
         // 유저 찾기
-        User user = userRepository.findById(userId)
+        TempUser tempUser = userRepository.findById(userId)
                 .orElseThrow(()->new IllegalArgumentException("유저 정보를 찾을 수 없습니다."));
 
         // 닉네임 변경이 됐다면 중복검사
-        if(request.getNickname() != null && !request.getNickname().equals(user.getNickname())){
+        if(request.getNickname() != null && !request.getNickname().equals(tempUser.getNickname())){
             if(userRepository.existsByNickname(request.getNickname())){
                 throw new IllegalArgumentException("이미 사용 중인 닉네임입니다.");
             }
             // 닉네임 변경
-            user.setNickname(request.getNickname());
+            tempUser.setNickname(request.getNickname());
         }
         //  프로필 이미지 저장
         try{
@@ -65,24 +62,24 @@ public class UserService {
 
             logger.info("File saved successfully: {}", filePath.toAbsolutePath());
 
-            // 저장된 파일명을 User 엔티티에 반영
-            user.setImage(uniqueFileName);
+            // 저장된 파일명을 TempUser 엔티티에 반영
+            tempUser.setImage(uniqueFileName);
 
 
         }catch (IOException e){
             throw new RuntimeException("파일 저장 중 오류가 발생했습니다.", e);
         }
 
-        user.setTopics(request.getTopics());
-        user.setMeetingDays(request.getMeetingDays());
+        tempUser.setTopics(request.getTopics());
+        tempUser.setMeetingDays(request.getMeetingDays());
 
-        userRepository.save(user);
+        userRepository.save(tempUser);
 
         UserProfileResponse response = UserProfileResponse.builder()
-                .nickname(user.getNickname())
-                .image(user.getImage())
-                .topics(user.getTopics())
-                .meetingDays(user.getMeetingDays())
+                .nickname(tempUser.getNickname())
+                .image(tempUser.getImage())
+                .topics(tempUser.getTopics())
+                .meetingDays(tempUser.getMeetingDays())
                 .build();
 
         return response;
