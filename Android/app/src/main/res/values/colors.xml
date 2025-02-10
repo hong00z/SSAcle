@@ -7,6 +7,11 @@
     <color name="chat_blue">#0084BD</color>
     <color name="chat_received">#F4F4F4</color>
     <color name="blue_ai">#0074BD</color>
+    <color name="logo_blue">#0084BD</color>
+    
+    <color name="chart_red">#FE438A</color>
+    <color name="chart_blue">#4375FE</color>
+    <color name="chart_green">#43FE46</color>
 
     <color name="frontend_stack_tag">#017ACB</color>
     <color name="backend_stack_tag">#7ACF5C</color>
