@@ -1,8 +1,8 @@
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="8dp">
 
     <!-- 프로필 이미지 -->
@@ -11,16 +11,17 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginEnd="8dp"
-        android:src="@drawable/default_profile"
         android:scaleType="centerCrop"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:src="@drawable/default_profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/messageContainer"/>
 
     <!-- 메시지 내용, 시간 -->
     <LinearLayout
+        android:id="@+id/messageContainer"
         android:layout_width="0dp"
-        android:layout_marginLeft="8dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:orientation="vertical"
         app:layout_constraintStart_toEndOf="@id/messageProfile"
         app:layout_constraintTop_toTopOf="parent">
@@ -30,30 +31,40 @@
             android:id="@+id/senderName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             android:textColor="@android:color/black"
             android:textSize="12sp"
             android:textStyle="bold"
-            android:layout_marginBottom="4dp" />
+            tools:text="이름" />
 
-        <!-- 메시지 내용 -->
-        <TextView
-            android:id="@+id/messageContent"
+        <LinearLayout
+            android:id="@+id/messageBubbleContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/chat_received"
-            android:maxWidth="200dp"
-            android:padding="8dp"
-            android:textColor="@android:color/black"
-            android:layout_marginBottom="4dp" />
+            android:orientation="horizontal">
 
-        <!-- 메시지 시간 -->
-        <TextView
-            android:id="@+id/messageTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="오후 3:00"
-            android:textSize="12sp"
-            android:textColor="@android:color/darker_gray" />
+            <!-- 메시지 내용 (둥근 배경 적용) -->
+            <TextView
+                android:id="@+id/messageContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_message_received"
+                android:maxWidth="200dp"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:textColor="@android:color/black"
+                tools:text="메세지 내용" />
+
+            <!-- 메시지 시간 (내용 아래에 오른쪽 정렬) -->
+            <TextView
+                android:id="@+id/messageTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginHorizontal="4dp"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="12sp"
+                tools:text="오후 3:00" />
+        </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
