@@ -103,7 +103,7 @@ public class UserService {
     }
 
     /**
-     * 닉네임 증복 검사
+     * 닉네임 중복 검사
      */
     public boolean isNicknameDuplicated(String nickname) {
         return userRepository.existsByNickname(nickname);

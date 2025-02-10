@@ -2,6 +2,7 @@ package S12P11D110.ssacle.domain.user.controller;
 
 
 import S12P11D110.ssacle.domain.auth.entity.CustomUserDetail;
+import S12P11D110.ssacle.domain.user.dto.request.NicknameRequest;
 import S12P11D110.ssacle.domain.user.dto.request.SsafyAuthRequest;
 import S12P11D110.ssacle.domain.user.dto.request.UserProfileRequest;
 import S12P11D110.ssacle.domain.user.dto.response.SsafyAuthResponse;
@@ -87,13 +88,13 @@ public class UserController {
      */
     @GetMapping("/nickname")
     @Operation(summary="닉네임 중복 검사", description = "사용자가 화면에 입력한 닉네임이 중복되었는지 검사")
-    public ResultDto<String> checkNickname(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestParam("nickname") String nickname) {
+    public ResultDto<String> checkNickname(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestBody NicknameRequest request) {
         try {
-            boolean isDuplicated = userService.isNicknameDuplicated(nickname);
+            boolean isDuplicated = userService.isNicknameDuplicated(request.getNickname());
             if (isDuplicated) {
-                return ResultDto.of(ApiErrorStatus.DUPLICATED_USER_NAME.getCode(), "이미 사용중인 닉네임입니다.", nickname);
+                return ResultDto.of(ApiErrorStatus.DUPLICATED_USER_NAME.getCode(), "이미 사용중인 닉네임입니다.", request.getNickname());
             }
-            return ResultDto.of(HttpStatusCode.OK, "사용 가능한 닉네임입니다.", nickname);
+            return ResultDto.of(HttpStatusCode.OK, "사용 가능한 닉네임입니다.", request.getNickname());
         } catch (Exception e) {
             return ResultDto.of(HttpStatusCode.INTERNAL_SERVER_ERROR, "서버 에러", null);
         }
