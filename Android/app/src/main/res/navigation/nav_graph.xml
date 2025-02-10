@@ -33,8 +33,13 @@
             app:argType="string" />
         <argument
             android:name="messages"
-            app:argType="com.example.firstproject.ui.chat.ChatMessage[]"
-            app:nullable="false" />
+            app:argType="com.example.firstproject.dto.Message[]" />
+        <argument
+            android:name="studyId"
+            app:argType="string" />
+        <argument
+            android:name="count"
+            app:argType="integer" />
     </fragment>
 
     <fragment
