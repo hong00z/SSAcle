@@ -35,6 +35,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -58,11 +59,11 @@ fun HomeScreen(
 ) {
 
     val myStudyList = mutableListOf<StudyInfo>(
-        StudyInfo("스프링 입문 스터디","백엔드", 8, true, true),
+        StudyInfo("스프링 입문 스터디", "백엔드", 8, true, true),
 
-        StudyInfo("스터디 제목은 과연 몇 글자까지 가능할까요?","알고리즘", 3, false, false),
+        StudyInfo("스터디 제목은 과연 몇 글자까지 가능할까요?", "알고리즘", 3, false, false),
 
-        StudyInfo("스터디 제목","모바일", 5, true, false),
+        StudyInfo("스터디 제목", "모바일", 5, true, false),
     )
 
     Scaffold(
@@ -223,18 +224,19 @@ fun MyStudyItem(
                         .fillMaxWidth()
                         .height(84.dp)
                         .padding(horizontal = 8.dp)
-//                        .shadow(elevation = 6.dp, spotColor = Color(0x40000000), ambientColor = Color(0x40000000))
+                        .shadow(
+                            elevation = 2.dp,
+                            shape = RoundedCornerShape(10.dp),
+                            clip = true,
+                        ),
 
-
-                    ,
                     shape = RoundedCornerShape(5.dp),
                     colors = CardDefaults.cardColors(containerColor = Color.White),
-                    border = BorderStroke(1.dp, colorResource(R.color.border_light_color)),
-                    elevation = CardDefaults.elevatedCardElevation(2.dp)
+                    border = BorderStroke(
+                        1.dp,
+                        colorResource(R.color.border_light_color)
+                    )
                 ) {
-//                    Column(modifier = Modifier.fillMaxSize()) {
-//                        Text(text = itemList[it])
-//                    }
                     StudyCardInfo(itemList[it])
                 }
             }

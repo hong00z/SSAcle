@@ -44,6 +44,10 @@ class HomeFragment : Fragment() {
                             }
                         )
                     }
+
+                    composable("stucyDetailScreen") {
+                        StudyDetailScreen()
+                    }
 //                    composable("registerStudyScreen") {
 //                        RegisterStudyScreen()
 //                    }

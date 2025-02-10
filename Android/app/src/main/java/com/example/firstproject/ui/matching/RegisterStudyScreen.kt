@@ -75,7 +75,7 @@ fun RegisterStudyScreen(xmlNavController: NavController) {
         }
         Column(
             modifier = Modifier
-                .fillMaxSize()
+//                .fillMaxSize()
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
