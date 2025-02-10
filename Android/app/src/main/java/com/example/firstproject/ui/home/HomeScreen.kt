@@ -289,11 +289,16 @@ private fun FindActionButton() {
         Card(
             modifier = Modifier
                 .width(110.dp)
-                .height(120.dp),
+                .height(120.dp)
+                .shadow(
+                    elevation = 4.dp,
+                    shape = RoundedCornerShape(10.dp),
+                    clip = true
+                ),
             shape = RoundedCornerShape(10.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White),
             border = BorderStroke(1.dp, colorResource(R.color.border_card_color)),
-            elevation = CardDefaults.elevatedCardElevation(4.dp)
+
         ) {
             Column(
                 modifier = Modifier.fillMaxSize(),
@@ -318,11 +323,15 @@ private fun FindActionButton() {
         Card(
             modifier = Modifier
                 .width(110.dp)
-                .height(120.dp),
+                .height(120.dp)
+                .shadow(
+                    elevation = 4.dp,
+                    shape = RoundedCornerShape(10.dp),
+                    clip = true
+                ),
             shape = RoundedCornerShape(10.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White),
             border = BorderStroke(1.dp, colorResource(R.color.border_light_color)),
-            elevation = CardDefaults.elevatedCardElevation(4.dp)
         ) {
             Column(
                 modifier = Modifier.fillMaxSize(),
