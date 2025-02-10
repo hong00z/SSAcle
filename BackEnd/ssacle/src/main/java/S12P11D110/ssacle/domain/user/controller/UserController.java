@@ -3,29 +3,23 @@ package S12P11D110.ssacle.domain.user.controller;
 
 import S12P11D110.ssacle.domain.auth.entity.CustomUserDetail;
 import S12P11D110.ssacle.domain.user.dto.request.SsafyAuthRequest;
-import S12P11D110.ssacle.domain.user.dto.request.UserNicknameRequest;
 import S12P11D110.ssacle.domain.user.dto.request.UserProfileRequest;
 import S12P11D110.ssacle.domain.user.dto.response.SsafyAuthResponse;
 import S12P11D110.ssacle.domain.user.dto.response.UserProfileResponse;
 import S12P11D110.ssacle.domain.user.service.UserService;
-import S12P11D110.ssacle.global.exception.ApiErrorException;
-import S12P11D110.ssacle.global.exception.AuthErrorException;
-import S12P11D110.ssacle.global.exception.HttpStatusCode;
-import S12P11D110.ssacle.global.exception.ResultDto;
+import S12P11D110.ssacle.global.exception.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 
-import static org.springframework.http.ResponseEntity.ok;
 
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
-@Tag(name="User Controller", description = "사용자 관련 controller (민주 ver.)")
+@Tag(name="User Controller", description = "사용자 관련 controller (JWT ver.)")
 public class UserController {
     private final UserService userService;
 
@@ -35,9 +29,9 @@ public class UserController {
      */
     @PostMapping("")
     @Operation(summary = "로그아웃", description = "사용자의 JWT 토큰을 삭제하여 로그아웃 처리")
-    public ResultDto<Object> logout(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestHeader("Authorization") String accessToken) {
+    public ResultDto<Object> logout(@AuthenticationPrincipal CustomUserDetail userDetail) {
         try {
-            userService.logout(userDetail.getId(), accessToken);
+            userService.logout(userDetail.getId());
             return ResultDto.of(HttpStatusCode.OK, "로그아웃 성공", null);
         } catch (AuthErrorException e) {
             return ResultDto.of(e.getCode(), e.getErrorMsg(), null);
@@ -53,41 +47,35 @@ public class UserController {
     @DeleteMapping("")
     @Operation(summary = "회원 탈퇴", description = "사용자의 JWT 토큰과 계정 정보 삭제 처리")
     public ResultDto<Object> deleteUser(@AuthenticationPrincipal CustomUserDetail userDetail) {
-        userService.delete(userDetail.getId());
+        userService.deleteUser(userDetail.getId());
         return ResultDto.of(HttpStatusCode.OK, "사용자 탈퇴 성공", null);
     }
 
 //------------------------------------------- << 프로필 >> -------------------------------------------
     /**
-     * 싸피생 인증
+     * 프로필 조회
      */
-    @PostMapping("/{userId}/ssafy")
-    @Operation(summary = "싸피생 인증", description = "임시로 무조건 term=12, campus='구미'로 설정")
-    public ResponseEntity<SsafyAuthResponse> ssafyAuth(@PathVariable("userId") String userId, @RequestBody SsafyAuthRequest request) {
-        return ResponseEntity.ok(userService.ssafyAuth(userId, request));
-    }
-
-    /**
-     * 닉네임 중복 검사
-     */
-    @GetMapping("/{nickname}")
-    @Operation(summary="닉네임 중복 검사", description = "사용자가 화면에 입력한 닉네임이 중복되었는지 검사")
-    public ResponseEntity<String> checkNickname(@PathVariable("nickname") String nickname){
-        return ResponseEntity.ok(userService.checkNickname(nickname));
-    }
-
-    /**
-     * 닉네임 변경 (중복 검사 포함)
-     */
-    @GetMapping("/nickname")
-    @Operation(summary="닉네임 변경", description = "닉네임 중복 검사 후 변경")
-    public ResultDto<Object> updateNickname(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestBody UserNicknameRequest userNicknameRequest) {
+    @GetMapping("/profile")
+    @Operation(summary = "프로필 조회", description = "프로필에 포함된 정보 : 닉네임, 프로필 사진, 기수, 캠퍼스, 스터디 관심 주제, 스터디 요일")
+    public ResultDto<UserProfileResponse> getProfile(@AuthenticationPrincipal CustomUserDetail userDetail) {
         try {
-            userService.updateNickname(userDetail.getId(), userNicknameRequest);
-            return ResultDto.of(HttpStatusCode.CREATED, "사용자 닉네임 설정 성공", null);
-        } catch (AuthErrorException e) {
-            return ResultDto.of(e.getCode(), e.getErrorMsg(), null);
+            UserProfileResponse profile = userService.findUserProfile(userDetail.getId());
+            return ResultDto.of(HttpStatusCode.OK, "프로필 조회 성공", profile);
         } catch (ApiErrorException e) {
+            return ResultDto.of(e.getCode(), e.getErrorMsg(), null);
+        }
+    }
+
+    /**
+     * 프로필 수정
+     */
+    @PatchMapping("/profile")
+    @Operation(summary = "프로필 수정", description = "닉네임(중복 검사), 프로필 사진, 스터디 관심 주제, 스터디 요일 수정 가능")
+    public ResultDto<UserProfileResponse> updateProfile(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestBody UserProfileRequest request){
+        try {
+            UserProfileResponse updatedProfile = userService.modifyUserProfile(userDetail.getId(), request);
+            return ResultDto.of(HttpStatusCode.OK, "프로필 수정 성공", null);
+        } catch (AuthErrorException e) {
             return ResultDto.of(e.getCode(), e.getErrorMsg(), null);
         } catch (Exception e) {
             return ResultDto.of(HttpStatusCode.INTERNAL_SERVER_ERROR, "서버 에러", null);
@@ -95,30 +83,34 @@ public class UserController {
     }
 
     /**
-     * (카카오 로그인 후) 프로필 생성
+     * 닉네임 중복 검사
      */
-    @PostMapping("/{userId}/profile")
-    @Operation(summary = "프로필 생성", description = "관심 주제, 스터디 요일 생성")
-    public ResponseEntity<UserProfileResponse> createProfile(@PathVariable("userId") String userId, @RequestBody UserProfileRequest request) {
-        return ResponseEntity.ok(userService.createUserProfile(userId, request));
+    @GetMapping("/nickname")
+    @Operation(summary="닉네임 중복 검사", description = "사용자가 화면에 입력한 닉네임이 중복되었는지 검사")
+    public ResultDto<String> checkNickname(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestParam("nickname") String nickname) {
+        try {
+            boolean isDuplicated = userService.isNicknameDuplicated(nickname);
+            if (isDuplicated) {
+                return ResultDto.of(ApiErrorStatus.DUPLICATED_USER_NAME.getCode(), "이미 사용중인 닉네임입니다.", nickname);
+            }
+            return ResultDto.of(HttpStatusCode.OK, "사용 가능한 닉네임입니다.", nickname);
+        } catch (Exception e) {
+            return ResultDto.of(HttpStatusCode.INTERNAL_SERVER_ERROR, "서버 에러", null);
+        }
     }
 
     /**
-     * 프로필 조회
+     * 싸피생 인증
      */
-    @GetMapping("/{userId}/profile")
-    @Operation(summary = "프로필 조회", description = "프로필에 포함된 정보 : 닉네임, 프로필 사진, 기수, 캠퍼스, 관심 주제, 요일")
-    public ResponseEntity<UserProfileResponse> userProfile(@PathVariable("userId") String userId) {
-        return ResponseEntity.ok(userService.findUserProfile(userId));
-    }
-
-    /**
-     * 프로필 수정
-     */
-    @PatchMapping("/{userId}/profile")
-    @Operation(summary = "프로필 수정", description = "닉네임(중복 검사 선행), 프로필 사진, 관심 주제, 요일 수정 가능")
-    public ResponseEntity<UserProfileResponse> userModify(@PathVariable("userId") String userId, @RequestBody UserProfileRequest request){
-        return ResponseEntity.ok(userService.modifyUserProfile(userId, request));
+    @PostMapping("/ssafy")
+    @Operation(summary = "싸피생 인증", description = "임시로 무조건 term=12, campus='구미'로 설정")
+    public ResultDto<SsafyAuthResponse> ssafyAuth(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestBody SsafyAuthRequest request) {
+        try {
+            SsafyAuthResponse response = userService.ssafyAuth(userDetail.getId(), request);
+            return ResultDto.of(HttpStatusCode.OK, "싸피생 인증 성공", response);
+        } catch (AuthErrorException e) {
+            return ResultDto.of(e.getCode(), e.getErrorMsg(), null);
+        }
     }
 
 

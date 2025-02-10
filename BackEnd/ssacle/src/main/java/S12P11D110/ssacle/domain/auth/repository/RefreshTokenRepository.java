@@ -4,6 +4,7 @@ import S12P11D110.ssacle.domain.auth.entity.RefreshToken;
 import S12P11D110.ssacle.global.exception.AuthErrorException;
 import S12P11D110.ssacle.global.exception.AuthErrorStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -24,6 +25,8 @@ Redis를 사용하는 2가지 방식
 @ComponentScan
 @RequiredArgsConstructor
 public class RefreshTokenRepository{
+    @Value("${jwt.refresh.token.expiration.seconds}")
+    private long refreshTokenExpiration;
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
     public RefreshTokenRepository(RedisTemplate<String, String> redisTemplate) {
@@ -34,7 +37,7 @@ public class RefreshTokenRepository{
     public void save(RefreshToken refreshToken) {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         valueOperations.set(refreshToken.getRefreshToken(), refreshToken.getUserId());
-        redisTemplate.expire(refreshToken.getRefreshToken(), 21L, TimeUnit.DAYS);
+        redisTemplate.expire(refreshToken.getRefreshToken(), refreshTokenExpiration, TimeUnit.DAYS);
     }
 
     /* refresh token 으로 userId 조회 */

@@ -42,7 +42,7 @@ public class KakaoController {
             // kakaoUserInfo가 null인지 확인
             if (kakaoUserInfo == null) {
                 log.error("카카오 사용자 정보를 가져오지 못했습니다.");
-                throw new AuthErrorException(AuthErrorStatus.GET_USER_FAILED);
+                throw new AuthErrorException(AuthErrorStatus.GET_SOCIAL_INFO_FAILED);
             }
 
             // 회원가입/로그인 후 JWT 토큰 발급

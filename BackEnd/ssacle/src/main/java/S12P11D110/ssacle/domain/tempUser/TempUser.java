@@ -1,7 +1,8 @@
 package S12P11D110.ssacle.domain.tempUser;
 
 
-import S12P11D110.ssacle.global.entity.BaseTimeEntity;
+import S12P11D110.ssacle.domain.user.entity.UserRole;
+import S12P11D110.ssacle.global.entity.BaseEntity;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor              // GPT 도움!! (모든 필드를 포함한 생성자 추가)
 @Builder
 @Document(collection = "users")  // GPT 도움!! (MongoDB 컬렉션 이름 지정)
-public class User extends BaseTimeEntity {
+public class TempUser extends BaseEntity {
     //------------------------------------------- << 필드 >> -------------------------------------------
     @Id
     private String userId;  // GPT 도움!! (MongoDB에서는 String 타입으로 ID를 관리할 수 있음)
@@ -54,7 +55,7 @@ public class User extends BaseTimeEntity {
 
     //------------------------------------------- << 메서드 >> -------------------------------------------
     // 사용자 계정 생성
-    public User(String email, String nickname) {
+    public TempUser(String email, String nickname) {
         this.userId = UUID.randomUUID().toString();
         this.email = email;
         this.nickname = nickname;

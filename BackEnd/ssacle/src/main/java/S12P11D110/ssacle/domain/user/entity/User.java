@@ -2,8 +2,6 @@ package S12P11D110.ssacle.domain.user.entity;
 
 
 import S12P11D110.ssacle.global.entity.BaseEntity;
-import S12P11D110.ssacle.global.entity.MeetingDay;
-import S12P11D110.ssacle.global.entity.Topic;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -42,9 +40,9 @@ public class User extends BaseEntity {
 
     // 스터디 프로필 (기본값 설정)
     @Builder.Default
-    private Set<Topic> topics = new HashSet<>();
+    private Set<String> topics = new HashSet<>();
     @Builder.Default
-    private Set<MeetingDay> meetingDays = new HashSet<>();
+    private Set<String> meetingDays = new HashSet<>();
 
     // 스터디 정보 (기본값 설정)
     @Builder.Default
@@ -56,30 +54,4 @@ public class User extends BaseEntity {
     @Builder.Default
     private Set<String> invitedStudies = new HashSet<>();
 
-//------------------------------------------- << 메서드 >> -------------------------------------------
-    // 사용자 계정 생성
-    public User(String email, String nickname) {
-        this.userId = UUID.randomUUID().toString();
-        this.email = email;
-        this.nickname = nickname;
-        this.image = "";
-        this.term = "미인증";
-        this.campus = "미인증";
-        this.role = UserRole.USER;
-        this.topics = new HashSet<>();
-        this.meetingDays = new HashSet<>();
-        this.createdStudies = new HashSet<>();
-        this.joinedStudies = new HashSet<>();
-        this.wishStudies = new HashSet<>();
-        this.invitedStudies = new HashSet<>();
-    }
-
-    // 프로필 수정
-    public void updateProfile(String nickname, String image, Set<Topic> topics, Set<MeetingDay> meetingDays) {
-        // 기존 필드를 유지하면서 null이 아닌 값만 업데이트
-        if (nickname != null) this.nickname = nickname;
-        if (image != null) this.image = image;
-        if (topics != null) this.topics = topics;
-        if (meetingDays != null) this.meetingDays = meetingDays;
-    }
 }

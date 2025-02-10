@@ -74,8 +74,8 @@ public class SecurityConfig {
      * Spring Security 인증 관리 : AuthenticationManager 빈 등록
      * ID/PW 로그인도 지원할 거면 유지하고, JWT만 사용할 거면 제거해도 됨!
      */
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+//    @Bean
+//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+//        return authenticationConfiguration.getAuthenticationManager();
+//    }
 }
