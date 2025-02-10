@@ -51,7 +51,7 @@ services:
     environment:
       # SPRING_DATA_MONGODB_URI: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb:27017/${MONGO_DATABASE}
 
-      SPRING_DATA_MONGODB_URI: mongodb://root:password@mongodb:27017/ssacle
+      SPRING_DATA_MONGODB_URI: mongodb://root:password@mongodb:27017/ssacle?authSource=admin
 
 
       SPRING_REDIS_HOST: redis
@@ -87,7 +87,7 @@ services:
       - redis
     restart: always
     environment:
-      MONGO_URI: mongodb://root:password@mongodb:27017/mydatabase
+      MONGO_URI: mongodb://root:password@mongodb:27017/ssacle?authSource=admin
 
       # Redis 연결 정보
       REDIS_HOST: redis
