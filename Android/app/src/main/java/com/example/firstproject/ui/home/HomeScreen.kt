@@ -5,6 +5,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -109,7 +110,7 @@ fun HomeScreen(
                 Spacer(Modifier.height(12.dp))
                 TitleTextView("내 스터디 목록")
                 Spacer(Modifier.height(16.dp))
-                MyStudyItem(myStudyList)
+                MyStudyItem(myStudyList, navController = navController)
                 Spacer(Modifier.height(36.dp))
 
                 TitleTextView("스터디 매칭")
@@ -199,7 +200,8 @@ private fun TitleTextView(title: String) {
 @Composable
 fun MyStudyItem(
     // 스터디 리스트
-    itemList: List<StudyInfo>
+    itemList: List<StudyInfo>,
+    navController: NavController
 ) {
     val pagerState = rememberPagerState(initialPage = 0) {
         // 크기
@@ -228,8 +230,12 @@ fun MyStudyItem(
                             elevation = 2.dp,
                             shape = RoundedCornerShape(10.dp),
                             clip = true,
-                        ),
+                        )
+                        .clickable {
+                            // 해당 스터디 상세정보 화면으로 이동
+                            navController.navigate("studyDetailScreen")
 
+                        },
                     shape = RoundedCornerShape(5.dp),
                     colors = CardDefaults.cardColors(containerColor = Color.White),
                     border = BorderStroke(
@@ -299,7 +305,7 @@ private fun FindActionButton() {
             colors = CardDefaults.cardColors(containerColor = Color.White),
             border = BorderStroke(1.dp, colorResource(R.color.border_card_color)),
 
-        ) {
+            ) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
