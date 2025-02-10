@@ -20,4 +20,7 @@ public interface UserRepository extends MongoRepository<User,String> {
 
     // existsByNickname : 닉네임 중복 검사
     Boolean existsByNickname(String Nickname);
+
+    // findByNickname : 닉네임으로 사용자 조회
+    List<User> findByNickname(String nickname);
 }

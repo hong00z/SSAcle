@@ -27,7 +27,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private static final String BEARER_PREFIX = "Bearer ";
 
     /**
-     * SecurityContext에 Access Token으로부터 뽑아온 인증 정보를 저장하는 메서드
+     * doFilterInternal : SecurityContext에 Access Token으로부터 뽑아온 인증 정보를 저장하는 메서드
      *
      *  doFilterInternal() 내부에서 수행하는 작업:
      *  – HTTP 쿠키 or 헤더에서 JWT 가져오기
@@ -59,7 +59,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     }
 
     /**
-     * Header에서 토큰값 추출하는 메서드
+     * resolveToken : Header에서 토큰값 추출하는 메서드
      */
     private String resolveToken(HttpServletRequest request) {
         String token = request.getHeader("Authorization");

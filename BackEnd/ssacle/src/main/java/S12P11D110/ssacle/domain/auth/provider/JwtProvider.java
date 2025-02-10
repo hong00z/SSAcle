@@ -23,7 +23,7 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.*;
 
-
+// JwtProvider : Access Token과 Refresh Token을 생성하고 검증하는 역할
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -43,7 +43,7 @@ public class JwtProvider {
      *  인증된 사용자에게 최초 발급할 Access Token 생성
      */
     public String generateAccessToken(Map<String, Object> claims, String subject) {
-        //토큰 생성시간
+        // 토큰 생성시간
         Instant now = Instant.from(OffsetDateTime.now());
         /* claims를 subject보다 먼저 적용해야 subject가 claims에 추가된다.*/
         return Jwts.builder()
@@ -68,7 +68,7 @@ public class JwtProvider {
     }
 
     /**
-     * 리프레시 토큰으로 액세스 토큰 재발급
+     * Refresh 토큰으로 Access 토큰 재발급
      */
     public String reAccessToken(String token) throws AuthErrorException {
 
@@ -96,7 +96,7 @@ public class JwtProvider {
     }
 
     /**
-     * 토큰 유효성 검사
+     * 유효성 검사
      */
     public boolean validateToken(String token) throws AuthErrorException {
         try {

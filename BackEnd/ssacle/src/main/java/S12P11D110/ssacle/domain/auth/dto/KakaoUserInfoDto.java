@@ -17,10 +17,11 @@ public class KakaoUserInfoDto {
 
     public KakaoUserInfoDto(Map<String, Object> attributes) {
         this.id = (Long) attributes.get("id");
+        this.properties = (Map<String, Object>) attributes.get("properties");
+        this.kakao_account = (Map<String, Object>) attributes.get("kakao_account");
         this.nickname = (String) properties.get("nickname");
         this.email = (String) kakao_account.get("email");
         this.image = (String) properties.get("profile_image");
-        this.properties = (Map<String, Object>) attributes.get("properties");
-        this.kakao_account = (Map<String, Object>) attributes.get("kakao_account");
+
     }
 }

@@ -30,22 +30,35 @@ public class KakaoController {
     public ResultDto<Object> socialLogin(@RequestHeader HttpHeaders headers) throws AuthErrorException {
 
         String accessToken = Objects.requireNonNull(headers.getFirst("Authorization")).substring(7);
+        log.info("✅ [Step 1] 카카오 로그인 요청 accessToken: {}", accessToken);
 
-        if (accessToken.equals("")) throw new AuthErrorException(AuthErrorStatus.EMPTY_TOKEN);
+        if (accessToken.isEmpty()) throw new AuthErrorException(AuthErrorStatus.EMPTY_TOKEN);
 
         try {
             // token으로 카카오 사용자 정보 가져오기
             KakaoUserInfoDto kakaoUserInfo = kakaoUserService.getKakaoUserInfo(accessToken);
+            log.info("✅ [Step 2] 카카오 사용자 정보 가져옴: {}", kakaoUserInfo);
+
+            // kakaoUserInfo가 null인지 확인
+            if (kakaoUserInfo == null) {
+                log.error("카카오 사용자 정보를 가져오지 못했습니다.");
+                throw new AuthErrorException(AuthErrorStatus.GET_USER_FAILED);
+            }
 
             // 회원가입/로그인 후 JWT 토큰 발급
             TokenDto tokenDto = kakaoUserService.joinorLogin(kakaoUserInfo);
+            log.info("✅ [Step 3] JWT 토큰 생성 완료: {}", tokenDto);
 
             if (tokenDto.getType().equals("Signup")) {
                 return ResultDto.of(HttpStatusCode.CREATED, "회원 가입 성공", tokenDto);
             } else {
                 return ResultDto.of(HttpStatusCode.CREATED, "로그인 성공", tokenDto);
             }
+        } catch (AuthErrorException e) {
+            log.error("❌ [Step X] 인증 오류 발생: {}", e.getMessage());
+            return ResultDto.of(e.getCode(), e.getErrorMsg(), null);
         } catch (Exception e) {
+            log.error("❌ [Step X] 서버 오류 발생", e);
             return ResultDto.of(HttpStatusCode.INTERNAL_SERVER_ERROR, "서버 에러", null);
         }
     }

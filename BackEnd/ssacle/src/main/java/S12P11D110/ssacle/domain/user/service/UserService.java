@@ -1,14 +1,17 @@
 package S12P11D110.ssacle.domain.user.service;
 
-import S12P11D110.ssacle.domain.user.dto.UserDTO;
+import S12P11D110.ssacle.domain.auth.repository.RefreshTokenRepository;
 import S12P11D110.ssacle.domain.user.dto.request.SsafyAuthRequest;
+import S12P11D110.ssacle.domain.user.dto.request.UserNicknameRequest;
 import S12P11D110.ssacle.domain.user.dto.request.UserProfileRequest;
-import S12P11D110.ssacle.domain.user.dto.request.UserRegisterRequest;
 import S12P11D110.ssacle.domain.user.dto.response.SsafyAuthResponse;
 import S12P11D110.ssacle.domain.user.dto.response.UserProfileResponse;
-import S12P11D110.ssacle.domain.user.dto.response.UserRegisterResponse;
 import S12P11D110.ssacle.domain.user.entity.User;
 import S12P11D110.ssacle.domain.user.repository.UserRepository;
+import S12P11D110.ssacle.global.exception.ApiErrorException;
+import S12P11D110.ssacle.global.exception.ApiErrorStatus;
+import S12P11D110.ssacle.global.exception.AuthErrorException;
+import S12P11D110.ssacle.global.exception.AuthErrorStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,43 +19,37 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Optional;
 
+import static S12P11D110.ssacle.domain.user.entity.UserRole.SSAFYUSER;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
-//------------------------------------------- << JWT 관련 >> -------------------------------------------
-    /*
-    // Refresh Token으로 사용자 조회
-    public Optional<UserDTO> findByRefreshToken(String refreshToken) {
-        return userRepository.findByRefreshToken(refreshToken).map(UserDTO::new);
-    }
-
-    // Refresh Token 갱신
-    public void updateRefreshToken(String userId, String refreshToken) {
-        TempUser user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("TempUser not found"));
-        user.setRefreshToken(refreshToken);
-        userRepository.save(user);
-    }
+//------------------------------------------- << 로그아웃 & 탈퇴 >> -------------------------------------------
+    /**
+     * 로그아웃
      */
+    @Transactional
+    public void logout(String userId, String accessToken) {
+        // 해당 유저의 Refresh Token 삭제
+        refreshTokenRepository.deleteByUserId(userId);
+    }
 
     /**
-     * userId로 사용자 조회
+     * 회원 탈퇴
      */
-    public Optional<UserDTO> findById(String userId) {
-        return userRepository.findById(userId).map(UserDTO::new);
+    @Transactional
+    public void delete(String userId) {
+        // 해당 유저의 Refresh Token 삭제
+        refreshTokenRepository.deleteByUserId(userId);
+        // 유저 찾기
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new AuthErrorException(AuthErrorStatus.GET_USER_FAILED));
+        // DB에서 유저 정보 삭제
+        userRepository.delete(user);
     }
-
-//------------------------------------------- << 임시 회원가입 >> -------------------------------------------
-    public UserRegisterResponse registerUser(UserRegisterRequest request) {
-        User user = User.builder()
-            .nickname(request.getNickname())
-            .email(request.getEmail())
-            .build();
-    userRepository.save(user);
-    return new UserRegisterResponse(user.getUserId(), user.getNickname(), user.getEmail());
-}
 
 
 //------------------------------------------- << 프로필 >> -------------------------------------------
@@ -68,16 +65,28 @@ public class UserService {
         // (일단 임시로 기수는 12기, 지역은 구미로 일괄 설정)
         user.setTerm("12기");
         user.setCampus("구미");
+        user.setRole(SSAFYUSER);
         // DB 저장
         userRepository.save(user);
         return new SsafyAuthResponse("12기", "구미");
     }
 
     /**
-     * 닉네임 중복 검사 : UX 개선용
+     * 닉네임 변경 (증복 검사)
      */
     public String checkNickname(String nickname) {
         return userRepository.existsByNickname(nickname) ? "이미 사용중인 닉네임입니다." : "사용 가능한 닉네임입니다.";
+    }
+    public void updateNickname(String userId, UserNicknameRequest updateUserNicknameRequestDto) throws AuthErrorException {
+        String newNickname = updateUserNicknameRequestDto.getUserNickname();
+        if (userRepository.findByNickname(newNickname).isEmpty()) {
+            Optional<User> optionalUser = userRepository.findById(userId);
+            // ✅ User 객체가 존재하면 닉네임 변경 후 저장
+            User user = optionalUser.orElseThrow(() -> new AuthErrorException(AuthErrorStatus.GET_USER_FAILED));
+            user.setNickname(newNickname);
+        } else {
+            throw new ApiErrorException(ApiErrorStatus.DUPLICATED_USER_NAME);
+        }
     }
 
     /**
