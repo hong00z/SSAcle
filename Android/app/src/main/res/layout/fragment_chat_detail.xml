@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -14,14 +15,44 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/chatDetailToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@android:color/white"
-            android:gravity="center"
-            android:title="이거슨 알고리즘 스터디여"
-            android:titleTextColor="@color/chat_blue" />
+            app:navigationIcon="@drawable/baseline_arrow_back_24"
+            app:titleCentered="true"
+            app:titleTextAppearance="@style/Toolbar.Title.Bold"
+            app:titleTextColor="@color/chat_blue"
+            tools:title="스터디 이름">
+
+            <!-- 오른쪽에 배치할 커스텀 뷰 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/person_24"
+                    app:tint="@color/chat_blue" />
+
+                <TextView
+                    android:id="@+id/peopleCountTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/chat_blue"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:text="6" />
+            </LinearLayout>
+        </com.google.android.material.appbar.MaterialToolbar>
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- ProgressBar (로딩 표시) -->
@@ -46,8 +77,50 @@
         android:paddingTop="8dp"
         android:paddingEnd="8dp"
         android:paddingBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/messageInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appBarLayout" />
+
+    <!-- 새 메시지 인디케이터 (안 읽은 최신 메시지 표시) -->
+    <TextView
+        android:id="@+id/newMessageIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_message_received"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:text="유저: 새 메시지"
+        android:textColor="@android:color/black"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/messageInputLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- 메시지 입력 영역 -->
+    <LinearLayout
+        android:id="@+id/messageInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <EditText
+            android:id="@+id/messageEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="메시지 입력" />
+
+        <ImageButton
+            android:id="@+id/sendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="전송"
+            android:src="@drawable/baseline_send_24" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
