@@ -5,11 +5,15 @@ import S12P11D110.ssacle.domain.feed.dto.FeedDetailDTO;
 import S12P11D110.ssacle.domain.feed.entity.Feed;
 import S12P11D110.ssacle.domain.feed.repository.FeedRepository;
 import S12P11D110.ssacle.domain.study.dto.*;
+import S12P11D110.ssacle.domain.study.dto.request.StudyCreateRequestDTO;
+import S12P11D110.ssacle.domain.study.dto.request.StudyUpdateRequestDTO;
+import S12P11D110.ssacle.domain.study.dto.response.*;
 import S12P11D110.ssacle.domain.study.entity.Study;
 import S12P11D110.ssacle.domain.tempUser.TempUser;
 import S12P11D110.ssacle.domain.study.repository.StudyRepository;
 import S12P11D110.ssacle.domain.tempUser.SearchUserDTO;
 import S12P11D110.ssacle.domain.tempUser.TempUserRepository;
+import S12P11D110.ssacle.global.firebase.FirebaseMessagingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +31,7 @@ public class StudyService {
     private final RecommendUserService recommendUserService;
     private final RecommendStudyService recommendStudyService;
     private final FeedRepository feedRepository;
+    private final FirebaseMessagingService firebaseMessagingService;
 
     // 스터디 토픽 리스트 & 모임요일 리스트 반환
     public Map<String, List<String>> topicList() {
@@ -252,7 +257,20 @@ public class StudyService {
         // 저장
         studyRepository.save(study);
         userRepository.save(tempUser);
+
+        sendToUser(tempUser.getFcmToken(), tempUser.getNickname(), study.getStudyName());
+
     }
+    // 유저에게FCM 던지기
+    public void sendToUser (String token,  String nickname,  String studyName ){
+        String title = "유저에게 스터디 참가 요청";
+        String body = studyName + "이 " + nickname + "을 스터디로 초대합니다!";
+        System.out.println(token);
+
+        firebaseMessagingService.sendNotification(token, title, body);
+    }
+
+
 //----------------------------------------------------------------------------------------------------------------------
 
 
@@ -309,6 +327,24 @@ public class StudyService {
         // 저장
         userRepository.save(tempUser);
         studyRepository.save(study);
+
+        // 스터디 팀장 정보
+        String leaderId = study.getLeader(); // 스터디 장 ID 찾기
+        TempUser leader = userRepository.findById(leaderId)  // 스터디 장의 Entity
+                .orElseThrow(() -> new NoSuchElementException("유저ID" + leaderId + "에 해당하는 유저가 없습니다."));
+        System.out.println("스터디장: " + leader);
+        System.out.println("스터디장의 토큰: " + leader.getFcmToken());
+
+        sendToLeader(leader.getFcmToken(), tempUser.getNickname(), study.getStudyName());
+    }
+
+    // 스터디 팀장에게 FCM 던지기
+    public void sendToLeader (String token,  String nickname,  String studyName ){
+        String title = "스터디에게 스터디 가입 신청";
+        String body = nickname + "이(가) " + studyName + "에 가입하길 희망합니다!";
+        System.out.println(token);
+
+        firebaseMessagingService.sendNotification(token, title, body);
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -487,7 +523,26 @@ public class StudyService {
         // 4. 저장
         userRepository.save(tempUser);
         studyRepository.save(study);
+
+
+        // 스터디 팀장 정보
+        String leaderId = study.getLeader(); // 스터디 장 ID 찾기
+        TempUser leader = userRepository.findById(leaderId)  // 스터디 장의 Entity
+                .orElseThrow(() -> new NoSuchElementException("유저ID" + leaderId + "에 해당하는 유저가 없습니다."));
+
+        sendToLeaderJoinEvent(leader.getFcmToken(), tempUser.getNickname(), study.getStudyName());
+
     }
+
+    // 스터디 팀장에게 FCM 던지기
+    public void sendToLeaderJoinEvent (String token,  String nickname,  String studyName ){
+        String title = "유저의 스터디 가입";
+        String body = nickname + "이(가) " + studyName + "에 가입하셨습니다!";
+
+        firebaseMessagingService.sendNotification(token, title, body);
+    }
+
+
 
     // 유저의 수락: invitedStudy, wishMembers 에서 studyId, userId 삭제
     public void editInvitedStudyWishMembers(String userId, String studyId) {
@@ -514,6 +569,7 @@ public class StudyService {
         tempUser.getWishStudies().remove(studyId);
         study.getPreMembers().remove(userId);
 
+        userRepository.save(tempUser);
         userRepository.save(tempUser);
         studyRepository.save(study);
 

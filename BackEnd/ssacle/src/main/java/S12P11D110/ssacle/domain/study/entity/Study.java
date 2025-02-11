@@ -19,13 +19,14 @@ public class Study extends BaseEntity {
     private String id;                  // MongoDB에서 자동 생성되는 고유 ID
     private String studyName;           // 스터디 이름
     @Field("topic")
-    private String topic;           // 주제 목록
-    private Set<String> meetingDays; // 모임 요일
+    private String topic;               // 주제 목록
+    private Set<String> meetingDays;    // 모임 요일
     private int count;                  //정원
     private Set<String> members;        // 멤버 (user의 ID)
     private String studyContent;        // 스터디 소개
     private Set<String> wishMembers;    // 스카웃하고 싶은 스터디원 (user의 ID)
     private Set<String>preMembers;      // 신청한 스터디원(user의 ID)
+    private String leader;              // 스터디 장의 userId
 //    private String createdBy;           // 방장: 스터디 개설한 UserId
 
     // 스터디 개설일자는 BaseTimeEntity에 있음
