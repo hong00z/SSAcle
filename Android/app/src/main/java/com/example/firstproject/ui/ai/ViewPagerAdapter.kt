@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.firstproject.R
 import com.example.firstproject.databinding.SliderItemBinding
+import com.example.firstproject.ui.ai.eye.EyeFragment
 import com.example.firstproject.ui.ai.face.FaceExpressionFragment
 
 class ViewPagerAdapter(private val items: List<CardItem>) :
@@ -36,6 +37,7 @@ class ViewPagerAdapter(private val items: List<CardItem>) :
             val fragment = when (item.title) {
                 "자소서 피드백" -> AiFeedbackFragment()
                 "영상 피드백" -> FaceExpressionFragment()
+                "인터뷰 피드백" -> EyeFragment()
                 else -> null
             }
 
