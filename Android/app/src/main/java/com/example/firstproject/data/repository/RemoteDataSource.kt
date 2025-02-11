@@ -1,7 +1,13 @@
 package com.example.firstproject.data.repository
 
+import android.content.Context
 import com.example.firstproject.BuildConfig
+import com.example.firstproject.MyApplication
+import com.example.firstproject.data.model.dto.response.KakaoTokenDTO
+import com.example.firstproject.data.model.dto.response.RefreshTokenDTO
+import com.example.firstproject.data.model.dto.response.common.CommonResponseDTO
 import com.example.firstproject.network.APIService
+import com.google.android.gms.common.api.Response
 import com.rootachieve.requestresult.RequestResult
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -11,6 +17,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 class RemoteDataSource {
+    private val context = MyApplication.appContext
+
     companion object {
         private const val BASE_URL_SPRING = "http://43.203.250.200:5001/"
         private const val BASE_URL_RTC = ""
@@ -27,20 +35,10 @@ class RemoteDataSource {
         redactHeader("Cookie")
     }
 
-//    private val authInterceptor = Interceptor { chain ->
-//        val token = MainApplication.prefs.token
-//        val requestBuilder = chain.request().newBuilder()
-//
-//        // 토큰이 존재할 경우만 Authorization 헤더 추가
-//        token?.let {
-//            requestBuilder.addHeader("Authorization", "Bearer $it")
-//        }
-//
-//        chain.proceed(requestBuilder.build())
-//    }
+//    private val tokenInterceptor = TokenInterceptor(context)
 
     private val client = OkHttpClient.Builder()
-//        .addInterceptor(authInterceptor) // 토큰 인터셉터 추가
+//        .addInterceptor(tokenInterceptor) // 토큰 인터셉터 추가
         .addInterceptor(loggingInterceptor) // 로깅 인터셉터 추가
         .connectTimeout(15, TimeUnit.SECONDS) // 연결 타임아웃
         .readTimeout(15, TimeUnit.SECONDS)    // 읽기 타임아웃
@@ -81,19 +79,33 @@ class RemoteDataSource {
         return retrofitChat.create(APIService::class.java)
     }
 
-    // JWT 리프레쉬 토큰 확인
-//    private suspend inline fun <T> runningWithCheckRefresh(running: () -> T): T {
-//        val result = running()
-//        return if (result is RequestResult.Failure) {
-//            if(getAccessToken()){
-//                running()
-//            }else{
-//                result
-//            }
-//        } else {
-//            result
-//        }
-//    }
+    private val springService = getSpringService()
+
+    suspend fun loginWithKakao(accessToken: String): RequestResult<KakaoTokenDTO> {
+        return try {
+            val response = springService.kakaoLogin(accessToken)
+            if (response.isSuccessful && response.body()?.data != null) {
+                RequestResult.Success(response.body()!!.data!!)
+            } else {
+                RequestResult.Failure(Exception(response.body()?.message ?: "로그인 실패").toString())
+            }
+        } catch (e: Exception) {
+            RequestResult.Failure(e.toString())
+        }
+    }
+
+    suspend fun refreshAccessToken(refreshToken: String): RequestResult<RefreshTokenDTO> {
+        return try {
+            val response = springService.getRefreshToken("Bearer $refreshToken")
+            if (response.isSuccessful && response.body()?.data != null) {
+                RequestResult.Success(response.body()!!.data!!)
+            } else {
+                RequestResult.Failure(Exception(response.body()?.message ?: "토큰 갱신 실패").toString())
+            }
+        } catch (e: Exception) {
+            RequestResult.Failure(e.toString())
+        }
+    }
 }
 
 

@@ -17,3 +17,7 @@ data class User(
     val invitedStudies: List<String> = emptyList(),
     val refreshToken: String? = "",
 )
+
+data class TokenUpdateRequest(
+    val fcmToken: String
+)
