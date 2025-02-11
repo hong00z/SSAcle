@@ -66,8 +66,8 @@ const userSchema = new Schema({
     },
   ],
   studyReadTimestamps: [studyReadTimestampSchema],
-  // 리프레시 토큰 (로그인 상태 유지 등 인증을 위해 사용)
-  refreshToken: {
+  // FCM 토큰
+  fcmToken: {
     type: String,
     default: "",
   },
