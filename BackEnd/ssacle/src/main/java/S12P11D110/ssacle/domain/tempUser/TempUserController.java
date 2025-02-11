@@ -71,7 +71,7 @@ public class TempUserController {
 
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(mediaType = "multipart/form-data"))
-            @RequestPart UserProfileRequest request,
+            @RequestPart TempUserProfileRequest request,
 
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(mediaType = "multipart/form-data"))

@@ -81,18 +81,17 @@ public class KakaoUserService {
      * - 이메일로 DB에 존재하는 회원인지 조회
      */
     public TokenDto joinorLogin(KakaoUserInfoDto kakaoUserInfo) {
-        log.info("✅ [Step 5] joinorLogin() 실행");
+        log.info("✅ [Step 3] joinorLogin() 실행");
 
         String email = kakaoUserInfo.getEmail();
-        log.info("✅ [Step 6] 검색할 이메일: {}", email);
+        log.info("✅ [Step 4] 검색할 이메일: {}", email);
         return userRepository.findByEmail(email)
                 .map(user -> createTokens(user, "Login")) // 존재하면 로그인
                 .orElseGet(() -> {
-                    log.info("🆕 [Step 7] 신규 회원가입 진행: {}", kakaoUserInfo);
+                    log.info("🆕 [Step 4-1] 신규 회원가입 진행: {}", kakaoUserInfo);
                     User newUser = join(kakaoUserInfo);
-                    log.info("🆕 [Step 8] 회원가입 완료: {}", newUser);
+                    log.info("🆕 [Step 4-2] 회원가입 완료: {}", newUser);
                     return createTokens(newUser, "Signup");
-//                    return createTokens(join(kakaoUserInfo), "Signup"); // 없으면 회원가입 후 토큰 발급
                 });
     }
 

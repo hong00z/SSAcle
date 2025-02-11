@@ -84,10 +84,11 @@ public class UserService {
             }
             user.setNickname(request.getNickname());
         }
-        // 프로필 이미지는 null 아닐 때 이미지 업로드하고, null이면 공백(안드로이드에 저장된 기본 이미지) 처리
+        // 프로필 이미지는 null 아닐 때 이미지 업로드하고, null이면 ""로 초기화
         if (request.getImage() != null) {
             user.setImage(request.getImage());
         }
+        else { user.setImage(""); }
         user.setTopics(request.getTopics());
         user.setMeetingDays(request.getMeetingDays());
         userRepository.save(user);
