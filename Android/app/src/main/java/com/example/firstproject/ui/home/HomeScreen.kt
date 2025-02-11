@@ -33,6 +33,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,6 +47,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.findNavController
@@ -56,8 +61,12 @@ import com.example.firstproject.ui.theme.pretendard
 @Composable
 fun HomeScreen(
     navController: NavController,
-    onNavigateToFragment: () -> Unit
+    onNavigateToFragment: () -> Unit,
+    homeViewModel: HomeViewModel = viewModel()
+
 ) {
+    val userInfoStateResult by homeViewModel.userInfoStateResult.collectAsStateWithLifecycle()
+    val myStudyListResult by homeViewModel.myStudyListResult.collectAsStateWithLifecycle()
 
     val myStudyList = mutableListOf<StudyInfo>(
         StudyInfo("스프링 입문 스터디", "백엔드", 8, true, true),
@@ -66,6 +75,23 @@ fun HomeScreen(
 
         StudyInfo("스터디 제목", "모바일", 5, true, false),
     )
+
+
+    val myStudy = myStudyListResult.getOrNull()
+
+//    myStudyListResult.onNone {
+//        homeViewModel.
+//    }
+
+    LaunchedEffect(myStudyListResult) {
+        myStudyListResult.onSuccess { data ->
+
+        }
+        myStudyListResult.onFailure { code, e ->
+
+        }
+    }
+
 
     Scaffold(
         topBar = { TopBarMain() },
