@@ -52,6 +52,10 @@ class FaceExpressionFragment : Fragment() {
         binding.BtnSelectVideoemotion.setOnClickListener {
             openVideoGallery()
         }
+        binding.backButton.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+
+        }
 
         // 피드백 받기 버튼
         binding.btnFeedbackemotion.setOnClickListener {
@@ -252,6 +256,7 @@ class FaceExpressionFragment : Fragment() {
 
         parentFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
             .commit()
     }
 

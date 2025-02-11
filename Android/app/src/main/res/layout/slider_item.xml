@@ -1,5 +1,6 @@
 <!-- slider_item.xml -->
 <androidx.cardview.widget.CardView
+    android:id="@+id/cardView"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -14,7 +15,14 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- 제목 -->
+        <!-- 카드뷰 별 이미지(png) -->
+        <ImageView
+            android:id="@+id/cardImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/eye_image" />
+
         <TextView
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
@@ -22,7 +30,8 @@
             android:layout_gravity="center_horizontal"
             android:text="자소서 피드백"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone"/>
 
         <!-- 설명 -->
         <TextView
@@ -31,8 +40,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:textStyle="bold"
             android:text="AI를 통해 자소서 첨삭을 받아보세요"
-            android:textSize="14sp" />
+            android:textSize="18sp" />
 
         <!-- 버튼 -->
         <Button
@@ -41,6 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
+            android:textSize="24dp"
             android:backgroundTint="@color/logo_blue"
             android:text="자소서 피드백 받기"
             android:textColor="@android:color/white" />

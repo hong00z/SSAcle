@@ -56,30 +56,13 @@ class EyeResultFragment : Fragment() {
         setupDonutChart(trueValue, falseValue)
 
         binding.btnEyeEyeSaveResult.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, EyeFragment())
-//                .addToBackStack(null)
-                .commit()
-        }
+            requireActivity().onBackPressedDispatcher.onBackPressed()
 
-        // 뒤로가기 버튼 (하드웨어 back key) - gpt 똑똑해..
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    parentFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, EyeFragment())
-                        .commit()
-                }
-            }
-        )
+        }
 
 
         binding.backButton.setOnClickListener {
-            if (parentFragmentManager.backStackEntryCount > 0) {
-                parentFragmentManager.popBackStack() //
-            } else {
-                requireActivity().finish()
-            }
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
 
