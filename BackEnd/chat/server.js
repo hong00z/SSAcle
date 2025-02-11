@@ -72,7 +72,7 @@ io.on("connection", (socket) => {
       console.error("sendMessage 실패: 발신자가 채팅방 멤버가 아님", userId)
       return socket.emit("error", { error: "채팅방 멤버만 메시지를 보낼 수 있습니다." })
     }
-
+    socket.userId = userId
     socket.join(studyId)
     console.log(`사용자 ${userId}가 채팅방 ${studyId}에 입장 완료`)
   })
@@ -95,7 +95,11 @@ io.on("connection", (socket) => {
       }
 
       // 보낸 사람 닉네임 찾기
-      const user = await User.findOne({ _id: userId })
+      const user = await User.findById(userId)
+      if (!user) {
+        console.error("sendMessage 실패: 발신자 사용자를 찾을 수 없음", userId)
+        return socket.emit("error", { error: "발신자 사용자를 찾을 수 없습니다." })
+      }
       const nickname = user.nickname
 
       // 메시지 생성 및 저장
@@ -106,35 +110,49 @@ io.on("connection", (socket) => {
       // 스터디 내 모든 클라이언트에게 메시지 브로드캐스트
       io.to(studyId).emit("newMessage", newMsg)
 
-      // // FCM 알림 전송: study.members에 해당하는 사용자들의 FCM 토큰 조회
-      // const users = await User.find({ _id: { $in: study.members } })
-      // // 각 사용자에서 fcmToken이 존재하는 값만 추출
-      // const fcmTokens = users.map((user) => user.fcmToken).filter((token) => token)
+      // FCM 알림 전송: study.members에 해당하는 사용자들의 FCM 토큰 조회
+      // 1. 현재 채팅방(studyId)에 연결되어 있는 소켓들의 userId 목록 수집
+      const room = io.sockets.adapter.rooms.get(studyId)
 
-      // console.log("FCM 토큰 목록:", fcmTokens)
+      let connectedUserIds = []
+      if (room) {
+        connectedUserIds = Array.from(room)
+          .map((socketId) => {
+            const tmpSocket = io.sockets.sockets.get(socketId)
+            return tmpSocket ? tmpSocket.userId : null
+          })
+          .filter((id) => id !== null)
+      }
+      console.log("현재 채팅방에 연결된 사용자들:", connectedUserIds)
 
-      // if (fcmTokens.length > 0) {
-      //   const payload = {
-      //     notification: {
-      //       title: "새 메시지 도착",
-      //       body: `${userId}님이 메시지를 보냈습니다.`,
-      //     },
-      //     data: {
-      //       studyId: studyId,
-      //       userId: userId,
-      //     },
-      //   }
+      const users = await User.find({ _id: { $in: study.members } })
+      // 각 사용자에서 fcmToken이 존재하는 값만 추출
+      const fcmTokens = users
+        .filter((user) => !connectedUserIds.includes(user._id.toString()))
+        .map((user) => user.fcmToken)
+        .filter((fcmToken) => !!fcmToken)
 
-      //   admin
-      //     .messaging()
-      //     .sendToDevice(fcmTokens, payload)
-      //     .then((response) => {
-      //       console.log("FCM 알림 전송 성공:", response)
-      //     })
-      //     .catch((error) => {
-      //       console.error("FCM 알림 전송 에러:", error)
-      //     })
-      // }
+      console.log("FCM 토큰 목록:", fcmTokens)
+
+      if (fcmTokens.length > 0) {
+        const fcmMessage = {
+          tokens: fcmTokens,
+          notification: {
+            title: `${nickname}님이 메시지를 보냈습니다.`,
+            body: message,
+          },
+        }
+
+        admin
+          .messaging()
+          .sendEachForMulticast(fcmMessage)
+          .then((response) => {
+            console.log("FCM 알림 전송 성공:", response)
+          })
+          .catch((error) => {
+            console.error("FCM 알림 전송 에러:", error)
+          })
+      }
     } catch (err) {
       console.error("sendMessage 중 에러 발생:", err)
       socket.emit("error", { error: err.message })
