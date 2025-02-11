@@ -2,8 +2,8 @@ spring:
   # DB
   data:
     mongodb:
-      host: mongodb
-#      host: localhost
+#      host: mongodb
+      host: localhost
       database: ssacle
     redis:
       host: localhost
