@@ -115,7 +115,9 @@ dependencies {
 
     // 웹과 연동 및 코루틴 관련 의존성
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+
 
     // Socket.io
     implementation("io.socket:socket.io-client:2.1.1")
@@ -151,6 +153,9 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
     implementation("com.google.firebase:firebase-messaging-ktx")
     implementation("com.google.firebase:firebase-analytics")
+
+    // WebRTC
+    implementation("org.webrtc:google-webrtc:1.0.+")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
