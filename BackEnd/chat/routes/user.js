@@ -43,11 +43,11 @@ router.get("/:userId", async (req, res) => {
 
 /**
  * @openapi
- * /api/users/{userId}/token:
+ * /api/users/{userId}/fcmToken:
  *   post:
  *     tags:
  *       - User
- *     summary: 사용자 토큰 업데이트
+ *     summary: 사용자 FCM 토큰 업데이트
  *     description: 주어진 userId에 해당하는 사용자의 FCM 토큰을 저장하거나 업데이트합니다.
  *     parameters:
  *       - in: path
@@ -68,7 +68,7 @@ router.get("/:userId", async (req, res) => {
  *                 description: FCM 토큰 값
  *     responses:
  *       200:
- *         description: 토큰 등록 성공 메시지 반환
+ *         description: FCM 토큰 등록 성공 메시지 반환
  *         content:
  *           application/json:
  *             schema:
@@ -77,11 +77,27 @@ router.get("/:userId", async (req, res) => {
  *                 message:
  *                   type: string
  */
-router.post("/:userId/token", async (req, res) => {
+router.post("/:userId/fcmToken", async (req, res) => {
   const { userId } = req.params
   const { fcmToken } = req.body
-  console.log(`토큰 등록 요청: userId=${userId}, fcmToken=${fcmToken}`)
-  res.status(200).json({ message: "토큰 등록 성공" })
+  console.log(`FCM 토큰 등록 요청: userId=${userId}, fcmToken=${fcmToken}`)
+
+  try {
+    // userId로 사용자 검색
+    const user = await User.findById(userId)
+    if (!user) {
+      return res.status(404).json({ error: "사용자를 찾을 수 없습니다." })
+    }
+
+    // fcmToken 업데이트 (또는 새로 등록)
+    user.fcmToken = fcmToken
+    await user.save()
+
+    return res.status(200).json({ message: "토큰 등록 성공" })
+  } catch (error) {
+    console.error("토큰 저장 중 오류 발생:", error)
+    return res.status(500).json({ error: error.message })
+  }
 })
 
 /**

@@ -11,11 +11,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.firstproject.R
+import com.example.firstproject.client.RetrofitClient.CHAT_API_URL
+import com.example.firstproject.client.RetrofitClient.USER_ID
+import com.example.firstproject.client.RetrofitClient.userService
 import com.example.firstproject.databinding.FragmentChatDetailBinding
 import com.example.firstproject.dto.Message
 import com.example.firstproject.dto.UpdateLastReadRequest
-import com.example.firstproject.service.UserService
 import com.example.firstproject.utils.CommonUtils
 import com.google.gson.Gson
 import io.socket.client.IO
@@ -26,8 +27,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class ChatDetailFragment : Fragment() {
     private var _binding: FragmentChatDetailBinding? = null
@@ -49,8 +48,6 @@ class ChatDetailFragment : Fragment() {
     private lateinit var socket: Socket
     private val gson = Gson()
 
-    private val CHAT_API_URL = "http://192.168.137.202:4001"
-    private val userId = "67a5e7f43d3fc61ef2203113"
     private lateinit var studyId: String
 
     companion object {
@@ -115,7 +112,7 @@ class ChatDetailFragment : Fragment() {
         binding.sendButton.setOnClickListener {
             val messageText = binding.messageEditText.text.toString().trim()
             if (messageText.isNotEmpty()) {
-                sendMessage(studyId, userId, messageText)
+                sendMessage(studyId, USER_ID, messageText)
                 binding.messageEditText.text.clear()
             } else {
                 Toast.makeText(requireContext(), "메시지를 입력하세요.", Toast.LENGTH_SHORT).show()
@@ -149,7 +146,7 @@ class ChatDetailFragment : Fragment() {
     // 연결 성공 시 채팅방 입장
     private val onConnect = Emitter.Listener {
         lifecycleScope.launch {
-            joinRoom(studyId, userId)
+            joinRoom(studyId, USER_ID)
         }
     }
 
@@ -287,12 +284,7 @@ class ChatDetailFragment : Fragment() {
 //    }
 
     private fun updateLastReadTimeOnServer() {
-        // Retrofit 인스턴스 생성 (필요 시 전역으로 관리해도 좋습니다)
-        val retrofit = Retrofit.Builder()
-            .baseUrl(CHAT_API_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val userService = retrofit.create(UserService::class.java)
+
 
         // 현재 시간을 밀리초 단위로 가져옴
         val currentTime = System.currentTimeMillis()
@@ -303,7 +295,7 @@ class ChatDetailFragment : Fragment() {
         // 백그라운드에서 API 호출
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = userService.updateLastReadTime(userId, request)
+                val response = userService.updateLastReadTime(USER_ID, request)
                 if (!response.isSuccessful) {
                     Log.e(TAG, "Failed to update lastReadTime: ${response.code()}")
                 }

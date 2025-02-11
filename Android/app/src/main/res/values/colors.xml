@@ -8,10 +8,20 @@
     <color name="chat_received">#F4F4F4</color>
     <color name="blue_ai">#0074BD</color>
     <color name="logo_blue">#0084BD</color>
-    
+
+    <!--파이차트 color-->
     <color name="chart_red">#FE438A</color>
     <color name="chart_blue">#4375FE</color>
     <color name="chart_green">#43FE46</color>
+
+    <!--cardView color-->
+    <color name="card_white">#FFFFFF</color>
+    <color name="card_eye">#6DCEF5</color>
+    <color name="card_face">#DE3B4E</color>
+    <!--button color-->
+    <color name="myself_button">#2F9EF4</color>
+    <color name="eye_button">#FE902F</color>
+    <color name="face_button">#000000</color>
 
     <color name="frontend_stack_tag">#017ACB</color>
     <color name="backend_stack_tag">#7ACF5C</color>
