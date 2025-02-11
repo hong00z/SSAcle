@@ -87,7 +87,7 @@ dependencies {
     implementation("com.google.android.material:material:1.9.0")
 
     // RequestResult 라이브러리
-    implementation ("com.github.rootachieve:RequestResult:0.1.0")
+    implementation("com.github.rootachieve:RequestResult:0.1.0")
 
     implementation(platform("androidx.compose:compose-bom:2025.01.01"))
     // 기본 Compose 라이브러리
@@ -131,7 +131,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
 
     // 인디케이터 기능
-    implementation ("com.tbuonomo:dotsindicator:4.3")
+    implementation("com.tbuonomo:dotsindicator:4.3")
 
 
     // ai 관련 (카메라)
@@ -145,10 +145,11 @@ dependencies {
     implementation("org.tensorflow:tensorflow-lite-select-tf-ops:2.14.0")
 
     // 도넛 차트 그리는것
-    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     // FCM
     implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
+    implementation("com.google.firebase:firebase-messaging-ktx")
     implementation("com.google.firebase:firebase-analytics")
 
     implementation(libs.androidx.core.ktx)
