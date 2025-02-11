@@ -110,7 +110,6 @@ class SocketHandler {
     socket.on("getRouterRtpCapabilities", (callback) => {
       try {
         const caps = WorkerManager.router.rtpCapabilities
-        console.log(`[${socket.id}] Router Caps:`, caps)
         callback({ ok: true, routerRtpCapabilities: caps })
       } catch (err) {
         console.error(`[${socket.id}] getRouterRtpCapabilities error:`, err)
