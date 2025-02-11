@@ -14,6 +14,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.firstproject.R
 import com.example.firstproject.databinding.FragmentEmotionBinding
 import kotlinx.coroutines.Dispatchers
@@ -68,6 +70,8 @@ class FaceExpressionFragment : Fragment() {
                     )
                     faceExpressionDetector?.loadModel(requireContext().assets)
                 }
+                binding.deleteImg.visibility = View.GONE
+                binding.deleteText.visibility = View.GONE
 
                 Toast.makeText(requireContext(), "분석중입니다...", Toast.LENGTH_SHORT).show()
 
@@ -244,7 +248,6 @@ class FaceExpressionFragment : Fragment() {
         val feedbackText = "분석이 완료되었습니다!\n" +
                 ""
 
-        // 결과 화면으로 데이터 전달
         val fragment = FaceResultFragment().apply {
             arguments = Bundle().apply {
                 putFloat("positive", positiveRatio)
@@ -253,11 +256,12 @@ class FaceExpressionFragment : Fragment() {
                 putString("feedback", feedbackText)
             }
         }
-
         parentFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .addToBackStack(null)
             .commit()
+
+
     }
 
     override fun onDestroyView() {

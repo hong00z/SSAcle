@@ -5,6 +5,7 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:ignore="Orientation">
 
@@ -40,30 +41,6 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <android.widget.Button
-        android:id="@+id/BtnSelectVideoEye"
-        android:layout_width="wrap_content"
-        android:layout_height="33dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/button_outline"
-        android:gravity="center"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:text="동영상 파일 업로드"
-        android:textColor="@android:color/black"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/tvPdfPatheye"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="16dp"
-        android:text="피드백 받을 영상을 업로드해주세요."
-        android:textSize="14sp" />
-
     <FrameLayout
         android:id="@+id/eyefeedbackFrame"
         android:layout_width="match_parent"
@@ -87,9 +64,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:paddingBottom="8dp"
             android:text="0%"
             android:textSize="16sp"
-            android:paddingBottom="8dp"
             android:visibility="gone" />
 
         <LinearLayout
@@ -117,21 +94,94 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="영상 분석 중입니다..."
-                android:textStyle="bold"
                 android:textSize="16sp"
+                android:textStyle="bold"
                 android:visibility="gone" />
         </LinearLayout>
     </FrameLayout>
 
-    <android.widget.Button
-        android:id="@+id/btnFeedbackeye"
+    <ImageView
+        android:id="@+id/deleteImgEye"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="400dp"
         android:layout_gravity="center"
-        android:layout_margin="16dp"
-        android:background="@drawable/button_ai_feedback"
-        android:minWidth="200dp"
-        android:text="AI 피드백 받기"
-        android:textColor="@color/white"
-        android:textSize="20sp" />
+        android:src="@drawable/triangle" />
+
+    <TextView
+        android:id="@+id/deleteTextEye"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="40dp"
+        android:gravity="center"
+        android:text="영상을 업로드 하고 \nSSAcle의 AI 피드백을 받아보세요!"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/const1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <android.widget.Button
+            android:id="@+id/BtnSelectVideoEye"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:background="@drawable/button_outline"
+            android:gravity="center"
+            android:text="동영상 파일 업로드"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnFeedbackEye"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <android.widget.Button
+            android:id="@+id/btnFeedbackEye"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:background="@drawable/button_ai_feedback"
+            android:text="AI 피드백 받기"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/BtnSelectVideoEye" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/ivImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_warning_18" />
+
+        <TextView
+            android:id="@+id/tvPdfPath"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:text="SSAcle은 사용자의 영상을 저장하거나 개인적 용도로 사용하지 않습니다."
+            android:textSize="8sp" />
+
+    </LinearLayout>
+
 </LinearLayout>
