@@ -1,6 +1,7 @@
 package com.example.firstproject.service
 
 import com.example.firstproject.dto.Study
+import com.example.firstproject.dto.TokenUpdateRequest
 import com.example.firstproject.dto.UpdateLastReadRequest
 import retrofit2.Response
 import retrofit2.http.Body
@@ -15,5 +16,11 @@ interface UserService {
     @POST("api/users/{userId}/lastRead")
     suspend fun updateLastReadTime(
         @Path("userId") userId: String, @Body request: UpdateLastReadRequest
+    ): Response<Unit>
+
+    @POST("api/users/{userId}/fcmToken")
+    suspend fun updateFcmToken(
+        @Path("userId") userId: String,
+        @Body tokenUpdateRequest: TokenUpdateRequest
     ): Response<Unit>
 }
