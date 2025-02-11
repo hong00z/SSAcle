@@ -5,27 +5,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".ui.ai.AiFragment">
-
+<!--modifier = Modifier
+                .align(Alignment.CenterStart)
+                .padding(start = 20.dp),
+            text = "SSAcle",
+            fontFamily = notosans,
+            fontSize = 30.sp,-->
     <!-- 상단 텍스트 -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:paddingStart="20dp"
         android:layout_marginTop="16dp"
         android:text="SSAcle"
-        android:textSize="24sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/notosans_black"
+        android:textSize="30sp"
         android:textColor="@color/logo_blue" />
 
     <!-- 슬라이더 뷰 -->
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="600dp"
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:paddingStart="40dp"
-        android:paddingEnd="40dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         android:overScrollMode="never"
         android:layout_margin="16dp"/>
 
