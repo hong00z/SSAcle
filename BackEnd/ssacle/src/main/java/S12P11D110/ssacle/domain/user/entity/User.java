@@ -54,4 +54,8 @@ public class User extends BaseEntity {
     @Builder.Default
     private Set<String> invitedStudies = new HashSet<>();
 
+    // FCM 토큰
+    @Builder.Default
+    private String fcmToken = "";
+
 }

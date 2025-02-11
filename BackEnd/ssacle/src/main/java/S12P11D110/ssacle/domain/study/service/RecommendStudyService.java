@@ -1,11 +1,10 @@
 package S12P11D110.ssacle.domain.study.service;
 
-import S12P11D110.ssacle.domain.study.dto.RecommendStudyDTO;
+import S12P11D110.ssacle.domain.study.dto.response.RecommendStudyDTO;
 import S12P11D110.ssacle.domain.study.dto.StudyDTO;
 import S12P11D110.ssacle.domain.study.dto.UserConditionDTO;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;

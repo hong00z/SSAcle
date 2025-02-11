@@ -1,10 +1,10 @@
-package S12P11D110.ssacle.domain.study.dto;
+package S12P11D110.ssacle.domain.study.dto.response;
 
+import S12P11D110.ssacle.domain.study.dto.StudyDTO;
 import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Builder
