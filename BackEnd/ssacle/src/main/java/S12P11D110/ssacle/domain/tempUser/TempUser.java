@@ -53,6 +53,13 @@ public class TempUser extends BaseEntity {
     @Builder.Default
     private Set<String> invitedStudies = new HashSet<>();
 
+    // FCM 토큰
+    @Builder.Default
+    private String fcmToken = "";
+
+
+
+
     //------------------------------------------- << 메서드 >> -------------------------------------------
     // 사용자 계정 생성
     public TempUser(String email, String nickname) {
@@ -79,4 +86,6 @@ public class TempUser extends BaseEntity {
         if (topics != null) this.topics = topics;
         if (meetingDays != null) this.meetingDays = meetingDays;
     }
+
+
 }
