@@ -3,8 +3,10 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose.compiler)
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-parcelize")
+    id("com.google.gms.google-services") // FCM
 }
 
 android {
@@ -19,6 +21,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "NATIVE_APP_KEY", "${properties["NATIVE_APP_KEY"]}")
+        manifestPlaceholders["NATIVE_APP_KEY"] = "${properties["NATIVE_APP_KEY"]}"
     }
 
     val localProperties = Properties().apply {
@@ -85,7 +90,7 @@ dependencies {
     implementation("com.google.android.material:material:1.9.0")
 
     // RequestResult 라이브러리
-    implementation ("com.github.rootachieve:RequestResult:0.1.0")
+    implementation("com.github.rootachieve:RequestResult:0.1.0")
 
     implementation(platform("androidx.compose:compose-bom:2025.01.01"))
     // 기본 Compose 라이브러리
@@ -118,8 +123,15 @@ dependencies {
     // Socket.io
     implementation("io.socket:socket.io-client:2.1.1")
 
-    // Retrofit http 통신
+    // 카카오 로그인
+    implementation("com.kakao.sdk:v2-user:2.12.0")
+    implementation("com.jakewharton.timber:timber:5.0.1")
 
+    // 프로필 이미지 불러오기 (Glide 사용)
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
+    // Retrofit http 통신
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
 
     // define any required OkHttp artifacts without version
@@ -127,9 +139,9 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor")
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
-
+    
     // 인디케이터 기능
-    implementation ("com.tbuonomo:dotsindicator:4.3")
+    implementation("com.tbuonomo:dotsindicator:4.3")
 
 
     // ai 관련 (카메라)
@@ -143,7 +155,12 @@ dependencies {
     implementation("org.tensorflow:tensorflow-lite-select-tf-ops:2.14.0")
 
     // 도넛 차트 그리는것
-    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    // FCM
+    implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
+    implementation("com.google.firebase:firebase-messaging-ktx")
+    implementation("com.google.firebase:firebase-analytics")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

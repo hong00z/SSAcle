@@ -1,6 +1,5 @@
 package com.example.firstproject.ui.chat
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,12 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.firstproject.MainActivity
+import com.example.firstproject.client.RetrofitClient.CHAT_API_URL
+import com.example.firstproject.client.RetrofitClient.USER_ID
+import com.example.firstproject.client.RetrofitClient.chatService
+import com.example.firstproject.client.RetrofitClient.userService
 import com.example.firstproject.databinding.FragmentChatBinding
 import com.example.firstproject.dto.Message
 import com.example.firstproject.dto.Study
-import com.example.firstproject.service.ChatService
-import com.example.firstproject.service.UserService
 import com.google.gson.Gson
 import io.socket.client.IO
 import io.socket.client.Socket
@@ -26,17 +26,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.time.Instant
 
 
 const val TAG = "ChatFragment_TAG"
 
 class ChatFragment : Fragment() {
-
-    private val CHAT_API_URL = "http://192.168.137.202:4001"
-    private val userId = "67a5e7f43d3fc61ef2203113"
 
     private val studyList: MutableList<Study> = mutableListOf()
 
@@ -50,9 +45,7 @@ class ChatFragment : Fragment() {
     private val gson = Gson()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentChatBinding.inflate(inflater, container, false)
         return binding.root
@@ -86,24 +79,14 @@ class ChatFragment : Fragment() {
 
         binding.chatListRecycler.adapter = studyAdapter
 
-        fetchJoinedStudies()
-
         initSocket()
     }
 
     // Study 목록을 가져오고 어댑터 갱신
     private fun fetchJoinedStudies() {
-        // Retrofit 인스턴스 생성 (BASE_URL은 실제 서버 주소로 변경)
-        val retrofit = Retrofit.Builder()
-            .baseUrl(CHAT_API_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val userService = retrofit.create(UserService::class.java)
-
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = userService.getJoinedStudies(userId)
+                val response = userService.getJoinedStudies(USER_ID)
                 if (response.isSuccessful && response.body() != null) {
                     withContext(Dispatchers.Main) {
                         studyList.clear()
@@ -128,18 +111,14 @@ class ChatFragment : Fragment() {
                 } else {
                     withContext(Dispatchers.Main) {
                         Toast.makeText(
-                            requireContext(),
-                            "스터디 목록을 불러올 수 없습니다.",
-                            Toast.LENGTH_SHORT
+                            requireContext(), "스터디 목록을 불러올 수 없습니다.", Toast.LENGTH_SHORT
                         ).show()
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
-                        requireContext(),
-                        "네트워크 오류: ${e.message}",
-                        Toast.LENGTH_SHORT
+                        requireContext(), "네트워크 오류: ${e.message}", Toast.LENGTH_SHORT
                     ).show()
                 }
             }
@@ -148,13 +127,6 @@ class ChatFragment : Fragment() {
 
     // 채팅방의 메시지를 불러오는 함수
     private fun fetchChatMessages(studyId: String, onResult: (List<Message>) -> Unit) {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(CHAT_API_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val chatService = retrofit.create(ChatService::class.java)
-
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = chatService.getMessages(studyId)
@@ -166,18 +138,14 @@ class ChatFragment : Fragment() {
                 } else {
                     withContext(Dispatchers.Main) {
                         Toast.makeText(
-                            requireContext(),
-                            "메시지 목록을 불러올 수 없습니다.",
-                            Toast.LENGTH_SHORT
+                            requireContext(), "메시지 목록을 불러올 수 없습니다.", Toast.LENGTH_SHORT
                         ).show()
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
-                        requireContext(),
-                        "네트워크 오류: ${e.message}",
-                        Toast.LENGTH_SHORT
+                        requireContext(), "네트워크 오류: ${e.message}", Toast.LENGTH_SHORT
                     ).show()
                 }
                 Log.d(TAG, "fetchChatMessages: $e")
@@ -203,16 +171,17 @@ class ChatFragment : Fragment() {
     private val onConnect = Emitter.Listener {
         lifecycleScope.launch {
             // 사용자가 가입한 각 스터디 채팅방에 입장
-            joinAllStudyRooms()
+//            joinAllStudyRooms()
         }
     }
 
     private fun joinAllStudyRooms() {
         // studyList가 최신 상태임을 가정
+        Log.d(TAG, "joinAllStudyRooms: $studyList")
         for (study in studyList) {
             val data = JSONObject().apply {
                 put("studyId", study.id)
-                put("userId", userId)
+                put("userId", USER_ID)
             }
             socket.emit("joinRoom", data)
         }
