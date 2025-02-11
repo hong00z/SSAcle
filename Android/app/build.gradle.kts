@@ -21,6 +21,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "NATIVE_APP_KEY", "${properties["NATIVE_APP_KEY"]}")
+        manifestPlaceholders["NATIVE_APP_KEY"] = "${properties["NATIVE_APP_KEY"]}"
     }
 
     val localProperties = Properties().apply {
@@ -120,8 +123,15 @@ dependencies {
     // Socket.io
     implementation("io.socket:socket.io-client:2.1.1")
 
-    // Retrofit http 통신
+    // 카카오 로그인
+    implementation("com.kakao.sdk:v2-user:2.12.0")
+    implementation("com.jakewharton.timber:timber:5.0.1")
 
+    // 프로필 이미지 불러오기 (Glide 사용)
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
+    // Retrofit http 통신
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
 
     // define any required OkHttp artifacts without version
@@ -129,7 +139,7 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor")
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
-
+    
     // 인디케이터 기능
     implementation("com.tbuonomo:dotsindicator:4.3")
 
