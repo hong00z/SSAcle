@@ -2,12 +2,12 @@ package S12P11D110.ssacle.domain.user.controller;
 
 
 import S12P11D110.ssacle.domain.auth.entity.CustomUserDetail;
-import S12P11D110.ssacle.domain.user.dto.request.NicknameRequest;
 import S12P11D110.ssacle.domain.user.dto.request.SsafyAuthRequest;
 import S12P11D110.ssacle.domain.user.dto.request.UserProfileRequest;
 import S12P11D110.ssacle.domain.user.dto.response.SsafyAuthResponse;
 import S12P11D110.ssacle.domain.user.dto.response.UserProfileResponse;
 import S12P11D110.ssacle.domain.user.service.UserService;
+import S12P11D110.ssacle.global.dto.ResultDto;
 import S12P11D110.ssacle.global.exception.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -62,8 +62,10 @@ public class UserController {
         try {
             UserProfileResponse profile = userService.findUserProfile(userDetail.getId());
             return ResultDto.of(HttpStatusCode.OK, "프로필 조회 성공", profile);
-        } catch (ApiErrorException e) {
+        }catch (AuthErrorException e) {
             return ResultDto.of(e.getCode(), e.getErrorMsg(), null);
+        } catch (Exception e) {
+            return ResultDto.of(HttpStatusCode.INTERNAL_SERVER_ERROR, "서버 에러", null);
         }
     }
 
@@ -75,7 +77,7 @@ public class UserController {
     public ResultDto<UserProfileResponse> updateProfile(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestBody UserProfileRequest request){
         try {
             UserProfileResponse updatedProfile = userService.modifyUserProfile(userDetail.getId(), request);
-            return ResultDto.of(HttpStatusCode.OK, "프로필 수정 성공", null);
+            return ResultDto.of(HttpStatusCode.OK, "프로필 수정 성공", updatedProfile);
         } catch (AuthErrorException e) {
             return ResultDto.of(e.getCode(), e.getErrorMsg(), null);
         } catch (Exception e) {
@@ -86,15 +88,17 @@ public class UserController {
     /**
      * 닉네임 중복 검사
      */
-    @GetMapping("/nickname")
+    @GetMapping("/{nickname}")
     @Operation(summary="닉네임 중복 검사", description = "사용자가 화면에 입력한 닉네임이 중복되었는지 검사")
-    public ResultDto<String> checkNickname(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestBody NicknameRequest request) {
+    public ResultDto<String> checkNickname(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestParam String nickname) {
         try {
-            boolean isDuplicated = userService.isNicknameDuplicated(request.getNickname());
+            boolean isDuplicated = userService.isNicknameDuplicated(nickname);
             if (isDuplicated) {
-                return ResultDto.of(ApiErrorStatus.DUPLICATED_USER_NAME.getCode(), "이미 사용중인 닉네임입니다.", request.getNickname());
+                return ResultDto.of(ApiErrorStatus.DUPLICATED_USER_NAME.getCode(), "이미 사용중인 닉네임입니다.", nickname);
             }
-            return ResultDto.of(HttpStatusCode.OK, "사용 가능한 닉네임입니다.", request.getNickname());
+            return ResultDto.of(HttpStatusCode.OK, "사용 가능한 닉네임입니다.", nickname);
+        } catch (AuthErrorException e) {
+            return ResultDto.of(e.getCode(), e.getErrorMsg(), null);
         } catch (Exception e) {
             return ResultDto.of(HttpStatusCode.INTERNAL_SERVER_ERROR, "서버 에러", null);
         }
@@ -111,6 +115,8 @@ public class UserController {
             return ResultDto.of(HttpStatusCode.OK, "싸피생 인증 성공", response);
         } catch (AuthErrorException e) {
             return ResultDto.of(e.getCode(), e.getErrorMsg(), null);
+        } catch (Exception e) {
+            return ResultDto.of(HttpStatusCode.INTERNAL_SERVER_ERROR, "서버 에러", null);
         }
     }
 
@@ -120,6 +126,8 @@ public class UserController {
     // 참여중인 스터디 목록 조회
 
     // 신청한 스터디 목록 조회
+
+    //
 
     // 초대 받은 스터디 수락
     // 해당 스터디의 members 에 userId 추가, wishMembers 에서 userId 삭제

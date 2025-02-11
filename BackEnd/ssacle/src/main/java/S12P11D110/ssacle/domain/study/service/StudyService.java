@@ -178,6 +178,7 @@ public class StudyService {
     // 내가 참여중인 스터디 리스트
     @Transactional(readOnly = true)
     public List<StudyResponseDTO> getStudiesByUserId(String userId) {
+
         return studyRepository.findByMembersContaining(userId).stream()
                 .map(study -> StudyResponseDTO.builder()
                         .id(study.getId())

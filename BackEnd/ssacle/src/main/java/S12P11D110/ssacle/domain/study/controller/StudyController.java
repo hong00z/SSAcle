@@ -19,18 +19,10 @@ public class StudyController {
 
     private final StudyService studyService;
 
-
-    @GetMapping("/create")
-    @Operation(summary = "스터디 주제, 모임목록 ", description = "새로운 스터디를 개설합니다.")
-    public Map<String, List<String>> getTopicsMeetingDays(){
-        return studyService.topicList();
-    }
-
     // GPT: 25 ~31
     // 스터디 생성 POST
-    @PostMapping("") // 로그인 기능 만들어지면 ("/{userId}") 이 부분 없애기
+    @PostMapping("")
     @Operation(summary = "스터디 개설", description = "새로운 스터디를 개설합니다.")
-    // 로그인 기능 만들어지면 @PathVariable String userId 이 부분 없애기
     public ResponseEntity<Void> createStudy(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestBody StudyCreateRequestDTO studyCreateRequestDTO){  // 클라이언트로부터 전달받은 JSON 형식의 데이터를 @RequestBody를 통해 Java의 객체(StudyCreateRequestDTO)로 자동 변환
         String userId = userDetail.getId();  // 로그인된 사용자 ID 가져오기
         studyService.saveStudy(userId, studyCreateRequestDTO);
@@ -73,7 +65,6 @@ public class StudyController {
     public List<StudyResponseDTO> getStudiesByUserId(@AuthenticationPrincipal CustomUserDetail userDetail){
         String userId = userDetail.getId();  // 로그인된 사용자 ID 가져오기
         return studyService.getStudiesByUserId(userId);
-
     }
 
 
