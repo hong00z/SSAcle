@@ -45,9 +45,7 @@ class ChatFragment : Fragment() {
     private val gson = Gson()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentChatBinding.inflate(inflater, container, false)
         return binding.root
@@ -81,8 +79,6 @@ class ChatFragment : Fragment() {
 
         binding.chatListRecycler.adapter = studyAdapter
 
-        fetchJoinedStudies()
-
         initSocket()
     }
 
@@ -115,18 +111,14 @@ class ChatFragment : Fragment() {
                 } else {
                     withContext(Dispatchers.Main) {
                         Toast.makeText(
-                            requireContext(),
-                            "스터디 목록을 불러올 수 없습니다.",
-                            Toast.LENGTH_SHORT
+                            requireContext(), "스터디 목록을 불러올 수 없습니다.", Toast.LENGTH_SHORT
                         ).show()
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
-                        requireContext(),
-                        "네트워크 오류: ${e.message}",
-                        Toast.LENGTH_SHORT
+                        requireContext(), "네트워크 오류: ${e.message}", Toast.LENGTH_SHORT
                     ).show()
                 }
             }
@@ -146,18 +138,14 @@ class ChatFragment : Fragment() {
                 } else {
                     withContext(Dispatchers.Main) {
                         Toast.makeText(
-                            requireContext(),
-                            "메시지 목록을 불러올 수 없습니다.",
-                            Toast.LENGTH_SHORT
+                            requireContext(), "메시지 목록을 불러올 수 없습니다.", Toast.LENGTH_SHORT
                         ).show()
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
-                        requireContext(),
-                        "네트워크 오류: ${e.message}",
-                        Toast.LENGTH_SHORT
+                        requireContext(), "네트워크 오류: ${e.message}", Toast.LENGTH_SHORT
                     ).show()
                 }
                 Log.d(TAG, "fetchChatMessages: $e")
@@ -183,12 +171,13 @@ class ChatFragment : Fragment() {
     private val onConnect = Emitter.Listener {
         lifecycleScope.launch {
             // 사용자가 가입한 각 스터디 채팅방에 입장
-            joinAllStudyRooms()
+//            joinAllStudyRooms()
         }
     }
 
     private fun joinAllStudyRooms() {
         // studyList가 최신 상태임을 가정
+        Log.d(TAG, "joinAllStudyRooms: $studyList")
         for (study in studyList) {
             val data = JSONObject().apply {
                 put("studyId", study.id)
