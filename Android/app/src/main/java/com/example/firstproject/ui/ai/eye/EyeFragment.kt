@@ -54,7 +54,7 @@ class EyeFragment : Fragment() {
         }
 
         // 분석(피드백 받기) 버튼
-        binding.btnFeedbackeye.setOnClickListener {
+        binding.btnFeedbackEye.setOnClickListener {
             if (selectedVideoUri != null) {
                 // 모델 로드
                 if (eyeDetector == null) {
@@ -67,6 +67,8 @@ class EyeFragment : Fragment() {
 
                 Toast.makeText(requireContext(), "분석중입니다...", Toast.LENGTH_SHORT).show()
 
+                binding.deleteImgEye.visibility =View.GONE
+                binding.deleteTextEye.visibility =View.GONE
                 // 코루틴으로 비디오 프레임 순회 + 분석
                 viewLifecycleOwner.lifecycleScope.launch {
                     processVideoWithRetriever(selectedVideoUri!!)
