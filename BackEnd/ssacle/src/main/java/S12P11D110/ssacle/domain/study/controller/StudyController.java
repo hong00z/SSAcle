@@ -1,6 +1,9 @@
 package S12P11D110.ssacle.domain.study.controller;
 
-import S12P11D110.ssacle.domain.study.dto.*;
+import S12P11D110.ssacle.domain.study.dto.request.MyRequestDTO;
+import S12P11D110.ssacle.domain.study.dto.request.StudyCreateRequestDTO;
+import S12P11D110.ssacle.domain.study.dto.request.StudyRequestDTO;
+import S12P11D110.ssacle.domain.study.dto.response.*;
 import S12P11D110.ssacle.domain.study.service.StudyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

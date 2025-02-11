@@ -114,6 +114,13 @@ public class UserController {
         }
     }
 
+    /**
+     * 유저의 FCM 토큰 저장
+     */
+//    @PostMapping("/fcmTocken")
+//    @Operation(summary = "유저의 FCM 토큰 저장", description = "임시로 무조건 term=12, campus='구미'로 설정"))
+//    public saveFcmToken
+
 
 
 //------------------------------------------- << 스터디 >> ------------------------------------------
