@@ -51,33 +51,17 @@ class FaceResultFragment : Fragment() {
         // ★ 도넛 차트 구현 부분
         setupDonutChart(positive, negative, neutral)
 
-        // "결과 저장" 버튼 눌렀을 때
+        // "결과 저장" 버튼 눌렀을 때 // 수정해야함.
         binding.btnSaveResult.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, FaceExpressionFragment())
-//                .addToBackStack(null)
-                .commit()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
-        // 뒤로가기 버튼 (하드웨어 back key) - gpt 똑똑해..
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    parentFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, FaceExpressionFragment())
-                        .commit()
-                }
-            }
-        )
 
 
         binding.backButton.setOnClickListener {
-            if (parentFragmentManager.backStackEntryCount > 0) {
-                parentFragmentManager.popBackStack() //
-            } else {
-                requireActivity().finish()
-            }
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
+
 
     }
 
