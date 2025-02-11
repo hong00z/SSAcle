@@ -1,4 +1,4 @@
-package com.example.firstproject.ui.ai.face
+package com.example.firstproject.ui.ai.eye
 
 import android.app.Activity
 import android.content.Intent
@@ -8,25 +8,25 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.firstproject.R
-import com.example.firstproject.databinding.FragmentEmotionBinding
+import com.example.firstproject.databinding.FragmentEyeBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class FaceExpressionFragment : Fragment() {
+class EyeFragment : Fragment() {
 
-    private var _binding: FragmentEmotionBinding? = null
+    private var _binding: FragmentEyeBinding? = null
     private val binding get() = _binding!!
 
-    private var faceExpressionDetector: FaceExpressionDetector? = null
+    private var eyeDetector: EyeDetector? = null
     private var selectedVideoUri: Uri? = null
 
     companion object {
@@ -34,42 +34,43 @@ class FaceExpressionFragment : Fragment() {
         private const val FRAME_INTERVAL = 100_000L // 0.1초 프레임 추출
     }
 
-    // 감정 카운팅용 변수들
-    private var positiveCount = 0
-    private var negativeCount = 0
-    private var neutralCount = 0
+    // 시선 처리 카운팅용 변수들
+    private var leftTrueCount = 0
+    private var leftFalseCount = 0
+    private var rightTrueCount = 0
+    private var rightFalseCount = 0
     private var totalFrameCount = 0
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentEmotionBinding.inflate(inflater, container, false)
+        _binding = FragmentEyeBinding.inflate(inflater, container, false)
         val view = binding.root
 
         // 동영상 선택 버튼
-        binding.BtnSelectVideoemotion.setOnClickListener {
+        binding.BtnSelectVideoEye.setOnClickListener {
             openVideoGallery()
         }
 
-        // 피드백 받기 버튼
-        binding.btnFeedbackemotion.setOnClickListener {
+        // 분석(피드백 받기) 버튼
+        binding.btnFeedbackeye.setOnClickListener {
             if (selectedVideoUri != null) {
-                // 1) 모델이 아직 null이라면 로드
-                if (faceExpressionDetector == null) {
-                    faceExpressionDetector = FaceExpressionDetector(
-                        modelPath = "best_face_emotion_float16_u.tflite",
+                // 모델 로드
+                if (eyeDetector == null) {
+                    eyeDetector = EyeDetector(
+                        modelPath = "best_eye_tracking_0210_float16.tflite",
                         isQuantized = false
                     )
-                    faceExpressionDetector?.loadModel(requireContext().assets)
+                    eyeDetector?.loadModel(requireContext().assets)
                 }
 
                 Toast.makeText(requireContext(), "분석중입니다...", Toast.LENGTH_SHORT).show()
 
+                // 코루틴으로 비디오 프레임 순회 + 분석
                 viewLifecycleOwner.lifecycleScope.launch {
                     processVideoWithRetriever(selectedVideoUri!!)
-                    binding.feedbackFrame.visibility = View.VISIBLE
+                    binding.eyefeedbackFrame.visibility = View.VISIBLE
                 }
             } else {
                 Toast.makeText(requireContext(), "비디오를 등록해주셔야 해요 ㅠ", Toast.LENGTH_SHORT).show()
@@ -95,7 +96,7 @@ class FaceExpressionFragment : Fragment() {
     }
 
     /**
-     * 비디오 프레임을 순회하며 감정 분석을 수행하는 함수
+     * 비디오 프레임을 순회하며 감정(시선) 분석을 수행하는 함수
      */
     private suspend fun processVideoWithRetriever(videoUri: Uri) {
         withContext(Dispatchers.IO) {
@@ -107,15 +108,18 @@ class FaceExpressionFragment : Fragment() {
                         ?.toLong() ?: 0L
 
                 // 분석 전 카운터 초기화
-                positiveCount = 0
-                negativeCount = 0
-                neutralCount = 0
+                leftTrueCount = 0
+                leftFalseCount = 0
+                rightTrueCount = 0
+                rightFalseCount = 0
                 totalFrameCount = 0
 
-                // 분석 시작 시각
+                // -------------------------------
+                // 분석 "시작 시각" 기록
+                // -------------------------------
                 val processingStartTime = System.currentTimeMillis()
 
-                // 예: 100ms(1초)마다 프레임 추출
+                // 100ms(0.1초) 간격으로 프레임 추출
                 for (timeMs in 0 until durationMs step 500) {
                     val bitmap = retriever.getFrameAtTime(
                         timeMs * 1000,
@@ -123,19 +127,17 @@ class FaceExpressionFragment : Fragment() {
                     ) ?: continue
 
                     // 감정 분석 결과
-                    val result = faceExpressionDetector?.detect(bitmap, null)
-
-                    if (result != null) {
-                        if (result.detections.isNotEmpty()) {
-                            val topDetection = result.detections.maxByOrNull { it.score }
-                            topDetection?.let { detection ->
-                                when (detection.expression.lowercase()) {
-                                    "positive" -> positiveCount++
-                                    "negative" -> negativeCount++
-                                    "neutral" -> neutralCount++
-                                    // 그 외의 감정 태그가 있으면 필요한 만큼 추가
-                                    else -> {}
-                                }
+                    val result = eyeDetector?.detect(bitmap, null)
+                    if (result != null && result.detections.isNotEmpty()) {
+                        // 여러 얼굴이 감지되었다면, 스코어가 가장 높은 감정만 카운트
+                        val topDetection = result.detections.maxByOrNull { it.score }
+                        topDetection?.let { detection ->
+                            when (detection.expression.lowercase()) {
+                                "left_true" -> leftTrueCount++
+                                "left_false" -> leftFalseCount++
+                                "right_true" -> rightTrueCount++
+                                "right_false" -> rightFalseCount++
+                                else -> {}
                             }
                         }
                     }
@@ -158,15 +160,22 @@ class FaceExpressionFragment : Fragment() {
                         }
                     }
 
-                    // 화면에 잠시 표시를 위해 지연 (0.1초)
+                    // 화면에 잠시 표시
                     delay(100L)
                 }
 
+                // 분석 완료
                 retriever.release()
 
-                // 모든 프레임 처리 완료 후 결과 화면으로 이동
+                // -------------------------------
+                // 분석 "종료 시각"에서 시작 시각 빼서 총 걸린 시간 계산
+                // -------------------------------
+                val totalAnalysisTimeMs = System.currentTimeMillis() - processingStartTime
+                Log.d("EyeFragment", "총 분석 시간: $totalAnalysisTimeMs ms")
+
+                // 최종 결과 Fragment로 이동
                 withContext(Dispatchers.Main) {
-                    goToResultFragment()
+                    goToResultFragment(totalAnalysisTimeMs)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -184,7 +193,7 @@ class FaceExpressionFragment : Fragment() {
      */
     private fun updateUiDuringProcessing(
         bitmap: Bitmap,
-        result: List<FaceExpressionDetection>,
+        result: List<EyeDetection>,
         progress: Int,
         startTime: Long
     ) {
@@ -192,26 +201,26 @@ class FaceExpressionFragment : Fragment() {
 
         // 5초 이전: 얼굴 박스 / 감정 표시
         if (elapsed < 5000) {
-            binding.feedbackFrame.visibility = View.VISIBLE
-            binding.emotionImageView.visibility = View.VISIBLE
-            binding.emotionOverlayView.visibility = View.VISIBLE
+            binding.eyefeedbackFrame.visibility = View.VISIBLE
+            binding.eyeImageView.visibility = View.VISIBLE
+            binding.eyeOverlayView.visibility = View.VISIBLE
 
             binding.circleProgressBar.visibility = View.GONE
             binding.tvCircleProgress.visibility = View.GONE
 
             // 현재 프레임 표시
-            binding.emotionImageView.setImageBitmap(bitmap)
+            binding.eyeImageView.setImageBitmap(bitmap)
             // 감지된 얼굴들의 박스/라벨을 그리도록 오버레이에 전달
-            binding.emotionOverlayView.setDetections(result)
+            binding.eyeOverlayView.setDetections(result)
         }
         // 5초 경과 이후: 프로그레스바 + 퍼센트
         else {
-            binding.emotionImageView.visibility = View.GONE
-            binding.emotionOverlayView.visibility = View.GONE
+            binding.eyeImageView.visibility = View.GONE
+            binding.eyeOverlayView.visibility = View.GONE
 
             binding.circleProgressBar.visibility = View.VISIBLE
             binding.tvCircleProgress.visibility = View.VISIBLE
-            binding.txtV.visibility= View.VISIBLE
+            binding.txtV.visibility = View.VISIBLE
 
             binding.circleProgressBar.progress = progress
             binding.tvCircleProgress.text = "$progress%"
@@ -222,30 +231,43 @@ class FaceExpressionFragment : Fragment() {
      * 모든 프레임 처리 완료 후, 결과 Fragment로 이동
      * 감정 비율을 계산하여 Bundle로 넘김
      */
-    private fun goToResultFragment() {
+    private fun goToResultFragment(totalAnalysisTimeMs: Long) {
         // 감정 비율 계산
-        val positiveRatio = if (totalFrameCount > 0) {
-            positiveCount * 100f / totalFrameCount
+        val leftTrueRatio = if (totalFrameCount > 0) {
+            leftTrueCount * 100f / totalFrameCount
         } else 0f
 
-        val negativeRatio = if (totalFrameCount > 0) {
-            negativeCount * 100f / totalFrameCount
+        val leftFalseRatio = if (totalFrameCount > 0) {
+            leftFalseCount * 100f / totalFrameCount
         } else 0f
 
-        val neutralRatio = if (totalFrameCount > 0) {
-            neutralCount * 100f / totalFrameCount
+        val rightTrueRatio = if (totalFrameCount > 0) {
+            rightTrueCount * 100f / totalFrameCount
         } else 0f
 
-        // 예시: 임의의 피드백 메시지
-        val feedbackText = "분석이 완료되었습니다!\n" +
-                ""
+        val rightFalseRatio = if (totalFrameCount > 0) {
+            rightFalseCount * 100f / totalFrameCount
+        } else 0f
+
+        // 총 분석 시간을 초 단위로 표시하고 싶다면:
+        val totalSec = totalAnalysisTimeMs / 1000.0
+        // 예시: 소수점 1자리만
+        val formattedSec = String.format("%.1f", totalSec)
+
+        // 예시용 피드백 메시지
+        val feedbackText = """
+            분석이 완료되었습니다!
+            총 프레임 수: $totalFrameCount
+            총 분석 시간: ${formattedSec}초
+        """.trimIndent()
 
         // 결과 화면으로 데이터 전달
-        val fragment = FaceResultFragment().apply {
+        val fragment = EyeResultFragment().apply {
             arguments = Bundle().apply {
-                putFloat("positive", positiveRatio)
-                putFloat("negative", negativeRatio)
-                putFloat("neutral", neutralRatio)
+                putFloat("leftTrue", leftTrueRatio)
+                putFloat("leftFalse", leftFalseRatio)
+                putFloat("rightTrue", rightTrueRatio)
+                putFloat("rightFalse", rightFalseRatio)
                 putString("feedback", feedbackText)
             }
         }
