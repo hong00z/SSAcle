@@ -64,8 +64,10 @@ public class SecurityConfig {
                         ).permitAll()
                         .requestMatchers("/api/user/**").hasAnyRole("USER", "SSAFYUSER")  // 로그인 권한 필요
                         .anyRequest().authenticated())              // 나머지는 인증 필요
+                // ✅ JWT 필터 추가 (인증 처리)
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtExceptionFilter, JwtRequestFilter.class)
+
+                .addFilterAfter(jwtExceptionFilter, JwtRequestFilter.class)
                 .build();
     }
 

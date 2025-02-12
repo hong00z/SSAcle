@@ -42,6 +42,8 @@ public class CustomUserDetail implements UserDetails {
         return user.getEmail();
     }
 
+    public String getNickname() { return user.getNickname(); }
+
     /* 세부 설정 */
 
     @Override

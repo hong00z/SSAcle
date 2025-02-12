@@ -61,7 +61,7 @@ public class StudyService {
         members.add(userId);
         study.setMembers(members);
 
-        // WishMembers, PreMember는 개설 단계에서 입력하지 않음
+        // WishMembers, PreMembers는 개설 단계에서 입력하지 않음
         study.setWishMembers(new HashSet<>());
         study.setPreMembers(new HashSet<>());
 
@@ -101,6 +101,7 @@ public class StudyService {
                         .count(study.getCount())
                         .members(study.getMembers())
                         .studyContent(study.getStudyContent())
+                        .createdBy(study.getCreatedBy())
                         .build()
                 )
                 .collect(Collectors.toList());
