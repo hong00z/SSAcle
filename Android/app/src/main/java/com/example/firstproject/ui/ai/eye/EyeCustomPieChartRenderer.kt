@@ -7,7 +7,7 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.renderer.PieChartRenderer
 import com.github.mikephil.charting.utils.ViewPortHandler
 
-class CustomPieChartRenderer(
+class EyeCustomPieChartRenderer(
     chart: PieChart,
     animator: ChartAnimator,
     viewPortHandler: ViewPortHandler
