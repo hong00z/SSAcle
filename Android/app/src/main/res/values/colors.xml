@@ -13,6 +13,9 @@
     <color name="chart_red">#FE438A</color>
     <color name="chart_blue">#4375FE</color>
     <color name="chart_green">#43FE46</color>
+    <color name="face_chart_plus">#FEE500</color>
+    <color name="face_chart_minus">#FE438A</color>
+    <color name="face_chart_middle">#369BFF</color>
 
     <!--cardView color-->
     <color name="card_white">#FFFFFF</color>

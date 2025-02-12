@@ -15,18 +15,14 @@ import com.example.firstproject.databinding.FragmentEyeResultBinding
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.formatter.DefaultValueFormatter
 import kotlin.random.Random
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.pdf.PdfDocument
 import android.text.style.ForegroundColorSpan
 import androidx.core.content.FileProvider
-import com.example.firstproject.ui.ai.eyeimport.CustomPieChartRenderer
-import com.example.firstproject.utils.CommonUtils
-import com.github.mikephil.charting.components.Legend
+import com.example.firstproject.ui.ai.eyeimport.EyeCustomPieChartRenderer
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
@@ -119,7 +115,7 @@ class EyeResultFragment : Fragment() {
         setupDonutChart(trueValue, falseValue)
 
         binding.btnEyeEyeSaveResult.setOnClickListener {
-            saveAndSharePdf()
+            saveAndShareImage()
         }
 
         binding.backButton.setOnClickListener {
@@ -135,30 +131,28 @@ class EyeResultFragment : Fragment() {
         }
 
         val dataSet = PieDataSet(entries, "").apply {  // 레이블 제거 (빈 문자열)
-            // 색상 세팅 (원하는 색 지정 가능)
             colors = listOf(
                 resources.getColor(R.color.chart_blue, null),
                 resources.getColor(R.color.chart_red, null),
             )
             // 차트 가운데 구멍이 보이는 퍼센트 (두께 설정)
-            sliceSpace = 2f            // 파이 조각 사이 간격
-            valueTextSize = 14f        // 차트 위의 값 표시 (크기 설정)
+            sliceSpace = 2f
+            valueTextSize = 14f
             valueTextColor = resources.getColor(R.color.white, null) // 값 색상 흰색
         }
 
         val data = PieData(dataSet).apply {
-            // 값 포맷을 설정하여 % 제거, 소수점 없이 정수만 표시
             setValueFormatter(object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String {
-                    return String.format("%.2f", value)  // 정수만 표시 (퍼센트 없음)
+                    return String.format("%.1f", value)  // 정수만 표시 (퍼센트 없음)
                 }
             })
         }
 
         binding.eyedonutChart.apply {
             this.data = data
-            description.isEnabled = false    // 차트 우하단 설명 끔
-            isDrawHoleEnabled = true         // 도넛 모양 (가운데 구멍)
+            description.isEnabled = false    // 설명 삭제
+            isDrawHoleEnabled = true         // 구멍
             holeRadius = 40f                // 도넛 구멍 반경 (%)
             setTransparentCircleAlpha(0)     // 투명한 원 제거
             setEntryLabelColor(Color.TRANSPARENT) // 차트 내부 라벨 숨김
@@ -169,15 +163,7 @@ class EyeResultFragment : Fragment() {
 
             // 차트 애니메이션 (0.5초)
             animateY(500)
-            // 감정 비율 레전드(범례) 설정 (차트 아래 오른쪽 정렬)
-//            legend.apply {
-//                horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT // 오른쪽 정렬
-//                verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM   // 차트 아래 배치
-//                orientation = Legend.LegendOrientation.HORIZONTAL            // 가로 정렬
-//                textSize = 12f
-//                textColor = resources.getColor(R.color.black, null)
-//            }
-            val customRenderer = CustomPieChartRenderer(
+            val customRenderer = EyeCustomPieChartRenderer(
                 this,
                 this.animator,
                 this.viewPortHandler
@@ -505,20 +491,14 @@ class EyeResultFragment : Fragment() {
         return spannable
     }
 
-
-    private fun saveAndSharePdf() {
-        // 1) PDF로 만들고 싶은 부모 레이아웃(혹은 스크롤 전체 Layout)을 잡는다.
+    private fun saveAndShareImage() {
         val targetView = binding.pdfCardView
-
-        // 2) 레이아웃을 비트맵으로 변환
         val bitmap = getBitmapFromView(targetView)
-
-        // 3) 비트맵을 PDF 문서로 변환 후 저장
-        val pdfFile = createPdfFromBitmap(bitmap)
-
-        // 4) 저장된 PDF를 카카오톡으로 공유
-        sharePdfFile(pdfFile)
+        val imageFile = saveBitmapAsImage(bitmap)
+        shareImageFile(imageFile)
     }
+
+
 
     /**
      * View -> Bitmap추출
@@ -539,50 +519,95 @@ class EyeResultFragment : Fragment() {
         return bitmap
     }
 
-
-    private fun createPdfFromBitmap(bitmap: Bitmap): File {
-        val pdfDirPath = requireContext().getExternalFilesDir(null)?.absolutePath
+    private fun saveBitmapAsImage(bitmap: Bitmap): File {
+        val imageDirPath = requireContext().getExternalFilesDir(null)?.absolutePath
         val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        val pdfFile = File(pdfDirPath, "eye_result_feedBack_$timestamp.pdf")
-
-        val document = PdfDocument()
-        val pageInfo = PdfDocument.PageInfo.Builder(bitmap.width, bitmap.height, 1).create()
-
-        val page = document.startPage(pageInfo)
-        val canvas = page.canvas
-        // 비트맵을 (0, 0)에 그려줍니다.
-        canvas.drawBitmap(bitmap, 0f, 0f, null)
-        document.finishPage(page)
+        val imageFile = File(imageDirPath, "eye_result_feedback_$timestamp.png")
 
         try {
-            FileOutputStream(pdfFile).use { out ->
-                document.writeTo(out)
+            FileOutputStream(imageFile).use { out ->
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out) // PNG 형식으로 저장
             }
         } catch (e: IOException) {
             e.printStackTrace()
-        } finally {
-            document.close()
         }
 
-        return pdfFile
+        return imageFile
     }
-
-    private fun sharePdfFile(pdfFile: File) {
+    private fun shareImageFile(imageFile: File) {
         val uri = FileProvider.getUriForFile(
             requireContext(),
             "${requireContext().packageName}.fileprovider",
-            pdfFile
+            imageFile
         )
 
         val shareIntent = Intent(Intent.ACTION_SEND).apply {
-            type = "application/pdf"
+            type = "image/png" // 이미지 형식 지정
             putExtra(Intent.EXTRA_STREAM, uri)
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
 
-        // 여러곳에 공유 가능
-//        shareIntent.setPackage("com.kakao.talk")
-        startActivity(Intent.createChooser(shareIntent, "공유하기"))
+        startActivity(Intent.createChooser(shareIntent, "이미지 공유하기"))
     }
+
+
+//    private fun saveAndSharePdf() {
+//        // 1) PDF로 만들고 싶은 부모 레이아웃(혹은 스크롤 전체 Layout)을 잡는다.
+//        val targetView = binding.pdfCardView
+//
+//        // 2) 레이아웃을 비트맵으로 변환
+//        val bitmap = getBitmapFromView(targetView)
+//
+//        // 3) 비트맵을 PDF 문서로 변환 후 저장
+//        val pdfFile = createPdfFromBitmap(bitmap)
+//
+//        // 4) 저장된 PDF를 카카오톡으로 공유
+//        sharePdfFile(pdfFile)
+//    }
+//
+//    private fun createPdfFromBitmap(bitmap: Bitmap): File {
+//        val pdfDirPath = requireContext().getExternalFilesDir(null)?.absolutePath
+//        val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+//        val pdfFile = File(pdfDirPath, "eye_result_feedBack_$timestamp.pdf")
+//
+//        val document = PdfDocument()
+//        val pageInfo = PdfDocument.PageInfo.Builder(bitmap.width, bitmap.height, 1).create()
+//
+//        val page = document.startPage(pageInfo)
+//        val canvas = page.canvas
+//        // 비트맵을 (0, 0)에 그려줍니다.
+//        canvas.drawBitmap(bitmap, 0f, 0f, null)
+//        document.finishPage(page)
+//
+//        try {
+//            FileOutputStream(pdfFile).use { out ->
+//                document.writeTo(out)
+//            }
+//        } catch (e: IOException) {
+//            e.printStackTrace()
+//        } finally {
+//            document.close()
+//        }
+//
+//        return pdfFile
+//    }
+//
+//    private fun sharePdfFile(pdfFile: File) {
+//        val uri = FileProvider.getUriForFile(
+//            requireContext(),
+//            "${requireContext().packageName}.fileprovider",
+//            pdfFile
+//        )
+//
+//        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+//            type = "application/pdf"
+//            putExtra(Intent.EXTRA_STREAM, uri)
+//            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+//        }
+//
+//        // 여러곳에 공유 가능
+////        shareIntent.setPackage("com.kakao.talk")
+//        startActivity(Intent.createChooser(shareIntent, "공유하기"))
+//    }
 
 }
