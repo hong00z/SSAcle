@@ -26,7 +26,7 @@ Redis를 사용하는 2가지 방식
 @Repository
 @ComponentScan
 @RequiredArgsConstructor
-public class RefreshTokenRepository{
+public class RefreshTokenRepository {
     @Value("${jwt.refresh.token.expiration.seconds}")
     private long refreshTokenExpiration;
     @Autowired
