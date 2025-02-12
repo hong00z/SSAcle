@@ -12,7 +12,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp">
 
         <ImageButton
             android:id="@+id/back_button"
@@ -41,6 +42,7 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!--이거 꼭 넣으셈. 그에 따른 처리도 다시 해야함.-->
     <FrameLayout
         android:id="@+id/eyefeedbackFrame"
         android:layout_width="match_parent"
