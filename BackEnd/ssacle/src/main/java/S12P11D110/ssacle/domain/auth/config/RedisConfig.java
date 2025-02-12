@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -18,33 +19,29 @@ Redis TTL 설정을 따로 관리
 @Configuration
 public class RedisConfig {
     // yml 설정 값 가져오기
-//    @Value("${spring.data.redis.host}")
-//    private String redisHost;
-//    @Value("${spring.data.redis.port}")
-//    private int redisPort;
-    private final String redisHost;
-    private final int redisPort;
-
-    public RedisConfig(@Value("${spring.data.redis.host}") final String redisHost,
-                       @Value("${spring.data.redis.port}") final int redisPort) {
-        this.redisHost = redisHost;
-        this.redisPort = redisPort;
-        System.out.println("🚀 Redis Host (Constructor Injection): " + redisHost);
-        System.out.println("🚀 Redis Port (Constructor Injection): " + redisPort);
-    }
-
+    @Value("${spring.data.redis.host}")
+    private String host;
+    @Value("${spring.data.redis.port}")
+    private int port;
+    @Value("${spring.data.redis.password")
+    private String password;
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory(redisHost, redisPort);
+        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
+        redisStandaloneConfiguration.setHostName(host);
+        redisStandaloneConfiguration.setPort(port);
+        redisStandaloneConfiguration.setPassword(password);
+
+        return new LettuceConnectionFactory(redisStandaloneConfiguration);
     }
 
     @Bean
-    public RedisTemplate<String, Long> redisTemplate() {
-        RedisTemplate<String, Long> redisTemplate = new RedisTemplate<>();
+    public RedisTemplate<String, String> redisTemplate() {
+        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisConnectionFactory());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new StringRedisSerializer());
-        redisTemplate.setConnectionFactory(redisConnectionFactory());
         return redisTemplate;
     }
 }
