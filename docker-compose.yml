@@ -30,7 +30,9 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
-    command: redis-server --requirepass root # 비밀번호 적용
+    command: redis-server --requirepass root --port 6379 --bind 0.0.0.0
+    volumes:
+      - ./redis-data:/data
     networks:
       - app-network
 
