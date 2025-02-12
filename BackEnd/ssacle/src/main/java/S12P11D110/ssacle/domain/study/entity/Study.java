@@ -26,8 +26,6 @@ public class Study extends BaseEntity {
     private String studyContent;        // 스터디 소개
     private Set<String> wishMembers;    // 스카웃하고 싶은 스터디원 (user의 ID)
     private Set<String>preMembers;      // 신청한 스터디원(user의 ID)
-    private String leader;              // 스터디 장의 userId
-//    private String createdBy;           // 방장: 스터디 개설한 UserId
 
     // 스터디 개설일자는 BaseTimeEntity에 있음
 

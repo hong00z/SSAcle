@@ -7,9 +7,10 @@ import lombok.Data;
 @Builder
 public class FeedDetailDTO {
 
-    private String study;       // 스터디
-    private String author;      // 작성자
-    private String title;       // 제목
-    private String content;     // 내용
+    private String study;                       // 스터디
+    private FeedCreatorInfo creatorInfo;        // 작성자 정보
+    private String title;                       // 제목
+    private String content;                     // 내용
+    private String createdAt;               // 작성 시간
 
 }

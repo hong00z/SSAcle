@@ -1,5 +1,6 @@
 package S12P11D110.ssacle.domain.study.service;
 
+import S12P11D110.ssacle.domain.study.dto.RecoStudyResult;
 import S12P11D110.ssacle.domain.study.dto.response.RecommendStudyDTO;
 import S12P11D110.ssacle.domain.study.dto.StudyDTO;
 import S12P11D110.ssacle.domain.study.dto.UserConditionDTO;
@@ -11,9 +12,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class RecommendStudyService {
-    public List<RecommendStudyDTO> recommendStudy(UserConditionDTO userCondition, List<StudyDTO>allStudiesDTO){
+    public List<RecoStudyResult> recommendStudy(UserConditionDTO userCondition, List<StudyDTO>allStudiesDTO){
         Set<String> userTopics = new HashSet<>(userCondition.getTopics());
 
+        System.out.println("유저의 관심주제: "+ userTopics);
+        System.out.println("스터디 전체: "+ allStudiesDTO);
         //1. 스터디 필터링
         List<StudyDTO> filteredStudies = allStudiesDTO.stream()
                 .filter(study -> study.getCount()  > study.getMembers().size() ) // 정원 > 가입멤버수인 스터디
@@ -37,7 +40,7 @@ public class RecommendStudyService {
                 })
                 .collect(Collectors.toList());
 
-        System.out.println(filteredStudies);
+        System.out.println("필터링된 스터디 리스트" + filteredStudies);
 
         // 2. 코사인 유사도를 기반으로 스터디 추천
 
@@ -48,18 +51,21 @@ public class RecommendStudyService {
 
             System.out.println(study + ": " + similarity); // 디버깅
         }
-        System.out.println("TempUser Similarity Map: " + studySimilarityMap); // 디버깅
+        System.out.println("User Similarity Map: " + studySimilarityMap); // 디버깅
 
         //3. 유사도 순으로 내림차순 -> 상위 3개 스터디 추출
         return studySimilarityMap.entrySet().stream()
                 .sorted((entry1, entry2) -> Double.compare(entry2.getValue(), entry1.getValue()))
                 .limit(3)
-                .map(entry -> new RecommendStudyDTO(
+                .map(entry -> new RecoStudyResult(
                         entry.getKey().getStudyId(),
                         entry.getValue(), // 유사도
                         entry.getKey().getStudyName(),
                         entry.getKey().getTopic(),
-                        entry.getKey().getMeetingDays()
+                        entry.getKey().getMeetingDays(),
+                        entry.getKey().getCount(),
+                        entry.getKey().getMembers(),
+                        entry.getKey().getCreatedBy()
                 ))
                 .collect(Collectors.toList());
     }
