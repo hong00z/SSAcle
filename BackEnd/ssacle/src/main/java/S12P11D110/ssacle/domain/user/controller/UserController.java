@@ -2,6 +2,8 @@ package S12P11D110.ssacle.domain.user.controller;
 
 
 import S12P11D110.ssacle.domain.auth.entity.CustomUserDetail;
+import S12P11D110.ssacle.domain.study.dto.StudyResponseDTO;
+import S12P11D110.ssacle.domain.study.service.StudyService;
 import S12P11D110.ssacle.domain.user.dto.request.SsafyAuthRequest;
 import S12P11D110.ssacle.domain.user.dto.request.UserProfileRequest;
 import S12P11D110.ssacle.domain.user.dto.response.SsafyAuthResponse;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 
+import java.util.List;
 
 
 @RestController
@@ -23,6 +26,7 @@ import io.swagger.v3.oas.annotations.Operation;
 @Tag(name="User Controller", description = "사용자 관련 controller (JWT ver.)")
 public class UserController {
     private final UserService userService;
+    private final StudyService studyService;
 
 //------------------------------------------- << 로그아웃 & 탈퇴 >> -------------------------------------------
     /**
@@ -88,11 +92,12 @@ public class UserController {
     /**
      * 닉네임 중복 검사
      */
-    @GetMapping("/{nickname}")
-    @Operation(summary="닉네임 중복 검사", description = "사용자가 화면에 입력한 닉네임이 중복되었는지 검사")
+    @GetMapping("")
+    @Operation(summary="닉네임 중복 검사", description = "사용자가 화면에 입력한 닉네임이 중복되었는지 검사 (Query Parameter로 닉네임 전달)")
     public ResultDto<String> checkNickname(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestParam String nickname) {
         try {
-            boolean isDuplicated = userService.isNicknameDuplicated(nickname);
+            String currentUserNickname = userDetail.getNickname();    // 현재 로그인한 사용자 닉네임 가져오기
+            boolean isDuplicated = userService.isNicknameDuplicated(nickname, currentUserNickname);
             if (isDuplicated) {
                 return ResultDto.of(ApiErrorStatus.DUPLICATED_USER_NAME.getCode(), "이미 사용중인 닉네임입니다.", nickname);
             }
@@ -123,17 +128,44 @@ public class UserController {
 
 
 //------------------------------------------- << 스터디 >> ------------------------------------------
-    // 참여중인 스터디 목록 조회
+    /**
+     * 내 스터디 리스트
+     */
+    @GetMapping("/my-studies")
+    @Operation(summary = "내 스터디 리스트", description = "내가 가입한 스터디 리스트를 조회합니다.")
+    public List<StudyResponseDTO> getStudiesByUserId(@AuthenticationPrincipal CustomUserDetail userDetail){
+        String userId = userDetail.getId();
+        return studyService.getStudiesByUserId(userId);
+    }
 
-    // 신청한 스터디 목록 조회
+    /**
+     * 내 신청 현황
+     */
 
+
+
+    /**
+     * 내 신청 보내기
+     */
     //
 
-    // 초대 받은 스터디 수락
+    /**
+     * 내 신청 취소
+     */
+
+    /**
+     * 내 수신함
+     */
+
+    /**
+     * 내 수신함 수락
+     */
     // 해당 스터디의 members 에 userId 추가, wishMembers 에서 userId 삭제
     // 사용자의 invitedStudies 에서 studyId 삭제
 
-    // 초대 받은 스터디 거절
+    /**
+     * 내 수신함 거절
+     */
     // 해당 스터디의 wishMembers 에서 userId 삭제
     // 사용자의 invitedStudies 에서 studyId 삭제
 }

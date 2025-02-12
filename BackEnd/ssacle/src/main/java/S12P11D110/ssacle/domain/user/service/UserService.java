@@ -70,7 +70,7 @@ public class UserService {
     }
 
     /**
-     * 프로필 수정
+     * 프로필 수정 (이미지 수정 바꿔야함)
      */
     @Transactional
     public UserProfileResponse modifyUserProfile(String userId, UserProfileRequest request) {
@@ -106,12 +106,16 @@ public class UserService {
     /**
      * 닉네임 중복 검사
      */
-    public boolean isNicknameDuplicated(String nickname) {
+    public boolean isNicknameDuplicated(String nickname, String currentUserNickname) {
+        // 현재 로그인한 사용자의 닉네임이면 중복으로 판단하지 않음
+        if (nickname.equals(currentUserNickname)) {
+            return false;
+        }
         return userRepository.existsByNickname(nickname);
     }
 
     /**
-     * 싸피생 인증
+     * 싸피생 인증 (임시 ver.)
      */
     @Transactional
     public SsafyAuthResponse ssafyAuth(String userId, @RequestBody SsafyAuthRequest request) {
@@ -129,4 +133,35 @@ public class UserService {
 
 
 //------------------------------------------- << 스터디 >> -------------------------------------------
+    /**
+     * 개설한 스터디 등록 : 해당 유저의 createdStudies, joinedStudies에 studyId 추가
+     */
+
+    /**
+     * 가입한 스터디 등록 : 해당 유저의 joinedStudies에 studyId 추가
+     */
+
+    /**
+     * 가입한 스터디 조회 : 해당 유저의 joinedStudies 읽어오기
+     */
+
+    /**
+     * 초대된 스터디 등록 : 해당 유저의 invitedStudies에 studyId 추가
+     */
+
+    /**
+     * 초대된 스터디 조회 : 해당 유저의 invitedStudies 읽어오기
+     */
+
+    /**
+     * 신청한 스터디 등록 : 해당 유저의 wishStudies에 studyId 추가
+     */
+
+    /**
+     * 신청한 스터디 조회 : 해당 유저의 invitedStudies 읽어오기
+     */
+
+    /**
+     * 신청한 스터디 삭제 : 해당 유저의 invitedStudies에 studyId 삭제
+     */
 }

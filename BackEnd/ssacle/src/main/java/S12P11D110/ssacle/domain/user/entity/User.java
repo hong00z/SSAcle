@@ -53,5 +53,6 @@ public class User extends BaseEntity {
 
     // FCM 토큰
     @Builder.Default
-    private String fcmToken = "";
+    private String
+            fcmToken = "";
 }

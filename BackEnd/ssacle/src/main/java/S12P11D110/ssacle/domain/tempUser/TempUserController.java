@@ -44,7 +44,6 @@ public class TempUserController {
         return studyService.myInvitedStudyList(userId);
     }
 
-//----------------------------------------------------------------------------------------------------------------------
 
     // 유저: 스터디의 요청 수락
     @PatchMapping("/{userId}/invitedList/{studyId}/accept") //로그인 기능 만들어지면 /{userId} 없애기
@@ -57,6 +56,8 @@ public class TempUserController {
         return ResponseEntity.ok().build();
     }
 
+
+//----------------------------------------------------------------------------------------------------------------------
 
     // 유저의 프로필 수정
     @PatchMapping(value = "/{userId}/profile",
