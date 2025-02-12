@@ -5,8 +5,9 @@ spring:
       host: localhost
       database: ssacle
     redis:
-      host: localhost
+      host: ${SPRING_REDIS_HOST}
       port: 6379
+      password: ${SPRING_REDIS_PASSWORD}
   # 이미지 파일 파일 업로드 크기 제한 + Spring이 파일 업로드를 차단 해제
   servlet:
     multipart:
