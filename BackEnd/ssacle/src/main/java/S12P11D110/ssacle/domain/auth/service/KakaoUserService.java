@@ -102,7 +102,6 @@ public class KakaoUserService {
     @Transactional
     public User join(KakaoUserInfoDto kakaoUserInfo) {
         User newUser = User.builder()
-                .nickname(kakaoUserInfo.getNickname())
                 .email(kakaoUserInfo.getEmail())
                 .build();
         userRepository.save(newUser);
