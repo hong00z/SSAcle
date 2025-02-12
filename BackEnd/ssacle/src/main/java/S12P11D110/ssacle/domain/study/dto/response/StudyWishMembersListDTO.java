@@ -1,4 +1,4 @@
-package S12P11D110.ssacle.domain.study.dto;
+package S12P11D110.ssacle.domain.study.dto.response;
 
 
 import S12P11D110.ssacle.domain.tempUser.SearchUserDTO;

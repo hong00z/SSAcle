@@ -18,4 +18,5 @@ public class StudyDTO {
     private Set<String> members;
     private Set<String> wishMembers;
     private Set<String> preMembers;
+    private String createdBy;
 }

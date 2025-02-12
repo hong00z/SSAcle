@@ -10,8 +10,6 @@ import java.util.Map;
 public class KakaoUserInfoDto {
     private Long id;  // 카카오에서 제공하는 고유 ID
     private String email;
-//    private String nickname;
-//    private String image;
     private Map<String, Object> kakao_account;
     private Map<String, Object> properties;
 
@@ -20,8 +18,6 @@ public class KakaoUserInfoDto {
         this.properties = (Map<String, Object>) attributes.get("properties");
         this.kakao_account = (Map<String, Object>) attributes.get("kakao_account");
         this.email = (String) kakao_account.get("email");
-//        this.nickname = (String) properties.get("nickname");
-//        this.image = (String) properties.get("profile_image");
 
     }
 }

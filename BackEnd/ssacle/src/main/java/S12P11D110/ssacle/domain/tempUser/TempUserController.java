@@ -1,8 +1,8 @@
 package S12P11D110.ssacle.domain.tempUser;
 
 
-import S12P11D110.ssacle.domain.study.dto.MyInvitedStudyListDTO;
-import S12P11D110.ssacle.domain.study.dto.MyWishStudyListDTO;
+import S12P11D110.ssacle.domain.study.dto.response.MyInvitedStudyListDTO;
+import S12P11D110.ssacle.domain.study.dto.response.MyWishStudyListDTO;
 import S12P11D110.ssacle.domain.study.service.StudyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

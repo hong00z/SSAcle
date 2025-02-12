@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- 외부 저장소에 PDF를 저장하기 위한 경로 설정 -->
+    <external-files-path
+        name="external_files"
+        path="." />
+</paths>
