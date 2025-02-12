@@ -39,15 +39,17 @@ public class KakaoUserService {
      * @return 사용자 정보를 담은 Dto
      */
     public KakaoUserInfoDto getKakaoUserInfo(String kakaoToken) {
+        log.info("✅ [Step 1-1] 받은 카카오 액세스 토큰: {}", kakaoToken);
 
         // HttpHeader 생성
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.set("Authorization", "Bearer " + kakaoToken);
+        log.info("✅ [Step 1-2] HTTP 헤더 설정 완료");
 
         // HttpHeader 담기
         HttpEntity<MultiValueMap<String, String>> kakaoUserInfoRequest = new HttpEntity<>(headers);
-
+        log.info("✅ [Step 1-3] HTTP 요청 생성 완료");
 
         // 사용자 정보 요청 (POST)
         RestTemplate rt = new RestTemplate();
@@ -61,14 +63,19 @@ public class KakaoUserService {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
+        log.info("🔍 [Step 1-4] 카카오 API 응답 상태 코드: {}", response.getStatusCode());
+        log.info("🔍 [Step 1-5] 카카오 API 응답 본문: {}", response.getBody());
+
         // 응답 코드 확인
         if (response.getStatusCode() != HttpStatus.OK) {
+            log.error("❌ [Step 1-6] 카카오 API 응답이 비어 있거나 상태 코드가 200이 아님!");
             throw new AuthErrorException(AuthErrorStatus.SOCIAL_TOKEN_EXPIRED);
         }
 
         try {
             // 카카오 사용자 정보
             Map<String, Object> originAttributes = objectMapper.readValue(response.getBody(), new TypeReference<>() {});
+            log.info("✅ [Step 1-6] 카카오 사용자 정보 변환 성공: {}", originAttributes);
 
             return new KakaoUserInfoDto(originAttributes);
         } catch (JsonProcessingException e) {
@@ -101,7 +108,6 @@ public class KakaoUserService {
     @Transactional
     public User join(KakaoUserInfoDto kakaoUserInfo) {
         User newUser = User.builder()
-                .nickname(kakaoUserInfo.getNickname())
                 .email(kakaoUserInfo.getEmail())
                 .build();
         userRepository.save(newUser);

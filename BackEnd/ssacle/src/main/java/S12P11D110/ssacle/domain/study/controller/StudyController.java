@@ -3,6 +3,7 @@ package S12P11D110.ssacle.domain.study.controller;
 import S12P11D110.ssacle.domain.auth.entity.CustomUserDetail;
 import S12P11D110.ssacle.domain.study.dto.*;
 import S12P11D110.ssacle.domain.study.service.StudyService;
+import S12P11D110.ssacle.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.*;
 @RequestMapping("/api/studies")
 @Tag(name = "Study Controller", description = "This is Study Controller")
 public class StudyController {
-
+    private final UserService userService;
     private final StudyService studyService;
 
     // GPT: 25 ~31
@@ -24,8 +25,9 @@ public class StudyController {
     @PostMapping("")
     @Operation(summary = "스터디 개설", description = "새로운 스터디를 개설합니다.")
     public ResponseEntity<Void> createStudy(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestBody StudyCreateRequestDTO studyCreateRequestDTO){  // 클라이언트로부터 전달받은 JSON 형식의 데이터를 @RequestBody를 통해 Java의 객체(StudyCreateRequestDTO)로 자동 변환
-        String userId = userDetail.getId();  // 로그인된 사용자 ID 가져오기
-        studyService.saveStudy(userId, studyCreateRequestDTO);
+        String userId = userDetail.getId();
+        studyService.saveStudy(userId, studyCreateRequestDTO);  // studies DB에 study 생성
+        // users DB에 userId의 createdStudies, joinedStudies에 studyId 추가
         return ResponseEntity.ok().build();
     }
 

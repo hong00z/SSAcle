@@ -52,7 +52,7 @@ public class StudyService {
         members.add(userId);
         study.setMembers(members);
 
-        // WishMembers, PreMember는 개설 단계에서 입력하지 않음
+        // WishMembers, PreMembers는 개설 단계에서 입력하지 않음
         study.setWishMembers(new HashSet<>());
         study.setPreMembers(new HashSet<>());
 
@@ -77,6 +77,8 @@ public class StudyService {
                         .count(study.getCount())
                         .members(study.getMembers())
                         .studyContent(study.getStudyContent())
+                        .createdBy(study.getCreatedBy())
+                        .updatedAt(study.getUpdatedAt())
                         .build()
                 )
                 .collect(Collectors.toList());
@@ -160,7 +162,7 @@ public class StudyService {
                 .map(TempUser::getNickname)
                 .collect(Collectors.toList());
 
-        // 4. StudyResponseDTO반환
+        // 4. StudyDetailDTO반환
         return StudyDetailDTO.builder()
                 .id(study.getId())
                 .studyName(study.getStudyName())
@@ -170,6 +172,7 @@ public class StudyService {
                 .members(nikcknameList)
                 .studyContent(study.getStudyContent())
                 .feeds(feedList)
+                .createdBy(study.getCreatedBy())
                 .build();
 
     }
@@ -188,6 +191,8 @@ public class StudyService {
                         .count(study.getCount())
                         .members(study.getMembers())
                         .studyContent(study.getStudyContent())
+                        .createdBy(study.getCreatedBy())
+                        .updatedAt(study.getUpdatedAt())
                         .build()
 
                 )
