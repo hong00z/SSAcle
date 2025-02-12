@@ -16,6 +16,7 @@ public class StudyResponseDTO {
     private int count;              //정원
     private Set<String> members;    // 스터디원
     private String studyContent;    // 스터디 소개
+    private String createdBy;       // 방장
 
 
 }
