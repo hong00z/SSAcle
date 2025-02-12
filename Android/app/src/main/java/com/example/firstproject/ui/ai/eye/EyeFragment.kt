@@ -256,7 +256,7 @@ class EyeFragment : Fragment() {
         // 예시: 소수점 1자리만
         val formattedSec = String.format("%.1f", totalSec)
 
-        // 예시용 피드백 메시지
+        // 예시 피드백 메시지
         val feedbackText = """
             분석이 완료되었습니다!
             총 프레임 수: $totalFrameCount
