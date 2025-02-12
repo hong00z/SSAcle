@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 
 @Data
@@ -53,6 +54,6 @@ public class User extends BaseEntity {
 
     // FCM 토큰
     @Builder.Default
-    private String
-            fcmToken = "";
+    private String fcmToken = "";
+
 }

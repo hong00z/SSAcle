@@ -18,4 +18,6 @@ public interface UserRepository extends MongoRepository<User,String> {
 
     // existsByNickname : 닉네임 중복 검사
     Boolean existsByNickname(String Nickname);
+
+//    List<User> findALl
 }

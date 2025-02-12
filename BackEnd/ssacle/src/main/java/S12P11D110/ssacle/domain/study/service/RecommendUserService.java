@@ -1,9 +1,7 @@
 package S12P11D110.ssacle.domain.study.service;
 
-import S12P11D110.ssacle.domain.study.dto.RecommendUserDTO;
+import S12P11D110.ssacle.domain.study.dto.response.RecommendUserDTO;
 import S12P11D110.ssacle.domain.study.dto.StudyConditionDTO;
-import S12P11D110.ssacle.domain.study.dto.StudyDTO;
-import S12P11D110.ssacle.domain.study.dto.UserConditionDTO;
 import S12P11D110.ssacle.domain.tempUser.SearchUserDTO;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,10 @@
 package S12P11D110.ssacle.domain.study.controller;
 
 import S12P11D110.ssacle.domain.auth.entity.CustomUserDetail;
-import S12P11D110.ssacle.domain.study.dto.*;
+import S12P11D110.ssacle.domain.study.dto.request.MyRequestDTO;
+import S12P11D110.ssacle.domain.study.dto.request.StudyCreateRequestDTO;
+import S12P11D110.ssacle.domain.study.dto.request.StudyRequestDTO;
+import S12P11D110.ssacle.domain.study.dto.response.*;
 import S12P11D110.ssacle.domain.study.service.StudyService;
 import S12P11D110.ssacle.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -64,9 +67,10 @@ public class StudyController {
     // user 로그인 정보 받아와지면 {userId} >> users로 수정해야함
     @GetMapping("/my-studies")
     @Operation(summary = "내가 참여 중인 스터디 리스트 조회", description = "TempUser Id를 통해 해당 User가 가입한 스터디 리스트를 조회합니다.")
-    public List<StudyResponseDTO> getStudiesByUserId(@AuthenticationPrincipal CustomUserDetail userDetail){
+    public List<MyStudyList> getStudiesByUserId(@AuthenticationPrincipal CustomUserDetail userDetail){
         String userId = userDetail.getId();  // 로그인된 사용자 ID 가져오기
         return studyService.getStudiesByUserId(userId);
+
     }
 
 
