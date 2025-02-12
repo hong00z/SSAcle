@@ -2,7 +2,8 @@ package S12P11D110.ssacle.domain.user.controller;
 
 
 import S12P11D110.ssacle.domain.auth.entity.CustomUserDetail;
-import S12P11D110.ssacle.domain.study.dto.StudyResponseDTO;
+import S12P11D110.ssacle.domain.study.dto.response.MyStudyList;
+import S12P11D110.ssacle.domain.study.dto.response.StudyResponseDTO;
 import S12P11D110.ssacle.domain.study.service.StudyService;
 import S12P11D110.ssacle.domain.user.dto.request.SsafyAuthRequest;
 import S12P11D110.ssacle.domain.user.dto.request.UserProfileRequest;
@@ -140,7 +141,7 @@ public class UserController {
      */
     @GetMapping("/my-studies")
     @Operation(summary = "내 스터디 리스트", description = "내가 가입한 스터디 리스트를 조회합니다.")
-    public List<StudyResponseDTO> getStudiesByUserId(@AuthenticationPrincipal CustomUserDetail userDetail){
+    public List<MyStudyList> getStudiesByUserId(@AuthenticationPrincipal CustomUserDetail userDetail){
         String userId = userDetail.getId();
         return studyService.getStudiesByUserId(userId);
     }
