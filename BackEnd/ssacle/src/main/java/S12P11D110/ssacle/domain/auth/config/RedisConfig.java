@@ -28,12 +28,10 @@ public class RedisConfig {
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
-        redisStandaloneConfiguration.setHostName(host);
-        redisStandaloneConfiguration.setPort(port);
-        redisStandaloneConfiguration.setPassword(password);
-
-        return new LettuceConnectionFactory(redisStandaloneConfiguration);
+        // RedisStandaloneConfiguration를 사용하여 호스트, 포트, 비밀번호를 설정합니다.
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(host, port);
+        config.setPassword(RedisPassword.of(password));
+        return new LettuceConnectionFactory(config);
     }
 
     @Bean

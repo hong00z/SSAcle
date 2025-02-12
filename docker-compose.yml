@@ -34,7 +34,9 @@ services:
     volumes:
       - ./redis-data:/data
     networks:
-      - app-network
+      app-network:
+        aliases:
+          - redis
 
   # spring Backend
   backend:
