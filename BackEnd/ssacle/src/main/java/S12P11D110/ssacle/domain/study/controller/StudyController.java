@@ -1,7 +1,6 @@
 package S12P11D110.ssacle.domain.study.controller;
 
 import S12P11D110.ssacle.domain.auth.entity.CustomUserDetail;
-import S12P11D110.ssacle.domain.study.dto.*;
 import S12P11D110.ssacle.domain.study.dto.request.MyRequestDTO;
 import S12P11D110.ssacle.domain.study.dto.request.StudyCreateRequestDTO;
 import S12P11D110.ssacle.domain.study.dto.request.StudyRequestDTO;
@@ -32,14 +31,23 @@ public class StudyController {
 
     // GPT: 25 ~31
     // 스터디 생성 POST
-    @PostMapping("") // 로그인 기능 만들어지면 ("/{userId}") 이 부분 없애기
+//    @PostMapping("")
+//    @Operation(summary = "스터디 개설", description = "새로운 스터디를 개설합니다.")
+//    public ResponseEntity<Void> createStudy(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestBody StudyCreateRequestDTO studyCreateRequestDTO){  // 클라이언트로부터 전달받은 JSON 형식의 데이터를 @RequestBody를 통해 Java의 객체(StudyCreateRequestDTO)로 자동 변환
+//        String userId = userDetail.getId();
+//        studyService.saveStudy(userId, studyCreateRequestDTO);
+//        return ResponseEntity.ok().build();
+//    }
+
+    @PostMapping("/{userId}")
     @Operation(summary = "스터디 개설", description = "새로운 스터디를 개설합니다.")
-    // 로그인 기능 만들어지면 @PathVariable String userId 이 부분 없애기
-    public ResponseEntity<Void> createStudy(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestBody StudyCreateRequestDTO studyCreateRequestDTO){  // 클라이언트로부터 전달받은 JSON 형식의 데이터를 @RequestBody를 통해 Java의 객체(StudyCreateRequestDTO)로 자동 변환
-        String userId = userDetail.getId();  // 로그인된 사용자 ID 가져오기
+    public ResponseEntity<Void> createStudy(@PathVariable String userId, @RequestBody StudyCreateRequestDTO studyCreateRequestDTO){  // 클라이언트로부터 전달받은 JSON 형식의 데이터를 @RequestBody를 통해 Java의 객체(StudyCreateRequestDTO)로 자동 변환
+//        String userId = userDetail.getId();
         studyService.saveStudy(userId, studyCreateRequestDTO);
         return ResponseEntity.ok().build();
     }
+
+
 
     // 전체 스터디 조회 GET
     @GetMapping
@@ -74,11 +82,22 @@ public class StudyController {
     // user 로그인 정보 받아와지면 {userId} >> users로 수정해야함
     @GetMapping("/my-studies")
     @Operation(summary = "내가 참여 중인 스터디 리스트 조회", description = "TempUser Id를 통해 해당 User가 가입한 스터디 리스트를 조회합니다.")
-    public List<StudyResponseDTO> getStudiesByUserId(@AuthenticationPrincipal CustomUserDetail userDetail){
+    public List<MyStudyList> getStudiesByUserId(@AuthenticationPrincipal CustomUserDetail userDetail){
         String userId = userDetail.getId();  // 로그인된 사용자 ID 가져오기
         return studyService.getStudiesByUserId(userId);
 
     }
+
+
+//
+//    @GetMapping("/my-studies/{userId}")
+//    @Operation(summary = "내가 참여 중인 스터디 리스트 조회", description = "TempUser Id를 통해 해당 User가 가입한 스터디 리스트를 조회합니다.")
+//    public List<MyStudyList> getStudiesByUserId(@PathVariable String userId){
+//
+//        return studyService.getStudiesByUserId(userId);
+//
+//    }
+
 
 
 //-------------------<< 스터디원 추천 기능>>-------------------------------------------------------------------------------
@@ -109,6 +128,17 @@ public class StudyController {
         String userId = userDetail.getId();
         return studyService.getUserCondition(userId);
     }
+
+//    @GetMapping("/recommendStudy/{userId}") // user 로그인 정보 받아와지면 {userId} 없애기
+//    @Operation(summary = "스터디 추천", description = "유저에게 적합한 상위 3개의 스터디 리스트를 제공합니다.")
+//    public List<RecommendStudyDTO> getRecommendStudy(@PathVariable String userId){
+//        String userId = userDetail.getId();
+//        return studyService.getUserCondition(userId);
+//    }
+
+
+
+
 
     // 내 요청함 wishStudy & 스터디 내 수신함  preMembers 추가
     @PatchMapping("/addMyRequest") // user 로그인 정보 받아와지면 {userId} 없애기
