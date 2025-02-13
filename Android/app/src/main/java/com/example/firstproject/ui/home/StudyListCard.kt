@@ -46,29 +46,11 @@ fun StudyListCard() {
         .wrapContentHeight()
         .padding(horizontal = 8.dp)
     ) {
-        Card(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .wrapContentHeight(),
-            shape = RoundedCornerShape(5.dp),
-//            border = BorderStroke(1.dp, color = colorResource(id = R.color.primary_color)),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
-            elevation = CardDefaults.elevatedCardElevation(4.dp)
-        ) {
-            Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 14.dp)) {
-                openStudyList.take(3).forEachIndexed { index, study ->
-                    Log.d("에러 추적", study[1])
-                    StudyItem(title = study.first(), topic = study[1])
-
-                    if (index < 2) {
-                        Divider(
-                            modifier = Modifier.padding(vertical = 12.dp),
-                            color = colorResource(R.color.border_light_color),
-                            thickness = 1.dp
-                        )
-                    }
-                }
-
+        Column(modifier = Modifier.padding(horizontal = 4.dp)) {
+            openStudyList.take(4).forEachIndexed { index, study ->
+                Log.d("에러 추적", study[1])
+                StudyItem(title = study.first(), topic = study[1])
+                Spacer(Modifier.height(18.dp))
             }
 
         }
@@ -93,7 +75,7 @@ private fun StudyItem(title: String, topic: String) {
             title,
             fontFamily = pretendard,
             fontWeight = FontWeight(500),
-            fontSize = 14.sp
+            fontSize = 15.sp
         )
 
 
@@ -106,7 +88,7 @@ private fun StudyItem(title: String, topic: String) {
 fun ListStackTag(stackTitle: String, tint: Color) {
     Box(
         modifier = Modifier
-            .width(50.dp)
+            .width(54.dp)
             .height(20.dp)
             .background(tint, RoundedCornerShape(50.dp)),
         contentAlignment = Alignment.Center
