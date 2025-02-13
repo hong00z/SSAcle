@@ -14,6 +14,10 @@
 #### Redis 3.0.504
 설치 사이트 : https://github.com/microsoftarchive/redis/releases <br>
 설치 가이드 : https://nazzang19.tistory.com/138
+#### Redis Insight(GUI)
+설치 사이트 : https://redis.io/insight/ <br>
+설치 가이드 : https://blog.naver.com/islove8587/223445259598
+
 
 ---
 ### Spring Initializr
@@ -28,3 +32,8 @@
 - Spring Security
 - OAuth2 Client
 - Validation
+
+직접 추가한 라이브러리
+- Swagger UI
+- JWT
+- Firebase

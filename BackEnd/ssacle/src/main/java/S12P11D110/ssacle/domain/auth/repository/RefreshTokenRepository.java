@@ -24,17 +24,11 @@ Redis를 사용하는 2가지 방식
 */
 @Slf4j
 @Repository
-@ComponentScan
 @RequiredArgsConstructor
-public class RefreshTokenRepository{
+public class RefreshTokenRepository {
     @Value("${jwt.refresh.token.expiration.seconds}")
     private long refreshTokenExpiration;
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
-
-    public RefreshTokenRepository(RedisTemplate<String, String> redisTemplate) {
-        this.redisTemplate = redisTemplate;
-    }
+    private final RedisTemplate<String, String> redisTemplate;
 
     /* refresh token 을 redis 에 저장 */
     public void save(RefreshToken refreshToken) {

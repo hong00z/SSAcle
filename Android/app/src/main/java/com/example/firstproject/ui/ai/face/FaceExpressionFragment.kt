@@ -56,7 +56,6 @@ class FaceExpressionFragment : Fragment() {
         }
         binding.backButton.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
-
         }
 
         // 피드백 받기 버튼
@@ -72,6 +71,13 @@ class FaceExpressionFragment : Fragment() {
                 }
                 binding.deleteImg.visibility = View.GONE
                 binding.deleteText.visibility = View.GONE
+                binding.BtnSelectVideoemotion.visibility = View.GONE
+                binding.btnFeedbackemotion.visibility = View.GONE
+
+                binding.ivImage.visibility = View.GONE
+                binding.tvPdfPath.visibility = View.GONE
+                binding.tvAnalysisStatus.text = "분석 중입니다..."
+                binding.tvAnalysisStatus.visibility = View.VISIBLE
 
                 Toast.makeText(requireContext(), "분석중입니다...", Toast.LENGTH_SHORT).show()
 
