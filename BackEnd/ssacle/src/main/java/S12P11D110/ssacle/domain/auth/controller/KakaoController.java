@@ -8,7 +8,7 @@ import S12P11D110.ssacle.domain.auth.service.KakaoUserService;
 import S12P11D110.ssacle.global.exception.AuthErrorException;
 import S12P11D110.ssacle.global.exception.AuthErrorStatus;
 import S12P11D110.ssacle.global.exception.HttpStatusCode;
-import S12P11D110.ssacle.global.exception.ResultDto;
+import S12P11D110.ssacle.global.dto.ResultDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ public class KakaoController {
 
     // (FE → BE) 카카오 access 토큰 전달
     @PostMapping("/api/auth/kakao")
-    public ResultDto<Object> socialLogin(@RequestHeader HttpHeaders headers) throws AuthErrorException {
+    public ResultDto<TokenDto> socialLogin(@RequestHeader HttpHeaders headers) throws AuthErrorException {
 
         String accessToken = Objects.requireNonNull(headers.getFirst("Authorization")).substring(7);
         log.info("✅ [Step 1] 카카오 로그인 요청 accessToken: {}", accessToken);
@@ -47,7 +47,7 @@ public class KakaoController {
 
             // 회원가입/로그인 후 JWT 토큰 발급
             TokenDto tokenDto = kakaoUserService.joinorLogin(kakaoUserInfo);
-            log.info("✅ [Step 3] JWT 토큰 생성 완료: {}", tokenDto);
+            log.info("✅ [Step 5] JWT 토큰 생성 완료: {}", tokenDto);
 
             if (tokenDto.getType().equals("Signup")) {
                 return ResultDto.of(HttpStatusCode.CREATED, "회원 가입 성공", tokenDto);
@@ -65,7 +65,7 @@ public class KakaoController {
 
     // (FE ↔ BE) refresh 토큰으로 access 토큰 재발급
     @GetMapping("/api/auth/newToken")
-    public ResultDto<Object> getNewToken(@RequestHeader HttpHeaders headers) {
+    public ResultDto<RefreshTokenDto> getNewToken(@RequestHeader HttpHeaders headers) {
         try {
             String refreshToken = Objects.requireNonNull(headers.getFirst("Authorization")).substring(7);
             String accessToken = jwtProvider.reAccessToken(refreshToken);

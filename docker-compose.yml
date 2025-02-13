@@ -1,7 +1,6 @@
 version: "3.8"
 
 services:
-
   # 몽고DB
   # .env
   # MONGO_USERNAME=root
@@ -31,9 +30,13 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
-    command: redis-server --requirepass root  # 비밀번호 적용
+    command: redis-server --requirepass root --port 6379 --bind 0.0.0.0
+    volumes:
+      - ./redis-data:/data
     networks:
-      - app-network
+      app-network:
+        aliases:
+          - redis
 
   # spring Backend
   backend:
@@ -42,7 +45,7 @@ services:
       dockerfile: Dockerfile
 
     container_name: spring
-    ports: 
+    ports:
       - "5001:5001"
     depends_on:
       - mongodb # 몽고db 먼저 실행되어야 함
@@ -53,12 +56,11 @@ services:
 
       SPRING_DATA_MONGODB_URI: mongodb://root:password@mongodb:27017/ssacle?authSource=admin
 
-
       SPRING_REDIS_HOST: redis
       SPRING_REDIS_PORT: 6379
       SPRING_REDIS_PASSWORD: root
 
-      # AWS S3 환경변수 
+      # AWS S3 환경변수
       # .env 파일로 환경변수 로드
       # S3_BUCKET_NAME=my-s3-bucket
       # CLOUD_AWS_ACCESS_KEY=AKIAXXXXXXX
@@ -67,10 +69,10 @@ services:
       # S3_BUCKET_NAME: ${S3_BUCKET_NAME}
       # CLOUD_AWS_ACCESS_KEY: ${CLOUD_AWS_ACCESS_KEY}
       # CLOUD_AWS_SECRET_KEY: ${CLOUD_AWS_SECRET_KEY}
-    
+
     networks:
       - app-network
-  
+
   webrtc:
     build:
       context: ./WebRTC
@@ -79,9 +81,10 @@ services:
     container_name: webrtc
     env_file:
       - WebRTC/.env
-    ports: 
+    ports:
       - "4000:4000"
-      - "10000:10100"
+      - "10000-10100:10000-10100/udp"
+      - "10000-10100:10000-10100/tcp"
     depends_on:
       - mongodb
       - redis

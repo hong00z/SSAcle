@@ -4,6 +4,7 @@ import S12P11D110.ssacle.domain.auth.entity.RefreshToken;
 import S12P11D110.ssacle.global.exception.AuthErrorException;
 import S12P11D110.ssacle.global.exception.AuthErrorStatus;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,22 +22,21 @@ Redis를 사용하는 2가지 방식
 1. Redis Template 클래스를 사용하는 방법
 2. Redis Repository를 사용하는 방법
 */
+@Slf4j
 @Repository
-@ComponentScan
 @RequiredArgsConstructor
-public class RefreshTokenRepository{
+public class RefreshTokenRepository {
     @Value("${jwt.refresh.token.expiration.seconds}")
     private long refreshTokenExpiration;
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
-    public RefreshTokenRepository(RedisTemplate<String, String> redisTemplate) {
-        this.redisTemplate = redisTemplate;
-    }
+    private final RedisTemplate<String, String> redisTemplate;
 
     /* refresh token 을 redis 에 저장 */
     public void save(RefreshToken refreshToken) {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         valueOperations.set(refreshToken.getRefreshToken(), refreshToken.getUserId());
+
+        log.info("🔍 refresh token 만료 시간 : {}", refreshTokenExpiration);
+
         redisTemplate.expire(refreshToken.getRefreshToken(), refreshTokenExpiration, TimeUnit.SECONDS);
     }
 

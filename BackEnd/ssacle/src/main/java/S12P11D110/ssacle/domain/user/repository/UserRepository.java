@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends MongoRepository<User,String> {
-//    // findByRefreshToken : Refresh Token으로 사용자 조회
-//    Optional<TempUser> findByRefreshToken(String refreshToken);
 
     List<User> findAll();
 
@@ -20,4 +18,6 @@ public interface UserRepository extends MongoRepository<User,String> {
 
     // existsByNickname : 닉네임 중복 검사
     Boolean existsByNickname(String Nickname);
+
+//    List<User> findALl
 }

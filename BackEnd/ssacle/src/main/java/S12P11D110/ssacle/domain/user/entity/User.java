@@ -2,10 +2,7 @@ package S12P11D110.ssacle.domain.user.entity;
 
 
 import S12P11D110.ssacle.global.entity.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -15,6 +12,7 @@ import java.util.UUID;
 
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor               // GPT 도움!! (MongoDB에서 필요)
 @AllArgsConstructor              // GPT 도움!! (모든 필드를 포함한 생성자 추가)
 @Builder
@@ -53,5 +51,9 @@ public class User extends BaseEntity {
     private Set<String> wishStudies = new HashSet<>();
     @Builder.Default
     private Set<String> invitedStudies = new HashSet<>();
+
+    // FCM 토큰
+    @Builder.Default
+    private String fcmToken = "";
 
 }

@@ -44,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -183,12 +184,12 @@ fun StudyDetailScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 36.dp)
             ) {
-                CardButton()
+                CardButton(image = painterResource(R.drawable.img_chatting), text = "스터디 채팅방")
                 Spacer(Modifier.weight(1f))
-                CardButton()
+                CardButton(image = painterResource(R.drawable.img_mic), text = "실시간 모각공")
             }
 
-            Spacer(Modifier.height(30.dp))
+            Spacer(Modifier.height(24.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -214,7 +215,7 @@ fun StudyDetailScreen(
                         Text(
                             "글쓰기", fontFamily = pretendard,
                             fontWeight = FontWeight(700),
-                            fontSize = 11.sp,
+                            fontSize = 12.sp,
                             color = Color.White
                         )
                         Spacer(Modifier.width(4.dp))
@@ -295,7 +296,7 @@ private fun TitleText(title: String) {
             text = title,
             fontFamily = pretendard,
             fontWeight = FontWeight(700),
-            fontSize = 18.sp,
+            fontSize = 19.sp,
             letterSpacing = 1.sp
         )
     }
@@ -445,11 +446,11 @@ private fun UserProfileItem(profileId: Int, userName: String, isHost: Boolean) {
 }
 
 @Composable
-private fun CardButton() {
+private fun CardButton(image: Painter, text: String) {
     Card(
         modifier = Modifier
-            .width(140.dp)
-            .height(90.dp)
+            .width(150.dp)
+            .height(100.dp)
             .shadow(
                 elevation = 4.dp,
                 shape = RoundedCornerShape(10.dp),
@@ -465,16 +466,16 @@ private fun CardButton() {
             verticalArrangement = Arrangement.Center
         ) {
             Image(
-                painter = painterResource(R.drawable.img_find_study),
+                painter = image,
                 null,
-                modifier = Modifier.size(40.dp)
+                modifier = Modifier.size(48.dp)
             )
             Spacer(Modifier.height(8.dp))
             Text(
-                "스터디 채팅방",
+                text = text,
                 fontFamily = pretendard,
                 fontWeight = FontWeight(600),
-                fontSize = 13.sp
+                fontSize = 14.5.sp
             )
         }
 
@@ -512,7 +513,7 @@ private fun NoticeItem() {
         ) {
             Box(
                 modifier = Modifier
-                    .size(36.dp)
+                    .size(44.dp)
                     .background(color = Color(0x00FFFFFF), shape = CircleShape)
             ) {
 
@@ -520,12 +521,12 @@ private fun NoticeItem() {
                     painter = painterResource(R.drawable.img_default_profile_5),
                     null,
                     modifier = Modifier
-                        .size(36.dp)
+                        .size(44.dp)
                         .align(Alignment.Center),
                 )
                 Box(
                     modifier = Modifier
-                        .size(12.dp)
+                        .size(13.dp)
                         .align(Alignment.BottomEnd)
                 ) {
                     if (true) {
@@ -549,7 +550,7 @@ private fun NoticeItem() {
                         text = "구미",
                         fontFamily = pretendard,
                         fontWeight = FontWeight(500),
-                        fontSize = 12.sp,
+                        fontSize = 13.sp,
                         color = Color(0x99000000)
                     )
                 }
@@ -558,7 +559,7 @@ private fun NoticeItem() {
                     text = "사용자 닉네임",
                     fontFamily = pretendard,
                     fontWeight = FontWeight(500),
-                    fontSize = 12.sp
+                    fontSize = 14.sp
                 )
             }
         }
@@ -662,7 +663,7 @@ fun GradeLabel(grade: Int) {
     val labelColor = GradeLabelEnum.selectColor(grade)
     Box(
         modifier = Modifier
-            .size(20.dp)
+            .size(23.dp)
             .background(
                 color = labelColor,
                 RoundedCornerShape(5.dp)
@@ -673,7 +674,7 @@ fun GradeLabel(grade: Int) {
             "${grade}기",
             fontFamily = gmarket,
             fontWeight = FontWeight(400),
-            fontSize = 8.sp,
+            fontSize = 9.sp,
             color = Color.White
         )
 
