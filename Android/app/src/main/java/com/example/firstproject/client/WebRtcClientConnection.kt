@@ -228,147 +228,95 @@ class WebRtcClientConnection : CoroutineScope {
             put("sender", true)
         }
 
-        mSocket?.emit("createWebRtcTransport", data, Ack { data ->
-            val response = data[0] as JSONObject
+        launch {
+            mSocket?.emit("createWebRtcTransport", data, Ack { data ->
+                val response = data[0] as JSONObject
 
-            if (!response.getBoolean("ok")) {
-                Log.e(TAG, "Error creating send transport: ${response.optString("error")}")
-                return@Ack
-            }
-
-            val params = response.getJSONObject("params")
-
-            Log.d(TAG, "createSendTransport: params = $params\n")
-
-            val transportId = params.getString("id")
-            val iceParameters = params.getString("iceParameters")
-            val iceCandidates = params.getString("iceCandidates")
-            val dtlsParameters = params.getString("dtlsParameters")
-//            val sctpParameters = params.optString("sctpParameters")
-
-
-            val sendTransportListener: SendTransport.Listener =
-                object : SendTransport.Listener {
-                    override fun onConnect(transport: Transport, dtlsParameters: String) {
-                        Log.d(TAG, "Send transport connecting...")
-
-                        val data = JSONObject().apply {
-                            put("transportId", transport.id)
-                            put("dtlsParameters", toJsonObject(dtlsParameters))
-                        }
-
-                        Log.d(TAG, "onConnect: data= $data")
-                        mSocket?.emit("connectTransport", data, Ack { data ->
-                            val response = data[0] as JSONObject
-
-                            if (!response.getBoolean("ok")) {
-                                Log.e(
-                                    TAG,
-                                    "Error connecting send transport: ${response.optString("error")}"
-                                )
-                                return@Ack
-                            }
-                            Log.d(TAG, "Send transport connected successfully.")
-                        })
-                    }
-
-                    override fun onConnectionStateChange(
-                        transport: Transport?,
-                        connectionState: String?
-                    ) {
-                        Log.d(TAG, "Send transport state changed: $connectionState")
-
-                    }
-
-                    override fun onProduce(
-                        transport: Transport,
-                        kind: String,
-                        rtpParameters: String,
-                        appData: String?
-                    ): String {
-                        Log.d(TAG, "ProducerTransport onProduce: $kind")
-
-                        val data = JSONObject().apply {
-                            put("transportId", transport.id)
-                            put("kind", kind)
-                            put("rtpParameters", rtpParameters)
-                        }
-
-                        val producerId = getProducerIdAsync(data) // 작업이 완료될 때까지 대기
-
-                        Log.d(TAG, "onProduce: producerId=$producerId")
-                        return producerId.toString()
-//                            // CompletableFuture 를 사용해 서버 응답을 대기함
-//                            val producerIdFuture = CompletableFuture<String>()
-//                            mSocket?.emit("produce", data, Ack { args ->
-//                                try {
-//                                    val response = args[0] as JSONObject
-//                                    if (!response.getBoolean("ok")) {
-//                                        Log.e(
-//                                            TAG,
-//                                            "Error during production: ${response.optString("error")}"
-//                                        )
-//                                    } else {
-//                                        producerIdFuture.complete(response.getString("id"))
-//                                    }
-//                                } catch (e: Exception) {
-//                                    producerIdFuture.completeExceptionally(e)
-//                                }
-//                            })
-//                            return try {
-//                                producerIdFuture.get()
-//                            } catch (e: Exception) {
-//                                throw RuntimeException(e)
-//                            }
-                    }
-
-                    override fun onProduceData(
-                        transport: Transport?,
-                        sctpStreamParameters: String?,
-                        label: String?,
-                        protocol: String?,
-                        appData: String?
-                    ): String {
-                        return ""
-                    }
+                if (!response.getBoolean("ok")) {
+                    Log.e(TAG, "Error creating send transport: ${response.optString("error")}")
+                    return@Ack
                 }
 
-            // mediasoup Device를 통해 송신 트랜스포트 생성
-            producerTransport = device?.createSendTransport(
-                sendTransportListener,
-                transportId,
-                iceParameters,
-                iceCandidates,
-                dtlsParameters
-            )
+                val params = response.getJSONObject("params")
 
-            Log.d(TAG, "createSendTransport: ${producerTransport?.id}")
-        })
+                val transportId = params.getString("id")
+                val iceParameters = params.getString("iceParameters")
+                val iceCandidates = params.getString("iceCandidates")
+                val dtlsParameters = params.getString("dtlsParameters")
+//                val sctpParameters = params.getString("sctpParameters")
 
-    }
+                val sendTransportListener: SendTransport.Listener =
+                    object : SendTransport.Listener {
+                        override fun onConnect(transport: Transport, dtlsParameters: String) {
+                            Log.d(TAG, "Send transport connecting...")
 
-    fun getProducerIdAsync(data: JSONObject): CompletableFuture<String> {
-        val futureResult = CompletableFuture<String>()
-        mSocket?.emit("produce", data, Ack { data ->
-            val response = data[0] as JSONObject
+                            val data = JSONObject().apply {
+                                put("transportId", transport.id)
+                                put("dtlsParameters", toJsonObject(dtlsParameters))
+                            }
+                            mSocket?.emit("connectTransport", data, Ack { data ->
+                                val response = data[0] as JSONObject
 
-            if (!response.getBoolean("ok")) {
-                Log.e(
-                    TAG,
-                    "Error during production: ${response.optString("error")}"
+                                if (!response.getBoolean("ok"))
+                                    Log.e(
+                                        TAG,
+                                        "Error connecting send transport: ${response.optString("error")}"
+                                    )
+                                else
+                                    Log.d(TAG, "Send transport connected successfully.")
+                            })
+                        }
+
+                        override fun onConnectionStateChange(
+                            transport: Transport?,
+                            connectionState: String?
+                        ) {
+                            Log.d(TAG, "Send transport state changed: $connectionState")
+                        }
+
+                        override fun onProduce(
+                            transport: Transport,
+                            kind: String,
+                            rtpParameters: String,
+                            appData: String?
+                        ): String {
+                            Log.d(TAG, "ProducerTransport onProduce: $kind")
+
+                            val data = JSONObject().apply {
+                                put("transportId", transport.id)
+                                put("kind", kind)
+                                put("rtpParameters", toJsonObject(rtpParameters))
+                            }
+
+                            // CompletableFuture 를 사용해 서버 응답을 대기함
+                            val producerId = getProducerIdAsync(data)
+                            return producerId.toString()
+                        }
+
+                        override fun onProduceData(
+                            transport: Transport?,
+                            sctpStreamParameters: String?,
+                            label: String?,
+                            protocol: String?,
+                            appData: String?
+                        ): String {
+                            return ""
+                        }
+                    }
+
+                // mediasoup Device를 통해 송신 트랜스포트 생성
+                producerTransport = device?.createSendTransport(
+                    sendTransportListener,
+                    transportId,
+                    iceParameters,
+                    iceCandidates,
+                    dtlsParameters
                 )
-                return@Ack
-            }
 
-            try {
-                val id = response.getString("id")
-                Log.d(TAG, "getProducerIdAsync: id = $id")
-                futureResult.complete(id)
-            } catch (e: JSONException) {
-                futureResult.completeExceptionally(e)
-            }
-        })
-        return futureResult
+                produceVideo()
+                produceAudio()
+            })
+        }
     }
 
     /**
@@ -433,11 +381,33 @@ class WebRtcClientConnection : CoroutineScope {
                     iceCandidates,
                     dtlsParameters
                 )
-
-                Log.d(TAG, "createRecvTransport: ${recvTransport?.id}")
             })
         }
     }
+
+
+    fun getProducerIdAsync(data: JSONObject): CompletableFuture<String> {
+        val futureResult = CompletableFuture<String>()
+
+        mSocket?.emit("produce", data, Ack { args ->
+            val response = args[0] as JSONObject
+            val producerId: String
+
+            try {
+                if (!response.getBoolean("ok")) {
+                    Log.e(TAG, "Error during production: ${response.optString("error")}")
+                    producerId = ""
+                } else {
+                    producerId = response.getString("id")
+                }
+                futureResult.complete(producerId)
+            } catch (e: JSONException) {
+                futureResult.completeExceptionally(e)
+            }
+        })
+        return futureResult
+    }
+
 
     fun getVideoTrack() {
         videoCapturer?.startCapture(1280, 720, 30)
@@ -544,6 +514,7 @@ class WebRtcClientConnection : CoroutineScope {
             mSocket?.emit("consume", data, Ack { data ->
                 val response = data[0] as JSONObject
 
+                // response로 false를 받으면 error 로그 띄우기
                 if (!response.getBoolean("ok")) {
                     Log.e(TAG, "Error consuming producer: ${response.optString("error")}")
                     return@Ack
