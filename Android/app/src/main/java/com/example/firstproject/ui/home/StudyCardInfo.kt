@@ -52,7 +52,7 @@ fun StudyCardInfo(studyInfo: StudyInfo) {
                 studyInfo.title,
                 fontFamily = pretendard,
                 fontWeight = FontWeight(600),
-                fontSize = 16.sp,
+                fontSize = 17.sp,
                 modifier = Modifier.fillMaxWidth(0.7f),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -92,7 +92,7 @@ fun StudyCardInfo(studyInfo: StudyInfo) {
 }
 
 @Composable
-private fun JoinProfiles(personNum: Int) {
+fun JoinProfiles(personNum: Int) {
     val joinList = mutableListOf(
         R.drawable.img_default_profile,
         R.drawable.img_default_profile_5,
@@ -119,7 +119,7 @@ private fun JoinProfiles(personNum: Int) {
         repeat(profileCount) { index ->
             ProfileItem(
                 imgId = joinList[index],
-                modifier = Modifier.offset(x = (5 * (profileCount - index)).dp)
+                modifier = Modifier.offset(x = (6 * (profileCount - index)).dp)
             )
         }
 
@@ -128,7 +128,7 @@ private fun JoinProfiles(personNum: Int) {
                 painter = painterResource(R.drawable.img_more),
                 null,
                 modifier = Modifier
-                    .size(10.dp)
+                    .size(14.dp)
             )
         }
     }
@@ -141,7 +141,7 @@ private fun ProfileItem(
 ) {
     Box(
         modifier = modifier
-            .size(18.dp)
+            .size(22.dp)
             .background(color = Color.LightGray, shape = CircleShape)
     ) {
         Image(painter = painterResource(imgId), null)
@@ -160,7 +160,7 @@ fun TestPreview() {
     )
 
 
-//    MyStudyItem(myStudyList)
+    StudyCardInfo(myStudyList[0])
 //    JoinProfiles(myStudyList[0].personNum)
-//    JoinProfiles()
+
 }
