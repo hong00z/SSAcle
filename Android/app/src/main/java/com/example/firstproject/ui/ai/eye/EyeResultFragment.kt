@@ -20,6 +20,9 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
 import androidx.core.content.FileProvider
 import com.example.firstproject.ui.ai.eyeimport.EyeCustomPieChartRenderer
@@ -33,6 +36,7 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlin.math.max
 
 
 class EyeResultFragment : Fragment() {
@@ -114,6 +118,61 @@ class EyeResultFragment : Fragment() {
 
         setupDonutChart(trueValue, falseValue)
 
+        binding.detectText.apply {
+            val detValue = max(trueValue, falseValue)
+            var detText = ""
+            if (detValue == trueValue) {
+                detText = "집중"
+            } else {
+                detText = "흔들림"
+            }
+            val valueFormatted = "%.1f".format(detValue)
+
+            val resultText = "영상 분석 결과, ${detText}이 ${valueFormatted}% 로 \n 가장 많이 감지되었습니다."
+
+            val spannable = SpannableStringBuilder(resultText)
+
+            val detTextStart = resultText.indexOf(detText)
+            // 글자
+            val detTextEnd = detTextStart + detText.length
+            spannable.setSpan(
+                StyleSpan(Typeface.BOLD),
+                detTextStart,
+                detTextEnd,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            spannable.setSpan(
+                AbsoluteSizeSpan(18, true),
+                detTextStart,
+                detTextEnd,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+
+            // detValue(숫자) 굵게 처리
+            val detValueStart = resultText.indexOf(valueFormatted)
+            val detValueEnd = detValueStart + valueFormatted.length
+            spannable.setSpan(
+                StyleSpan(Typeface.BOLD),
+                detValueStart,
+                detValueEnd,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            spannable.setSpan(
+                ForegroundColorSpan(Color.RED),
+                detValueStart,
+                detValueEnd,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            spannable.setSpan(
+                AbsoluteSizeSpan(18, true),
+                detValueStart,
+                detValueEnd,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+
+            text = spannable // 굵게 적용된 SpannableStringBuilder 설정
+        }
+
         binding.btnEyeEyeSaveResult.setOnClickListener {
             saveAndShareImage()
         }
@@ -178,7 +237,7 @@ class EyeResultFragment : Fragment() {
             setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
                 override fun onValueSelected(e: Entry?, h: Highlight?) {
                     customRenderer.selectedIndex = h?.x?.toInt() ?: -1
-                    val selectedIndex =  h?.x?.toInt() ?: -1
+                    val selectedIndex = h?.x?.toInt() ?: -1
                     when (selectedIndex) {
                         0 -> { // "집중" 영역 선택 시
                             binding.tvLegendFocus.apply {
@@ -190,6 +249,7 @@ class EyeResultFragment : Fragment() {
                                 textSize = 14f
                             }
                         }
+
                         1 -> { // "흔들림" 영역 선택 시
                             binding.tvLegendFocus.apply {
                                 setTypeface(null, Typeface.NORMAL)
@@ -200,6 +260,7 @@ class EyeResultFragment : Fragment() {
                                 textSize = 16f
                             }
                         }
+
                         else -> {
                             // 기타: 기본 스타일로 복원
                             binding.tvLegendFocus.apply {
@@ -499,7 +560,6 @@ class EyeResultFragment : Fragment() {
     }
 
 
-
     /**
      * View -> Bitmap추출
      */
@@ -534,6 +594,7 @@ class EyeResultFragment : Fragment() {
 
         return imageFile
     }
+
     private fun shareImageFile(imageFile: File) {
         val uri = FileProvider.getUriForFile(
             requireContext(),
