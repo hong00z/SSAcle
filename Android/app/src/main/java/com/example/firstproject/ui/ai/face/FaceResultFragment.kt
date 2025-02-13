@@ -57,7 +57,6 @@ class FaceResultFragment : Fragment() {
         var positive = arguments?.getFloat("positive", 0f) ?: 0f
         var negative = arguments?.getFloat("negative", 0f) ?: 0f
         var neutral = arguments?.getFloat("neutral", 0f) ?: 0f
-        val feedback = arguments?.getString("feedback") ?: ""
 
         // 합계가 100이 안 되면 나머지를 3등분
         if (positive + neutral + negative != 100.0f) {
@@ -67,13 +66,6 @@ class FaceResultFragment : Fragment() {
             neutral += rest / 3f
         }
 
-        binding.backButton.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
-
-        /**
-         * 확률 별 text UI
-         **/
         // text UI
         binding.tvPositiveValue.apply {
             val positiveValueFormatted = "%.1f".format(positive)
@@ -151,7 +143,7 @@ class FaceResultFragment : Fragment() {
             // SpannableStringBuilder 사용
             val spannable = SpannableStringBuilder(resultText)
 
-            // detText(긍정, 부정, 중립) 굵게 처리
+            // 글자
             val detTextStart = resultText.indexOf(detText)
             val detTextEnd = detTextStart + detText.length
             spannable.setSpan(
@@ -197,7 +189,9 @@ class FaceResultFragment : Fragment() {
             saveAndShareImage()
         }
 
-
+        binding.backButton.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
     }
 
     private fun saveAndShareImage() {
