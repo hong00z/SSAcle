@@ -5,11 +5,20 @@ import android.app.NotificationManager
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.View
+import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
@@ -19,6 +28,7 @@ import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import com.example.firstproject.BuildConfig
 import com.example.firstproject.MainActivity
+import com.example.firstproject.R
 import com.example.firstproject.databinding.FragmentAiBinding
 import com.example.firstproject.databinding.FragmentAiFeedbackBinding
 import com.itextpdf.html2pdf.ConverterProperties
@@ -58,17 +68,20 @@ class AiFeedbackFragment : Fragment() {
     private var openAIApiKey = BuildConfig.OPENAI_API_KEY
     private var pdfContent: String = ""         // 원본 PDF 텍스트
     private var revisedHtmlContent: String = ""   // ChatGPT가 반환한 HTML
+    private var isBtnSubmitClicked = false
+    var isMarginIncreased = false   // margin이 증가했는지 여부
 
     // PDF 선택을 위한 Activity Result Launcher
     private val pdfPickerLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
-                binding.tvPdfPath.text = it.path ?: "알 수 없는 경로"
                 val parsedText = parsePdfToText(it)
                 if (parsedText.isNotEmpty()) {
                     pdfContent = parsedText
                     Toast.makeText(requireContext(), "PDF 내용이 성공적으로 로드되었습니다.", Toast.LENGTH_SHORT)
                         .show()
+                    binding.changeText.text = "업로드 되었습니다."
+
                 } else {
                     Toast.makeText(requireContext(), "PDF 내용을 불러오지 못했습니다.", Toast.LENGTH_SHORT)
                         .show()
@@ -95,7 +108,6 @@ class AiFeedbackFragment : Fragment() {
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
 
-
             // WebView 기본 설정 (실시간 HTML 미리보기 용도)
             webView.settings.javaScriptEnabled = true
             webView.settings.defaultTextEncodingName = "UTF-8"
@@ -112,11 +124,16 @@ class AiFeedbackFragment : Fragment() {
                     Toast.makeText(requireContext(), "먼저 PDF 파일을 선택하세요.", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
-                val userPrompt = editTextPrompt.text.toString().trim()
+
+                binding.changeFeedback.text = "수정중..."
+
                 // 기존 최종 결과 초기화
                 revisedHtmlContent = ""
-                tvResult.text = "수정 중..."
-                callChatGPTToRevisePdfStreaming(pdfContent, userPrompt)
+                webView.visibility = View.VISIBLE
+
+                callChatGPTToRevisePdfStreaming(pdfContent)
+                isBtnSubmitClicked = true  // btnSubmit 클릭 시 true로 설정
+
             }
 
             // 3) iText를 이용하여 수정된 HTML → PDF 변환 & MediaStore 저장
@@ -141,6 +158,49 @@ class AiFeedbackFragment : Fragment() {
                     }
                 }
             }
+
+
+            binding.help.setOnClickListener {
+                val overlay = binding.helpOverlay
+                val layoutParams = overlay.layoutParams as ViewGroup.MarginLayoutParams
+
+                if (overlay.visibility != View.VISIBLE) {
+                    overlay.visibility = View.VISIBLE
+
+                    if (isBtnSubmitClicked && !isMarginIncreased) {
+                        layoutParams.topMargin += resources.getDimensionPixelSize(R.dimen.dp_35)
+                        overlay.layoutParams = layoutParams
+                        isMarginIncreased = true   // margin 증가 표시
+                    }
+
+                    val anim = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_in)
+                    overlay.startAnimation(anim)
+                } else {
+                    // slide_out_diagonal 애니메이션 적용 후 숨기기
+                    val anim = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_out)
+                    overlay.startAnimation(anim)
+                    // 애니메이션 종료 후 visibility를 GONE으로 설정 (애니메이션 리스너 사용)
+                    anim.setAnimationListener(object : Animation.AnimationListener {
+                        override fun onAnimationStart(animation: Animation?) {}
+                        override fun onAnimationRepeat(animation: Animation?) {}
+                        override fun onAnimationEnd(animation: Animation?) {
+                            overlay.visibility = View.GONE
+                        }
+                    })
+                }
+            }
+            val spannable = SpannableString(helpOverlayText.text)
+            val wordsToHighlight = listOf("오타 수정 기능", "반복 수정", "흐름", "적합성 판단", "성장 가능성")
+
+            for (word in wordsToHighlight) {
+                val start = spannable.indexOf(word)
+                if (start >= 0) {
+                    spannable.setSpan(StyleSpan(Typeface.BOLD), start, start + word.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    spannable.setSpan(ForegroundColorSpan(Color.RED), start, start + word.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                }
+            }
+
+            helpOverlayText.text = spannable
         }
         return binding.root
     }
@@ -174,23 +234,7 @@ class AiFeedbackFragment : Fragment() {
     /**
      * ChatGPT API 호출 (스트리밍 방식) → 실시간으로 WebView 업데이트
      */
-    private fun callChatGPTToRevisePdfStreaming(pdfText: String, userPrompt: String) {
-        // (1) 사용자 프롬프트가 비어있을 경우 기본 프롬프트 사용
-        val defaultPrompt = """
-            Please proofread and improve the text while considering both grammatical accuracy and HR relevance.
-            - Whenever you change or revise any part of the original text, make that revised portion appear in <b style="color:red"> ... </b>.
-            - Use <p> tags for paragraph separation.
-            - If the content includes self-introduction questions and user answers, clearly separate the question part from the answer part.
-            - Additionally, if a sentence ends with “바랍니다.”, treat it as a question and insert a blank line before the following answer. For example:
-                <p>...바랍니다.</p>
-                <p></p>
-                <p>The next sentence (the answer)</p>
-            - The final output must be in Korean only.
-            - Output valid HTML only, with no extra commentary.
-        """.trimIndent()
-
-        val finalPrompt = if (userPrompt.isEmpty()) defaultPrompt else userPrompt
-
+    private fun callChatGPTToRevisePdfStreaming(pdfText: String) {
         // (2) OkHttp 클라이언트 설정
         val client = OkHttpClient.Builder()
             .connectTimeout(60, TimeUnit.SECONDS)
@@ -206,39 +250,30 @@ class AiFeedbackFragment : Fragment() {
             put("role", "system")
             put(
                 "content", """
-                You are an advanced proofreading system and a senior HR manager with 10 years of experience in hiring developers.
-                The user will provide PDF content and an additional prompt.
-                Your job is to provide corrected or improved text while considering both grammatical accuracy and HR relevance.
-                If no change is needed, leave it as is.
+                You are an advanced proofreading system and a senior HR manager with 10 years of experience in hiring software developers.
+                The user will provide PDF content and an additional prompt. Your job is to provide corrected or improved text with grammatical accuracy and HR relevance.
                 
                 Important:
-                - Wrap changed words/phrases in <b> tags
-                - Whenever you change or revise any part of the original text, make that revised portion appear in red (e.g., <b style="color:red"> ... </b>).
-                - Use <p> tags for paragraph separation.
-                - If the content includes self-introduction questions and user answers, clearly separate the question part from the answer part.
-                - Additionally, if a sentence ends with “바랍니다.”, treat it as a question and insert a blank line before the following answer. For example:
-                  <p>...바랍니다.</p>
-                  <p></p>
-                  <p>The next sentence (the answer)</p>
-                - The final output must be in Korean only.
-                - Output valid HTML only, with no extra commentary.
+                Wrap changes in  tags and display revisions in red (e.g.,  ... ).
+                Use  tags for paragraph separation.
+                Separate self-introduction questions and answers clearly.
+                Treat sentences ending with “바랍니다.” as questions, inserting a blank line before the answer.
+                Output only valid HTML in Korean, with no extra commentary.
+                
+                Provide feedback focused on:
+                - Field-specific feedback: Highlight relevant project experiences, technologies, and achievements for the applicant’s development field.
+                - Technical stack relevance: Ensure mentioned tools are current and experiences are clear.
+                - Logical flow: Maintain a coherent narrative from motivation to experience, strengths, and aspirations.
+                - Soft skills: Emphasize teamwork, problem-solving, and communication.
+                - Company fit: Align applicant’s strengths with the company’s culture and requirements.
+                - Growth potential: Highlight learning ability and enthusiasm for junior developers.
+                - Unique strengths: Bring out distinctive experiences that set the applicant apart.
             """.trimIndent()
             )
         }
-
-        // (4) 사용자 메시지 구성
         val userMessage = JSONObject().apply {
             put("role", "user")
-            put(
-                "content", """
-                [PDF Content Start]
-                $pdfText
-                [PDF Content End]
-                
-                [User Prompt]
-                $finalPrompt
-            """.trimIndent()
-            )
+            put("content", pdfText)
         }
 
         val messagesArray = JSONArray().apply {
@@ -270,7 +305,7 @@ class AiFeedbackFragment : Fragment() {
                     if (!response.isSuccessful) {
                         val errorMsg = "Error: ${response.code}"
                         requireActivity().runOnUiThread {
-                            binding.tvResult.text = errorMsg
+                            binding.changeText.text = errorMsg
                         }
                         return@launch
                     }
@@ -278,7 +313,6 @@ class AiFeedbackFragment : Fragment() {
                     val source: BufferedSource? = response.body?.source()
                     if (source == null) {
                         requireActivity().runOnUiThread {
-                            binding.tvResult.text = "응답을 읽을 수 없습니다."
                         }
                         return@launch
                     }
@@ -302,6 +336,11 @@ class AiFeedbackFragment : Fragment() {
                                         revisedHtmlContent += contentChunk
                                         // 실시간으로 WebView 업데이트
                                         requireActivity().runOnUiThread {
+                                            binding.uploadText.visibility = View.GONE
+                                            binding.feedbackText.visibility = View.GONE
+                                            binding.changeText.visibility = View.GONE
+                                            binding.ivImage.visibility = View.GONE
+                                            binding.tvPdfPath.visibility = View.GONE
                                             val previewHtml = """
                                                 <html>
                                                 <head>
@@ -339,7 +378,7 @@ class AiFeedbackFragment : Fragment() {
                         }
                     }
                     requireActivity().runOnUiThread {
-                        binding.tvResult.text = "교정 완료! 아래는 미리보기에요."
+                        binding.changeFeedback.text = "교정 완료! 아래는 미리보기에요."
                         binding.btnSubmit.text = "피드백 다시 받기"
                         binding.btnDownloadPdf.visibility = View.VISIBLE
                     }
@@ -347,7 +386,6 @@ class AiFeedbackFragment : Fragment() {
             } catch (e: Exception) {
                 e.printStackTrace()
                 requireActivity().runOnUiThread {
-                    binding.tvResult.text = "네트워크 오류가 발생했습니다."
                 }
             }
         }
@@ -473,6 +511,12 @@ class AiFeedbackFragment : Fragment() {
                         // 레이아웃 파라미터를 업데이트 합니다.
                         webView.layoutParams.height = newHeight
                         webView.requestLayout()
+
+
+                        val cardParams = cardViewWeb.layoutParams
+                        cardParams.height = newHeight + 3
+                        cardViewWeb.layoutParams = cardParams
+                        cardViewWeb.requestLayout()
                     }
                 }
 
