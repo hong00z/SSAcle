@@ -33,14 +33,19 @@ class HomeFragment : Fragment() {
                 val navController = rememberNavController()
                 val xmlNavController = findNavController()
 
+
                 NavHost(
                     navController = navController,
                     startDestination = "homeScreen"
                 ) {
                     composable("homeScreen") {
-                        HomeScreen(navController = navController,
+                        HomeScreen(
+                            navController = navController,
                             onNavigateToFragment = {
                                 xmlNavController.navigate(R.id.action_homeFragment_to_studyRegisterFragment)
+                            },
+                            onNotificationClick = {
+                                xmlNavController.navigate(R.id.action_homeFragment_to_notificationFragment)
                             }
                         )
                     }
@@ -48,6 +53,7 @@ class HomeFragment : Fragment() {
                     composable("studyDetailScreen") {
                         StudyDetailScreen(navController = navController)
                     }
+
                 }
             }
         }

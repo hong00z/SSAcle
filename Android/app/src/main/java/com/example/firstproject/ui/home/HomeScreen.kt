@@ -62,6 +62,8 @@ import com.example.firstproject.ui.theme.pretendard
 fun HomeScreen(
     navController: NavController,
     onNavigateToFragment: () -> Unit,
+    // 이거 추가
+    onNotificationClick: () -> Unit,
     homeViewModel: HomeViewModel = viewModel()
 
 ) {
@@ -94,7 +96,10 @@ fun HomeScreen(
 
 
     Scaffold(
-        topBar = { TopBarMain() },
+        topBar = {
+            // 여기 추가
+            TopBarMain(onNotificationClick = onNotificationClick)
+        },
         floatingActionButton = {
             Column(horizontalAlignment = Alignment.End) {
 
@@ -179,7 +184,9 @@ fun HomeScreen(
 
 @Composable
 private fun TopBarMain(
-    tint: Color = colorResource(R.color.primary_color)
+    tint: Color = colorResource(R.color.primary_color),
+    onNotificationClick: () -> Unit
+
 ) {
     Box(
         Modifier
@@ -200,7 +207,7 @@ private fun TopBarMain(
             modifier = Modifier
                 .align(Alignment.CenterEnd)
                 .padding(end = 8.dp),
-            onClick = {}
+            onClick = { onNotificationClick() }
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_notification),
