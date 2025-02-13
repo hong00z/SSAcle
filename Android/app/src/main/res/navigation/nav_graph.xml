@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_studyRegisterFragment"
             app:destination="@id/studyRegisterFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_notificationFragment"
+            app:destination="@id/notificationFragment" />
     </fragment>
 
     <fragment
@@ -138,6 +141,11 @@
             android:id="@+id/action_editMyPageFragment_to_mypageFragment"
             app:destination="@id/mypageFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.example.firstproject.ui.home.notification.NotificationFragment"
+        android:label="fragment_notification"
+        tools:layout="@layout/fragment_notification" />
 
 
 </navigation>
