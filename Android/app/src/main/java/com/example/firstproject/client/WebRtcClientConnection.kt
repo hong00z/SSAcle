@@ -11,6 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
+import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import org.mediasoup.droid.Consumer
@@ -61,6 +62,7 @@ class WebRtcClientConnection : CoroutineScope {
     var camProducer: Producer? = null
     var micProducer: Producer? = null
     val consumers = mutableListOf<Consumer>()
+    var producersJsonArray: JSONArray? = null
 
     // WebRTC 미디어 관련 변수
     var videoCapturer: VideoCapturer? = null
@@ -95,10 +97,9 @@ class WebRtcClientConnection : CoroutineScope {
         val decoderFactory = DefaultVideoDecoderFactory(eglBase.eglBaseContext)
 
         // 4. PeerConnectionFactory 생성
-        peerConnectionFactory = PeerConnectionFactory.builder()
-            .setVideoEncoderFactory(encoderFactory)
-            .setVideoDecoderFactory(decoderFactory)
-            .createPeerConnectionFactory()
+        peerConnectionFactory =
+            PeerConnectionFactory.builder().setVideoEncoderFactory(encoderFactory)
+                .setVideoDecoderFactory(decoderFactory).createPeerConnectionFactory()
 
         // 5. SurfaceTextureHelper 생성 (비디오 캡쳐 초기화에 필요)
         val surfaceTextureHelper =
@@ -243,7 +244,6 @@ class WebRtcClientConnection : CoroutineScope {
                 val iceParameters = params.getString("iceParameters")
                 val iceCandidates = params.getString("iceCandidates")
                 val dtlsParameters = params.getString("dtlsParameters")
-//                val sctpParameters = params.getString("sctpParameters")
 
                 val sendTransportListener: SendTransport.Listener =
                     object : SendTransport.Listener {
@@ -257,19 +257,16 @@ class WebRtcClientConnection : CoroutineScope {
                             mSocket?.emit("connectTransport", data, Ack { data ->
                                 val response = data[0] as JSONObject
 
-                                if (!response.getBoolean("ok"))
-                                    Log.e(
-                                        TAG,
-                                        "Error connecting send transport: ${response.optString("error")}"
-                                    )
-                                else
-                                    Log.d(TAG, "Send transport connected successfully.")
+                                if (!response.getBoolean("ok")) Log.e(
+                                    TAG,
+                                    "Error connecting send transport: ${response.optString("error")}"
+                                )
+                                else Log.d(TAG, "Send transport connected successfully.")
                             })
                         }
 
                         override fun onConnectionStateChange(
-                            transport: Transport?,
-                            connectionState: String?
+                            transport: Transport?, connectionState: String?
                         ) {
                             Log.d(TAG, "Send transport state changed: $connectionState")
                         }
@@ -306,11 +303,7 @@ class WebRtcClientConnection : CoroutineScope {
 
                 // mediasoup Device를 통해 송신 트랜스포트 생성
                 producerTransport = device?.createSendTransport(
-                    sendTransportListener,
-                    transportId,
-                    iceParameters,
-                    iceCandidates,
-                    dtlsParameters
+                    sendTransportListener, transportId, iceParameters, iceCandidates, dtlsParameters
                 )
 
                 produceVideo()
@@ -342,7 +335,6 @@ class WebRtcClientConnection : CoroutineScope {
                 val iceParameters = params.getString("iceParameters")
                 val iceCandidates = params.getString("iceCandidates")
                 val dtlsParameters = params.getString("dtlsParameters")
-//                val sctpParameters = params.getString("sctpParameters")
 
                 val recvTransportListener: RecvTransport.Listener =
                     object : RecvTransport.Listener {
@@ -355,19 +347,16 @@ class WebRtcClientConnection : CoroutineScope {
                             }
                             mSocket?.emit("connectTransport", data, Ack { args ->
                                 val response = args[0] as JSONObject
-                                if (!response.getBoolean("ok"))
-                                    Log.e(
-                                        TAG,
-                                        "Error connecting receive transport: ${response.optString("error")}"
-                                    )
-                                else
-                                    Log.d(TAG, "Receive transport connected successfully.")
+                                if (!response.getBoolean("ok")) Log.e(
+                                    TAG,
+                                    "Error connecting receive transport: ${response.optString("error")}"
+                                )
+                                else Log.d(TAG, "Receive transport connected successfully.")
                             })
                         }
 
                         override fun onConnectionStateChange(
-                            transport: Transport,
-                            connectionState: String
+                            transport: Transport, connectionState: String
                         ) {
                             Log.d(TAG, "Receive transport state changed: $connectionState")
                         }
@@ -375,12 +364,23 @@ class WebRtcClientConnection : CoroutineScope {
                     }
 
                 recvTransport = device?.createRecvTransport(
-                    recvTransportListener,
-                    transportId,
-                    iceParameters,
-                    iceCandidates,
-                    dtlsParameters
+                    recvTransportListener, transportId, iceParameters, iceCandidates, dtlsParameters
                 )
+
+                producersJsonArray?.let {
+                    Log.d(TAG, "consume!!")
+                    for (i in 0 until it.length()) {
+                        val producerJson = it.getJSONObject(i)
+
+                        val producerId = producerJson.getString("producerId")
+                        val kind = producerJson.getString("kind")
+                        val peerId = producerJson.optString("peerId")
+
+                        if (peerId != mSocket?.id()) {
+                            consume(producerId, kind)
+                        }
+                    }
+                }
             })
         }
     }
@@ -409,7 +409,7 @@ class WebRtcClientConnection : CoroutineScope {
     }
 
 
-    fun getVideoTrack() {
+    private fun getVideoTrack() {
         videoCapturer?.startCapture(1280, 720, 30)
         localVideoTrack = peerConnectionFactory?.createVideoTrack("videoTrack", videoSource)
         Log.d(TAG, "getVideoTrack: start")
@@ -421,15 +421,11 @@ class WebRtcClientConnection : CoroutineScope {
     private fun produceVideo() {
         Log.d(TAG, "Produce video")
         camProducer = producerTransport?.produce(
-            { Log.d(TAG, "Local video producer closed") },
-            localVideoTrack,
-            null,
-            null,
-            null
+            { Log.d(TAG, "Local video producer closed") }, localVideoTrack, null, null, null
         )
     }
 
-    fun getAudioTrack() {
+    private fun getAudioTrack() {
         audioSource = peerConnectionFactory?.createAudioSource(MediaConstraints())
         localAudioTrack = peerConnectionFactory?.createAudioTrack("mic", audioSource)
         localAudioTrack?.setEnabled(true)
@@ -443,11 +439,7 @@ class WebRtcClientConnection : CoroutineScope {
 
         Log.d(TAG, "Produce audio")
         micProducer = producerTransport?.produce(
-            { Log.d(TAG, "Local audio producer closed") },
-            localAudioTrack,
-            null,
-            null,
-            null
+            { Log.d(TAG, "Local audio producer closed") }, localAudioTrack, null, null, null
         )
     }
 
@@ -471,26 +463,11 @@ class WebRtcClientConnection : CoroutineScope {
                 }
 
                 // 기존 방의 프로듀서 리스트
-                val producersJsonArray = response.optJSONArray("producers")
+                producersJsonArray = response.optJSONArray("producers")
                 Log.d(TAG, "joinRoom: producers = $producersJsonArray")
 
                 // 라우터 RTP capabilities를 가져오고, 트랜스포트를 생성
                 getRouterRtpCapabilities()
-
-                // 자신을 제외한 각 프로듀서에 대해 미디어 소비 시작
-                producersJsonArray?.let {
-                    for (i in 0 until it.length()) {
-                        val producerJson = it.getJSONObject(i)
-
-                        val producerId = producerJson.getString("producerId")
-                        val kind = producerJson.getString("kind")
-                        val peerId = producerJson.optString("peerId")
-
-                        if (peerId != mSocket?.id()) {
-                            consume(producerId, kind)
-                        }
-                    }
-                }
             })
         }
     }
@@ -507,11 +484,12 @@ class WebRtcClientConnection : CoroutineScope {
         val data = JSONObject().apply {
             put("transportId", recvTransport?.id)
             put("producerId", producerId)
-            put("rtpCapabilities", device?.rtpCapabilities)
+            put("rtpCapabilities", toJsonObject(device!!.rtpCapabilities))
         }
 
         launch {
             mSocket?.emit("consume", data, Ack { data ->
+                Log.d(TAG, "consume: started...")
                 val response = data[0] as JSONObject
 
                 // response로 false를 받으면 error 로그 띄우기
@@ -537,10 +515,12 @@ class WebRtcClientConnection : CoroutineScope {
 
                 consumer?.let {
                     consumers.add(it)
-                    if (kind == "video")
-                        onRemoteVideo?.invoke(it.track as VideoTrack, producerId)
-                    else if (kind == "audio")
-                        onRemoteAudio?.invoke(it.track as AudioTrack, producerId)
+                    Log.d(TAG, "consume: producerId=${it.producerId}")
+                    if (kind == "video") onRemoteVideo?.invoke(it.track as VideoTrack, producerId)
+                    else if (kind == "audio") onRemoteAudio?.invoke(
+                        it.track as AudioTrack,
+                        producerId
+                    )
                 }
             })
         }
@@ -605,10 +585,8 @@ class WebRtcClientConnection : CoroutineScope {
         mSocket?.emit("leaveRoom", Ack { data ->
             val response = data[0] as JSONObject
 
-            if (response.getBoolean("ok"))
-                Log.d(TAG, "Left room successfully.")
-            else
-                Log.e(TAG, "Error leaving room: ${response.optString("error")}")
+            if (response.getBoolean("ok")) Log.d(TAG, "Left room successfully.")
+            else Log.e(TAG, "Error leaving room: ${response.optString("error")}")
         })
     }
 
@@ -661,8 +639,7 @@ class WebRtcClientConnection : CoroutineScope {
         val enumerator = Camera2Enumerator(context)
         for (deviceName in enumerator.deviceNames) {
             if (enumerator.isFrontFacing(deviceName)) {
-                return enumerator.createCapturer(
-                    deviceName,
+                return enumerator.createCapturer(deviceName,
                     object : CameraVideoCapturer.CameraEventsHandler {
                         override fun onCameraError(error: String) {
                             Log.w("CameraEvents", error)
