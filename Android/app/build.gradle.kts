@@ -119,7 +119,9 @@ dependencies {
 
     // 웹과 연동 및 코루틴 관련 의존성
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+
 
     // Socket.io
     implementation("io.socket:socket.io-client:2.1.1")
@@ -163,10 +165,12 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging-ktx")
     implementation("com.google.firebase:firebase-analytics")
 
+    // WebRTC
+//    implementation("org.webrtc:google-webrtc:1.0.+")
+    implementation("io.github.haiyangwu:mediasoup-client:3.4.0")
 
     // 프로필 원형으로 받아 오는 패키지
     implementation("de.hdodenhof:circleimageview:3.1.0")
-
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

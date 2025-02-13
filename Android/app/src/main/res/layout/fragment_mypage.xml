@@ -23,12 +23,12 @@
     <!-- 수정 버튼 -->
     <TextView
         android:id="@+id/editText"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="수정"
-        android:textSize="18sp"
-        android:textColor="@color/gray"
+        android:layout_height="wrap_content"
         android:layout_margin="12dp"
+        android:text="수정"
+        android:textColor="@color/gray"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
