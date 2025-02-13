@@ -2,6 +2,7 @@ package S12P11D110.ssacle.domain.user.controller;
 
 
 import S12P11D110.ssacle.domain.auth.entity.CustomUserDetail;
+import S12P11D110.ssacle.domain.study.dto.request.MyRequest;
 import S12P11D110.ssacle.domain.study.dto.response.MyStudyList;
 import S12P11D110.ssacle.domain.study.service.StudyService;
 import S12P11D110.ssacle.domain.user.dto.request.SsafyAuthRequest;
@@ -12,6 +13,7 @@ import S12P11D110.ssacle.domain.user.service.UserService;
 import S12P11D110.ssacle.global.dto.ResultDto;
 import S12P11D110.ssacle.global.exception.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -173,6 +175,23 @@ public class UserController {
     /**
      * 내 수신함 거절
      */
+
+
+    // 내 요청함 wishStudy & 스터디 내 수신함  preMembers 추가
+    @PatchMapping("/wish-studies") // user 로그인 정보 받아와지면 {userId} 없애기
+    @Operation(summary = "스터디 가입 신청", description = "추천된 스터디에 가입 요청")
+    //ResponseEntity :  HTTP 응답을 표현하는 클래스
+    public ResponseEntity<Void> inviteMe(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestBody MyRequest request){
+        String userId = userDetail.getId();  // 로그인된 사용자 ID 가져오기
+        System.out.println("Received request in inviteMe method."); // 요청 도착 확인
+        System.out.println("studyId: " + request.getStudyId()); // studyId 값 확인
+
+        studyService.addWishStudyPreMember(userId, request.getStudyId());
+        return ResponseEntity.ok().build();
+    }
+
+
+
     // 해당 스터디의 wishMembers 에서 userId 삭제
     // 사용자의 invitedStudies 에서 studyId 삭제
 }

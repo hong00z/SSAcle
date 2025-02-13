@@ -2,6 +2,7 @@ package S12P11D110.ssacle.domain.study.entity;
 
 
 import S12P11D110.ssacle.global.entity.BaseEntity;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
