@@ -76,6 +76,7 @@ dependencies {
     implementation(libs.androidx.material3.android)
     implementation(libs.litert.gpu)
     implementation(libs.litert)
+    implementation(libs.transport.api)
 
     val nav_version = "2.8.6"
     // Navigation
