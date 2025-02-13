@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 
-// 스터디 가입 신청 Patch 용 request body DTO
-public class MyRequestDTO {
-    private String studyId;
+// 스카웃 요청 신청 Patch 용 request body DTO
+public class StudyRequest {
+    private String userId;
 }

@@ -1,9 +1,8 @@
 package S12P11D110.ssacle.domain.study.service;
 
 import S12P11D110.ssacle.domain.study.dto.RecoStudyResult;
-import S12P11D110.ssacle.domain.study.dto.response.RecommendStudyDTO;
-import S12P11D110.ssacle.domain.study.dto.StudyDTO;
-import S12P11D110.ssacle.domain.study.dto.UserConditionDTO;
+import S12P11D110.ssacle.domain.study.dto.Study;
+import S12P11D110.ssacle.domain.study.dto.UserCondition;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -12,13 +11,13 @@ import java.util.stream.Collectors;
 
 @Service
 public class RecommendStudyService {
-    public List<RecoStudyResult> recommendStudy(UserConditionDTO userCondition, List<StudyDTO>allStudiesDTO){
+    public List<RecoStudyResult> recommendStudy(UserCondition userCondition, List<Study>allStudiesDTO){
         Set<String> userTopics = new HashSet<>(userCondition.getTopics());
 
         System.out.println("유저의 관심주제: "+ userTopics);
         System.out.println("스터디 전체: "+ allStudiesDTO);
         //1. 스터디 필터링
-        List<StudyDTO> filteredStudies = allStudiesDTO.stream()
+        List<Study> filteredStudies = allStudiesDTO.stream()
                 .filter(study -> study.getCount()  > study.getMembers().size() ) // 정원 > 가입멤버수인 스터디
                 .filter(study -> userTopics.contains(study.getTopic()))
                 .filter(study -> { // member, wishMember preMember는 제외
@@ -44,8 +43,8 @@ public class RecommendStudyService {
 
         // 2. 코사인 유사도를 기반으로 스터디 추천
 
-        Map<StudyDTO, Double> studySimilarityMap = new HashMap<>();
-        for(StudyDTO study : filteredStudies){
+        Map<Study, Double> studySimilarityMap = new HashMap<>();
+        for(Study study : filteredStudies){
             double similarity = calculateFiltering(userCondition, study);
             studySimilarityMap.put(study, similarity);
 
@@ -71,7 +70,7 @@ public class RecommendStudyService {
     }
 
     // 코사인 유사도 계산
-    public double calculateFiltering(UserConditionDTO userCondition , StudyDTO study) {
+    public double calculateFiltering(UserCondition userCondition , Study study) {
         // 1. 유저와 스터디의 주제 및 모임 요일 백터화
         Set<String> userFeatures = new HashSet<>();
         userFeatures.addAll(userCondition.getTopics());
@@ -96,7 +95,7 @@ public class RecommendStudyService {
         return (cosineResult + filterResult) / 2;
     }
 
-    private double calculateFilterResult(UserConditionDTO userCondition, StudyDTO study) {
+    private double calculateFilterResult(UserCondition userCondition, Study study) {
 
         // 1. user 의 topic 개수, meetingDay 개수
         int topicsCount = userCondition.getTopics().size();
