@@ -2,6 +2,8 @@ package com.example.firstproject
 
 import android.Manifest
 import android.app.Application
+import com.example.firstproject.client.WebRtcClientConnection
+import org.mediasoup.droid.MediasoupClient
 
 class MyApplication : Application() {
 
@@ -11,10 +13,14 @@ class MyApplication : Application() {
             Manifest.permission.CAMERA,
             Manifest.permission.RECORD_AUDIO,
         )
+
+        lateinit var webRtcClientConnection: WebRtcClientConnection
     }
 
     override fun onCreate() {
         super.onCreate()
 
+        webRtcClientConnection = WebRtcClientConnection()
+        MediasoupClient.initialize(applicationContext)
     }
 }
