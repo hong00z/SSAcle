@@ -497,7 +497,7 @@ public class StudyService {
         return studyRepository.findAllById(studyIds).stream()
                 .map(study-> WishInvitedStudies.builder()
                         .studyId(study.getId())
-                        .studyName(study.getStudyName())
+                        .studyName(study.getStudyName()) 
                         .topic(study.getTopic())
                         .meetingDays(study.getMeetingDays())
                         .count(study.getCount())
@@ -534,7 +534,7 @@ public class StudyService {
                         .term(user.getTerm())
                         .campus(user.getCampus())
                         .topics(user.getTopics())
-                        .meetingDays(user.getMeetingDays())
+                        .meetingDays(user.getMeetingDays())       
                         .build()
                 )
                 .collect(Collectors.toList());
