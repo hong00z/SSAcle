@@ -30,27 +30,6 @@ class MypageFragment : Fragment() {
         _binding = FragmentMypageBinding.inflate(inflater, container, false)
 
         binding.apply {
-            loginButton.setOnClickListener {
-
-
-
-                val context = requireContext()
-                UserApiClient.instance.loginWithKakaoTalk(context) { token, error ->
-                    val accessToken = {token?.accessToken}
-                    Timber.d("사용할 토큰: $accessToken")
-                    if(error != null) {
-
-                    } else if (token != null) {
-                        Timber.tag(TAG).e("로그인 성공 %s",token.accessToken)
-                        // 통신
-                        viewLifecycleOwner.lifecycleScope.launch {
-                            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                                repository.loginWithKakao(token.accessToken)
-                            }
-                        }
-                    }
-                }
-            }
 
         }
         return binding.root
