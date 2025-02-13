@@ -17,6 +17,7 @@ import S12P11D110.ssacle.global.firebase.FirebaseMessagingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import S12P11D110.ssacle.domain.study.entity.Study;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -225,7 +226,7 @@ public class StudyService {
 
         // 멤버이름, 멤버의 프로필 이미지  DTO
         // 내가 참여 중인 스터디
-        List<S12P11D110.ssacle.domain.study.entity.Study> studies = studyRepository.findByMembersContaining(userId);
+        List<Study> studies = studyRepository.findByMembersContaining(userId);
 
 
 
@@ -368,8 +369,8 @@ public class StudyService {
                 .orElseThrow(() -> new NoSuchElementException("유저ID" + userId + "에 해당하는 유저가 없습니다."));
 
         // 2. 모든 스터디 StudyDTO에 담기
-        List<Study> allStudiesDTO = studyRepository.findAll().stream()
-                .map(study -> Study.builder()
+        List<AllStudy> allStudiesDTO = studyRepository.findAll().stream()
+                .map(study -> AllStudy.builder()
                         .studyId(study.getId())
                         .studyName(study.getStudyName())
                         .topic(study.getTopic())

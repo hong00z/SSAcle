@@ -9,7 +9,7 @@ import java.util.Set;
 @Data
 @Builder
 //스터디 정보를 담은 DTO
-public class Study {
+public class AllStudy {
     private String studyId;
     private String studyName;
     private String topic;
