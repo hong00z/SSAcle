@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.firstproject.MyApplication
 import com.example.firstproject.R
 import com.example.firstproject.data.repository.MainRepository
@@ -31,7 +32,7 @@ import timber.log.Timber
 @Composable
 fun LoginScreen(
     viewModel: LoginAuthViewModel = viewModel(),
-    onLoginSuccess: () -> Unit
+    navController: NavController
 ) {
     val loginState by viewModel.loginState.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -40,7 +41,7 @@ fun LoginScreen(
 
         if (loginState is RequestResult.Success) {
             Log.d("로그인 화면","onSuccess: ${loginState}")
-            onLoginSuccess()
+            navController.navigate("Auth")
         }
     }
 
