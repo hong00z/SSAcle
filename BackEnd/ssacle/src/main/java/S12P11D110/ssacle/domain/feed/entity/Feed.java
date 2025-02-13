@@ -14,6 +14,6 @@ public class Feed extends BaseEntity {
     private String title;    // 제목
     private String content; // 내용
 
-    // 작성일, 수정일: BaseEntity
+    // 작성일, 수정일, 작성자 : BaseEntity
 
 }
