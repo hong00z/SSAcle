@@ -12,8 +12,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_marginBottom="48dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp">
 
         <ImageButton
             android:id="@+id/back_button"
@@ -137,7 +137,6 @@
             android:id="@+id/BtnSelectVideoemotion"
             android:layout_width="150dp"
             android:layout_height="40dp"
-            android:background="@drawable/button_outline"
             android:gravity="center"
             android:text="동영상 파일 업로드"
             android:textColor="@android:color/black"
@@ -170,12 +169,13 @@
             android:id="@+id/tvAnalysisStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="18sp"
             android:gravity="center"
-            android:visibility="gone"
-            android:textColor="@android:color/black"/>
+            android:text=""
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:visibility="gone" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/deleteLinear"
         android:layout_width="match_parent"

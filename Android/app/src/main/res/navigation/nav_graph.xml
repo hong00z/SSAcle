@@ -69,7 +69,11 @@
         android:id="@+id/mypageFragment"
         android:name="com.example.firstproject.ui.mypage.MypageFragment"
         android:label="fragment_mypage"
-        tools:layout="@layout/fragment_mypage" />
+        tools:layout="@layout/fragment_mypage" >
+        <action
+            android:id="@+id/action_mypageFragment_to_editMyPageFragment"
+            app:destination="@id/editMyPageFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/studyRegisterFragment"
@@ -124,6 +128,15 @@
         <action
             android:id="@+id/action_faceResultFragment_to_aiFragment"
             app:destination="@id/aiFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editMyPageFragment"
+        android:name="com.example.firstproject.ui.mypage.EditMyPageFragment"
+        android:label="fragment_edit_my_page"
+        tools:layout="@layout/fragment_edit_my_page" >
+        <action
+            android:id="@+id/action_editMyPageFragment_to_mypageFragment"
+            app:destination="@id/mypageFragment" />
     </fragment>
 
 

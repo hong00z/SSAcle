@@ -140,7 +140,7 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor")
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
-    
+
     // 인디케이터 기능
     implementation("com.tbuonomo:dotsindicator:4.3")
 
@@ -162,6 +162,11 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
     implementation("com.google.firebase:firebase-messaging-ktx")
     implementation("com.google.firebase:firebase-analytics")
+
+
+    // 프로필 원형으로 받아 오는 패키지
+    implementation("de.hdodenhof:circleimageview:3.1.0")
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
