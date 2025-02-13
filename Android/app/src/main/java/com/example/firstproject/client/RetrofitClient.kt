@@ -7,6 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
 
+    const val WEBRTC_URL = "https://webrtc.43.203.250.200.nip.io/"
     const val CHAT_API_URL = "http://192.168.137.105:4001"
     const val USER_ID = "67a5e7f43d3fc61ef2203113"
 
