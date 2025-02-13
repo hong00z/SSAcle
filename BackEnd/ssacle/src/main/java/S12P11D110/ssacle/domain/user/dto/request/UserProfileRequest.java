@@ -5,10 +5,10 @@ import lombok.*;
 import java.util.Set;
 
 
-@Getter
+@Data
+@Builder
 public class UserProfileRequest {
     private String nickname;
-    private String image;
     private Set<String> topics;
     private Set<String> meetingDays;
 }

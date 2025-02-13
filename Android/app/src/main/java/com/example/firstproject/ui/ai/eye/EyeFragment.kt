@@ -17,6 +17,8 @@ import androidx.lifecycle.lifecycleScope
 import com.example.firstproject.R
 import com.example.firstproject.databinding.FragmentEyeBinding
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.NonCancellable.isActive
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -29,9 +31,17 @@ class EyeFragment : Fragment() {
     private var eyeDetector: EyeDetector? = null
     private var selectedVideoUri: Uri? = null
 
+
+    // 애니메이션 관련 전역 변수
+    private var analysisAnimationJob: Job? = null
+
+    // updateUiDuringProcessing()에서 최신 진행 정보를 저장
+    private var latestElapsedTime: Long = 0L
+    private var latestProgress: Int = 0
+
+
     companion object {
         private const val REQUEST_VIDEO_PICK = 101
-        private const val FRAME_INTERVAL = 100_000L // 0.1초 프레임 추출
     }
 
     // 시선 처리 카운팅용 변수들
@@ -54,7 +64,7 @@ class EyeFragment : Fragment() {
         }
 
         // 분석(피드백 받기) 버튼
-        binding.btnFeedbackeye.setOnClickListener {
+        binding.btnFeedbackEye.setOnClickListener {
             if (selectedVideoUri != null) {
                 // 모델 로드
                 if (eyeDetector == null) {
@@ -64,12 +74,22 @@ class EyeFragment : Fragment() {
                     )
                     eyeDetector?.loadModel(requireContext().assets)
                 }
+                binding.apply {
+                    const1.visibility = View.GONE
+                    deleteImgEye.visibility =View.GONE
+                    deleteTextEye.visibility = View.GONE
 
-                Toast.makeText(requireContext(), "분석중입니다...", Toast.LENGTH_SHORT).show()
-
+                    deleteLinear.visibility = View.GONE
+                    binding.tvAnalysisStatus.text = "분석 중입니다."
+                    binding.tvAnalysisStatus.visibility = View.VISIBLE
+                }
+                analysisAnimationJob = viewLifecycleOwner.lifecycleScope.launch {
+                    animateAnalysisStatus()
+                }
                 // 코루틴으로 비디오 프레임 순회 + 분석
                 viewLifecycleOwner.lifecycleScope.launch {
                     processVideoWithRetriever(selectedVideoUri!!)
+                    analysisAnimationJob?.cancel()
                     binding.eyefeedbackFrame.visibility = View.VISIBLE
                 }
             } else {
@@ -95,9 +115,6 @@ class EyeFragment : Fragment() {
         }
     }
 
-    /**
-     * 비디오 프레임을 순회하며 감정(시선) 분석을 수행하는 함수
-     */
     private suspend fun processVideoWithRetriever(videoUri: Uri) {
         withContext(Dispatchers.IO) {
             try {
@@ -114,9 +131,6 @@ class EyeFragment : Fragment() {
                 rightFalseCount = 0
                 totalFrameCount = 0
 
-                // -------------------------------
-                // 분석 "시작 시각" 기록
-                // -------------------------------
                 val processingStartTime = System.currentTimeMillis()
 
                 // 100ms(0.1초) 간격으로 프레임 추출
@@ -159,7 +173,6 @@ class EyeFragment : Fragment() {
                             )
                         }
                     }
-
                     // 화면에 잠시 표시
                     delay(100L)
                 }
@@ -167,15 +180,9 @@ class EyeFragment : Fragment() {
                 // 분석 완료
                 retriever.release()
 
-                // -------------------------------
-                // 분석 "종료 시각"에서 시작 시각 빼서 총 걸린 시간 계산
-                // -------------------------------
-                val totalAnalysisTimeMs = System.currentTimeMillis() - processingStartTime
-                Log.d("EyeFragment", "총 분석 시간: $totalAnalysisTimeMs ms")
-
                 // 최종 결과 Fragment로 이동
                 withContext(Dispatchers.Main) {
-                    goToResultFragment(totalAnalysisTimeMs)
+                    goToResultFragment()
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -187,10 +194,6 @@ class EyeFragment : Fragment() {
         }
     }
 
-    /**
-     * 5초 전까지는 얼굴 인식 결과(박스/감정)를 보여주고,
-     * 5초 이후에는 원형 프로그레스바(진행률)를 보여주는 함수
-     */
     private fun updateUiDuringProcessing(
         bitmap: Bitmap,
         result: List<EyeDetection>,
@@ -199,6 +202,8 @@ class EyeFragment : Fragment() {
     ) {
         val elapsed = System.currentTimeMillis() - startTime
 
+        latestElapsedTime = elapsed
+        latestProgress = progress
         // 5초 이전: 얼굴 박스 / 감정 표시
         if (elapsed < 5000) {
             binding.eyefeedbackFrame.visibility = View.VISIBLE
@@ -212,9 +217,7 @@ class EyeFragment : Fragment() {
             binding.eyeImageView.setImageBitmap(bitmap)
             // 감지된 얼굴들의 박스/라벨을 그리도록 오버레이에 전달
             binding.eyeOverlayView.setDetections(result)
-        }
-        // 5초 경과 이후: 프로그레스바 + 퍼센트
-        else {
+        } else {
             binding.eyeImageView.visibility = View.GONE
             binding.eyeOverlayView.visibility = View.GONE
 
@@ -227,11 +230,7 @@ class EyeFragment : Fragment() {
         }
     }
 
-    /**
-     * 모든 프레임 처리 완료 후, 결과 Fragment로 이동
-     * 감정 비율을 계산하여 Bundle로 넘김
-     */
-    private fun goToResultFragment(totalAnalysisTimeMs: Long) {
+    private fun goToResultFragment() {
         // 감정 비율 계산
         val leftTrueRatio = if (totalFrameCount > 0) {
             leftTrueCount * 100f / totalFrameCount
@@ -249,19 +248,9 @@ class EyeFragment : Fragment() {
             rightFalseCount * 100f / totalFrameCount
         } else 0f
 
-        // 총 분석 시간을 초 단위로 표시하고 싶다면:
-        val totalSec = totalAnalysisTimeMs / 1000.0
-        // 예시: 소수점 1자리만
-        val formattedSec = String.format("%.1f", totalSec)
 
-        // 예시용 피드백 메시지
-        val feedbackText = """
-            분석이 완료되었습니다!
-            총 프레임 수: $totalFrameCount
-            총 분석 시간: ${formattedSec}초
-        """.trimIndent()
+        val feedbackText = ""
 
-        // 결과 화면으로 데이터 전달
         val fragment = EyeResultFragment().apply {
             arguments = Bundle().apply {
                 putFloat("leftTrue", leftTrueRatio)
@@ -274,7 +263,28 @@ class EyeFragment : Fragment() {
 
         parentFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
             .commit()
+    }
+
+    private suspend fun animateAnalysisStatus() {
+        val baseText = "분석 중입니다."
+        var dotCount = 0
+        while (isActive) {
+            // dot 개수에 따른 문자열 생성
+            val dots = ".".repeat(dotCount)
+            // 진행률에 따라 남은 시간 예측 (진행률이 0일 경우 계산 중 메시지)
+            val remainingText = if (latestProgress > 0) {
+                val estimatedTotalTime = latestElapsedTime / (latestProgress / 100.0)
+                val estimatedRemainingSeconds =((estimatedTotalTime - latestElapsedTime) / 1000).toInt()
+                "예상 남은 시간: ${estimatedRemainingSeconds}초"
+            } else {
+                "예상 남은 시간 : 계산 중..."
+            }
+            binding.tvAnalysisStatus.text = "$baseText$dots $remainingText"
+            dotCount = if (dotCount < 2) dotCount + 1 else 0
+            delay(500L)
+        }
     }
 
     override fun onDestroyView() {

@@ -11,10 +11,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Feed extends BaseEntity {
     private String id;      // 피드ID
     private String study;   // 스터디
-    private String author;  // 작성자 : 로그인 기능 완성되면 뺴야함
     private String title;    // 제목
     private String content; // 내용
 
-    // 작성일, 수정일: BaseEntity
+    // 작성일, 수정일, 작성자 : BaseEntity
 
 }

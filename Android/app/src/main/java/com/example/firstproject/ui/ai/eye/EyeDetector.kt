@@ -185,7 +185,7 @@ class EyeDetector(
             val letterboxRect = RectF(x1, y1, x2, y2)
 
             var originalRect = letterboxToOriginalCoords(letterboxRect, lbInfo, viewMatrix)
-            val offsetY = 180f
+            val offsetY = 70f // 80이엇음
             val expandLeft = 10f  // 왼쪽을 줄이는 값
 
             originalRect = RectF(

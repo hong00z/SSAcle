@@ -21,6 +21,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "NATIVE_APP_KEY", "${properties["NATIVE_APP_KEY"]}")
+        manifestPlaceholders["NATIVE_APP_KEY"] = "${properties["NATIVE_APP_KEY"]}"
     }
 
     val localProperties = Properties().apply {
@@ -73,6 +76,7 @@ dependencies {
     implementation(libs.androidx.material3.android)
     implementation(libs.litert.gpu)
     implementation(libs.litert)
+    implementation(libs.transport.api)
 
     val nav_version = "2.8.6"
     // Navigation
@@ -122,8 +126,15 @@ dependencies {
     // Socket.io
     implementation("io.socket:socket.io-client:2.1.1")
 
-    // Retrofit http 통신
+    // 카카오 로그인
+    implementation("com.kakao.sdk:v2-user:2.12.0")
+    implementation("com.jakewharton.timber:timber:5.0.1")
 
+    // 프로필 이미지 불러오기 (Glide 사용)
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
+    // Retrofit http 통신
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
 
     // define any required OkHttp artifacts without version
@@ -157,6 +168,9 @@ dependencies {
     // WebRTC
 //    implementation("org.webrtc:google-webrtc:1.0.+")
     implementation("io.github.haiyangwu:mediasoup-client:3.4.0")
+
+    // 프로필 원형으로 받아 오는 패키지
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

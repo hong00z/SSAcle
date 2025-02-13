@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".ui.ai.face.FaceResultFragment">
 
-    <!-- 스크롤뷰의 단일 자식으로 LinearLayout 배치 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="16dp"
-                android:text="AI 면접 피드백"
+                android:text="AI 표정 피드백"
                 android:textColor="@color/chat_blue"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -45,79 +45,266 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- 2) 실제 분석 결과(본문) 영역 (LinearLayout) -->
+        <!-- 2) 실제 분석 결과(본문) 영역 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- "분석 결과" 타이틀 -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:text="분석 결과"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/donutChart"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginBottom="16dp"
-                android:contentDescription="도넛 차트 영역" />
-
-
-
-            <!-- 도넛 차트 수치값들 -->
-            <TextView
-                android:id="@+id/tvExpressionTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="수치값?"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvPositiveValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:text="긍정적 표정 30%" />
-
-            <TextView
-                android:id="@+id/tvNegativeValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:text="부정적 표정 30%" />
-
-            <TextView
-                android:id="@+id/tvNeutralValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:text="무표정 40%" />
-
-            <!-- 피드백 타이틀 -->
-            <TextView
-                android:id="@+id/tvFeedbackTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="피드백"
-                android:textStyle="bold" />
-
-            <!-- 피드백 내용 -->
-            <TextView
-                android:id="@+id/tvFeedbackContent"
+            <!-- CardView로 전체 영역 묶기 (분석 결과, 차트, 피드백 포함) -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/imageCardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:text="내용이 여기에 들어갈 거에요.\n오늘 점심은 좀 별로였네요" />
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
 
-            <!-- 하단 버튼 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- "분석 결과" 타이틀 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="16dp"
+                        android:text="표정 분석 결과입니다."
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <!-- 차트와 수치값 영역 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <!-- CardView - 수치값 영역 -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            app:cardCornerRadius="12dp"
+                            android:layout_marginStart="2dp"
+                            app:cardBackgroundColor="@color/white"
+                            app:strokeWidth="2dp"
+                            app:cardElevation="4dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <TextView
+                                    android:id="@+id/tvExpressionTitle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="10dp"
+                                    android:text="표정"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/tvPositiveValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:text="긍정 30%"
+                                    android:textSize="16sp" />
+
+                                <TextView
+                                    android:id="@+id/tvNegativeValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="부정 30%"
+                                    android:textSize="16sp" />
+
+                                <TextView
+                                    android:id="@+id/tvNeutralValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="중립 40%"
+                                    android:textSize="16sp" />
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <!-- 오른쪽 영역: PieChart -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <com.github.mikephil.charting.charts.PieChart
+                                android:id="@+id/donutChart"
+                                android:layout_width="match_parent"
+                                android:layout_height="220dp"
+                                android:contentDescription="도넛 차트 영역" />
+
+
+                            <LinearLayout
+                                android:id="@+id/customLegendLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="0dp"
+                                android:gravity="end"
+                                android:orientation="horizontal"
+                                android:padding="4dp">
+
+                                <!-- Legend Item: 집중 -->
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <!-- 색상 표시 View -->
+                                    <View
+                                        android:id="@+id/legendColorPlus"
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        android:layout_marginEnd="4dp"
+                                        android:background="@color/face_chart_plus" />
+
+                                    <!-- 텍스트 -->
+                                    <TextView
+                                        android:id="@+id/tvLegendPlus"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="긍정"
+                                        android:textColor="@color/black"
+                                        android:textSize="14sp" />
+                                </LinearLayout>
+
+                                <!-- Legend 항목 사이 간격 -->
+
+                                <!-- Legend Item: 흔들림 -->
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="4dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <!-- 색상 표시 View -->
+                                    <View
+                                        android:id="@+id/legendColorMinus"
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        android:layout_marginEnd="4dp"
+                                        android:background="@color/face_chart_minus" />
+
+                                    <TextView
+                                        android:id="@+id/tvLegendMinus"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="부정"
+                                        android:textColor="@color/black"
+                                        android:textSize="14sp" />
+
+                                    <View
+                                        android:layout_width="1dp"
+                                        android:layout_height="1dp" />
+
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="4dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <!-- 색상 표시 View -->
+                                    <View
+                                        android:id="@+id/legendColorMiddle"
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        android:layout_marginEnd="4dp"
+                                        android:background="@color/face_chart_middle" />
+
+                                    <!-- 텍스트 -->
+                                    <TextView
+                                        android:id="@+id/tvLegendMiddle"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="중립"
+                                        android:textColor="@color/black"
+                                        android:textSize="14sp" />
+                                </LinearLayout>
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="#ECECEC"
+                        android:layout_marginTop="8dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="4dp">
+
+                        <TextView
+                            android:id="@+id/detectText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="16dp"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:text="영상 분석 결과, 무표정이 40%로 \n 가장 많이 감지되었습니다."
+                            android:textColor="#333333"
+                            android:textSize="14sp" />
+                    </androidx.cardview.widget.CardView>
+
+
+                    <!-- 피드백 영역 (내부 CardView로 별도 구분) -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        app:cardBackgroundColor="@color/white"
+                        app:strokeWidth="2dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="8dp">
+
+                            <TextView
+                                android:id="@+id/tvFeedbackTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="4dp"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginBottom="8dp"
+                                android:text="분석 결과 피드백"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvFeedbackContent"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="4dp"
+                                android:layout_marginBottom="16dp"
+                                android:text="내용이 여기에 들어갈 거에요.\n오늘 점심은 좀 별로였네요"
+                                android:textSize="18sp" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- 분석 결과 저장 버튼 (CardView 밖) -->
             <android.widget.Button
                 android:id="@+id/btnSaveResult"
                 android:layout_width="wrap_content"
