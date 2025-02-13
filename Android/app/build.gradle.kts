@@ -155,7 +155,8 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
 
     // WebRTC
-    implementation("org.webrtc:google-webrtc:1.0.+")
+//    implementation("org.webrtc:google-webrtc:1.0.+")
+    implementation("io.github.haiyangwu:mediasoup-client:3.4.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

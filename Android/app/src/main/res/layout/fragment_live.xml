@@ -6,21 +6,167 @@
     android:layout_height="match_parent"
     tools:context=".ui.live.LiveFragment">
 
-    <!-- 로컬 비디오 미리보기를 위한 SurfaceViewRenderer -->
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="8dp">
 
-
-        <org.webrtc.SurfaceViewRenderer
-            android:id="@+id/local_video_view"
+        <!-- 방 입장 및 방 목록 새로고침 영역 -->
+        <LinearLayout
+            android:id="@+id/roomJoinContainer"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
+            <EditText
+                android:id="@+id/roomInput"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="방 이름"
+                android:imeOptions="actionDone" />
+
+            <Button
+                android:id="@+id/joinRoomBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="방 입장" />
+
+            <Button
+                android:id="@+id/refreshRoomsBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="새로고침" />
+        </LinearLayout>
+
+        <!-- 방 목록 영역 (방 목록은 동적으로 추가됨) -->
+        <ScrollView
+            android:id="@+id/roomListScrollView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/roomJoinContainer">
+
+            <LinearLayout
+                android:id="@+id/roomListContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
+        <!-- 중앙: 비디오와 채팅이 포함된 영역 -->
+        <FrameLayout
+            android:id="@+id/videoChatContainer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/controlContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/roomListScrollView">
+
+            <!-- 원격 비디오 컨테이너: 서버로부터 수신한 원격 영상들을 동적으로 추가 -->
+            <FrameLayout
+                android:id="@+id/remoteVideoContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <!-- 로컬 비디오: 작은 창 형태로 오버레이 -->
+            <org.webrtc.SurfaceViewRenderer
+                android:id="@+id/localVideoView"
+                android:layout_width="120dp"
+                android:layout_height="160dp"
+                android:layout_gravity="top|end"
+                android:layout_margin="16dp" />
+
+        </FrameLayout>
+
+        <!-- 하단: 채팅 및 제어 버튼 영역 -->
+        <LinearLayout
+            android:id="@+id/controlContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <!-- 채팅 메시지 영역 -->
+            <ScrollView
+                android:id="@+id/chatScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="#EEEEEE"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/chatMessages"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp" />
+            </ScrollView>
+
+            <!-- 채팅 입력 및 전송 영역 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/chatInput"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="메시지 입력"
+                    android:padding="8dp" />
+
+                <Button
+                    android:id="@+id/sendChatBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="전송" />
+            </LinearLayout>
+
+            <!-- 제어 버튼 영역 (음소거, 비디오 토글, 나가기) -->
+            <LinearLayout
+                android:id="@+id/buttonContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/muteBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="음소거" />
+
+                <Button
+                    android:id="@+id/videoBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="비디오 끄기" />
+
+                <Button
+                    android:id="@+id/leaveBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="나가기" />
+            </LinearLayout>
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
