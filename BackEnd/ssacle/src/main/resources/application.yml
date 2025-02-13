@@ -5,12 +5,11 @@ spring:
       host: localhost
       database: ssacle
     redis:
-      host: ${SPRING_REDIS_HOST}
-      port: ${SPRING_REDIS_PORT}
-      password: ${SPRING_REDIS_PASSWORD}
-#      host: localhost
-#      port: 6379
-#      password: ssacle
+#      host: ${SPRING_REDIS_HOST}
+#      port: ${SPRING_REDIS_PORT}
+#      password: ${SPRING_REDIS_PASSWORD}
+      host: localhost
+      port: 6379
 
   # 이미지 파일 파일 업로드 크기 제한 + Spring이 파일 업로드를 차단 해제
   servlet:
@@ -24,11 +23,11 @@ spring:
       enabled: always
 
 jwt:
-  # 액세스 토큰 만료시간 (1시간=60*60)
+  # 액세스 토큰 만료시간 (1일=24시간=60*60*24)
   access:
     token:
       expiration:
-        seconds: 3600
+        seconds: 86400
   # 리프레시 토큰 만료시간 (7일=60*60*24*7)
   refresh:
     token:

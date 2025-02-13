@@ -68,7 +68,6 @@ public class SecurityConfig {
                         .anyRequest().authenticated())              // 나머지는 인증 필요
                 // ✅ JWT 필터 추가 (인증 처리)
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
-
                 .addFilterAfter(jwtExceptionFilter, JwtRequestFilter.class)
                 .build();
     }
