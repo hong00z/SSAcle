@@ -131,19 +131,19 @@ fun HomeScreen(
             Column(
                 Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 32.dp)
+                    .padding(horizontal = 24.dp)
             ) {
                 Spacer(Modifier.height(12.dp))
                 TitleTextView("내 스터디 목록")
                 Spacer(Modifier.height(16.dp))
                 MyStudyItem(myStudyList, navController = navController)
-                Spacer(Modifier.height(36.dp))
+                Spacer(Modifier.height(32.dp))
 
                 TitleTextView("스터디 매칭")
                 Spacer(Modifier.height(16.dp))
 
                 FindActionButton()
-                Spacer(Modifier.height(36.dp))
+                Spacer(Modifier.height(32.dp))
 
 
                 Row(
@@ -157,15 +157,15 @@ fun HomeScreen(
                         "전체보기",
                         fontFamily = pretendard,
                         fontWeight = FontWeight(400),
-                        fontSize = 12.sp
+                        fontSize = 13.sp
                     )
                     Icon(
                         painter = painterResource(id = R.drawable.ic_right_arrow),
                         null,
-                        Modifier.size(14.dp)
+                        Modifier.size(18.dp)
                     )
                 }
-                Spacer(Modifier.height(16.dp))
+                Spacer(Modifier.height(20.dp))
                 StudyListCard()
                 Spacer(Modifier.height(8.dp))
             }
@@ -250,8 +250,8 @@ fun MyStudyItem(
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(84.dp)
-                        .padding(horizontal = 8.dp)
+                        .height(90.dp)
+                        .padding(horizontal = 12.dp)
                         .shadow(
                             elevation = 2.dp,
                             shape = RoundedCornerShape(10.dp),
@@ -316,12 +316,12 @@ private fun FindActionButton() {
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(horizontal = 28.dp)
+            .padding(horizontal = 32.dp)
     ) {
         Card(
             modifier = Modifier
-                .width(110.dp)
-                .height(120.dp)
+                .width(130.dp)
+                .height(140.dp)
                 .shadow(
                     elevation = 4.dp,
                     shape = RoundedCornerShape(10.dp),
@@ -329,9 +329,8 @@ private fun FindActionButton() {
                 ),
             shape = RoundedCornerShape(10.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White),
-            border = BorderStroke(1.dp, colorResource(R.color.border_card_color)),
-
-            ) {
+            border = BorderStroke(1.dp, colorResource(R.color.border_light_color)),
+        ) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -340,22 +339,22 @@ private fun FindActionButton() {
                 Image(
                     painter = painterResource(R.drawable.img_find_person),
                     "",
-                    modifier = Modifier.size(64.dp)
+                    modifier = Modifier.size(68.dp)
                 )
                 Spacer(Modifier.height(12.dp))
                 Text(
-                    "스터디원 찾기",
+                    "스터디원 구인",
                     fontFamily = pretendard,
                     fontWeight = FontWeight(600),
-                    fontSize = 12.sp
+                    fontSize = 14.sp
                 )
             }
         }
         Spacer(Modifier.weight(1f))
         Card(
             modifier = Modifier
-                .width(110.dp)
-                .height(120.dp)
+                .width(130.dp)
+                .height(140.dp)
                 .shadow(
                     elevation = 4.dp,
                     shape = RoundedCornerShape(10.dp),
@@ -373,14 +372,14 @@ private fun FindActionButton() {
                 Image(
                     painter = painterResource(R.drawable.img_find_study),
                     "",
-                    modifier = Modifier.size(64.dp)
+                    modifier = Modifier.size(68.dp)
                 )
                 Spacer(Modifier.height(12.dp))
                 Text(
                     "스터디 찾기",
                     fontFamily = pretendard,
                     fontWeight = FontWeight(600),
-                    fontSize = 12.sp
+                    fontSize = 14.sp
                 )
             }
         }
