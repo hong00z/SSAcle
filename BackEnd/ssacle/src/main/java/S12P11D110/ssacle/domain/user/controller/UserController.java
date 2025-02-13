@@ -3,7 +3,6 @@ package S12P11D110.ssacle.domain.user.controller;
 
 import S12P11D110.ssacle.domain.auth.entity.CustomUserDetail;
 import S12P11D110.ssacle.domain.study.dto.response.MyStudyList;
-import S12P11D110.ssacle.domain.study.dto.response.StudyResponseDTO;
 import S12P11D110.ssacle.domain.study.service.StudyService;
 import S12P11D110.ssacle.domain.user.dto.request.SsafyAuthRequest;
 import S12P11D110.ssacle.domain.user.dto.request.UserProfileRequest;
