@@ -1,8 +1,8 @@
 package S12P11D110.ssacle.domain.study.service;
 
-import S12P11D110.ssacle.domain.study.dto.response.RecommendUserDTO;
-import S12P11D110.ssacle.domain.study.dto.StudyConditionDTO;
-import S12P11D110.ssacle.domain.tempUser.SearchUserDTO;
+import S12P11D110.ssacle.domain.study.dto.RecoUserResult;
+import S12P11D110.ssacle.domain.study.dto.StudyCondition;
+import S12P11D110.ssacle.domain.study.dto.SearchUser;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -12,11 +12,11 @@ import java.util.stream.Collectors;
 @Service
 public class RecommendUserService {
 
-    public List<RecommendUserDTO> recommendUsers(StudyConditionDTO studyCondition, List<SearchUserDTO> allUsers){
+    public List<RecoUserResult> recommendUsers(StudyCondition studyCondition, List<SearchUser> allUsers){
 
         String studyTopic = studyCondition.getTopic();
         // 1. 유저 필터링
-        List<SearchUserDTO> filteredUsers = allUsers.stream()
+        List<SearchUser> filteredUsers = allUsers.stream()
                 .filter(user-> user.getTopics()!=null && user.getMeetingDays()!=null) // topic과 meetingDay가 등록된 유저
                 .filter(user-> user.getTopics().contains(studyTopic)) // 스터디 주제에 해당 안되는 유저는 제외
                 .filter(user -> {
@@ -43,8 +43,8 @@ public class RecommendUserService {
         System.out.println("✅ 필터링 후 남은 유저 리스트: " + filteredUsers);
 
         // 2. 코사인 유사도를 기반으로 유저 추천
-        Map<SearchUserDTO, Double> userSimilarityMap = new HashMap<>();
-        for(SearchUserDTO user : filteredUsers){
+        Map<SearchUser, Double> userSimilarityMap = new HashMap<>();
+        for(SearchUser user : filteredUsers){
             double similarity = calculateFiltering(studyCondition, user);
             userSimilarityMap.put(user, similarity);
 
@@ -58,17 +58,24 @@ public class RecommendUserService {
         return userSimilarityMap.entrySet().stream()
                 .sorted((entry1, entry2) -> Double.compare(entry2.getValue(), entry1.getValue())) // 유사도 내림차순
                 .limit(3) // 상위 3명 추출
-                .map(entry -> new RecommendUserDTO(
-                        entry.getKey().getUserId(), // TempUser ID
-                        entry.getValue(), // 유사도 점수
-                        entry.getKey().getNickName(), // Nickname
-                        entry.getKey().getTopics(),   // Topic
-                        entry.getKey().getMeetingDays() // MeetingDay
+                .map(entry -> new RecoUserResult(
+                        entry.getKey().getUserId(),     // TempUser ID
+                        entry.getValue(),               // 유사도 점수
+                        entry.getKey().getNickname(),   // Nickname
+                        entry.getKey().getImage(),
+                        entry.getKey().getTerm(),
+                        entry.getKey().getCampus(),
+                        entry.getKey().getCountJoinedStudies(),
+                        entry.getKey().getTopics(),
+                        entry.getKey().getMeetingDays(),
+                        entry.getKey().getJoinedStudies(),
+                        entry.getKey().getWishStudies(),
+                        entry.getKey().getInvitedStudies()
                 )) // DTO 변환
                 .collect(Collectors.toList());
     }
 
-    private double calculateFiltering(StudyConditionDTO studyCondition, SearchUserDTO user) {
+    private double calculateFiltering(StudyCondition studyCondition, SearchUser user) {
         // 1. 스터디와 유저의 주제 및 모임 요일 벡터화
         Set<String> studyFeatures = new HashSet<>();
         studyFeatures.add(studyCondition.getTopic());
@@ -96,7 +103,7 @@ public class RecommendUserService {
     }
 
 
-    private double calculateFilterResult(StudyConditionDTO studyCondition, SearchUserDTO user) {
+    private double calculateFilterResult(StudyCondition studyCondition, SearchUser user) {
 
 
         // 1. study의topic 개수, meetingDay 개수

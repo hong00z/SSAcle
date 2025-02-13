@@ -10,9 +10,9 @@ import java.util.Set;
 
 @Getter
 @Builder  // getter/setter, 기본 생성자, toString() 포함
-public class StudyDetailDTO {
+public class StudyDetail {
     private String id;                          // MongoDB에서 자동 생성되는 고유 ID
-    private String studyName;                   // 스터디 이름
+    private String studyName;               // 스터디 이름
     private String topic;                   // 주제 목록
     private Set<String> meetingDays;        // 모임 요일
     private int count;                      //정원
