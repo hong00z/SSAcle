@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
-    <!--알림 권한-->
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <!-- pdf 입 출력을 위한 권한-->
+    <!-- 알림 권한 -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> <!-- pdf 입 출력을 위한 권한 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <!-- 인터넷 권한-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- 인터넷 권한 -->
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -22,6 +20,11 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".LoginActivity"
+            android:exported="false">
+
+        </activity>
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -30,6 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".FCMService"
             android:exported="false">
@@ -37,7 +41,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
 
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
@@ -54,24 +57,6 @@
             </intent-filter>
         </activity>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
@@ -81,13 +66,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
-
-
-
-
-
-
     </application>
 
 </manifest>
