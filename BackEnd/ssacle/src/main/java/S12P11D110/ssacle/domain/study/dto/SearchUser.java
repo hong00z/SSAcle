@@ -1,5 +1,6 @@
-package S12P11D110.ssacle.domain.tempUser;
+package S12P11D110.ssacle.domain.study.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
@@ -7,9 +8,14 @@ import java.util.Set;
 
 @Data
 @Builder
-public class SearchUserDTO {
+@AllArgsConstructor
+public class SearchUser {
     private String userId;
-    private String nickName;
+    private String nickname;
+    private String image;
+    private String term;
+    private String campus;
+    private int countJoinedStudies;
     private Set<String> topics;
     private Set<String> meetingDays;
     private Set<String> joinedStudies;

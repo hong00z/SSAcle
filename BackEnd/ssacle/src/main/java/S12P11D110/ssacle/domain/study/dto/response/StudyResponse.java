@@ -8,7 +8,7 @@ import java.util.Set;
 @Getter
 @Builder  // getter/setter, 기본 생성자, toString() 포함
 // 스터디 응답 DTO
-public class StudyResponseDTO {
+public class StudyResponse {
     private String id;                          // MongoDB에서 자동 생성되는 고유 ID
     private String studyName;                   // 스터디 이름
     private String topic;            // 주제

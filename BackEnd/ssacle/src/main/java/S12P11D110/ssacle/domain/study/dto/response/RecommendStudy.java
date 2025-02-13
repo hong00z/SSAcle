@@ -13,7 +13,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @Builder
-public class RecommendStudyDTO {
+public class RecommendStudy {
     private String studyId;
     private double similarity;
     private String studyName;

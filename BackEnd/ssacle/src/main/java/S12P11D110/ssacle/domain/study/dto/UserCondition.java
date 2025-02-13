@@ -6,7 +6,7 @@ import java.util.Set;
 
 @Data
 @Builder
-public class UserConditionDTO {
+public class UserCondition {
     private String userId;
     private Set<String> topics;
     private Set<String> meetingDays;

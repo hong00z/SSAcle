@@ -6,14 +6,11 @@ import S12P11D110.ssacle.domain.feed.dto.FeedDetailDTO;
 import S12P11D110.ssacle.domain.feed.entity.Feed;
 import S12P11D110.ssacle.domain.feed.repository.FeedRepository;
 import S12P11D110.ssacle.domain.study.dto.*;
-import S12P11D110.ssacle.domain.study.dto.request.StudyCreateRequestDTO;
-import S12P11D110.ssacle.domain.study.dto.request.StudyUpdateRequestDTO;
+import S12P11D110.ssacle.domain.study.dto.request.StudyCreateRequest;
+import S12P11D110.ssacle.domain.study.dto.request.StudyUpdateRequest;
 import S12P11D110.ssacle.domain.study.dto.response.*;
-import S12P11D110.ssacle.domain.study.entity.Study;
-import S12P11D110.ssacle.domain.tempUser.TempUser;
 import S12P11D110.ssacle.domain.study.repository.StudyRepository;
-import S12P11D110.ssacle.domain.tempUser.SearchUserDTO;
-import S12P11D110.ssacle.domain.tempUser.TempUserRepository;
+import S12P11D110.ssacle.domain.study.dto.SearchUser;
 import S12P11D110.ssacle.domain.user.entity.User;
 import S12P11D110.ssacle.domain.user.repository.UserRepository;
 import S12P11D110.ssacle.global.firebase.FirebaseMessagingService;
@@ -48,13 +45,13 @@ public class StudyService {
 
     // 스터디 개설
     //트랜잭션을 시작, 커밋, 롤백하는 과정을 자동으로 관리
-    public void saveStudy(String userId, StudyCreateRequestDTO studyCreateRequestDTO) {
-        Study study = new Study();
-        study.setStudyName(studyCreateRequestDTO.getStudyName());
-        study.setTopic(studyCreateRequestDTO.getTopic());
-        study.setMeetingDays(studyCreateRequestDTO.getMeetingDays());
-        study.setCount(studyCreateRequestDTO.getCount());
-        study.setStudyContent(studyCreateRequestDTO.getStudyContent());
+    public void saveStudy(String userId, StudyCreateRequest studyCreateRequest) {
+        S12P11D110.ssacle.domain.study.entity.Study study = new S12P11D110.ssacle.domain.study.entity.Study();
+        study.setStudyName(studyCreateRequest.getStudyName());
+        study.setTopic(studyCreateRequest.getTopic());
+        study.setMeetingDays(studyCreateRequest.getMeetingDays());
+        study.setCount(studyCreateRequest.getCount());
+        study.setStudyContent(studyCreateRequest.getStudyContent());
 
         // members: 현재 스터디 개설자의 userId가 들어가야함
         Set<String> members = new HashSet<>();
@@ -87,13 +84,13 @@ public class StudyService {
     //gpt: from
     // 모든 스터디 조회
     @Transactional(readOnly = true)
-    public List<StudyResponseDTO> getAllStudy() {
+    public List<StudyResponse> getAllStudy() {
         //1. repository에서 엔티티 가져오기
-        List<Study> studies = studyRepository.findAll();
+        List<S12P11D110.ssacle.domain.study.entity.Study> studies = studyRepository.findAll();
 
         //2. stream api를 사용해서 DTO로 변환
         return studies.stream()
-                .map(study -> StudyResponseDTO.builder()
+                .map(study -> StudyResponse.builder()
                         .id(study.getId())
                         .studyName(study.getStudyName())
                         .topic(study.getTopic())
@@ -110,8 +107,8 @@ public class StudyService {
 
     //gpt: from
     //해당 조건의 스터디 그룹 조회
-    public List<StudyResponseDTO> getStudiesByConditions(Set<String> topics, Set<String> meetingDays) {
-        List<Study> studies;
+    public List<StudyResponse> getStudiesByConditions(Set<String> topics, Set<String> meetingDays) {
+        List<S12P11D110.ssacle.domain.study.entity.Study> studies;
 
         // 조건이 없으면 전체 스터디 조회
         if ((topics == null || topics.isEmpty()) && (meetingDays == null || meetingDays.isEmpty())) {
@@ -123,7 +120,7 @@ public class StudyService {
         }
         // DTO로 변환
         return studies.stream()
-                .map(study -> StudyResponseDTO.builder()
+                .map(study -> StudyResponse.builder()
                         .id(study.getId())
                         .studyName(study.getStudyName())
                         .topic(study.getTopic())
@@ -141,9 +138,9 @@ public class StudyService {
     // gpt: from
     // 스터디 상세보기
     @Transactional(readOnly = true)
-    public StudyDetailDTO getStudyById(String studyId) {
+    public StudyDetail getStudyById(String studyId) {
         // 1. 해당 스터디 찾기, 스터디에 해당하는 피드들 찾기
-        Study study = studyRepository.findById(studyId)
+        S12P11D110.ssacle.domain.study.entity.Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new NoSuchElementException("스터디ID " + studyId + "에 해당하는 스터디가 없습니다."));
 
         System.out.println("현재 스터디 " + study);
@@ -205,7 +202,7 @@ public class StudyService {
         System.out.println("멤버 정보 상세" + memberInfo);
 
         // 4. StudyDetailDTO 반환
-        return StudyDetailDTO.builder()
+        return StudyDetail.builder()
                 .id(study.getId())
                 .studyName(study.getStudyName())
                 .topic(study.getTopic())
@@ -227,7 +224,7 @@ public class StudyService {
 
         // 멤버이름, 멤버의 프로필 이미지  DTO
         // 내가 참여 중인 스터디
-        List<Study> studies = studyRepository.findByMembersContaining(userId);
+        List<S12P11D110.ssacle.domain.study.entity.Study> studies = studyRepository.findByMembersContaining(userId);
 
 
 
@@ -269,10 +266,10 @@ public class StudyService {
     //GPT: from
     // 스터디 주제, 모임 요일 정보 요약
     @Transactional(readOnly = true)
-    public List<RecommendUserDTO> getStudyCondition(String studyId) {
+    public List<RecommendUser> getStudyCondition(String studyId) {
         // 1. 스터디 조건
-        StudyConditionDTO studyCondition = studyRepository.findById(studyId)
-                .map(study -> StudyConditionDTO.builder()
+        StudyCondition studyCondition = studyRepository.findById(studyId)
+                .map(study -> StudyCondition.builder()
                         .id(study.getId())
                         .topic(study.getTopic())
                         .meetingDays(study.getMeetingDays())
@@ -282,10 +279,14 @@ public class StudyService {
         System.out.println("Study Condition: " + studyCondition); // 디버깅
 
         // 2. 모든 유저
-        List<SearchUserDTO> allUsersDTO = userRepository.findAll().stream()
-                .map(user -> SearchUserDTO.builder()
+        List<SearchUser> allUsersDTO = userRepository.findAll().stream()
+                .map(user -> SearchUser.builder()
                         .userId(user.getUserId())
-                        .nickName(user.getNickname())
+                        .nickname(user.getNickname())
+                        .image(user.getImage())
+                        .term(user.getTerm())
+                        .campus(user.getCampus())
+                        .countJoinedStudies(user.getJoinedStudies().size())
                         .topics(user.getTopics())
                         .meetingDays(user.getMeetingDays())
                         .joinedStudies(user.getJoinedStudies())
@@ -295,7 +296,19 @@ public class StudyService {
                 )
                 .collect(Collectors.toList());
         System.out.println("All Users: " + allUsersDTO); // 디버깅
-        return recommendUserService.recommendUsers(studyCondition, allUsersDTO);
+        return recommendUserService.recommendUsers(studyCondition, allUsersDTO).stream()
+                .map(user-> RecommendUser.builder()
+                                .userId(user.getUserId())
+                                .similarity(user.getSimilarity())
+                                .nickname(user.getNickname())
+                                .image(user.getImage())
+                                .term(user.getTerm())
+                                .campus(user.getCampus())
+                                .countJoinedStudies(user.getCountJoinedStudies())
+                                .topics(user.getTopics())
+                                .meetingDays(user.getMeetingDays())
+                                .build()
+                ).collect(Collectors.toList());
 
     }
     //GPT: to
@@ -303,7 +316,7 @@ public class StudyService {
     // 스터디내 초대 현황 wishMembers & 내 수신함  invitedStudy 추가
     public void addWishMemberInvitedStudy(String studyId, String userId) {
         // 스터디조회
-        Study study = studyRepository.findById(studyId)
+        S12P11D110.ssacle.domain.study.entity.Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new NoSuchElementException("스터디ID" + studyId + "에 해당하는 스터디가 없습니다."));
 
         // 유저 조회
@@ -343,10 +356,10 @@ public class StudyService {
 
 //-------------------<< 스터디 추천 기능>>--------------------------------------------------------------------------------
     @Transactional(readOnly = true)
-    public List<RecommendStudyDTO> getUserCondition(String userId) {
+    public List<RecommendStudy> getUserCondition(String userId) {
         // 1. 유저 조건  UserConditionDTO에 담기
-        UserConditionDTO userCondition = userRepository.findById(userId)
-                .map(user -> UserConditionDTO.builder()
+        UserCondition userCondition = userRepository.findById(userId)
+                .map(user -> UserCondition.builder()
                         .userId(user.getUserId())
                         .topics(user.getTopics())
                         .meetingDays(user.getMeetingDays())
@@ -354,8 +367,8 @@ public class StudyService {
                 .orElseThrow(() -> new NoSuchElementException("유저ID" + userId + "에 해당하는 유저가 없습니다."));
 
         // 2. 모든 스터디 StudyDTO에 담기
-        List<StudyDTO> allStudiesDTO = studyRepository.findAll().stream()
-                .map(study -> StudyDTO.builder()
+        List<Study> allStudiesDTO = studyRepository.findAll().stream()
+                .map(study -> Study.builder()
                         .studyId(study.getId())
                         .studyName(study.getStudyName())
                         .topic(study.getTopic())
@@ -369,7 +382,7 @@ public class StudyService {
         System.out.println("All Studies: " + allStudiesDTO); // 디버깅
 
         return recommendStudyService.recommendStudy(userCondition, allStudiesDTO).stream()
-                .map(study->RecommendStudyDTO.builder()
+                .map(study-> RecommendStudy.builder()
                         .studyId(study.getStudyId())
                         .similarity(study.getSimilarity())
                         .studyName(study.getStudyName())
@@ -402,7 +415,7 @@ public class StudyService {
                 .orElseThrow(() -> new NoSuchElementException("유저ID" + userId + "에 해당하는 유저가 없습니다."));
 
         // 스터디 조회
-        Study study = studyRepository.findById(studyId)
+        S12P11D110.ssacle.domain.study.entity.Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new NoSuchElementException("스터디ID" + studyId + "에 해당하는 스터디가 없습니다."));
 
         // 이미 요청한 스터디인지 확인
@@ -445,73 +458,51 @@ public class StudyService {
 //--------------------<<  내 수신함  user Service 로??? >>----------------------------------------------------------------
     // wishStudy 신청한 스터디 리스트: 나 -> 스터디
     @Transactional(readOnly = true)
-    public List<MyWishStudyListDTO> myWishStudyList(String userId) {
+    public List<WishInvitedStudies> myWishStudyList(String userId) {
         // 1. 내 정보 찾기
         User userInfo = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("유저ID " + userId + "에 해당하는 유저가 없습니다."));
 
-        // 2. 내 wish 스터디들 Id 모으기 -> wishStudyEntities 만들기
-        Set<String> studyIds = (userInfo.getWishStudies() == null) ? new HashSet<>() : userInfo.getWishStudies();
-        List<Study> wishStudyEntities = studyRepository.findAllById(studyIds);
+        // 2. InvitedStudies ID 목록 (만약 null이면 빈 Set을 반환)
+        Set<String> studyIds = Optional.ofNullable(userInfo.getWishStudies())
+                .orElse(Collections.emptySet());
 
-        // 3. wishStudyEntities 로 wishStudiesList 만들기
-        List<StudyDTO> wishStudiesList = wishStudyEntities.stream()
-                .map(study -> StudyDTO.builder()
+        // WishInvitedStudies로 반환
+        return studyRepository.findAllById(studyIds).stream()
+                .map(study-> WishInvitedStudies.builder()
                         .studyId(study.getId())
                         .studyName(study.getStudyName())
                         .topic(study.getTopic())
                         .meetingDays(study.getMeetingDays())
-                        .members(study.getMembers())  // userID로 반환함 >>> nickname 필요하면 수정 필요
                         .count(study.getCount())
+                        .members(study.getMembers())
                         .build()
-                )
-                .collect(Collectors.toList());
-
-        //4.  MyWishStudyListDTO 최종 반환
-        return userRepository.findById(userId)
-                .map(user -> MyWishStudyListDTO.builder()
-                        .userId(user.getUserId())
-                        .wishStudy(wishStudiesList)
-                        .build()
-                )
-                .stream()
-                .collect(Collectors.toList());
+                ).collect(Collectors.toList());
 
     }
 
     // invitedStudy 스카웃 요청 받은 스터디 (스터디 → 나)
     @Transactional(readOnly = true)
-    public List<MyInvitedStudyListDTO> myInvitedStudyList(String userId) {
+    public List<WishInvitedStudies> myInvitedStudyList(String userId) {
         // 1. 스터디 정보
         User userInfo = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("유저ID " + userId + "에 해당하는 유저가 없습니다."));
 
-        // 2. 스터디ID 모으기 >>  invitedStudyEntities 에 넣기
-        Set<String> studyIds = (userInfo.getInvitedStudies() == null) ? new HashSet<>(): userInfo.getInvitedStudies();
-        List<Study> invitedStudyEntities = studyRepository.findAllById(studyIds);
+        // 2. InvitedStudies ID 목록 (만약 null이면 빈 Set을 반환)
+        Set<String> studyIds = Optional.ofNullable(userInfo.getInvitedStudies())
+                .orElse(Collections.emptySet());
 
-        // 3. studyEntities 로 invitedStudiesList 만들기
-        List<StudyDTO> invitedStudiesList = invitedStudyEntities.stream()
-                .map(study -> StudyDTO.builder()
+        // WishInvitedStudies로 반환
+        return studyRepository.findAllById(studyIds).stream()
+                .map(study-> WishInvitedStudies.builder()
                         .studyId(study.getId())
                         .studyName(study.getStudyName())
                         .topic(study.getTopic())
                         .meetingDays(study.getMeetingDays())
                         .count(study.getCount())
-                        .members(study.getMembers()) // userID로 반환함 >>> nickname 필요하면 수정 필요
+                        .members(study.getMembers())
                         .build()
-                )
-                .collect(Collectors.toList());
-
-
-        return userRepository.findById(userId)
-                .map(user -> MyInvitedStudyListDTO.builder()
-                        .userId(user.getUserId())
-                        .invitedStudy(invitedStudiesList)
-                        .build()
-                )
-                .stream()
-                .collect(Collectors.toList());
+                ).collect(Collectors.toList());
 
     }
 
@@ -523,69 +514,55 @@ public class StudyService {
 
     // wishMembers 스카웃하고 싶은 스터디원 (내 스터디 → 사용자)
     @Transactional(readOnly = true)
-    public List<StudyWishMembersListDTO> studyWishMembersList(String studyId) {
+    public List<WishPreMembers> studyWishMembersList(String studyId) {
 
         // 1. 스터디 조회
-        Study studyInfo = studyRepository.findById(studyId)
+        S12P11D110.ssacle.domain.study.entity.Study studyInfo = studyRepository.findById(studyId)
                 .orElseThrow(() -> new NoSuchElementException("스터디ID" + studyId + "에 해당하는 스터디가 없습니다."));
 
-        // 2. 유저ID 모으기 >> wishUsersEntities 로 변환
-        Set<String> userIds = (studyInfo.getWishMembers() == null) ? new HashSet<>() : studyInfo.getWishMembers();
-        List<User> wishUsersEntities = userRepository.findAllById(userIds);
+        // 2. Wishmember ID 목록 (만약 null이면 빈 Set을 반환)
+        Set<String> userIds = Optional.ofNullable(studyInfo.getWishMembers())
+                .orElse(Collections.emptySet());
 
-        // 3. wishUsersEntities 를 UserDTO로 변환
-        List<SearchUserDTO> wishUsersList = wishUsersEntities.stream()
-                .map(user -> SearchUserDTO.builder()
+        // 3. WishPreMembers DTO 로 반환
+        return userRepository.findAllById(userIds).stream()
+                .map(user -> WishPreMembers.builder()
                         .userId(user.getUserId())
-                        .nickName(user.getNickname())
+                        .nickname(user.getNickname())
+                        .image(user.getImage())
+                        .term(user.getTerm())
+                        .campus(user.getCampus())
                         .topics(user.getTopics())
                         .meetingDays(user.getMeetingDays())
                         .build()
                 )
-                .collect(Collectors.toList());
-
-        // 4. 최종 StudyWishMembersListDTO 반혼
-        return studyRepository.findById(studyId)
-                .map(study -> StudyWishMembersListDTO.builder()
-                        .studyId(study.getId())
-                        .wishMembers(wishUsersList)
-                        .build()
-                )
-                .stream()
                 .collect(Collectors.toList());
     }
 
     // preMembers 신청한 스터디원 (사용자→ 내 스터디)
     @Transactional(readOnly = true)
-    public List<StudyPreMembersListDTO> studyPreMembersList(String studyId) {
+    public List<WishPreMembers> studyPreMembersList(String studyId) {
         // 1. 스터디 조회
-        Study studyInfo = studyRepository.findById(studyId)
+        S12P11D110.ssacle.domain.study.entity.Study studyInfo = studyRepository.findById(studyId)
                 .orElseThrow(() -> new NoSuchElementException("스터디ID" + studyId + "에 해당하는 스터디가 없습니다."));
 
-        // 2. 유저ID 모으기 >> preUsersEntities 로 변환
-        Set<String> userIds = (studyInfo.getPreMembers() == null) ? new HashSet<>() : studyInfo.getPreMembers();
-        List<User> preUsersEntities = userRepository.findAllById(userIds);
+        // 2.  PreMembers ID 목록 (만약 null이면 빈 Set을 반환)
+        Set<String> userIds = Optional.ofNullable(studyInfo.getPreMembers())
+                .orElse(Collections.emptySet());
 
-        // 3. preUsersEntities 를 UserDTO로 변환
-        List<SearchUserDTO> preUsersList = preUsersEntities.stream()
-                .map(user -> SearchUserDTO.builder()
+        // 3. WishPreMembers로 변환
+        return userRepository.findAllById(userIds).stream()
+                .map(user-> WishPreMembers.builder()
                         .userId(user.getUserId())
-                        .nickName(user.getNickname())
+                        .nickname(user.getNickname())
+                        .image(user.getImage())
+                        .term(user.getTerm())
+                        .campus(user.getCampus())
                         .topics(user.getTopics())
                         .meetingDays(user.getMeetingDays())
                         .build()
-                )
-                .collect(Collectors.toList());
+                ).collect(Collectors.toList());
 
-        // 4. 최종 StudyWishMembersListDTO 반혼
-        return studyRepository.findById(studyId)
-                .map(study -> StudyPreMembersListDTO.builder()
-                        .studyId(study.getId())
-                        .preMembers(preUsersList)
-                        .build()
-                )
-                .stream()
-                .collect(Collectors.toList());
     }
 
 
@@ -598,7 +575,7 @@ public class StudyService {
         // 1. 유저&스터디 확인
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("유저ID" + userId + "에 해당하는 유저가 없습니다."));
-        Study study = studyRepository.findById(studyId)
+        S12P11D110.ssacle.domain.study.entity.Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new NoSuchElementException("스터디ID" + studyId + "에 해당하는 스터디가 없습니다."));
 
         // 2. 이미 가입된 스터디인지 & 이미 가입된 유저인지 확인
@@ -640,7 +617,7 @@ public class StudyService {
     public void editInvitedStudyWishMembers(String userId, String studyId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("유저ID" + userId + "에 해당하는 유저가 없습니다."));
-        Study study = studyRepository.findById(studyId)
+        S12P11D110.ssacle.domain.study.entity.Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new NoSuchElementException("스터디ID" + studyId + "에 해당하는 스터디가 없습니다."));
 
         user.getInvitedStudies().remove(studyId);
@@ -655,7 +632,7 @@ public class StudyService {
     public void editWishStudyPreMembers(String userId, String studyId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("유저ID" + userId + "에 해당하는 유저가 없습니다."));
-        Study study = studyRepository.findById(studyId)
+        S12P11D110.ssacle.domain.study.entity.Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new NoSuchElementException("스터디ID" + studyId + "에 해당하는 스터디가 없습니다."));
 
         user.getWishStudies().remove(studyId);
@@ -672,9 +649,9 @@ public class StudyService {
 
     // GPT: from
     // 스터디 수정
-    public void updateStudy(String id, StudyUpdateRequestDTO studyUpdateRequestDTO) {
+    public void updateStudy(String id, StudyUpdateRequest studyUpdateRequestDTO) {
         // 1. 기존 스터디 조회
-        Study study = studyRepository.findById(id)
+        S12P11D110.ssacle.domain.study.entity.Study study = studyRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("스터디 ID " + id + "에 해당하는 스터디가 존재하지 않습니다."));
 
         //2. DTO로 전달된 값으로 스터디 필드 수정

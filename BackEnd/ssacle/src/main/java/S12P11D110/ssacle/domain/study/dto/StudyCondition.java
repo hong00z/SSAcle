@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Data
 @Builder
-public class StudyConditionDTO {
+public class StudyCondition {
     private String id;
     private String topic;
     private Set<String> meetingDays;

@@ -1,8 +1,7 @@
 package S12P11D110.ssacle.domain.tempUser;
 
 
-import S12P11D110.ssacle.domain.study.dto.response.MyInvitedStudyListDTO;
-import S12P11D110.ssacle.domain.study.dto.response.MyWishStudyListDTO;
+import S12P11D110.ssacle.domain.study.dto.response.WishInvitedStudies;
 import S12P11D110.ssacle.domain.study.service.StudyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,7 +28,7 @@ public class TempUserController {
     @GetMapping("/{userId}/wishList") //로그인 기능 만들어지면 /{userId} 없애기
     @Operation(summary = "wishStudy 리스트 조회", description = "wishStudy 신청한 스터디 리스트: 나 -> 스터디")
     //로그인 기능 만들어지면 @PathVariable String userId) 없애기
-    public List<MyWishStudyListDTO> getWishStudyList (@PathVariable String userId){
+    public List<WishInvitedStudies> getWishStudyList (@PathVariable String userId){
 //        String userId = authentication.getName();  // 로그인된 사용자 ID 가져오기
         return studyService.myWishStudyList(userId);
     }
@@ -39,7 +38,7 @@ public class TempUserController {
     @GetMapping("/{userId}/invitedList") //로그인 기능 만들어지면 /{userId} 없애기
     @Operation(summary = "invitedStudy 리스트 조회", description = "invitedStudy 신청한 스터디 리스트: 스터디 -> 나")
     //로그인 기능 만들어지면 @PathVariable String userId) 없애기
-    public List<MyInvitedStudyListDTO> getInvitedStudyList(@PathVariable String userId){
+    public List<WishInvitedStudies> getInvitedStudyList(@PathVariable String userId){
 //        String userId = authentication.getName();  // 로그인된 사용자 ID 가져오기
         return studyService.myInvitedStudyList(userId);
     }
