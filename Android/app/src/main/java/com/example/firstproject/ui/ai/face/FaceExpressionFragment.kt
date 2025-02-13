@@ -19,6 +19,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.firstproject.R
 import com.example.firstproject.databinding.FragmentEmotionBinding
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.NonCancellable.isActive
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,6 +32,13 @@ class FaceExpressionFragment : Fragment() {
 
     private var faceExpressionDetector: FaceExpressionDetector? = null
     private var selectedVideoUri: Uri? = null
+
+    // 애니메이션 관련 전역 변수
+    private var analysisAnimationJob: Job? = null
+
+    // updateUiDuringProcessing()에서 최신 진행 정보를 저장
+    private var latestElapsedTime: Long = 0L
+    private var latestProgress: Int = 0
 
     companion object {
         private const val REQUEST_VIDEO_PICK = 101
@@ -69,18 +78,19 @@ class FaceExpressionFragment : Fragment() {
                     )
                     faceExpressionDetector?.loadModel(requireContext().assets)
                 }
-                binding.deleteImg.visibility = View.GONE
-                binding.deleteText.visibility = View.GONE
-                binding.BtnSelectVideoemotion.visibility = View.GONE
-                binding.btnFeedbackemotion.visibility = View.GONE
 
-                binding.ivImage.visibility = View.GONE
-                binding.tvPdfPath.visibility = View.GONE
-                binding.tvAnalysisStatus.text = "분석 중입니다..."
-                binding.tvAnalysisStatus.visibility = View.VISIBLE
+                binding.apply{
+                    const1.visibility = View.GONE
+                    deleteText.visibility = View.GONE
+                    deleteImg.visibility = View.GONE
 
-                Toast.makeText(requireContext(), "분석중입니다...", Toast.LENGTH_SHORT).show()
-
+                    deleteLinear.visibility = View.GONE
+                    binding.tvAnalysisStatus.text = "분석 중입니다."
+                    binding.tvAnalysisStatus.visibility = View.VISIBLE
+                }
+                analysisAnimationJob = viewLifecycleOwner.lifecycleScope.launch {
+                    animateAnalysisStatus()
+                }
                 viewLifecycleOwner.lifecycleScope.launch {
                     processVideoWithRetriever(selectedVideoUri!!)
                     binding.feedbackFrame.visibility = View.VISIBLE
@@ -204,6 +214,9 @@ class FaceExpressionFragment : Fragment() {
     ) {
         val elapsed = System.currentTimeMillis() - startTime
 
+        latestElapsedTime = elapsed
+        latestProgress = progress
+
         // 5초 이전: 얼굴 박스 / 감정 표시
         if (elapsed < 5000) {
             binding.feedbackFrame.visibility = View.VISIBLE
@@ -266,8 +279,26 @@ class FaceExpressionFragment : Fragment() {
             .replace(R.id.fragment_container, fragment)
             .addToBackStack(null)
             .commit()
+    }
 
-
+    private suspend fun animateAnalysisStatus() {
+        val baseText = "분석 중입니다."
+        var dotCount = 0
+        while (isActive) {
+            // dot 개수에 따른 문자열 생성
+            val dots = ".".repeat(dotCount)
+            // 진행률에 따라 남은 시간 예측 (진행률이 0일 경우 계산 중 메시지)
+            val remainingText = if (latestProgress > 0) {
+                val estimatedTotalTime = latestElapsedTime / (latestProgress / 100.0)
+                val estimatedRemainingSeconds =((estimatedTotalTime - latestElapsedTime) / 1000).toInt()
+                "예상 남은 시간: ${estimatedRemainingSeconds}초"
+            } else {
+                "예상 남은 시간 : 계산 중..."
+            }
+            binding.tvAnalysisStatus.text = "$baseText$dots $remainingText"
+            dotCount = if (dotCount < 2) dotCount + 1 else 0
+            delay(500L)
+        }
     }
 
     override fun onDestroyView() {

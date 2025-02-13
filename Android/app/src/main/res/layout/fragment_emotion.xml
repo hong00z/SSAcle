@@ -177,11 +177,11 @@
             android:textColor="@android:color/black"/>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/deleteLinear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:gravity="center">
-
 
         <ImageView
             android:id="@+id/ivImage"
