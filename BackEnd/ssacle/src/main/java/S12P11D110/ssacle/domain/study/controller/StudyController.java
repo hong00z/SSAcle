@@ -25,38 +25,47 @@ public class StudyController {
     private final UserService userService;
     private final StudyService studyService;
 
-    // GPT: from
-    // 스터디 개설
+    // GPT: 25 ~31
+    // 스터디 생성 POST
     @PostMapping("")
-    @Operation(summary = "스터디 개설", description = "사용자가 원하는 조건을 선택해서 스터디를 개설할 수 있다.")
+    @Operation(summary = "스터디 개설", description = "새로운 스터디를 개설합니다.")
     public ResponseEntity<Void> createStudy(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestBody StudyCreateRequest studyCreateRequest){  // 클라이언트로부터 전달받은 JSON 형식의 데이터를 @RequestBody를 통해 Java의 객체(StudyCreateRequestDTO)로 자동 변환
         String userId = userDetail.getId();
         studyService.saveStudy(userId, studyCreateRequest);
         return ResponseEntity.ok().build();
     }
-    // GPT: to
+
+    // GTP : 37 ~ 46
+//    // 해당 조건의 스터디 그룹 조회
+//    @GetMapping
+//    @Operation(summary = "조건부 스터디 조회", description = "주제와 모임 요일 조건에 따라 스터디를 조회합니다. 조건이 없으면 전체 스터디를 반환합니다.")
+//    public List<StudyResponseDTO> getStudiesByConditions(
+//            @RequestParam(required = false) List<Study.Topic> topic, // 쿼리 파라미터 topic
+//            @RequestParam(required = false) List<Study.MeetingDay> meetingDay // 쿼리 파라미터 meetingDay
+//    ) {
+//        return studyService.getStudiesByConditions(topic, meetingDay);
+//    }
 
 
     // 스터디 상세보기 GET
     @GetMapping("/{studyId}")
-    @Operation(summary = "스터디 상세 정보", description = "스터디 상세 정보를 볼 수 있다.")
-    public StudyDetail studyDetailInfo(@PathVariable String studyId){
+    @Operation(summary = "특정 스터디 조회", description = "스터디 ID를 통해 특정 스터디를 조회합니다.")
+    public StudyDetail getstudyById(@PathVariable String studyId){
         return studyService.getStudyById(studyId);
     }
 
 
-
 //-------------------<< 스터디원 추천 기능>>-------------------------------------------------------------------------------
-    // 스터디원 추천기능
+    // 스터디원 추천 기능
     @GetMapping("/recommendUser/{studyId}")
-    @Operation(summary = "스터디원 추천기능", description = "스터디의 조건에 맞는 유저를 추천해준다.")
+    @Operation(summary = "스터디원 추천", description = "스터디에 적합한 상위 3명의 유저 리스트를 제공합니다.")
     public List<RecommendUser>getRecommendUser(@PathVariable String studyId){
         return studyService.getStudyCondition(studyId);
     }
 
     // 스터디내 초대 현황 wishMembers & 내 수신함  invitedStudy 추가
     @PatchMapping("/{studyId}/addStudyRequest")
-    @Operation(summary = "유저 스카웃(가입 요청)", description = "추천된 유저에게 스카웃 제의")
+    @Operation(summary = "스터디원 스카웃 제의 추가/ 내 수신함 추가", description = "추천된 유저에게 스카웃 제의에 추가")
     //ResponseEntity :  HTTP 응답을 표현하는 클래스
     public ResponseEntity<Void> comeToStudy(@PathVariable String studyId, @RequestBody StudyRequest request){
         studyService.addWishMemberInvitedStudy(studyId, request.getUserId());

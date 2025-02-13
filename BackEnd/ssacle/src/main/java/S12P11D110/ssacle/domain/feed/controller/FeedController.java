@@ -23,8 +23,7 @@ public class FeedController {
     @Operation(summary = "피드 생성", description = "피드를 생성합니다.")
     // 로그인 구현 만들어지면 userId 삭제
     public ResponseEntity<Void> saveFeed (@AuthenticationPrincipal CustomUserDetail userDetail, @PathVariable String studyId, @RequestBody FeedCreateDTO feedCreateDTO){
-        String userId = userDetail.getId();  // 로그인된 사용자 ID 가져오기
-        feedService.saveFeed(studyId, userId, feedCreateDTO);
+        feedService.saveFeed(studyId, feedCreateDTO);
         return ResponseEntity.ok().build();
     }
 }

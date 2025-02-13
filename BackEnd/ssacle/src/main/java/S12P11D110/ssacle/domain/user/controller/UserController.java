@@ -4,6 +4,7 @@ package S12P11D110.ssacle.domain.user.controller;
 import S12P11D110.ssacle.domain.auth.entity.CustomUserDetail;
 import S12P11D110.ssacle.domain.study.dto.request.MyRequest;
 import S12P11D110.ssacle.domain.study.dto.response.MyStudyList;
+import S12P11D110.ssacle.domain.study.dto.response.WishInvitedStudies;
 import S12P11D110.ssacle.domain.study.service.StudyService;
 import S12P11D110.ssacle.domain.user.dto.request.SsafyAuthRequest;
 import S12P11D110.ssacle.domain.user.dto.request.UserProfileRequest;
@@ -12,12 +13,16 @@ import S12P11D110.ssacle.domain.user.dto.response.UserProfileResponse;
 import S12P11D110.ssacle.domain.user.service.UserService;
 import S12P11D110.ssacle.global.dto.ResultDto;
 import S12P11D110.ssacle.global.exception.*;
+import io.swagger.v3.oas.annotations.media.Content;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -52,7 +57,7 @@ public class UserController {
      * 탈퇴
      */
     @DeleteMapping("")
-    @Operation(summary = "회원 탈퇴", description = "사용자의 JWT 토큰과 계정 정보 삭제 처리")
+    @Operation(summary = "회원 탈퇴", description = "사용자의 JWT 토큰과 계정 정보 삭제하여 탈퇴 처리")
     public ResultDto<Object> deleteUser(@AuthenticationPrincipal CustomUserDetail userDetail) {
         userService.deleteUser(userDetail.getId());
         return ResultDto.of(HttpStatusCode.OK, "사용자 탈퇴 성공", null);
@@ -78,17 +83,25 @@ public class UserController {
     /**
      * 프로필 수정
      */
-    @PatchMapping("/profile")
+    @PatchMapping(value = "/profile",
+            // 클라이언트가 보내는 데이터 타입 ()
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,  //MULTIPART_FORM_DATA_VALUE = JSON과 파일을 동시에 전송할 때 사용하는 형식
+            // 서버가 클라이언트에게 보내는 응답 타입
+            produces = MediaType.APPLICATION_JSON_VALUE // APPLICATION_JSON_VALUE = JSON 형태의 응답을 보낼 것을 명시 )
+    )
     @Operation(summary = "프로필 수정", description = "닉네임(중복 검사), 프로필 사진, 스터디 관심 주제, 스터디 요일 수정 가능")
-    public ResultDto<UserProfileResponse> updateProfile(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestBody UserProfileRequest request){
-        try {
-            UserProfileResponse updatedProfile = userService.modifyUserProfile(userDetail.getId(), request);
-            return ResultDto.of(HttpStatusCode.OK, "프로필 수정 성공", updatedProfile);
-        } catch (AuthErrorException e) {
-            return ResultDto.of(e.getCode(), e.getErrorMsg(), null);
-        } catch (Exception e) {
-            return ResultDto.of(HttpStatusCode.INTERNAL_SERVER_ERROR, "서버 에러", null);
-        }
+    public ResponseEntity<UserProfileResponse> userModify(
+            @AuthenticationPrincipal CustomUserDetail userDetail,
+
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(mediaType = "multipart/form-data"))
+            @RequestPart UserProfileRequest request,
+
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(mediaType = "multipart/form-data"))
+            @RequestParam(value = "MultipartFile", required = false) MultipartFile file){
+        String userId = userDetail.getId();
+        return ResponseEntity.ok(userService.modifyUserProfile(userId, request, file));
     }
 
     /**
@@ -127,14 +140,6 @@ public class UserController {
         }
     }
 
-    /**
-     * 유저의 FCM 토큰 저장
-     */
-//    @PostMapping("/fcmTocken")
-//    @Operation(summary = "유저의 FCM 토큰 저장", description = "임시로 무조건 term=12, campus='구미'로 설정"))
-//    public saveFcmToken
-
-
 
 //------------------------------------------- << 스터디 >> ------------------------------------------
     /**
@@ -150,48 +155,69 @@ public class UserController {
     /**
      * 내 신청 현황
      */
-
-
+    @GetMapping("/wish-studies")
+    @Operation(summary = "내 신청 현황 리스트", description = "내가 신청한 스터디 리스트를 조회합니다.")
+    public List<WishInvitedStudies> getWishStudyList (@AuthenticationPrincipal CustomUserDetail userDetail){
+        String userId = userDetail.getId();
+        return studyService.getWishStudyList(userId);
+    }
 
     /**
      * 내 신청 보내기
      */
-    //
-
-    /**
-     * 내 신청 취소
-     */
-
-    /**
-     * 내 수신함
-     */
-
-    /**
-     * 내 수신함 수락
-     */
-    // 해당 스터디의 members 에 userId 추가, wishMembers 에서 userId 삭제
-    // 사용자의 invitedStudies 에서 studyId 삭제
-
-    /**
-     * 내 수신함 거절
-     */
-
-
-    // 내 요청함 wishStudy & 스터디 내 수신함  preMembers 추가
-    @PatchMapping("/wish-studies") // user 로그인 정보 받아와지면 {userId} 없애기
-    @Operation(summary = "스터디 가입 신청", description = "추천된 스터디에 가입 요청")
+    @PatchMapping("/wish-studies")
+    @Operation(summary = "내 신청 보내기", description = "스터디에 가입 신청할 수 있습니다.")
     //ResponseEntity :  HTTP 응답을 표현하는 클래스
     public ResponseEntity<Void> inviteMe(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestBody MyRequest request){
         String userId = userDetail.getId();  // 로그인된 사용자 ID 가져오기
         System.out.println("Received request in inviteMe method."); // 요청 도착 확인
         System.out.println("studyId: " + request.getStudyId()); // studyId 값 확인
-
         studyService.addWishStudyPreMember(userId, request.getStudyId());
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * 내 신청 취소
+     */
 
 
+    /**
+     * 내 수신함
+     */
+    @GetMapping("/invited-studies")
+    @Operation(summary = "내 수신함", description = "내가 초대 받은 스터디 리스트를 조회합니다.")
+    public List<WishInvitedStudies> getInvitedStudyList(@AuthenticationPrincipal CustomUserDetail userDetail){
+        String userId = userDetail.getId();
+        return studyService.getInvitedStudyList(userId);
+    }
+
+    /**
+     * 내 수신함 수락
+     */
+    @PatchMapping("/invited-studies/accept")
+    @Operation(summary = "내 수신함 수락", description = "내가 초대 받은 스터디의 요청을 수락합니다.")
+    public ResponseEntity<Void> accetpInvite(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestBody MyRequest request){
+        String userId = userDetail.getId();  // 로그인된 사용자 ID 가져오기
+        // 유저: joinedStudy 추가 / 스터디: memebr에 추가
+        studyService.addJoinedStudyMember(userId, request.getStudyId());
+        // 유저: invitedStudies에 제거 / 스터디: wishMember에 제거
+        studyService.editInvitedStudyWishMembers(userId, request.getStudyId());//
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 내 수신함 거절
+     */
     // 해당 스터디의 wishMembers 에서 userId 삭제
     // 사용자의 invitedStudies 에서 studyId 삭제
+
+
+//------------------------------------------- << FCM 토큰 >> ------------------------------------------
+    /**
+     * 유저의 FCM 토큰 저장
+     */
+//    @PostMapping("/fcmTocken")
+//    @Operation(summary = "유저의 FCM 토큰 저장", description = "임시로 무조건 term=12, campus='구미'로 설정"))
+//    public saveFcmToken
+
 }

@@ -6,6 +6,7 @@ import S12P11D110.ssacle.domain.feed.dto.FeedDetailDTO;
 import S12P11D110.ssacle.domain.feed.entity.Feed;
 import S12P11D110.ssacle.domain.feed.repository.FeedRepository;
 import S12P11D110.ssacle.domain.study.dto.*;
+import S12P11D110.ssacle.domain.study.entity.Study;
 import S12P11D110.ssacle.domain.study.dto.request.StudyCreateRequest;
 import S12P11D110.ssacle.domain.study.dto.request.StudyUpdateRequest;
 import S12P11D110.ssacle.domain.study.dto.response.*;
@@ -17,7 +18,7 @@ import S12P11D110.ssacle.global.firebase.FirebaseMessagingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import S12P11D110.ssacle.domain.study.entity.Study;
+import S12P11D110.ssacle.domain.study.dto.SearchUser;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -28,7 +29,6 @@ import java.util.stream.Collectors;
 public class StudyService {
 
     private final StudyRepository studyRepository; //final이 붙은 필드나 @NonNull로 선언된 필드에 대해 생성자를 자동으로 생성해주는 기능
-//    private final TempUserRepository userRepository;
     private final UserRepository userRepository;
     private final RecommendUserService recommendUserService;
     private final RecommendStudyService recommendStudyService;
@@ -82,7 +82,7 @@ public class StudyService {
 
     }
 
-    //gpt: from
+    // gpt: from
     // 모든 스터디 조회
     @Transactional(readOnly = true)
     public List<StudyResponse> getAllStudy() {
@@ -107,34 +107,34 @@ public class StudyService {
     }
     // gpt: to
 
-    //gpt: from
-    //해당 조건의 스터디 그룹 조회
-    public List<StudyResponse> getStudiesByConditions(Set<String> topics, Set<String> meetingDays) {
-        List<S12P11D110.ssacle.domain.study.entity.Study> studies;
-
-        // 조건이 없으면 전체 스터디 조회
-        if ((topics == null || topics.isEmpty()) && (meetingDays == null || meetingDays.isEmpty())) {
-            studies = studyRepository.findAll();
-        }
-        // 조건이 있으면 해당 조건에 맞는 스터디 조회
-        else {
-            studies = studyRepository.findByTopicAndMeetingDaysIn(topics, meetingDays);
-        }
-        // DTO로 변환
-        return studies.stream()
-                .map(study -> StudyResponse.builder()
-                        .id(study.getId())
-                        .studyName(study.getStudyName())
-                        .topic(study.getTopic())
-                        .meetingDays(study.getMeetingDays())
-                        .count(study.getCount())
-                        .members(study.getMembers())
-                        .studyContent(study.getStudyContent())
-                        .build()
-                )
-                .collect(Collectors.toList());
-    }
-    //gpt:to
+//    //gpt: from
+//    // 해당 조건의 스터디 그룹 조회
+//    public List<StudyResponse> getStudiesByConditions(Set<String> topics, Set<String> meetingDays) {
+//        List<S12P11D110.ssacle.domain.study.entity.Study> studies;
+//
+//        // 조건이 없으면 전체 스터디 조회
+//        if ((topics == null || topics.isEmpty()) && (meetingDays == null || meetingDays.isEmpty())) {
+//            studies = studyRepository.findAll();
+//        }
+//        // 조건이 있으면 해당 조건에 맞는 스터디 조회
+//        else {
+//            studies = studyRepository.findByTopicAndMeetingDaysIn(topics, meetingDays);
+//        }
+//        // DTO로 변환
+//        return studies.stream()
+//                .map(study -> StudyResponse.builder()
+//                        .id(study.getId())
+//                        .studyName(study.getStudyName())
+//                        .topic(study.getTopic())
+//                        .meetingDays(study.getMeetingDays())
+//                        .count(study.getCount())
+//                        .members(study.getMembers())
+//                        .studyContent(study.getStudyContent())
+//                        .build()
+//                )
+//                .collect(Collectors.toList());
+//    }
+//    //gpt:to
 
 
     // gpt: from
@@ -164,13 +164,13 @@ public class StudyService {
         // gpt: from ---------------------------------------------------------
         List<FeedDetailDTO> feedList = feedEntities.stream()
                 .map(feed ->{
-                    // 작성자의 ID 가져오기]
+                    // 작성자의 ID 가져오기
                     String userId = feed.getCreatedBy();
                     //user 조회
                     User user = userRepository.findById(userId)
                             .orElseThrow(()-> new NoSuchElementException("유저ID " +userId+ " 에 해당하는 유저가 없습니다." ));
 
-                    // FeedCreatorInfo: 유저의 아이디, 닉네임, 이미지, 텀 , 캠퍼스
+                    // FeedCreatorInfo: 유저의 아이디, 닉네임, 이미지, 기수, 캠퍼스
                     FeedCreatorInfo creatorInfo = FeedCreatorInfo.builder()
                             .userId(user.getUserId())
                             .nickname(user.getNickname())
@@ -410,7 +410,7 @@ public class StudyService {
     }
 
 
-    //내 요청함 wishStudy & 스터디 내 수신함  preMembers 추가
+    // 내 요청함 wishStudy & 스터디 내 수신함  preMembers 추가
     public void addWishStudyPreMember(String userId, String studyId) {
         // 유저 조회
         User user = userRepository.findById(userId)
@@ -458,9 +458,9 @@ public class StudyService {
 
 
 //--------------------<<  내 수신함  user Service 로??? >>----------------------------------------------------------------
-    // wishStudy 신청한 스터디 리스트: 나 -> 스터디
+    // wishStudy 신청한 스터디 리스트 (나 -> 스터디)
     @Transactional(readOnly = true)
-    public List<WishInvitedStudies> myWishStudyList(String userId) {
+    public List<WishInvitedStudies> getWishStudyList(String userId) {
         // 1. 내 정보 찾기
         User userInfo = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("유저ID " + userId + "에 해당하는 유저가 없습니다."));
@@ -483,9 +483,9 @@ public class StudyService {
 
     }
 
-    // invitedStudy 스카웃 요청 받은 스터디 (스터디 → 나)
+    // invitedStudy 초대 받은 스터디 리스트 (스터디 → 나)
     @Transactional(readOnly = true)
-    public List<WishInvitedStudies> myInvitedStudyList(String userId) {
+    public List<WishInvitedStudies> getInvitedStudyList(String userId) {
         // 1. 스터디 정보
         User userInfo = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("유저ID " + userId + "에 해당하는 유저가 없습니다."));
