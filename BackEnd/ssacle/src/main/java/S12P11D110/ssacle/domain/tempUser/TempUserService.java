@@ -22,13 +22,13 @@ public class TempUserService {
     private static final Logger logger = LoggerFactory.getLogger(TempUserService.class);
 
 
-//    private final UserProfileRequest userProfileRequest;
+//    private final TempUserProfileRequest userProfileRequest;
     private final TempUserRepository userRepository;
     private final FileStorageServiceImpl fileStorageServiceImpl;
 
 
     @Transactional
-    public UserProfileResponse modifyUserProfile(String userId, UserProfileRequest request, MultipartFile file) {
+    public UserProfileResponse modifyUserProfile(String userId, TempUserProfileRequest request, MultipartFile file) {
         // 유저 찾기
         TempUser tempUser = userRepository.findById(userId)
                 .orElseThrow(()->new IllegalArgumentException("유저 정보를 찾을 수 없습니다."));

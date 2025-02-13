@@ -7,6 +7,7 @@ import S12P11D110.ssacle.domain.study.dto.request.StudyCreateRequest;
 import S12P11D110.ssacle.domain.study.dto.request.StudyRequest;
 import S12P11D110.ssacle.domain.study.dto.response.*;
 import S12P11D110.ssacle.domain.study.service.StudyService;
+import S12P11D110.ssacle.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -20,15 +21,8 @@ import java.util.*;
 @RequestMapping("/api/studies")
 @Tag(name = "Study Controller", description = "This is Study Controller")
 public class StudyController {
-
+    private final UserService userService;
     private final StudyService studyService;
-
-
-    @GetMapping("/create")
-    @Operation(summary = "스터디 주제, 모임목록 ", description = "새로운 스터디를 개설합니다.")
-    public Map<String, List<String>> getTopicsMeetingDays(){
-        return studyService.topicList();
-    }
 
     // GPT: 25 ~31
     // 스터디 생성 POST
@@ -90,17 +84,6 @@ public class StudyController {
     }
 
 
-//
-//    @GetMapping("/my-studies/{userId}")
-//    @Operation(summary = "내가 참여 중인 스터디 리스트 조회", description = "TempUser Id를 통해 해당 User가 가입한 스터디 리스트를 조회합니다.")
-//    public List<MyStudyList> getStudiesByUserId(@PathVariable String userId){
-//
-//        return studyService.getStudiesByUserId(userId);
-//
-//    }
-
-
-
 //-------------------<< 스터디원 추천 기능>>-------------------------------------------------------------------------------
     // 스터디원 추천 기능
     @GetMapping("/recommendUser/{studyId}")
@@ -129,17 +112,6 @@ public class StudyController {
         String userId = userDetail.getId();
         return studyService.getUserCondition(userId);
     }
-//
-//    @GetMapping("/recommendStudy/{userId}") // user 로그인 정보 받아와지면 {userId} 없애기
-//    @Operation(summary = "스터디 추천", description = "유저에게 적합한 상위 3개의 스터디 리스트를 제공합니다.")
-//    public List<RecommendStudyDTO> getRecommendStudy(@PathVariable String userId){
-//        String userId = userDetail.getId();
-//        return studyService.getUserCondition(userId);
-//    }
-
-
-
-
 
     // 내 요청함 wishStudy & 스터디 내 수신함  preMembers 추가
     @PatchMapping("/addMyRequest") // user 로그인 정보 받아와지면 {userId} 없애기

@@ -1,5 +1,6 @@
-package S12P11D110.ssacle.global.exception;
+package S12P11D110.ssacle.global.dto;
 
+import S12P11D110.ssacle.global.exception.HttpStatusCode;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
