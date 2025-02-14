@@ -1,5 +1,6 @@
 package com.example.firstproject.ui.home
 
+import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -41,6 +42,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -67,8 +69,13 @@ fun HomeScreen(
     homeViewModel: HomeViewModel = viewModel()
 
 ) {
+    val context = LocalContext.current
+
     val userInfoStateResult by homeViewModel.userInfoStateResult.collectAsStateWithLifecycle()
     val myStudyListResult by homeViewModel.myStudyListResult.collectAsStateWithLifecycle()
+
+    val allStudyListResult by homeViewModel.allStudyListResult.collectAsStateWithLifecycle()
+
 
     val myStudyList = mutableListOf<StudyInfo>(
         StudyInfo("스프링 입문 스터디", "백엔드", 8, true, true),
@@ -78,6 +85,8 @@ fun HomeScreen(
         StudyInfo("스터디 제목", "모바일", 5, true, false),
     )
 
+    val allStudyList = homeViewModel.getAllStudyInfo(context)
+
 
     val myStudy = myStudyListResult.getOrNull()
 
@@ -85,12 +94,24 @@ fun HomeScreen(
 //        homeViewModel.
 //    }
 
+    LaunchedEffect(Unit) {
+        homeViewModel.getAllStudyInfo(context)
+    }
+
     LaunchedEffect(myStudyListResult) {
         myStudyListResult.onSuccess { data ->
 
         }
         myStudyListResult.onFailure { code, e ->
 
+        }
+    }
+
+    LaunchedEffect(allStudyListResult) {
+        Log.d("홈홈홈홈홈화면", "allStudyListResult: $allStudyListResult") // 로그 출력
+
+        allStudyListResult.onSuccess {
+            homeViewModel.getAllStudyInfo(context)
         }
     }
 
