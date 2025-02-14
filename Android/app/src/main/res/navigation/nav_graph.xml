@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_homeFragment_to_notificationFragment"
             app:destination="@id/notificationFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_videoFragment"
+            app:destination="@id/videoFragment" />
     </fragment>
 
     <fragment
@@ -146,6 +149,11 @@
         android:name="com.example.firstproject.ui.home.notification.NotificationFragment"
         android:label="fragment_notification"
         tools:layout="@layout/fragment_notification" />
+    <fragment
+        android:id="@+id/videoFragment"
+        android:name="com.example.firstproject.ui.live.VideoFragment"
+        android:label="fragment_video"
+        tools:layout="@layout/fragment_video" />
 
 
 </navigation>
