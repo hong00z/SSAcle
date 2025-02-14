@@ -6,8 +6,17 @@ import com.example.firstproject.BuildConfig
 import com.example.firstproject.MyApplication
 import com.example.firstproject.data.model.dto.response.AllStudyListResponseDTO
 import com.example.firstproject.data.model.dto.response.KakaoTokenDTO
+import com.example.firstproject.data.model.dto.response.MyAppliedStudyListDtoItem
+import com.example.firstproject.data.model.dto.response.MyInvitedStudyListDtoItem
+import com.example.firstproject.data.model.dto.response.MyJoinedStudyListDtoItem
+import com.example.firstproject.data.model.dto.response.Profile
 import com.example.firstproject.data.model.dto.response.RefreshTokenDTO
 import com.example.firstproject.data.model.dto.response.StudyDTO
+import com.example.firstproject.data.model.dto.response.StudyDetailInfoResponseDTO
+import com.example.firstproject.data.model.dto.response.StudyJoinRequestListDtoItem
+import com.example.firstproject.data.model.dto.response.StudyRequestedInviteListDtoItem
+import com.example.firstproject.data.model.dto.response.Top3RecommendedUsersDtoItem
+import com.example.firstproject.data.model.dto.response.UserSuitableStudyDtoItem
 import com.example.firstproject.data.model.dto.response.common.CommonResponseDTO
 import com.example.firstproject.network.APIService
 import com.google.android.gms.common.api.Response
@@ -99,7 +108,7 @@ class RemoteDataSource {
             if (response.isSuccessful && response.body() != null) {
                 val body = response.body()!!
                 if (response.code() == 200 && body.data != null) {
-                    Log.d(TAG,"서버 응답 성공: ${body.code} - ${body.message}")
+                    Log.d(TAG, "서버 응답 성공: ${body.code} - ${body.message}")
                     RequestResult.Success(body.data)  // ✅ KakaoTokenDTO 반환
 
                 } else {
@@ -171,9 +180,195 @@ class RemoteDataSource {
 //    }
 
     // 스터디 관련 통신
-    suspend fun getAllStudy(accessToken: String) : RequestResult<List<StudyDTO>> {
+    suspend fun getAllStudy(accessToken: String): RequestResult<List<StudyDTO>> {
         return try {
             val response = springService.getAllStudies("Bearer $accessToken")
+            if (response.isSuccessful && response.body() != null) {
+                val body = response.body()!!
+                RequestResult.Success(body)
+            } else {
+                RequestResult.Failure(response.code().toString(), Exception("통신 실패"))
+            }
+
+        } catch (e: Exception) {
+            RequestResult.Failure("EXCEPTION", e)
+        }
+    }
+
+    // /api/studies/{studyId} 특정 스터디 조회
+    suspend fun getStudyDetailInfo(accessToken: String): RequestResult<StudyDetailInfoResponseDTO> {
+        return try {
+            val response = springService.getStudyDetailInfo("Bearer $accessToken", "")
+            if (response.isSuccessful && response.body() != null) {
+                val body = response.body()!!
+                RequestResult.Success(body)
+            } else {
+                RequestResult.Failure(response.code().toString(), Exception("통신 실패"))
+            }
+
+        } catch (e: Exception) {
+            RequestResult.Failure("EXCEPTION", e)
+        }
+    }
+
+    // /api/studies/{studyId}/wishList 스터디내 초대 현황
+    suspend fun getStudyInvitedMembers(accessToken: String): RequestResult<List<StudyRequestedInviteListDtoItem>> {
+        return try {
+            val response = springService.getStudyInvitedMembers("Bearer $accessToken", "")
+
+            if (response.isSuccessful && response.body() != null) {
+                val body = response.body()!!
+                RequestResult.Success(body)
+            } else {
+                RequestResult.Failure(response.code().toString(), Exception("통신 실패"))
+            }
+
+        } catch (e: Exception) {
+            RequestResult.Failure("EXCEPTION", e)
+        }
+    }
+
+    // /api/studies/{studyId}/preList 스터디내 수신함
+    suspend fun getStudyJoinRequests(accessToken: String): RequestResult<List<StudyJoinRequestListDtoItem>> {
+        return try {
+            val response = springService.getStudyJoinRequests("Bearer $accessToken", "")
+
+            if (response.isSuccessful && response.body() != null) {
+                val body = response.body()!!
+                RequestResult.Success(body)
+            } else {
+                RequestResult.Failure(response.code().toString(), Exception("통신 실패"))
+            }
+
+        } catch (e: Exception) {
+            RequestResult.Failure("EXCEPTION", e)
+        }
+    }
+
+    // /api/studies/recommendUser/{studyId} 스터디원 추천
+    suspend fun getTop3StudyCandidates(accessToken: String): RequestResult<List<Top3RecommendedUsersDtoItem>> {
+        return try {
+            val response = springService.getTop3StudyCandidates("Bearer $accessToken", "")
+
+            if (response.isSuccessful && response.body() != null) {
+                val body = response.body()!!
+                RequestResult.Success(body)
+            } else {
+                RequestResult.Failure(response.code().toString(), Exception("통신 실패"))
+            }
+
+        } catch (e: Exception) {
+            RequestResult.Failure("EXCEPTION", e)
+        }
+    }
+
+    // /api/studies/recommendStudy 스터디 추천기능
+    suspend fun getRecommendedStudies(accessToken: String): RequestResult<List<UserSuitableStudyDtoItem>> {
+        return try {
+            val response = springService.getRecommendedStudies("Bearer $accessToken")
+
+            if (response.isSuccessful && response.body() != null) {
+                val body = response.body()!!
+                RequestResult.Success(body)
+            } else {
+                RequestResult.Failure(response.code().toString(), Exception("통신 실패"))
+            }
+
+        } catch (e: Exception) {
+            RequestResult.Failure("EXCEPTION", e)
+        }
+    }
+
+    // /api/user 로그아웃
+    suspend fun logout(accessToken: String): RequestResult<CommonResponseDTO<Unit>> {
+        return try {
+            val response = springService.logout("Bearer $accessToken")
+
+            if (response.isSuccessful && response.body() != null) {
+                val body = response.body()!!
+                RequestResult.Success(body)
+            } else {
+                RequestResult.Failure(response.code().toString(), Exception("통신 실패"))
+            }
+
+        } catch (e: Exception) {
+            RequestResult.Failure("EXCEPTION", e)
+        }
+    }
+
+    // /api/user 회원탈퇴
+    suspend fun deleteUserAccount(accessToken: String): RequestResult<CommonResponseDTO<Unit>> {
+        return try {
+            val response = springService.deleteUserAccount("Bearer $accessToken")
+
+            if (response.isSuccessful && response.body() != null) {
+                val body = response.body()!!
+                RequestResult.Success(body)
+            } else {
+                RequestResult.Failure(response.code().toString(), Exception("통신 실패"))
+            }
+
+        } catch (e: Exception) {
+            RequestResult.Failure("EXCEPTION", e)
+        }
+    }
+
+    // /api/user/wish-studies 내 신청 현황 리스트
+    suspend fun getMyAppliedStudies(accessToken: String): RequestResult<List<MyAppliedStudyListDtoItem>> {
+        return try {
+            val response = springService.getMyAppliedStudies("Bearer $accessToken")
+
+            if (response.isSuccessful && response.body() != null) {
+                val body = response.body()!!
+                RequestResult.Success(body)
+            } else {
+                RequestResult.Failure(response.code().toString(), Exception("통신 실패"))
+            }
+
+        } catch (e: Exception) {
+            RequestResult.Failure("EXCEPTION", e)
+        }
+    }
+
+    // /api/user/profile 프로필 조회
+    suspend fun getUserProfile(accessToken: String): RequestResult<CommonResponseDTO<Profile>> {
+        return try {
+            val response = springService.getUserProfile("Bearer $accessToken")
+
+            if (response.isSuccessful && response.body() != null) {
+                val body = response.body()!!
+                RequestResult.Success(body)
+            } else {
+                RequestResult.Failure(response.code().toString(), Exception("통신 실패"))
+            }
+
+        } catch (e: Exception) {
+            RequestResult.Failure("EXCEPTION", e)
+        }
+    }
+
+    // /api/user/my-studies 내 스터디 리스트
+    suspend fun getMyJoinedStudies(accessToken: String): RequestResult<MyJoinedStudyListDtoItem> {
+        return try {
+            val response = springService.getMyJoinedStudies("Bearer $accessToken")
+
+            if (response.isSuccessful && response.body() != null) {
+                val body = response.body()!!
+                RequestResult.Success(body)
+            } else {
+                RequestResult.Failure(response.code().toString(), Exception("통신 실패"))
+            }
+
+        } catch (e: Exception) {
+            RequestResult.Failure("EXCEPTION", e)
+        }
+    }
+
+    // /api/user/invited-studies 내 수신함
+    suspend fun getMyInvitedStudies(accessToken: String): RequestResult<MyInvitedStudyListDtoItem>{
+        return try {
+            val response = springService.getMyInvitedStudies("Bearer $accessToken")
+
             if (response.isSuccessful && response.body() != null) {
                 val body = response.body()!!
                 RequestResult.Success(body)
