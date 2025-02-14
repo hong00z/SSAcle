@@ -108,14 +108,14 @@ public class UserController {
      */
     @GetMapping("")
     @Operation(summary="닉네임 중복 검사", description = "사용자가 화면에 입력한 닉네임이 중복되었는지 검사 (Query Parameter로 닉네임 전달)")
-    public ResultDto<String> checkNickname(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestParam String nickname) {
+    public ResultDto<Boolean> checkNickname(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestParam String nickname) {
         try {
             String currentUserNickname = userDetail.getNickname();    // 현재 로그인한 사용자 닉네임 가져오기
             boolean isDuplicated = userService.isNicknameDuplicated(nickname, currentUserNickname);
             if (isDuplicated) {
-                return ResultDto.of(ApiErrorStatus.DUPLICATED_USER_NAME.getCode(), "이미 사용중인 닉네임입니다.", nickname);
+                return ResultDto.of(ApiErrorStatus.DUPLICATED_USER_NAME.getCode(), "이미 사용중인 닉네임입니다.", true);
             }
-            return ResultDto.of(HttpStatusCode.OK, "사용 가능한 닉네임입니다.", nickname);
+            return ResultDto.of(HttpStatusCode.OK, "사용 가능한 닉네임입니다.", false);
         } catch (AuthErrorException e) {
             return ResultDto.of(e.getCode(), e.getErrorMsg(), null);
         } catch (Exception e) {
