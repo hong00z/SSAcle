@@ -127,7 +127,7 @@ private fun StudyInfoItem() {
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            JoinProfiles(6) // 스터디 참여중인 사람 수 넣기
+//            JoinProfiles(6) // 스터디 참여중인 사람 수 넣기
 
             Spacer(Modifier.width(12.dp))
             Text(

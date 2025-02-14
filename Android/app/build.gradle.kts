@@ -93,6 +93,9 @@ dependencies {
     // RequestResult 라이브러리
     implementation("com.github.rootachieve:RequestResult:0.1.0")
 
+    // Coil
+    implementation ("io.coil-kt:coil-compose:2.4.0")
+
     implementation(platform("androidx.compose:compose-bom:2025.01.01"))
     // 기본 Compose 라이브러리
     implementation("androidx.compose.ui:ui")
