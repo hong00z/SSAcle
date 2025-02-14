@@ -4,8 +4,10 @@ import android.content.Context
 import android.util.Log
 import com.example.firstproject.BuildConfig
 import com.example.firstproject.MyApplication
+import com.example.firstproject.data.model.dto.response.AllStudyListResponseDTO
 import com.example.firstproject.data.model.dto.response.KakaoTokenDTO
 import com.example.firstproject.data.model.dto.response.RefreshTokenDTO
+import com.example.firstproject.data.model.dto.response.StudyDTO
 import com.example.firstproject.data.model.dto.response.common.CommonResponseDTO
 import com.example.firstproject.network.APIService
 import com.google.android.gms.common.api.Response
@@ -94,7 +96,6 @@ class RemoteDataSource {
             Log.d(TAG, "서버 응답 코드: ${response.code()}") // ✅ HTTP 응답 코드 확인
             Log.d(TAG, "서버 응답 바디: ${response.body()}") // ✅ 응답 바디 로그
 
-
             if (response.isSuccessful && response.body() != null) {
                 val body = response.body()!!
                 if (response.code() == 200 && body.data != null) {
@@ -137,6 +138,47 @@ class RemoteDataSource {
                 }
             } else {
                 RequestResult.Failure(response.code().toString(), Exception("서버 응답 실패"))
+            }
+
+        } catch (e: Exception) {
+            RequestResult.Failure("EXCEPTION", e)
+        }
+    }
+
+    // 이건 아님
+//    suspend fun getAllStudyList(accessToken: String): RequestResult<AllStudyListResponseDTO> {
+//        return try {
+//            val response = springService.getAllStudies("Bearer $accessToken")
+//
+//            if (response.isSuccessful && response.body() != null) {
+//                val body = response.body()!!
+//
+//                if (response.code() == 200 && body.data != null) {
+//                    RequestResult.Success(body.data)
+//                } else {
+//                    RequestResult.Failure(
+//                        body.code.toString(),
+//                        Exception(body.message ?: "로그인 실패")
+//                    )
+//                }
+//
+//            } else {
+//                RequestResult.Failure(response.code().toString(), Exception("서버 응답 실패"))
+//            }
+//        } catch (e: Exception) {
+//            RequestResult.Failure("EXCEPTION", e)
+//        }
+//    }
+
+    // 스터디 관련 통신
+    suspend fun getAllStudy(accessToken: String) : RequestResult<List<StudyDTO>> {
+        return try {
+            val response = springService.getAllStudies("Bearer $accessToken")
+            if (response.isSuccessful && response.body() != null) {
+                val body = response.body()!!
+                RequestResult.Success(body)
+            } else {
+                RequestResult.Failure(response.code().toString(), Exception("통신 실패"))
             }
 
         } catch (e: Exception) {
