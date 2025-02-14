@@ -85,7 +85,8 @@ fun HomeScreen(
         StudyInfo("스터디 제목", "모바일", 5, true, false),
     )
 
-    val allStudyList = homeViewModel.getAllStudyInfo(context)
+    // 모든 스터디 리스트
+    val allStudyList by homeViewModel.allStudyList.collectAsStateWithLifecycle()
 
 
     val myStudy = myStudyListResult.getOrNull()
@@ -94,27 +95,25 @@ fun HomeScreen(
 //        homeViewModel.
 //    }
 
+    // 홈 화면 들어올 때 통신
     LaunchedEffect(Unit) {
-        homeViewModel.getAllStudyInfo(context)
-    }
+        Log.d("홈 화면", "모든 스터디 불러오기 ")
 
-    LaunchedEffect(myStudyListResult) {
-        myStudyListResult.onSuccess { data ->
-
-        }
-        myStudyListResult.onFailure { code, e ->
-
-        }
-    }
-
-    LaunchedEffect(allStudyListResult) {
-        Log.d("홈홈홈홈홈화면", "allStudyListResult: $allStudyListResult") // 로그 출력
-
-        allStudyListResult.onSuccess {
+        if (allStudyList.isEmpty()) {
             homeViewModel.getAllStudyInfo(context)
         }
     }
 
+
+//
+//    LaunchedEffect(myStudyListResult) {
+//        myStudyListResult.onSuccess { data ->
+//
+//        }
+//        myStudyListResult.onFailure { code, e ->
+//
+//        }
+//    }
 
     Scaffold(
         topBar = {
@@ -192,7 +191,7 @@ fun HomeScreen(
                     )
                 }
                 Spacer(Modifier.height(20.dp))
-                StudyListCard()
+                StudyListCard(openStudyList = allStudyList)
                 Spacer(Modifier.height(8.dp))
             }
 
