@@ -22,7 +22,7 @@ const options = {
     },
     servers: [
       {
-        url: `http://${process.env.ANNOUNCED_IP || "localhost"}:${process.env.PORT || 4001}`,
+        url: `https://${process.env.ANNOUNCED_IP || "localhost"}:${process.env.PORT || 4001}`,
         description: "개발 서버",
       },
     ],
