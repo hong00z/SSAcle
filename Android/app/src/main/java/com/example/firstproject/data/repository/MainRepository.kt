@@ -1,7 +1,9 @@
 package com.example.firstproject.data.repository
 
 import com.example.firstproject.MyApplication
+import com.example.firstproject.data.model.dto.response.AllStudyListResponseDTO
 import com.example.firstproject.data.model.dto.response.KakaoTokenDTO
+import com.example.firstproject.data.model.dto.response.StudyDTO
 import com.rootachieve.requestresult.RequestResult
 
 object MainRepository {
@@ -40,6 +42,10 @@ object MainRepository {
 
     suspend fun kakaoLogin(accessToken: String): RequestResult<KakaoTokenDTO> {
         return remoteDataSource.loginWithKakao(accessToken)
+    }
+
+    suspend fun getAllStudyList(accessToken: String): RequestResult<List<StudyDTO>> {
+        return remoteDataSource.getAllStudy(accessToken)
     }
 
 }
