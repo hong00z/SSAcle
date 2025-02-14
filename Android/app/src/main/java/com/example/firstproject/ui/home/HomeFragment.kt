@@ -51,7 +51,11 @@ class HomeFragment : Fragment() {
                     }
 
                     composable("studyDetailScreen") {
-                        StudyDetailScreen(navController = navController)
+                        StudyDetailScreen(navController = navController,
+                            onNavigateToVideo = {
+                                xmlNavController.navigate(R.id.action_homeFragment_to_videoFragment)
+                            }
+                        )
                     }
 
                 }
