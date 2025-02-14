@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.firstproject.R
@@ -15,7 +15,7 @@ class NotificationFragment : Fragment() {
 
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager2
-    private lateinit var backButton: Button
+    private lateinit var backButton: ImageButton
     private lateinit var pagerAdapter: NotificationPagerAdapter
 
 
