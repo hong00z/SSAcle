@@ -87,7 +87,7 @@ public class StudyService {
     @Transactional(readOnly = true)
     public List<StudyResponse> getAllStudy() {
         //1. repository에서 엔티티 가져오기
-        List<S12P11D110.ssacle.domain.study.entity.Study> studies = studyRepository.findAll();
+        List<Study> studies = studyRepository.findAll();
 
         //2. stream api를 사용해서 DTO로 변환
         return studies.stream()
@@ -142,7 +142,7 @@ public class StudyService {
     @Transactional(readOnly = true)
     public StudyDetail getStudyById(String studyId) {
         // 1. 해당 스터디 찾기, 스터디에 해당하는 피드들 찾기
-        S12P11D110.ssacle.domain.study.entity.Study study = studyRepository.findById(studyId)
+        Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new NoSuchElementException("스터디ID " + studyId + "에 해당하는 스터디가 없습니다."));
 
         System.out.println("현재 스터디 " + study);
@@ -318,7 +318,7 @@ public class StudyService {
     // 스터디내 초대 현황 wishMembers & 내 수신함  invitedStudy 추가
     public void addWishMemberInvitedStudy(String studyId, String userId) {
         // 스터디조회
-        S12P11D110.ssacle.domain.study.entity.Study study = studyRepository.findById(studyId)
+        Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new NoSuchElementException("스터디ID" + studyId + "에 해당하는 스터디가 없습니다."));
 
         // 유저 조회
@@ -417,7 +417,7 @@ public class StudyService {
                 .orElseThrow(() -> new NoSuchElementException("유저ID" + userId + "에 해당하는 유저가 없습니다."));
 
         // 스터디 조회
-        S12P11D110.ssacle.domain.study.entity.Study study = studyRepository.findById(studyId)
+        Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new NoSuchElementException("스터디ID" + studyId + "에 해당하는 스터디가 없습니다."));
 
         // 이미 요청한 스터디인지 확인
@@ -519,7 +519,7 @@ public class StudyService {
     public List<WishPreMembers> studyWishMembersList(String studyId) {
 
         // 1. 스터디 조회
-        S12P11D110.ssacle.domain.study.entity.Study studyInfo = studyRepository.findById(studyId)
+        Study studyInfo = studyRepository.findById(studyId)
                 .orElseThrow(() -> new NoSuchElementException("스터디ID" + studyId + "에 해당하는 스터디가 없습니다."));
 
         // 2. Wishmember ID 목록 (만약 null이면 빈 Set을 반환)
@@ -545,7 +545,7 @@ public class StudyService {
     @Transactional(readOnly = true)
     public List<WishPreMembers> studyPreMembersList(String studyId) {
         // 1. 스터디 조회
-        S12P11D110.ssacle.domain.study.entity.Study studyInfo = studyRepository.findById(studyId)
+        Study studyInfo = studyRepository.findById(studyId)
                 .orElseThrow(() -> new NoSuchElementException("스터디ID" + studyId + "에 해당하는 스터디가 없습니다."));
 
         // 2.  PreMembers ID 목록 (만약 null이면 빈 Set을 반환)
@@ -577,7 +577,7 @@ public class StudyService {
         // 1. 유저&스터디 확인
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("유저ID" + userId + "에 해당하는 유저가 없습니다."));
-        S12P11D110.ssacle.domain.study.entity.Study study = studyRepository.findById(studyId)
+        Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new NoSuchElementException("스터디ID" + studyId + "에 해당하는 스터디가 없습니다."));
 
         // 2. 이미 가입된 스터디인지 & 이미 가입된 유저인지 확인
@@ -619,7 +619,7 @@ public class StudyService {
     public void editInvitedStudyWishMembers(String userId, String studyId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("유저ID" + userId + "에 해당하는 유저가 없습니다."));
-        S12P11D110.ssacle.domain.study.entity.Study study = studyRepository.findById(studyId)
+        Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new NoSuchElementException("스터디ID" + studyId + "에 해당하는 스터디가 없습니다."));
 
         user.getInvitedStudies().remove(studyId);
@@ -634,7 +634,7 @@ public class StudyService {
     public void editWishStudyPreMembers(String userId, String studyId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("유저ID" + userId + "에 해당하는 유저가 없습니다."));
-        S12P11D110.ssacle.domain.study.entity.Study study = studyRepository.findById(studyId)
+        Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new NoSuchElementException("스터디ID" + studyId + "에 해당하는 스터디가 없습니다."));
 
         user.getWishStudies().remove(studyId);
@@ -653,7 +653,7 @@ public class StudyService {
     // 스터디 수정
     public void updateStudy(String id, StudyUpdateRequest studyUpdateRequestDTO) {
         // 1. 기존 스터디 조회
-        S12P11D110.ssacle.domain.study.entity.Study study = studyRepository.findById(id)
+       Study study = studyRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("스터디 ID " + id + "에 해당하는 스터디가 존재하지 않습니다."));
 
         //2. DTO로 전달된 값으로 스터디 필드 수정
