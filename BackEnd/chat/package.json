@@ -4,7 +4,7 @@
   "description": "Chatting Server",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "webpack & nodemon server.js",
     "build": "webpack --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
