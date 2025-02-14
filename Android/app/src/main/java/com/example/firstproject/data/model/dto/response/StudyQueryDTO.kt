@@ -1,7 +1,7 @@
 package com.example.firstproject.data.model.dto.response
 
-// GET/api/studies/{studyId} 특정 스터디 조회
-data class StudyDetailInfoResponseDTO(
+// swagger 기준 GET/api/studies/{studyId} 특정 스터디 조회
+data class StudyQueryDTO(
     val count: Int,
     val createdBy: String,
     val feeds: List<Feed>,
