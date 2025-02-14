@@ -21,6 +21,8 @@
     <color name="card_white">#FFFFFF</color>
     <color name="card_eye">#6DCEF5</color>
     <color name="card_face">#DE3B4E</color>
+
+    <color name="card_bg">#B5C0D0</color>
     <!--button color-->
     <color name="myself_button">#2F9EF4</color>
     <color name="eye_button">#FE902F</color>
@@ -48,5 +50,7 @@
     <color name="textfield_stroke_color">#E1E1E1</color>
 
     <color name="red">#FF0000</color>
+    <color name="red_light">#E46C7A</color>
+    <color name="green_light">#94CB78</color>
 
 </resources>
