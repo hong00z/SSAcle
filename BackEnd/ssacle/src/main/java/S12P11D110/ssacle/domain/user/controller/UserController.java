@@ -6,6 +6,7 @@ import S12P11D110.ssacle.domain.study.dto.request.MyRequest;
 import S12P11D110.ssacle.domain.study.dto.response.MyStudyList;
 import S12P11D110.ssacle.domain.study.dto.response.WishInvitedStudies;
 import S12P11D110.ssacle.domain.study.service.StudyService;
+import S12P11D110.ssacle.domain.user.dto.request.NicknameRequest;
 import S12P11D110.ssacle.domain.user.dto.request.SsafyAuthRequest;
 import S12P11D110.ssacle.domain.user.dto.request.UserProfileRequest;
 import S12P11D110.ssacle.domain.user.dto.response.SsafyAuthResponse;
@@ -106,12 +107,12 @@ public class UserController {
     /**
      * 닉네임 중복 검사
      */
-    @GetMapping("")
+    @PostMapping("/nickname")
     @Operation(summary="닉네임 중복 검사", description = "사용자가 화면에 입력한 닉네임이 중복되었는지 검사")
-    public ResultDto<Boolean> checkNickname(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestBody String nickname) {
+    public ResultDto<Boolean> checkNickname(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestBody NicknameRequest request) {
         try {
             String currentUserNickname = userDetail.getNickname();    // 현재 로그인한 사용자 닉네임 가져오기
-            boolean isDuplicated = userService.isNicknameDuplicated(nickname, currentUserNickname);
+            boolean isDuplicated = userService.isNicknameDuplicated(request.getNickname(), currentUserNickname);
             if (isDuplicated) {
                 return ResultDto.of(ApiErrorStatus.DUPLICATED_USER_NAME.getCode(), "이미 사용중인 닉네임입니다.", true);
             }
