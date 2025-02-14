@@ -63,6 +63,7 @@ import com.example.firstproject.utils.TopicTagEnum
 @Composable
 fun StudyDetailScreen(
     navController: NavController,
+    onNavigateToVideo: () -> Unit
 ) {
 
     Column(
@@ -184,9 +185,17 @@ fun StudyDetailScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 36.dp)
             ) {
-                CardButton(image = painterResource(R.drawable.img_chatting), text = "스터디 채팅방")
+                CardButton(
+                    image = painterResource(R.drawable.img_chatting),
+                    text = "스터디 채팅방",
+                    onMoveScreen = onNavigateToVideo
+                )
                 Spacer(Modifier.weight(1f))
-                CardButton(image = painterResource(R.drawable.img_mic), text = "실시간 모각공")
+                CardButton(
+                    image = painterResource(R.drawable.img_mic),
+                    text = "실시간 모각공",
+                    onMoveScreen = onNavigateToVideo
+                )
             }
 
             Spacer(Modifier.height(24.dp))
@@ -446,7 +455,7 @@ private fun UserProfileItem(profileId: Int, userName: String, isHost: Boolean) {
 }
 
 @Composable
-private fun CardButton(image: Painter, text: String) {
+private fun CardButton(image: Painter, text: String, onMoveScreen: () -> Unit) {
     Card(
         modifier = Modifier
             .width(150.dp)
@@ -455,7 +464,8 @@ private fun CardButton(image: Painter, text: String) {
                 elevation = 4.dp,
                 shape = RoundedCornerShape(10.dp),
                 clip = true
-            ),
+            )
+            .clickable { onMoveScreen() },
         shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         border = BorderStroke(1.dp, colorResource(R.color.border_light_color))

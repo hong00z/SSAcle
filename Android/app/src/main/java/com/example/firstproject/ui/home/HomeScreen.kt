@@ -56,9 +56,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import com.example.firstproject.R
+import com.example.firstproject.data.model.dto.response.MyJoinedStudyListDtoItem
 import com.example.firstproject.data.model.dto.response.StudyInfo
 import com.example.firstproject.ui.theme.notosans
 import com.example.firstproject.ui.theme.pretendard
+import com.rootachieve.requestresult.RequestResult
 
 @Composable
 fun HomeScreen(
@@ -71,10 +73,10 @@ fun HomeScreen(
 ) {
     val context = LocalContext.current
 
-    val userInfoStateResult by homeViewModel.userInfoStateResult.collectAsStateWithLifecycle()
-    val myStudyListResult by homeViewModel.myStudyListResult.collectAsStateWithLifecycle()
-
     val allStudyListResult by homeViewModel.allStudyListResult.collectAsStateWithLifecycle()
+
+    val getJoinedStudyResult by homeViewModel.joinedStudyResult.collectAsStateWithLifecycle()
+    val myJoinedStudyList = (getJoinedStudyResult as? RequestResult.Success)?.data
 
 
     val myStudyList = mutableListOf<StudyInfo>(
@@ -89,8 +91,6 @@ fun HomeScreen(
     val allStudyList by homeViewModel.allStudyList.collectAsStateWithLifecycle()
 
 
-    val myStudy = myStudyListResult.getOrNull()
-
 //    myStudyListResult.onNone {
 //        homeViewModel.
 //    }
@@ -99,9 +99,10 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         Log.d("홈 화면", "모든 스터디 불러오기 ")
 
-        if (allStudyList.isEmpty()) {
-            homeViewModel.getAllStudyInfo(context)
-        }
+        homeViewModel.getAllStudyInfo(context)
+        homeViewModel.getJoinedStudy()
+        if (myJoinedStudyList != null) Log.d("홈 화면", "내 스터디 목록: $myJoinedStudyList ")
+        else Log.d("홈 화면", "내 스터디 목록 null ㅋㅋ ")
     }
 
 
@@ -161,7 +162,34 @@ fun HomeScreen(
                 Spacer(Modifier.height(12.dp))
                 TitleTextView("내 스터디 목록")
                 Spacer(Modifier.height(16.dp))
-                MyStudyItem(myStudyList, navController = navController)
+                if (myJoinedStudyList != null) {
+                    if (myJoinedStudyList.isEmpty()) {
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(90.dp)
+                                .padding(horizontal = 12.dp)
+                                .shadow(
+                                    elevation = 2.dp,
+                                    shape = RoundedCornerShape(10.dp),
+                                    clip = true,
+                                ),
+                            shape = RoundedCornerShape(5.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color.White),
+                            border = BorderStroke(
+                                1.dp,
+                                colorResource(R.color.border_light_color)
+                            )
+                        ) {
+                            Column { Text("비어있음") }
+
+                        }
+                    } else {
+                        MyStudyItem(myJoinedStudyList, navController = navController)
+                    }
+
+                }
+
                 Spacer(Modifier.height(32.dp))
 
                 TitleTextView("스터디 매칭")
@@ -253,7 +281,7 @@ private fun TitleTextView(title: String) {
 @Composable
 fun MyStudyItem(
     // 스터디 리스트
-    itemList: List<StudyInfo>,
+    itemList: List<MyJoinedStudyListDtoItem>,
     navController: NavController
 ) {
     val pagerState = rememberPagerState(initialPage = 0) {
@@ -303,7 +331,7 @@ fun MyStudyItem(
         Spacer(modifier = Modifier.height(12.dp))
 
         PageIndicator(
-            pageCount = 3,
+            pageCount = itemList.size,
             currentPage = pagerState.currentPage
         )
     }

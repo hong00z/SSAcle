@@ -20,7 +20,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -28,14 +30,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.firstproject.R
+import com.example.firstproject.data.model.dto.response.Member
+import com.example.firstproject.data.model.dto.response.MyJoinedStudyListDtoItem
 import com.example.firstproject.data.model.dto.response.StudyInfo
 import com.example.firstproject.ui.theme.pretendard
 import com.example.firstproject.utils.TopicTagEnum
 import kotlin.math.min
 
 @Composable
-fun StudyCardInfo(studyInfo: StudyInfo) {
+fun StudyCardInfo(studyInfo: MyJoinedStudyListDtoItem) {
 
     Column(
         modifier = Modifier
@@ -49,7 +54,7 @@ fun StudyCardInfo(studyInfo: StudyInfo) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                studyInfo.title,
+                studyInfo.studyName,
                 fontFamily = pretendard,
                 fontWeight = FontWeight(600),
                 fontSize = 17.sp,
@@ -75,10 +80,10 @@ fun StudyCardInfo(studyInfo: StudyInfo) {
             ListStackTag(stackTitle = tag!!.title, tint = colorResource(tag.colorId))
             Spacer(Modifier.weight(1f))
 
-            JoinProfiles(studyInfo.personNum)
+            JoinProfiles(studyInfo.memberCount, studyInfo.members)
             Spacer(Modifier.width(10.dp))
             Text(
-                text = "${studyInfo.personNum}명 참여 중",
+                text = "${studyInfo.memberCount}명 참여 중",
                 color = Color(0xFF666666),
                 fontFamily = pretendard,
                 fontWeight = FontWeight(500),
@@ -92,19 +97,19 @@ fun StudyCardInfo(studyInfo: StudyInfo) {
 }
 
 @Composable
-fun JoinProfiles(personNum: Int) {
-    val joinList = mutableListOf(
-        R.drawable.img_default_profile,
-        R.drawable.img_default_profile_5,
-        R.drawable.img_default_profile,
-        R.drawable.img_default_profile_5,
-        R.drawable.img_default_profile,
-        R.drawable.img_default_profile_5,
-        R.drawable.img_default_profile,
-        R.drawable.img_default_profile_5,
-        R.drawable.img_default_profile,
-        R.drawable.img_default_profile_5,
-    )
+fun JoinProfiles(personNum: Int, memberList: List<Member>) {
+//    val joinList = mutableListOf(
+//        R.drawable.img_default_profile,
+//        R.drawable.img_default_profile_5,
+//        R.drawable.img_default_profile,
+//        R.drawable.img_default_profile_5,
+//        R.drawable.img_default_profile,
+//        R.drawable.img_default_profile_5,
+//        R.drawable.img_default_profile,
+//        R.drawable.img_default_profile_5,
+//        R.drawable.img_default_profile,
+//        R.drawable.img_default_profile_5,
+//    )
 
     val maxNum = 4
     val profileCount = min(personNum, maxNum)
@@ -117,8 +122,12 @@ fun JoinProfiles(personNum: Int) {
     ) {
 
         repeat(profileCount) { index ->
-            ProfileItem(
-                imgId = joinList[index],
+//            ProfileItem(
+//                imgId = joinList[index],
+//                modifier = Modifier.offset(x = (6 * (profileCount - index)).dp)
+//            )
+            ProfileImgItem(
+                image = memberList[index].image,
                 modifier = Modifier.offset(x = (6 * (profileCount - index)).dp)
             )
         }
@@ -148,19 +157,37 @@ private fun ProfileItem(
     }
 }
 
+@Composable
+private fun ProfileImgItem(
+    image: String,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .size(400.dp)
+            .background(
+                color = Color.Gray, shape = CircleShape
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        AsyncImage(model = image, contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.clip(CircleShape).fillMaxSize(),
+            placeholder = painterResource(R.drawable.img_default_profile), // 로딩 중 이미지
+            error = painterResource(R.drawable.img_default_profile), // 실패 이미지
+
+
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun TestPreview() {
-    val myStudyList = mutableListOf<StudyInfo>(
-        StudyInfo("스프링 입문 스터디", "백엔드", 8, true, true),
-
-        StudyInfo("스터디 제목은 과연 몇 글자까지 가능할까요?", "알고리즘", 3, false, false),
-
-        StudyInfo("스터디 제목", "모바일", 5, true, false),
-    )
-
-
-    StudyCardInfo(myStudyList[0])
-//    JoinProfiles(myStudyList[0].personNum)
+    Box(modifier = Modifier.size(600.dp)) {
+        ProfileImgItem(
+""
+        )
+    }
 
 }
