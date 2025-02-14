@@ -105,6 +105,23 @@ services:
 
     networks:
       - app-network
+  
+  chat:
+    build:
+      context: ./BackEnd/chat
+      dockerfile: Dockerfile
+    
+    container_name: chat
+    env_file:
+      - BackEnd/chat/.env
+    ports:
+      - "4001:4001"
+    depends_on:
+      - mongodb
+    restart: always
+
+    networks:
+      - app-network
 
 networks:
   app-network:
