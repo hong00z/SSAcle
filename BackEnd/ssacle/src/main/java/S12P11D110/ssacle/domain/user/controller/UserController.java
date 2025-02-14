@@ -107,8 +107,8 @@ public class UserController {
      * 닉네임 중복 검사
      */
     @GetMapping("")
-    @Operation(summary="닉네임 중복 검사", description = "사용자가 화면에 입력한 닉네임이 중복되었는지 검사 (Query Parameter로 닉네임 전달)")
-    public ResultDto<Boolean> checkNickname(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestParam String nickname) {
+    @Operation(summary="닉네임 중복 검사", description = "사용자가 화면에 입력한 닉네임이 중복되었는지 검사")
+    public ResultDto<Boolean> checkNickname(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestBody String nickname) {
         try {
             String currentUserNickname = userDetail.getNickname();    // 현재 로그인한 사용자 닉네임 가져오기
             boolean isDuplicated = userService.isNicknameDuplicated(nickname, currentUserNickname);
