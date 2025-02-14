@@ -18,7 +18,6 @@ import S12P11D110.ssacle.global.firebase.FirebaseMessagingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import S12P11D110.ssacle.domain.study.dto.SearchUser;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -47,7 +46,7 @@ public class StudyService {
     // 스터디 개설
     //트랜잭션을 시작, 커밋, 롤백하는 과정을 자동으로 관리
     public void saveStudy(String userId, StudyCreateRequest studyCreateRequest) {
-        S12P11D110.ssacle.domain.study.entity.Study study = new S12P11D110.ssacle.domain.study.entity.Study();
+        Study study = new Study();
         study.setStudyName(studyCreateRequest.getStudyName());
         study.setTopic(studyCreateRequest.getTopic());
         study.setMeetingDays(studyCreateRequest.getMeetingDays());
@@ -110,7 +109,7 @@ public class StudyService {
 //    //gpt: from
 //    // 해당 조건의 스터디 그룹 조회
 //    public List<StudyResponse> getStudiesByConditions(Set<String> topics, Set<String> meetingDays) {
-//        List<S12P11D110.ssacle.domain.study.entity.Study> studies;
+//        List<Study> studies;
 //
 //        // 조건이 없으면 전체 스터디 조회
 //        if ((topics == null || topics.isEmpty()) && (meetingDays == null || meetingDays.isEmpty())) {
