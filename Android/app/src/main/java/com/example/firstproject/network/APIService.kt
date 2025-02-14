@@ -99,7 +99,7 @@ interface APIService {
     @GET("/api/user/my-studies")
     suspend fun getMyJoinedStudies(
         @Header("Authorization") accessToken: String
-    ): Response<MyJoinedStudyListDtoItem>
+    ): Response<List<MyJoinedStudyListDtoItem>>
 
     // 내 수신함
     @GET("/api/user/invited-studies")
