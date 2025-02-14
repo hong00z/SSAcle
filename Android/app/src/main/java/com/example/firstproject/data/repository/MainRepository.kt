@@ -3,7 +3,17 @@ package com.example.firstproject.data.repository
 import com.example.firstproject.MyApplication
 import com.example.firstproject.data.model.dto.response.AllStudyListResponseDTO
 import com.example.firstproject.data.model.dto.response.KakaoTokenDTO
+import com.example.firstproject.data.model.dto.response.MyAppliedStudyListDtoItem
+import com.example.firstproject.data.model.dto.response.MyInvitedStudyListDtoItem
+import com.example.firstproject.data.model.dto.response.MyJoinedStudyListDtoItem
+import com.example.firstproject.data.model.dto.response.Profile
 import com.example.firstproject.data.model.dto.response.StudyDTO
+import com.example.firstproject.data.model.dto.response.StudyDetailInfoResponseDTO
+import com.example.firstproject.data.model.dto.response.StudyJoinRequestListDtoItem
+import com.example.firstproject.data.model.dto.response.StudyRequestedInviteListDtoItem
+import com.example.firstproject.data.model.dto.response.Top3RecommendedUsersDtoItem
+import com.example.firstproject.data.model.dto.response.UserSuitableStudyDtoItem
+import com.example.firstproject.data.model.dto.response.common.CommonResponseDTO
 import com.rootachieve.requestresult.RequestResult
 
 object MainRepository {
@@ -46,6 +56,61 @@ object MainRepository {
 
     suspend fun getAllStudyList(accessToken: String): RequestResult<List<StudyDTO>> {
         return remoteDataSource.getAllStudy(accessToken)
+    }
+
+    // /api/studies/{studyId} 특정 스터디 조회
+    suspend fun getStudyDetailInfo(accessToken: String, studyId: String): RequestResult<StudyDetailInfoResponseDTO>{
+        return remoteDataSource.getStudyDetailInfo(accessToken)
+    }
+
+    // /api/studies/{studyId}/wishList 스터디내 초대 현황
+    suspend fun getStudyInvitedMembers(accessToken: String, studyId: String): RequestResult<List<StudyRequestedInviteListDtoItem>> {
+        return remoteDataSource.getStudyInvitedMembers(accessToken)
+    }
+
+    // /api/studies/{studyId}/preList 스터디내 수신함
+    suspend fun getStudyJoinRequests(accessToken: String, studyId: String) : RequestResult<List<StudyJoinRequestListDtoItem>>{
+        return remoteDataSource.getStudyJoinRequests(accessToken)
+    }
+
+    // /api/studies/recommendUser/{studyId} 스터디원 추천
+    suspend fun getTop3StudyCandidates(accessToken: String, studyId: String) :RequestResult<List<Top3RecommendedUsersDtoItem>>{
+        return remoteDataSource.getTop3StudyCandidates(accessToken)
+    }
+    
+    // /api/studies/recommendStudy 스터디 추천기능
+    suspend fun getRecommendedStudies(accessToken: String) :RequestResult<List<UserSuitableStudyDtoItem>>{
+        return remoteDataSource.getRecommendedStudies(accessToken)
+    }
+
+    // /api/user 로그아웃
+    suspend fun logout(accessToken: String) : RequestResult<CommonResponseDTO<Unit>>{
+        return remoteDataSource.logout(accessToken)
+    }
+
+    // /api/user 회원 탈퇴
+    suspend fun deleteUserAccount(accessToken: String) : RequestResult<CommonResponseDTO<Unit>>{
+        return remoteDataSource.deleteUserAccount(accessToken)
+    }
+
+    // /api/user/wish-studies 내 신청 현황 리스트
+    suspend fun getMyAppliedStudies(accessToken: String) : RequestResult<List<MyAppliedStudyListDtoItem>>{
+        return remoteDataSource.getMyAppliedStudies(accessToken)
+    }
+
+    // /api/user/profile 프로필 조회
+    suspend fun getUserProfile(accessToken: String) : RequestResult<CommonResponseDTO<Profile>>{
+        return remoteDataSource.getUserProfile(accessToken)
+    }
+
+    // /api/user/my-studies 내 스터디 리스트
+    suspend fun getMyJoinedStudies(accessToken: String):RequestResult<MyJoinedStudyListDtoItem>{
+        return remoteDataSource.getMyJoinedStudies(accessToken)
+    }
+
+    // /api/user/invited-studies 내 수신함
+    suspend fun getMyInvitedStudies(accessToken: String):RequestResult<MyInvitedStudyListDtoItem>{
+        return remoteDataSource.getMyInvitedStudies(accessToken)
     }
 
 }

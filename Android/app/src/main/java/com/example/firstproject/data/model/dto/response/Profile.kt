@@ -1,6 +1,7 @@
 package com.example.firstproject.data.model.dto.response
 
-data class Data(
+// 프로필 조회
+data class Profile(
     val campus: String,
     val image: String,
     val meetingDays: List<String>,
