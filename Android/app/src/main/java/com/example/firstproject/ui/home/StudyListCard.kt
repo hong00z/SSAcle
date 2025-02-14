@@ -28,18 +28,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.firstproject.R
+import com.example.firstproject.data.model.dto.response.StudyDTO
 import com.example.firstproject.ui.theme.pretendard
 import com.example.firstproject.utils.TopicTagEnum
 
 @Composable
-fun StudyListCard() {
-    val openStudyList: MutableList<List<String>> = mutableListOf(
-        listOf("스터디 제목입니다", "인공지능"),
-        listOf("스프링 입문 스터디", "백엔드"),
-        listOf("알고리즘 스터디", "프론트엔드"),
-        listOf("모바일 개발 스터디", "모바일")
-
-    )
+fun StudyListCard(openStudyList: List<StudyDTO>) {
+//    val openStudyList: MutableList<List<String>> = mutableListOf(
+//        listOf("스터디 제목입니다", "인공지능"),
+//        listOf("스프링 입문 스터디", "백엔드"),
+//        listOf("알고리즘 스터디", "프론트엔드"),
+//        listOf("모바일 개발 스터디", "모바일")
+//
+//    )
 
     Box(modifier = Modifier
         .fillMaxWidth()
@@ -48,8 +49,8 @@ fun StudyListCard() {
     ) {
         Column(modifier = Modifier.padding(horizontal = 4.dp)) {
             openStudyList.take(4).forEachIndexed { index, study ->
-                Log.d("에러 추적", study[1])
-                StudyItem(title = study.first(), topic = study[1])
+//                Log.d("에러 추적", study[1])
+                StudyItem(title = study.studyName, topic = study.topic)
                 Spacer(Modifier.height(18.dp))
             }
 
@@ -102,12 +103,4 @@ fun ListStackTag(stackTitle: String, tint: Color) {
         )
 
     }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun PreivewStudy() {
-//    ListStackTag("프론트엔드", colorResource(R.color.primary_color))
-    StudyListCard()
 }
