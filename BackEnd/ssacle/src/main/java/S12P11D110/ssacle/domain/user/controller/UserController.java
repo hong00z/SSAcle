@@ -17,7 +17,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -198,9 +197,9 @@ public class UserController {
     @Operation(summary = "내 수신함 수락", description = "내가 초대 받은 스터디의 요청을 수락합니다.")
     public ResponseEntity<Void> accetpInvite(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestBody MyRequest request){
         String userId = userDetail.getId();  // 로그인된 사용자 ID 가져오기
-        // 유저: joinedStudy 추가 / 스터디: memebr에 추가
+        // 유저: joinedStudies 추가 / 스터디: members에 추가
         studyService.addJoinedStudyMember(userId, request.getStudyId());
-        // 유저: invitedStudies에 제거 / 스터디: wishMember에 제거
+        // 유저: invitedStudies에 제거 / 스터디: wishMembers에 제거
         studyService.editInvitedStudyWishMembers(userId, request.getStudyId());//
         return ResponseEntity.ok().build();
     }
