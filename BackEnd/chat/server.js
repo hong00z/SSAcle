@@ -2,8 +2,9 @@
 require("dotenv").config()
 
 const express = require("express")
-const http = require("http")
-const socketIo = require("socket.io")
+const fs = require("fs")
+const https = require("https")
+const { Server } = require("socket.io")
 const mongoose = require("mongoose")
 
 const swaggerUi = require("swagger-ui-express")
@@ -18,8 +19,14 @@ admin.initializeApp({
 console.log("Firebase Admin 초기화 완료")
 
 const app = express()
-const server = http.createServer(app)
-const io = socketIo(server)
+
+// SSL 인증서 및 HTTPS 서버 생성
+const httpsOptions = {
+  key: fs.readFileSync(process.env.SSL_KEY_PATH),
+  cert: fs.readFileSync(process.env.SSL_CERT_PATH),
+}
+const httpsServer = https.createServer(httpsOptions, app)
+const io = new Server(httpsServer)
 
 // 모델(스키마) 불러오기
 const Study = require("./models/Study")
@@ -165,4 +172,4 @@ io.on("connection", (socket) => {
 })
 
 // 서버 실행
-server.listen(PORT, () => console.log(`Server running at http://${process.env.ANNOUNCED_IP}:${PORT}`))
+httpsServer.listen(PORT, () => console.log(`Server running at https://${process.env.ANNOUNCED_IP}:${PORT}`))
