@@ -344,7 +344,7 @@ private fun FindActionButton() {
                 verticalArrangement = Arrangement.Center
             ) {
                 Image(
-                    painter = painterResource(R.drawable.img_find_person),
+                    painter = painterResource(R.drawable.ic_person),
                     "",
                     modifier = Modifier.size(68.dp)
                 )
@@ -377,7 +377,7 @@ private fun FindActionButton() {
                 verticalArrangement = Arrangement.Center
             ) {
                 Image(
-                    painter = painterResource(R.drawable.img_find_study),
+                    painter = painterResource(R.drawable.ic_study),
                     "",
                     modifier = Modifier.size(68.dp)
                 )
