@@ -29,12 +29,12 @@ class LoginAuthViewModel : ViewModel() {
             _loginState.value = RequestResult.Progress() // 로그인 진행 중
 
             var accessToken = tokenManager.getAccessToken()
-            Log.d("카카오 로그인", "저장된 토큰: $accessToken") // ✅ 기존 저장된 토큰 확인
+            Log.d("카카오 로그인 시작", "저장된 토큰: $accessToken") // ✅ 기존 저장된 토큰 확인
 
             if (accessToken.isNullOrEmpty()) {
                 // ✅ 저장된 토큰이 없으면 카카오 로그인을 수행하여 새로운 토큰 발급
                 accessToken = getKakaoAccessToken(context)
-                Log.d("카카오 로그인", "새로운 토큰: $accessToken") // ✅ 새로 받은 토큰 확인
+                Log.d("카카오 로그인 시작", "새로운 토큰: $accessToken") // ✅ 새로 받은 토큰 확인
             }
 
 
