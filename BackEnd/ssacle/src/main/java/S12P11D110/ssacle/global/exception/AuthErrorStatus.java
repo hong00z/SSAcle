@@ -18,8 +18,7 @@ public enum AuthErrorStatus {
     EMPTY_TOKEN(HttpStatusCode.BAD_REQUEST, "토큰이 없습니다."),
     EXPIRED_TOKEN(HttpStatusCode.UNAUTHORIZED, "토큰이 만료되었습니다."),
     REFRESH_EXPIRED(HttpStatusCode.UNAUTHORIZED, "refresh 토큰이 만료되었습니다."),
-    PARSE_FAILED(HttpStatusCode.BAD_REQUEST, "JSON 파싱 오류"),
-    TOKEN_GENERATION_FAILED(HttpStatusCode.INTERNAL_SERVER_ERROR, "토큰 생성 실패");
+    PARSE_FAILED(HttpStatusCode.BAD_REQUEST, "JSON 파싱 오류");
 
     private final HttpStatusCode statusCode;
     private final String msg;

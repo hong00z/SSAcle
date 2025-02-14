@@ -108,7 +108,6 @@ public class StudyController {
     @PatchMapping("/{studyId}/accept")
     @Operation(summary = "유저의 요청 수락", description = "스터디에 가입 요청한 사람의 가입 신청을 수락할 수 있다.")
     public ResponseEntity<Void> acceptInvite (@PathVariable String studyId, @RequestBody AcceptUser request){
-
         studyService.addJoinedStudyMember(request.getUserId(), studyId);
         studyService.editWishStudyPreMembers(request.getUserId(), studyId);
         return ResponseEntity.ok().build();
@@ -123,7 +122,6 @@ public class StudyController {
     @GetMapping
     @Operation(summary = "모든 스터디 리스트", description = "개설된 모든 스터디 리스트 또는 추천된 스터디를 볼 수 있다.")
     public List<StudyResponse> getAllStudies(){
-
         return studyService.getAllStudy();
     }
 
