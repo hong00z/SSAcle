@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.firstproject.MyApplication
 import com.example.firstproject.data.model.dto.response.AllStudyListResponseDTO
 import com.example.firstproject.data.model.dto.response.JoiningStudyListResponseDTO
+import com.example.firstproject.data.model.dto.response.MyJoinedStudyListDtoItem
 import com.example.firstproject.data.model.dto.response.StudyDTO
 import com.example.firstproject.data.repository.MainRepository
 import com.example.firstproject.data.repository.TokenManager
@@ -24,16 +25,13 @@ class HomeViewModel : ViewModel() {
 
     var accessToken = tokenManager.getAccessToken()
 
-    private val _userInfoStateResult =
-        MutableStateFlow<RequestResult<Unit>>(RequestResult.None())
-    val userInfoStateResult: StateFlow<RequestResult<Unit>>
-        get() = _userInfoStateResult
+    // 참여 중인 스터디 조회
+    private val _joinedStudyResult =
+        MutableStateFlow<RequestResult<List<MyJoinedStudyListDtoItem>>>(RequestResult.None())
+    val joinedStudyResult: StateFlow<RequestResult<List<MyJoinedStudyListDtoItem>>>
+        get() = _joinedStudyResult
 
-    private val _myStudyListResult =
-        MutableStateFlow<RequestResult<JoiningStudyListResponseDTO>>(RequestResult.None())
-    val myStudyListResult: StateFlow<RequestResult<JoiningStudyListResponseDTO>>
-        get() = _myStudyListResult
-
+    // 전체 스터디 조회
     private val _allStudyListResult =
         MutableStateFlow<RequestResult<List<StudyDTO>>>(RequestResult.None())
     val allStudyListResult: StateFlow<RequestResult<List<StudyDTO>>>
@@ -42,6 +40,27 @@ class HomeViewModel : ViewModel() {
     // 모든 스터디 목록을 따로 저장
     private val _allStudyList = MutableStateFlow<List<StudyDTO>>(emptyList())
     val allStudyList = _allStudyList.asStateFlow()
+
+    fun getJoinedStudy() {
+        viewModelScope.launch {
+            _joinedStudyResult.update {
+                RequestResult.Progress()
+            }
+
+            val result = repository.getMyJoinedStudies(accessToken!!)
+
+            result.onSuccess {
+                _joinedStudyResult.update {
+                    result
+                }
+            }.onFailure { code, e ->
+                _joinedStudyResult.update {
+                    RequestResult.Failure(code, e)
+                }
+            }
+
+        }
+    }
 
     fun getAllStudyInfo(context: Context) {
 

@@ -348,7 +348,7 @@ class RemoteDataSource {
     }
 
     // /api/user/my-studies 내 스터디 리스트
-    suspend fun getMyJoinedStudies(accessToken: String): RequestResult<MyJoinedStudyListDtoItem> {
+    suspend fun getMyJoinedStudies(accessToken: String): RequestResult<List<MyJoinedStudyListDtoItem>> {
         return try {
             val response = springService.getMyJoinedStudies("Bearer $accessToken")
 
@@ -365,7 +365,7 @@ class RemoteDataSource {
     }
 
     // /api/user/invited-studies 내 수신함
-    suspend fun getMyInvitedStudies(accessToken: String): RequestResult<MyInvitedStudyListDtoItem>{
+    suspend fun getMyInvitedStudies(accessToken: String): RequestResult<MyInvitedStudyListDtoItem> {
         return try {
             val response = springService.getMyInvitedStudies("Bearer $accessToken")
 
