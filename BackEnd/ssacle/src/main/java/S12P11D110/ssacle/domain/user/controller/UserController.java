@@ -41,9 +41,9 @@ public class UserController {
      */
     @PostMapping("")
     @Operation(summary = "로그아웃", description = "사용자의 JWT 토큰을 삭제하여 로그아웃 처리")
-    public ResultDto<Object> logout(@AuthenticationPrincipal CustomUserDetail userDetail) {
+    public ResultDto<Object> logout(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestHeader("Refresh-Token") String refreshToken) {
         try {
-            userService.logout(userDetail.getId());
+            userService.logout(userDetail.getId(), refreshToken);
             return ResultDto.of(HttpStatusCode.OK, "로그아웃 성공", null);
         } catch (AuthErrorException e) {
             return ResultDto.of(e.getCode(), e.getErrorMsg(), null);
@@ -58,10 +58,11 @@ public class UserController {
      */
     @DeleteMapping("")
     @Operation(summary = "회원 탈퇴", description = "사용자의 JWT 토큰과 계정 정보 삭제하여 탈퇴 처리")
-    public ResultDto<Object> deleteUser(@AuthenticationPrincipal CustomUserDetail userDetail) {
-        userService.deleteUser(userDetail.getId());
+    public ResultDto<Object> deleteUser(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestHeader("Refresh-Token") String refreshToken) {
+        userService.deleteUser(userDetail.getId(), refreshToken);
         return ResultDto.of(HttpStatusCode.OK, "사용자 탈퇴 성공", null);
     }
+
 
 //------------------------------------------- << 프로필 >> -------------------------------------------
     /**
@@ -179,6 +180,8 @@ public class UserController {
     /**
      * 내 신청 취소
      */
+    // 해당 스터디의 preMembers 에서 userId 삭제
+    // 사용자의 wishStudies 에서 studyId 삭제
 
 
     /**

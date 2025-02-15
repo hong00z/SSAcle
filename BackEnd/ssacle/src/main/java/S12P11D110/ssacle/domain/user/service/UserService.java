@@ -42,18 +42,18 @@ public class UserService {
      * 로그아웃
      */
     @Transactional
-    public void logout(String userId) {
+    public void logout(String userId, String refreshToken) {
         // 해당 유저의 Refresh Token 삭제
-        refreshTokenRepository.deleteByUserId(userId);
+        refreshTokenRepository.deleteById(refreshToken);
     }
 
     /**
      * 회원 탈퇴
      */
     @Transactional
-    public void deleteUser(String userId) {
+    public void deleteUser(String userId, String refreshToken) {
         // 해당 유저의 Refresh Token 삭제
-        refreshTokenRepository.deleteByUserId(userId);
+        refreshTokenRepository.deleteById(refreshToken);
         // 유저 찾기
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AuthErrorException(AuthErrorStatus.GET_USER_FAILED));
@@ -67,7 +67,7 @@ public class UserService {
      * 프로필 조회
      */
 
-//    String imageUrl = "http://43.203.250.200/uploads/" + uniqueFileName;
+//    String imageUrl = "http://43.203.250.200/images/" + uniqueFileName;
 
     public UserProfileResponse findUserProfile(String userId) {
         // 유저 찾기
@@ -121,7 +121,6 @@ public class UserService {
 
             // 파일 저장
             Files.write(filePath, file.getBytes());
-
             logger.info("File saved successfully: {}", filePath.toAbsolutePath());
 
             // 저장된 파일명을 TempUser 엔티티에 반영
