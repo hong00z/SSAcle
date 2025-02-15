@@ -30,8 +30,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor // 생성자 주입
 public class StudyService {
 
-
-
     private final StudyRepository studyRepository; //final이 붙은 필드나 @NonNull로 선언된 필드에 대해 생성자를 자동으로 생성해주는 기능
     private final UserRepository userRepository;
     private final RecommendUserService recommendUserService;
@@ -39,17 +37,9 @@ public class StudyService {
     private final FeedRepository feedRepository;
     private final FirebaseMessagingService firebaseMessagingService;
 
-    // 스터디 토픽 리스트 & 모임요일 리스트 반환
-    public Map<String, List<String>> topicList() {
-        return Map.of(
-                "topics", Arrays.asList(SsacleApplication.Topics),
-                "meetingDays", Arrays.asList(SsacleApplication.MeetingDays)
-        );
-    }
-
-
-    // 스터디 개설
-    //트랜잭션을 시작, 커밋, 롤백하는 과정을 자동으로 관리
+    /**
+     * 스터디 개설
+     */
     public void saveStudy(String userId, StudyCreateRequest studyCreateRequest) {
         Study study = new Study();
         study.setStudyName(studyCreateRequest.getStudyName());
@@ -86,8 +76,12 @@ public class StudyService {
 
     }
 
+
+
     // gpt: from
-    // 모든 스터디 조회
+    /**
+     * 모든 스터디 조회
+     */
     @Transactional(readOnly = true)
     public List<StudyResponse> getAllStudy() {
         //1. repository에서 엔티티 가져오기
@@ -110,6 +104,41 @@ public class StudyService {
 
     }
     // gpt: to
+
+
+    /**
+     * 모집중인 스터디 리스트
+     */
+    public List<RecrutingStudy> recruitingStudy(){
+        // 스터디 집단 만들기 단, 정원 > 현재 스터디 멤버수 인 경우만 포함
+        List<Study> recruStudy = studyRepository.findAll().stream()
+                .filter(study-> study.getCount() > study.getMembers().size())
+                .toList();
+
+        return recruStudy.stream()
+                .map(study->RecrutingStudy.builder()
+                        .studyId(study.getId())
+                        .studyName(study.getStudyName())
+                        .topic(study.getTopic())
+                        .meetingDays(study.getMeetingDays())
+                        .count(study.getCount())
+                        .memberCount(study.getMembers().size())
+                        .members(study.getMembers().stream()
+                                .map(user -> {
+                                    String creator = study.getCreatedBy();
+                                    User member = userRepository.findById(user)
+                                            .orElseThrow(()->new NoSuchElementException("유저ID" + user + "를 찾을 수 없습니다."));
+                                    return nicknameImage.builder()
+                                            .nickname(member.getNickname())
+                                            .image(member.getImage())
+                                            .isCreator(member.getUserId().equals(creator))
+                                            .build();
+                                }).collect(Collectors.toList())
+                        )
+                        .build()
+
+                ).toList();
+    }
 
 //    //gpt: from
 //    // 해당 조건의 스터디 그룹 조회
@@ -142,7 +171,9 @@ public class StudyService {
 
 
     // gpt: from
-    // 스터디 상세보기
+    /**
+     * 스터디 상세보기
+     */
     @Transactional(readOnly = true)
     public StudyDetail getStudyById(String studyId) {
         // 1. 해당 스터디 찾기, 스터디에 해당하는 피드들 찾기
@@ -222,9 +253,11 @@ public class StudyService {
                 .build();
 
     }
-    // gpt:to
 
-    // 내가 참여중인 스터디 리스트
+
+    /**
+     * 내 스터디 리스트
+     */
     @Transactional(readOnly = true)
     public List<MyStudyList> getStudiesByUserId(String userId) {
 
@@ -268,9 +301,12 @@ public class StudyService {
                 .collect(Collectors.toList());
     }
 
-    //-------------------<< 스터디원 추천 기능>>-------------------------------------------------------------------------------
+//-------------------<< 스터디원 추천 기능>>-------------------------------------------------------------------------------
+
+    /**
+     *  스터디원 추천기능
+     */
     //GPT: from
-    // 스터디 주제, 모임 요일 정보 요약
     @Transactional(readOnly = true)
     public List<RecommendUser> getStudyCondition(String studyId) {
         // 1. 스터디 조건
@@ -319,7 +355,11 @@ public class StudyService {
     }
     //GPT: to
 
-    // 스터디내 초대 현황 wishMembers & 내 수신함  invitedStudy 추가
+
+    /**
+     *  유저 스카웃(가입 요청)
+     */
+    // 스터디의 wishMember & 내 수신함 invitedStudy 추가
     public void addWishMemberInvitedStudy(String studyId, String userId) {
         // 스터디조회
         Study study = studyRepository.findById(studyId)
@@ -366,6 +406,10 @@ public class StudyService {
 
 
 //-------------------<< 스터디 추천 기능>>--------------------------------------------------------------------------------
+
+    /**
+     *  스터디 추천기능
+     */
     @Transactional(readOnly = true)
     public List<RecommendStudy> getUserCondition(String userId) {
         // 1. 유저 조건  UserConditionDTO에 담기
@@ -405,7 +449,7 @@ public class StudyService {
                                 .map(user -> {
                                     String creator = study.getCreatedBy();
                                     User userEntity = userRepository.findById(user)
-                                            .orElseThrow(()->new NoSuchElementException("유저ID" + userId + "를 찾을 수 없습니다."));
+                                            .orElseThrow(()->new NoSuchElementException("유저ID" + user + "를 찾을 수 없습니다."));
                                     return nicknameImage.builder()
                                                     .nickname(userEntity.getNickname())
                                                     .image(userEntity.getImage())
@@ -418,6 +462,10 @@ public class StudyService {
                 ).collect(Collectors.toList());
     }
 
+
+    /**
+     *  내 신청 보내기
+     */
 
     // 내 요청함 wishStudy & 스터디 내 수신함  preMembers 추가
     public void addWishStudyPreMember(String userId, String studyId) {
@@ -487,6 +535,10 @@ public class StudyService {
 
 
 //--------------------<<  내 수신함  user Service 로??? >>----------------------------------------------------------------
+
+    /**
+     * 내 신청 현황
+     */
     // wishStudy 신청한 스터디 리스트 (나 -> 스터디)
     @Transactional(readOnly = true)
     public List<WishInvitedStudies> getWishStudyList(String userId) {
@@ -512,6 +564,9 @@ public class StudyService {
 
     }
 
+    /**
+     * 내 수신함
+     */
     // invitedStudy 초대 받은 스터디 리스트 (스터디 → 나)
     @Transactional(readOnly = true)
     public List<WishInvitedStudies> getInvitedStudyList(String userId) {
@@ -543,6 +598,9 @@ public class StudyService {
 
 //--------------------<<  스터디 수신함   >>------------------------------------------------------------------------------
 
+    /**
+     * 스터디내 초대 현황
+     */
     // wishMembers 스카웃하고 싶은 스터디원 (내 스터디 → 사용자)
     @Transactional(readOnly = true)
     public List<WishPreMembers> studyWishMembersList(String studyId) {
@@ -570,6 +628,9 @@ public class StudyService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 스터디내 수신함
+     */
     // preMembers 신청한 스터디원 (사용자→ 내 스터디)
     @Transactional(readOnly = true)
     public List<WishPreMembers> studyPreMembersList(String studyId) {
@@ -600,7 +661,9 @@ public class StudyService {
 //----------------------------------------------------------------------------------------------------------------------
 
 
-//--------------------<<  요청 수락 >>------------------------------------------------------------------------------
+    /**
+     * 유저의 요청 수락
+     */
     // joinedStudy&member 추가
     public void addJoinedStudyMember(String userId, String studyId) {
         // 1. 유저&스터디 확인
@@ -619,6 +682,7 @@ public class StudyService {
         // 3. 추가
         user.getJoinedStudies().add(studyId);
         study.getMembers().add(userId);
+
 
         // 4. 저장
         userRepository.save(user);
@@ -649,7 +713,9 @@ public class StudyService {
     }
 
 
-
+    /**
+     * 내 수신함 수락
+     */
     // 유저의 수락: invitedStudy, wishMembers 에서 studyId, userId 삭제
     public void editInvitedStudyWishMembers(String userId, String studyId) {
         User user = userRepository.findById(userId)
@@ -665,7 +731,11 @@ public class StudyService {
 
     }
 
-    // 스터디의 수락: wishStudy, preMembers 수정
+
+    /**
+     * 스터디: 유저의 요청 수락
+     */
+    //wishStudy, preMembers 수정
     public void editWishStudyPreMembers(String userId, String studyId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("유저ID" + userId + "에 해당하는 유저가 없습니다."));
@@ -676,12 +746,24 @@ public class StudyService {
         study.getPreMembers().remove(userId);
 
         userRepository.save(user);
-        userRepository.save(user);
         studyRepository.save(study);
 
     }
 
 //----------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     // GPT: from
