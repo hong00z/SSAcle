@@ -131,25 +131,11 @@ public class StudyController {
 
     // uploads 파일 확인
     private static final String UPLOADS_DIR = "uploads"; // 기본 폴더 경로
-    @GetMapping("/list")
-    @Operation(summary = "모든 스터디 리스트", description = "개설된 모든 스터디 리스트 또는 추천된 스터디를 볼 수 있다.")
-    public List<String> getImageList() {
-        List<String> imagePaths = new ArrayList<>();
+    @GetMapping("/upload")
+    @Operation(summary = "uploads 폴더를 찾아주는 주문", description = "폴더야 어디있니")
+    public String getUploadsFolderPath() {
         File folder = new File(UPLOADS_DIR);
-
-        if (folder.exists() && folder.isDirectory()) {
-            File[] files = folder.listFiles();
-            if (files != null) {
-                for (File file : files) {
-                    if (file.isFile()) { // 폴더 제외
-                        imagePaths.add(file.getAbsolutePath());
-                    }
-                }
-            }
-        } else {
-            System.out.println("업로드 폴더가 존재하지 않습니다.");
-        }
-        return imagePaths;
+        return folder.getAbsolutePath();
     }
 }
 
