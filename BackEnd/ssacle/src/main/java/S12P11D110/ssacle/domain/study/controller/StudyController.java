@@ -3,7 +3,6 @@ package S12P11D110.ssacle.domain.study.controller;
 import S12P11D110.ssacle.domain.auth.entity.CustomUserDetail;
 import S12P11D110.ssacle.domain.study.dto.request.AcceptUser;
 import S12P11D110.ssacle.domain.study.dto.response.WishPreMembers;
-import S12P11D110.ssacle.domain.study.dto.request.MyRequest;
 import S12P11D110.ssacle.domain.study.dto.request.StudyCreateRequest;
 import S12P11D110.ssacle.domain.study.dto.request.StudyRequest;
 import S12P11D110.ssacle.domain.study.dto.response.*;
@@ -15,7 +14,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.File;
 import java.util.*;
+
 
 @RestController //RESTful API 개발에 사용
 @RequiredArgsConstructor
@@ -126,6 +128,30 @@ public class StudyController {
     }
 
 
+
+    // uploads 파일 확인
+    private static final String UPLOADS_DIR = "uploads"; // 기본 폴더 경로
+    @GetMapping("/list")
+    public List<String> getImageList() {
+        List<String> imagePaths = new ArrayList<>();
+        File folder = new File(UPLOADS_DIR);
+
+        if (folder.exists() && folder.isDirectory()) {
+            File[] files = folder.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isFile()) { // 폴더 제외
+                        imagePaths.add(file.getAbsolutePath());
+                    }
+                }
+            }
+        } else {
+            System.out.println("업로드 폴더가 존재하지 않습니다.");
+        }
+        return imagePaths;
+    }
+}
+
     // GTP : 37 ~ 46
 //    // 해당 조건의 스터디 그룹 조회
 //    @GetMapping
@@ -147,4 +173,4 @@ public class StudyController {
 
 
 
-}
+
