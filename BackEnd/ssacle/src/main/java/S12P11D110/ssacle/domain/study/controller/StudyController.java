@@ -37,6 +37,14 @@ public class StudyController {
         return ResponseEntity.ok().build();
     }
 
+
+    @GetMapping("/recruitingStudy")
+    @Operation(summary = "모집중인 스터디 리스트", description = "모집중인 스터디의 리스트를 보여줍니다.")
+    public List<RecrutingStudy> getRecruitingStudy(@AuthenticationPrincipal CustomUserDetail userDetail){
+        return studyService.recruitingStudy();
+    }
+
+
     // GTP : 37 ~ 46
 //    // 해당 조건의 스터디 그룹 조회
 //    @GetMapping
