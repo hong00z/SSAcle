@@ -5,16 +5,17 @@ import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.firstproject.R
 import com.example.firstproject.databinding.ItemTagBinding
 
 class TagAdapter(
-    private val context: Context, private val tagList: List<String>,
+    private val context: Context,
+    private val tagList: List<String>,
     private val onSelectionChanged: (selectedCount: Int, showWarning: Boolean) -> Unit
-) :
-    RecyclerView.Adapter<TagAdapter.TagViewHolder>() {
+) : RecyclerView.Adapter<TagAdapter.TagViewHolder>() {
 
     // 선택된 태그 저장 변수
     private val selectedTags = mutableSetOf<String>()
@@ -65,15 +66,17 @@ class TagAdapter(
             val drawable = GradientDrawable().apply {
                 shape = GradientDrawable.RECTANGLE
                 // tag_background.xml의 cornerRadius와 (이거 삭제하면 안됨)
-                cornerRadius = dpToPx(16).toFloat()
+                cornerRadius = dpToPx(50).toFloat()
+
+                // 테두리는 category별 border 색상, stroke 1dp
                 if (selectedTags.contains(tag)) {
                     // 선택 -> categoryColors로
                     setColor(bgColor)
+                    setStroke(0, 0x00FFFFFF)
                 } else {
+                    setStroke(4, borderColor)
                     setColor(defaultBackground)
                 }
-                // 테두리는 category별 border 색상, stroke 1dp
-                setStroke(dpToPx(1), borderColor)
             }
 
             binding.root.background = drawable

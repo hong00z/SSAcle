@@ -12,11 +12,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.firstproject.ui.LoginAuth.AuthScreen
 import com.example.firstproject.ui.LoginAuth.LoginScreen
+import com.example.firstproject.ui.LoginAuth.OnboardScreen
+import com.example.firstproject.ui.LoginAuth.OnboardingScreen
 
 class LoginActivity : AppCompatActivity() {
     lateinit var navController: NavHostController
@@ -40,12 +44,31 @@ class LoginActivity : AppCompatActivity() {
                 composable("Auth") {
                     AuthScreen(
                         navController = navController,
+
+                        )
+                }
+
+                composable(route = "Onboarding/{grade}/{name}",
+                    arguments = listOf(
+                        navArgument("grade") { type = NavType.StringType },
+                        navArgument("name") { type = NavType.StringType }
+                    )
+                ) {
+                        backStackEntry ->
+                    val grade = backStackEntry.arguments?.getString("grade") ?: ""
+                    val name = backStackEntry.arguments?.getString("name") ?: ""
+
+                    OnboardingScreen(grade = grade, name = name)
+                }
+
+                composable("Onboard") {
+                    OnboardScreen(
+                        navController = navController,
                         onAuthSuccess = {
                             navigateToMain()
                             Log.d("LoginActivity", "MainActivity로 이동")
                         }
                     )
-
                 }
             }
         }

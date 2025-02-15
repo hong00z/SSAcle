@@ -30,17 +30,17 @@
 
 
     <!--border-->
-    <color name="frontend_stack_default_border">#017ACB</color>
-    <color name="backend_stack_default_border">#7ACF5C</color>
-    <color name="mobile_stack_default_border">#3DDC84</color>
-    <color name="ai_stack_default_border">#FE438A</color>
-    <color name="data_stack_default_border">#FF7062</color>
-    <color name="embaded_stack_default_border">#9B4F96</color>
-    <color name="infra_stack_default_border">#2F9EF4</color>
-    <color name="cs_stack_default_border">#E3492F</color>
-    <color name="algo_stack_default_border">#802BEC</color>
-    <color name="game_stack_default_border">#888888</color>
-    <color name="etc_stack_default_border">#222222</color>
+    <color name="frontend_stack_default_border">#99CAEA</color>
+    <color name="backend_stack_default_border">#CAECBE</color>
+    <color name="mobile_stack_default_border">#B1F1CE</color>
+    <color name="ai_stack_default_border">#FFB4D0</color>
+    <color name="data_stack_default_border">#FFC6C0</color>
+    <color name="embaded_stack_default_border">#D7B9D5</color>
+    <color name="infra_stack_default_border">#ACD8FA</color>
+    <color name="cs_stack_default_border">#F4B6AC</color>
+    <color name="algo_stack_default_border">#CCAAF7</color>
+    <color name="game_stack_default_border">#CFCFCF</color>
+    <color name="etc_stack_default_border">#A7A7A7</color>
 
     <!--choice-->
     <color name="frontend_stack_tag">#017ACB</color>
@@ -57,12 +57,15 @@
 
 
     <color name="primary_color">#369BFF</color>
+    <color name="topbar_text_color">#1181F0</color>
     <color name="border_card_color">#BCBCBC</color>
-    <color name="textfile_placeholder_color">#C4C4C4</color>
+    <color name="textfile_placeholder_color">#BFBFBF</color>
     <color name="textfile_border_color">#9D9D9D</color>
     <color name="border_input_color">#888888</color>
     <color name="border_light_color">#ECECEC</color>
-    <color name="textfield_stroke_color">#E1E1E1</color>
+    <color name="textfield_success_text_color">#30AD27</color>
+    <color name="textfield_error_text_color">#FF7777</color>
+    <color name="textfield_stroke_color">#CDCDCD</color>
 
     <color name="red">#FF0000</color>
     <color name="red_light">#E46C7A</color>
