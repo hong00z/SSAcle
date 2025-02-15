@@ -118,20 +118,21 @@ public class StudyController {
 
 
 
-
-
-    // 전체 스터디 조회 GET
-    @GetMapping
-    @Operation(summary = "모든 스터디 리스트", description = "개설된 모든 스터디 리스트 또는 추천된 스터디를 볼 수 있다.")
-    public List<StudyResponse> getAllStudies(){
-        return studyService.getAllStudy();
-    }
-
+//
+//
+//    // 전체 스터디 조회 GET
+//    @GetMapping
+//    @Operation(summary = "모든 스터디 리스트", description = "개설된 모든 스터디 리스트 또는 추천된 스터디를 볼 수 있다.")
+//    public List<StudyResponse> getAllStudies(){
+//        return studyService.getAllStudy();
+//    }
+//
 
 
     // uploads 파일 확인
     private static final String UPLOADS_DIR = "uploads"; // 기본 폴더 경로
     @GetMapping("/list")
+    @Operation(summary = "모든 스터디 리스트", description = "개설된 모든 스터디 리스트 또는 추천된 스터디를 볼 수 있다.")
     public List<String> getImageList() {
         List<String> imagePaths = new ArrayList<>();
         File folder = new File(UPLOADS_DIR);
