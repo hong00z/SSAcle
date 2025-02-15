@@ -66,6 +66,9 @@ public class UserService {
     /**
      * 프로필 조회
      */
+
+//    String imageUrl = "http://43.203.250.200/uploads/" + uniqueFileName;
+
     public UserProfileResponse findUserProfile(String userId) {
         // 유저 찾기
         User user = userRepository.findById(userId)
@@ -110,10 +113,10 @@ public class UserService {
             String originalFileName = file.getOriginalFilename(); // 클라이언트에서 보낸 원본 파일명
             String extension = originalFileName.substring(originalFileName.lastIndexOf(".")); // 확장자 추출
             String uniqueFileName = UUID.randomUUID().toString() + extension;// UUID를 붙여 고유한 파일명 생성
-            String imageUrl = "http://43.203.250.200/uploads/" + uniqueFileName;
+
 
             //최종 파일 저장 경로
-            Path filePath = Paths.get(uploadDir, imageUrl);
+            Path filePath = Paths.get(uploadDir, uniqueFileName);
             logger.debug("Image saved at filePath={}", filePath);
 
             // 파일 저장
