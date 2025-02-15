@@ -16,6 +16,7 @@ import S12P11D110.ssacle.domain.user.entity.User;
 import S12P11D110.ssacle.domain.user.repository.UserRepository;
 import S12P11D110.ssacle.global.firebase.FirebaseMessagingService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,8 +25,11 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@Slf4j
 @RequiredArgsConstructor // 생성자 주입
 public class StudyService {
+
+
 
     private final StudyRepository studyRepository; //final이 붙은 필드나 @NonNull로 선언된 필드에 대해 생성자를 자동으로 생성해주는 기능
     private final UserRepository userRepository;
@@ -415,24 +419,40 @@ public class StudyService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("유저ID" + userId + "에 해당하는 유저가 없습니다."));
 
+        log.info("유저 조회 : {}", user.getUserId());
+
         // 스터디 조회
         Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new NoSuchElementException("스터디ID" + studyId + "에 해당하는 스터디가 없습니다."));
 
+        log.info("스터디 조회 : {}", study.getId());
+
         // 이미 요청한 스터디인지 확인
         Set<String> preMembers = (study.getPreMembers() == null) ? new HashSet<>() : study.getPreMembers();
+        log.info("preMember 확인 : {}", preMembers);
+
         Set<String> wishStudy = (user.getWishStudies() == null) ? new HashSet<>() : user.getWishStudies();
+        log.info("wishStudy 확인 : {}", wishStudy);
+
         if (wishStudy.contains(studyId) || preMembers.contains(userId)) {
             throw new IllegalStateException("이미 가입 요청을 보낸 스터디입니다."); // 임시: 500 에러
         }
+        try {
+            log.info("조건문 통과");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
 
         // 요청 목록에 추가
         user.getWishStudies().add(studyId);
         study.getPreMembers().add(userId);
+        log.info("wishStudies, preMembers 추가완료");
 
         // 저장
         userRepository.save(user);
         studyRepository.save(study);
+        log.info("userRepository, studyRepository 저장완료");
 
         // 스터디 팀장 정보
         String leaderId = study.getCreatedBy(); // 스터디 장 ID 찾기
