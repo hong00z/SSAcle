@@ -28,6 +28,21 @@
     <color name="eye_button">#FE902F</color>
     <color name="face_button">#000000</color>
 
+
+    <!--border-->
+    <color name="frontend_stack_default_border">#017ACB</color>
+    <color name="backend_stack_default_border">#7ACF5C</color>
+    <color name="mobile_stack_default_border">#3DDC84</color>
+    <color name="ai_stack_default_border">#FE438A</color>
+    <color name="data_stack_default_border">#FF7062</color>
+    <color name="embaded_stack_default_border">#9B4F96</color>
+    <color name="infra_stack_default_border">#2F9EF4</color>
+    <color name="cs_stack_default_border">#E3492F</color>
+    <color name="algo_stack_default_border">#802BEC</color>
+    <color name="game_stack_default_border">#888888</color>
+    <color name="etc_stack_default_border">#222222</color>
+
+    <!--choice-->
     <color name="frontend_stack_tag">#017ACB</color>
     <color name="backend_stack_tag">#7ACF5C</color>
     <color name="mobile_stack_tag">#3DDC84</color>
