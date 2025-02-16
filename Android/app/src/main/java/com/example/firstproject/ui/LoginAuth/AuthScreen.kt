@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.firstproject.MyApplication
 import com.example.firstproject.R
 import com.example.firstproject.data.model.dto.request.AuthRequestDTO
 import com.example.firstproject.ui.theme.pretendard
@@ -64,17 +65,24 @@ fun AuthScreen(
 
     // 통신 성공, 실패, 로딩 상태 탐지
     LaunchedEffect(authStateResult) {
-        Log.d("인증 화면","authStateResult 변화 ${authStateResult}")
-        Log.d("인증 화면","응답 정보: ${userAuthInfo}")
+        Log.d("인증 화면", "authStateResult 변화 ${authStateResult}")
+        Log.d("인증 화면", "응답 정보: ${userAuthInfo}")
 
         if (authStateResult.isProgress()) {
-            Log.d("인증 상태관리","로딩 중")
+            Log.d("인증 상태관리", "로딩 중")
 
         } else if (authStateResult.isSuccess()) {
-            Log.d("인증 상태관리","코드: ${userAuthInfo?.code}, 메시지: ${userAuthInfo?.message}")
+            Log.d("인증 상태관리", "코드: ${userAuthInfo?.code}, 메시지: ${userAuthInfo?.message}")
             if (userAuthInfo?.code == 200) {
                 // 인증 성공하면 화면 이동
-                isAuthComplete = true
+                MyApplication.saveUserInfo(
+                    gradeInput,
+                    nameInput,
+                    userAuthInfo.data!!.term,
+                    userAuthInfo.data.campus
+                )
+                MyApplication.setAuthCompleted(true)
+
                 navController.navigate("Onboarding/${gradeInput}/${nameInput}")
 
             } else if (userAuthInfo?.code == 400) {
