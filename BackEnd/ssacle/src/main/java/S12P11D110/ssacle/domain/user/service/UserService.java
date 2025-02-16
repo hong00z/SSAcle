@@ -5,8 +5,12 @@ import S12P11D110.ssacle.domain.user.dto.request.SsafyAuthRequest;
 import S12P11D110.ssacle.domain.user.dto.request.UserProfileRequest;
 import S12P11D110.ssacle.domain.user.dto.response.SsafyAuthResponse;
 import S12P11D110.ssacle.domain.user.dto.response.UserProfileResponse;
+import S12P11D110.ssacle.domain.user.entity.Student;
 import S12P11D110.ssacle.domain.user.entity.User;
+import S12P11D110.ssacle.domain.user.repository.StudentRepository;
 import S12P11D110.ssacle.domain.user.repository.UserRepository;
+import S12P11D110.ssacle.global.exception.ApiErrorException;
+import S12P11D110.ssacle.global.exception.ApiErrorStatus;
 import S12P11D110.ssacle.global.exception.AuthErrorException;
 import S12P11D110.ssacle.global.exception.AuthErrorStatus;
 import S12P11D110.ssacle.global.service.FileStorageServiceImpl;
@@ -33,6 +37,7 @@ import static S12P11D110.ssacle.domain.user.entity.UserRole.SSAFYUSER;
 public class UserService {
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final StudentRepository studentRepository;
     // 프로필 이미지 관련
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final FileStorageServiceImpl fileStorageServiceImpl;
@@ -52,6 +57,11 @@ public class UserService {
      */
     @Transactional
     public void deleteUser(String userId, String refreshToken) {
+        // 싸피생 인증 정보 삭제
+        studentRepository.findByUserId(userId).ifPresent(student -> {
+            student.setUserId(null);
+            studentRepository.save(student);
+        });
         // 해당 유저의 Refresh Token 삭제
         refreshTokenRepository.deleteById(refreshToken);
         // 유저 찾기
@@ -158,20 +168,34 @@ public class UserService {
     }
 
     /**
-     * 싸피생 인증 (임시 ver.)
+     * 싸피생 인증
      */
     @Transactional
     public SsafyAuthResponse ssafyAuth(String userId, @RequestBody SsafyAuthRequest request) {
-        // 유저 찾기
+        // 1. 유저 찾기
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("유저 정보를 찾을 수 없습니다."));
-        // 싸피생 정보 설정 (일단 임시로 기수는 12기, 지역은 구미로 일괄 설정)
-        user.setTerm("12기");
-        user.setCampus("구미");
+        // 2. 학번으로 싸피생 정보 조회
+        Student student = studentRepository.findByStudentId(request.getStudentId())
+                .orElseThrow(() -> new ApiErrorException(ApiErrorStatus.INVALID_STUDENT_ID));
+        // 3. 이름이랑 학번 일치하는지 확인
+        if (!student.getName().equals(request.getName())) {
+            throw new ApiErrorException(ApiErrorStatus.INVALID_STUDENT_INFO);
+        }
+        // 4. 이미 인증된 싸피생 정보인지 확인
+        if (student.getUserId() != null && !student.getUserId().isEmpty()) {
+            throw new ApiErrorException(ApiErrorStatus.ALREADY_AUTHENTICATED);
+        }
+
+        // users DB 저장
+        user.setTerm(student.getTerm());
+        user.setCampus(student.getCampus());
         user.setRole(SSAFYUSER);
-        // DB 저장
         userRepository.save(user);
-        return new SsafyAuthResponse("12기", "구미");
+        // students DB 저장
+        student.setUserId(userId);
+        studentRepository.save(student);
+        return new SsafyAuthResponse(student.getTerm(), student.getCampus());
     }
 
 
