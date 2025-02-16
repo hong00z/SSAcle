@@ -154,6 +154,11 @@
         android:name="com.example.firstproject.ui.live.VideoFragment"
         android:label="fragment_video"
         tools:layout="@layout/fragment_video" />
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.example.firstproject.LoginActivity"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
 
 
 </navigation>

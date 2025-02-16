@@ -1,33 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <!-- 배경(전체 원형) -->
+    <!-- 배경 원: 항상 꽉 찬 회색 원 -->
     <item android:id="@android:id/background">
         <shape
-            android:innerRadiusRatio="3"
             android:shape="ring"
+            android:useLevel="false"
             android:thicknessRatio="16"
-            android:useLevel="false">
-            <solid android:color="@android:color/white" />
+            android:innerRadiusRatio="3">
+            <solid android:color="#e0e0e0" />
         </shape>
     </item>
 
-    <!-- 진행 부분(채워질 원형) -->
+    <!-- 프로그레스 원: 진행률에 따라 채워짐 -->
     <item android:id="@android:id/progress">
-        <clip>
+        <rotate
+            android:fromDegrees="270"
+            android:pivotX="50%"
+            android:pivotY="50%"
+            android:useLevel="true">
             <shape
-                android:innerRadiusRatio="3"
                 android:shape="ring"
                 android:thicknessRatio="16"
-                android:useLevel="true">
-                <gradient
-                    android:startColor="@android:color/holo_blue_light"
-                    android:centerColor="@android:color/holo_blue_light"
-                    android:endColor="@android:color/holo_blue_dark"
-                    android:angle="0"
-                    android:useLevel="true" />
+                android:innerRadiusRatio="3">
+                <solid android:color="@color/primary_color" />  <!-- 원하는 색상으로 변경 -->
             </shape>
-        </clip>
+        </rotate>
     </item>
-
 </layer-list>
