@@ -1,7 +1,7 @@
 package com.example.firstproject.data.model.dto.response
 
 // PATCH/api/user/profile 프로필 수정
-data class EditUserPorfileDTO(
+data class EditProfileResponseDTO(
     val campus: String,
     val image: String,
     val meetingDays: List<String>,

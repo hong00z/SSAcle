@@ -5,9 +5,11 @@ import android.util.Log
 import com.example.firstproject.BuildConfig
 import com.example.firstproject.MyApplication
 import com.example.firstproject.data.model.dto.request.AuthRequestDTO
+import com.example.firstproject.data.model.dto.request.EditProfileRequestDTO
 import com.example.firstproject.data.model.dto.request.NicknameRequestDTO
 import com.example.firstproject.data.model.dto.response.AllStudyListResponseDTO
 import com.example.firstproject.data.model.dto.response.AuthResponseDTO
+import com.example.firstproject.data.model.dto.response.EditProfileResponseDTO
 import com.example.firstproject.data.model.dto.response.KakaoTokenDTO
 import com.example.firstproject.data.model.dto.response.MyAppliedStudyListDtoItem
 import com.example.firstproject.data.model.dto.response.MyInvitedStudyListDtoItem
@@ -23,12 +25,19 @@ import com.example.firstproject.data.model.dto.response.UserSuitableStudyDtoItem
 import com.example.firstproject.data.model.dto.response.common.CommonResponseDTO
 import com.example.firstproject.network.APIService
 import com.google.android.gms.common.api.Response
+import com.google.gson.Gson
 import com.rootachieve.requestresult.RequestResult
 import okhttp3.Interceptor
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Multipart
+import java.io.File
 import java.util.concurrent.TimeUnit
 
 
@@ -183,7 +192,10 @@ class RemoteDataSource {
 //    }
 
     // 사용자 싸피생 인증
-    suspend fun AuthUser(accessToken: String, request: AuthRequestDTO): RequestResult<CommonResponseDTO<AuthResponseDTO>> {
+    suspend fun AuthUser(
+        accessToken: String,
+        request: AuthRequestDTO
+    ): RequestResult<CommonResponseDTO<AuthResponseDTO>> {
         return try {
             val response = springService.AuthUser("Bearer $accessToken", request)
 
@@ -199,7 +211,11 @@ class RemoteDataSource {
         }
     }
 
-    suspend fun CheckNickName(accessToken: String, nickname: NicknameRequestDTO): RequestResult<CommonResponseDTO<Boolean>> {
+    // 닉네임 중복확인
+    suspend fun CheckNickName(
+        accessToken: String,
+        nickname: NicknameRequestDTO
+    ): RequestResult<CommonResponseDTO<Boolean>> {
         return try {
             val response = springService.CheckNickName("Bearer $accessToken", nickname)
 
@@ -215,6 +231,49 @@ class RemoteDataSource {
             RequestResult.Failure("EXCEPTION", e)
         }
     }
+
+    // 온보딩 등록
+    suspend fun OnboardingProfile(
+        accessToken: String,
+        request: EditProfileRequestDTO,
+        imageFile: File?
+    ): RequestResult<EditProfileResponseDTO> {
+        return try {
+            // 1) JSON 문자열로 변환
+            val jsonString = Gson().toJson(request)
+            val jsonRequestBody = jsonString.toRequestBody("application/json".toMediaTypeOrNull())
+
+            // 2) 파일을 MultipartBody.Part로
+            //    서버가 @RequestParam("MultipartFile")로 받으니, 파트 이름은 "MultipartFile"로
+            val filePart = if (imageFile != null && imageFile.exists()) {
+                val requestFile = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
+                MultipartBody.Part.createFormData("MultipartFile", imageFile.name, requestFile)
+            } else {
+                // 파일이 없으면 빈 문자열로 보냄
+                val emptyBody = "".toRequestBody("text/plain".toMediaTypeOrNull())
+                MultipartBody.Part.createFormData("MultipartFile", "", emptyBody)
+            }
+
+
+            val response = springService.OnboardingProfile("Bearer $accessToken", jsonRequestBody, filePart)
+
+            if (response.isSuccessful && response.body() != null) {
+                val body = response.body()!!
+
+                RequestResult.Success(body)
+            } else {
+
+                RequestResult.Failure(
+                    code = response.code().toString(),
+                    exception = Exception(response.errorBody()?.string() ?: "통신 실패")
+                )
+            }
+
+        } catch (e: Exception) {
+            RequestResult.Failure("EXCEPTION", e)
+        }
+    }
+
 
     // 스터디 관련 통신
     suspend fun getAllStudy(accessToken: String): RequestResult<List<StudyDTO>> {
