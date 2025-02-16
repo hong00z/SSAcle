@@ -83,7 +83,7 @@ fun AuthScreen(
                 )
                 MyApplication.setAuthCompleted(true)
 
-                navController.navigate("Onboarding/${gradeInput}/${nameInput}")
+                navController.navigate("Onboarding")
 
             } else if (userAuthInfo?.code == 400) {
                 errorMessage = userAuthInfo.message
