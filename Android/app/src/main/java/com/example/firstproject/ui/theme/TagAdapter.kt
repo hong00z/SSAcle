@@ -14,7 +14,8 @@ import com.example.firstproject.databinding.ItemTagBinding
 class TagAdapter(
     private val context: Context,
     private val tagList: List<String>,
-    private val onSelectionChanged: (selectedCount: Int, showWarning: Boolean) -> Unit
+    private val onSelectionChanged: (selectedCount: Int, showWarning: Boolean) -> Unit,
+    private val onSelectedTagsUpdated: (List<String>) -> Unit
 ) : RecyclerView.Adapter<TagAdapter.TagViewHolder>() {
 
     // 선택된 태그 저장 변수
@@ -102,6 +103,7 @@ class TagAdapter(
                         onSelectionChanged(selectedTags.size, true)
                     }
                 }
+                onSelectedTagsUpdated(selectedTags.toList())
                 notifyDataSetChanged()
             }
         }
