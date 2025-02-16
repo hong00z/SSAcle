@@ -1,5 +1,6 @@
 package com.example.firstproject.ui.LoginAuth
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -26,6 +27,8 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,28 +45,87 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.firstproject.MyApplication
 import com.example.firstproject.R
+import com.example.firstproject.data.model.dto.request.NicknameRequestDTO
 import com.example.firstproject.ui.matching.SettingWeekComponent
 import com.example.firstproject.ui.theme.TagAdapter
 import com.example.firstproject.ui.theme.pretendard
+import com.rootachieve.requestresult.RequestResult
 
 @Composable
-fun OnboardingScreen(grade: String, name: String) {
-    var nicknameInput by remember { mutableStateOf(generateRandomNickname()) }
+fun OnboardingScreen(
+    navController: NavController,
+    onboardingViewModel: OnboardingViewModel = viewModel()
+) {
+    var nicknameInput by remember { mutableStateOf("") }
     var weekFlag by remember { mutableStateOf(0) }
 
-    // 닉네임 중복확인 완료 && 관심주제 선택 완료
-    val isBtnEnabled = nicknameInput.isNotEmpty()
+    val checkNicknameStateResult by onboardingViewModel.checkUserNickname.collectAsStateWithLifecycle()
+    val checkStateInfo = (checkNicknameStateResult as? RequestResult.Success)?.data
+
+    var checkMessage by remember { mutableStateOf("") }
+
+    // 중복확인 통신 후 나타날 메시지 상태
+    var isCheckMessageState by remember { mutableStateOf(false) }
+
+    // 닉네임 중복확인이 완료됐는지 확인
+    var isCheckNicknameComplete by remember { mutableStateOf(false) }
+
 
     // 관심 주제 선택
+    var selectedTopics by remember { mutableStateOf<List<String>>(emptyList()) }
     var selectedCount by remember { mutableStateOf(0) }
     var showWarning by remember { mutableStateOf(false) }
+
+
+    // 선택한 선호 요일 리스트
+    val selectedDays: List<String> = remember(weekFlag) {
+        val allDays = listOf("일", "월", "화", "수", "목", "금", "토")
+        val result = mutableListOf<String>()
+
+        for (i in 0..6) {
+            if ((weekFlag and (1 shl i)) != 0) {
+                result.add(allDays[i])
+            }
+        }
+        result
+    }
+
+    // 닉네임 중복확인 완료 && 관심주제 선택 완료 시 버튼 활성화
+    val isBtnEnabled = isCheckNicknameComplete && selectedTopics.isNotEmpty() && selectedDays.isNotEmpty()
+
+    LaunchedEffect(checkNicknameStateResult) {
+
+        if (checkNicknameStateResult.isProgress()) {
+            Log.d("닉네임 중복확인", "통신 로딩 중")
+        } else if (checkNicknameStateResult.isSuccess()) {
+            Log.d("닉네임 중복확인", "통신 완료! : ${checkStateInfo}")
+            checkMessage = checkStateInfo?.message!!
+            isCheckNicknameComplete = true
+            Log.d("닉네임 중복확인", "data 상태 ${checkStateInfo?.data}")
+            isCheckMessageState = true
+        } else if (checkNicknameStateResult.isFailure()) {
+            checkMessage = "서버와 통신에 실패했습니다."
+            isCheckNicknameComplete = false
+            isCheckMessageState = false
+        }
+
+    }
+
+
     val topicList = listOf(
         "웹 프론트", "백엔드", "모바일", "인공지능", "빅데이터",
         "임베디드", "인프라", "CS 이론", "알고리즘", "게임", "기타"
     )
+
+    val userGradeNum by MyApplication.getUserGrade().collectAsState(initial = "")
+    val userName by MyApplication.getUserName().collectAsState(initial = "")
 
     Column(
         Modifier
@@ -96,9 +158,9 @@ fun OnboardingScreen(grade: String, name: String) {
                     .fillMaxWidth()
                     .padding(horizontal = 28.dp)
             ) {
-                InfoTextComponent(title = "학번", content = grade)
+                userGradeNum?.let { InfoTextComponent(title = "학번", content = it) }
                 Spacer(Modifier.height(24.dp))
-                InfoTextComponent(title = "이름", content = name)
+                userName?.let { InfoTextComponent(title = "이름", content = it) }
                 Spacer(Modifier.height(20.dp))
                 Divider(
                     color = colorResource(id = R.color.textfield_stroke_color),
@@ -123,6 +185,8 @@ fun OnboardingScreen(grade: String, name: String) {
                         value = nicknameInput,
                         onValueChange = { newValue ->
                             nicknameInput = newValue
+                            isCheckNicknameComplete = false
+                            checkMessage = ""
                         },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                         colors = TextFieldDefaults.colors(
@@ -165,6 +229,12 @@ fun OnboardingScreen(grade: String, name: String) {
                             .clickable {
                                 // 닉네임 필드에 입력값 있을 때만 실행되도록
                                 if (nicknameInput.isNotEmpty()) {
+                                    onboardingViewModel.checkNickname(
+                                        NicknameRequestDTO(
+                                            nicknameInput
+                                        )
+                                    )
+                                    checkMessage = ""
 
                                 }
                             }
@@ -173,7 +243,11 @@ fun OnboardingScreen(grade: String, name: String) {
                 }
                 Divider(color = colorResource(id = R.color.textfield_stroke_color))
 
-                NicknameStateMessage(true)
+                if (!checkMessage.isNullOrEmpty()) {
+                    NicknameStateMessage(
+                        isState = isCheckMessageState
+                    )
+                }
 
 
                 Spacer(Modifier.height(32.dp))
@@ -204,9 +278,13 @@ fun OnboardingScreen(grade: String, name: String) {
                     onSelectionChanged = { count, warning ->
                         selectedCount = count
                         showWarning = warning
+                    },
+                    onSelectedTagsUpdated = { newList ->
+                        selectedTopics = newList
                     }
                 )
-
+                // 테스트용 표시
+                Text(text = "선택된 주제: ${selectedTopics.joinToString()}")
 
                 Spacer(Modifier.height(32.dp))
                 Row(
@@ -237,27 +315,7 @@ fun OnboardingScreen(grade: String, name: String) {
                         .padding(horizontal = 4.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-//                    val days = listOf("월", "화", "수", "목", "금", "토", "일")
-//
-//                    days.forEachIndexed { index, day ->
-//                        Text(
-//                            text = day,
-//                            fontFamily = pretendard,
-//                            fontWeight = FontWeight(600),
-//                            fontSize = 17.sp,
-//                            modifier = Modifier
-//                                .weight(1f),
-//                            textAlign = TextAlign.Center,
-//                            color = Color(0xFFB2B2B2)
-//                        )
-//
-//                        if (index < 6) {
-//                            VerticalDivider(
-//                                thickness = 1.dp,
-//                                color = Color(0xFFD9D9D9)
-//                            )
-//                        }
-//                    }
+
                     SelectWeekComponent(
                         isChecked = ((weekFlag and (1 shl 0)) == (1 shl 0)),
                         text = "일"
@@ -308,6 +366,10 @@ fun OnboardingScreen(grade: String, name: String) {
                     }
                 }
             }
+
+            // 테스트용 표시
+            Text("선택된 요일: ${selectedDays.joinToString()}")
+
             Spacer(Modifier.weight(1f))
             Button(
                 onClick = {
@@ -416,7 +478,9 @@ private fun SelectWeekComponent(isChecked: Boolean, text: String, onClick: () ->
             color = if (isChecked) Color.White else Color.Black,
             fontSize = 15.sp,
             fontWeight = if (isChecked) FontWeight.Bold else FontWeight.Medium,
-            modifier = Modifier.align(Alignment.Center).offset(y = -1.dp)
+            modifier = Modifier
+                .align(Alignment.Center)
+                .offset(y = -1.dp)
         )
     }
 }
@@ -424,14 +488,20 @@ private fun SelectWeekComponent(isChecked: Boolean, text: String, onClick: () ->
 @Composable
 fun TopicLabelSelectionView(
     labelList: List<String>,
-    onSelectionChanged: (selectedCount: Int, showWarning: Boolean) -> Unit
+    onSelectionChanged: (selectedCount: Int, showWarning: Boolean) -> Unit,
+    onSelectedTagsUpdated: (List<String>) -> Unit,
 ) {
     AndroidView(
         modifier = Modifier.fillMaxWidth(),
         factory = { context ->
             RecyclerView(context).apply {
                 layoutManager = GridLayoutManager(context, 3)
-                adapter = TagAdapter(context, labelList, onSelectionChanged)
+                adapter = TagAdapter(
+                    context,
+                    labelList,
+                    onSelectionChanged,
+                    onSelectedTagsUpdated
+                )
             }
         }
     )
@@ -466,5 +536,5 @@ fun generateRandomNickname(): String {
 @Composable
 private fun OnboardingPreview() {
 
-    OnboardingScreen("1222988", "장홍준")
+//    OnboardingScreen()
 }
