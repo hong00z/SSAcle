@@ -1,7 +1,10 @@
 package com.example.firstproject.data.repository
 
 import com.example.firstproject.MyApplication
+import com.example.firstproject.data.model.dto.request.AuthRequestDTO
+import com.example.firstproject.data.model.dto.request.NicknameRequestDTO
 import com.example.firstproject.data.model.dto.response.AllStudyListResponseDTO
+import com.example.firstproject.data.model.dto.response.AuthResponseDTO
 import com.example.firstproject.data.model.dto.response.KakaoTokenDTO
 import com.example.firstproject.data.model.dto.response.MyAppliedStudyListDtoItem
 import com.example.firstproject.data.model.dto.response.MyInvitedStudyListDtoItem
@@ -58,6 +61,16 @@ object MainRepository {
 
     suspend fun getAllStudyList(accessToken: String): RequestResult<List<StudyDTO>> {
         return remoteDataSource.getAllStudy(accessToken)
+    }
+
+    // 싸피생 인증
+    suspend fun sendAuthUser(accessToken: String, request: AuthRequestDTO): RequestResult<CommonResponseDTO<AuthResponseDTO>> {
+        return remoteDataSource.AuthUser(accessToken, request)
+    }
+
+    // 닉네임 중복검사
+    suspend fun getCheckNickName(accessToken: String, nickname: NicknameRequestDTO): RequestResult<CommonResponseDTO<Boolean>> {
+        return remoteDataSource.CheckNickName(accessToken, nickname)
     }
 
     // /api/studies/{studyId} 특정 스터디 조회

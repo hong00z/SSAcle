@@ -1,5 +1,6 @@
 package com.example.firstproject.ui.LoginAuth
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,13 +33,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.firstproject.MyApplication
 import com.example.firstproject.R
+import com.example.firstproject.data.model.dto.request.AuthRequestDTO
 import com.example.firstproject.ui.theme.pretendard
+import com.rootachieve.requestresult.RequestResult
 
 @Composable
 fun AuthScreen(
     navController: NavController,
+    authViewModel: LoginAuthViewModel = viewModel()
 ) {
 
     var gradeInput by remember { mutableStateOf("") }
@@ -46,8 +54,43 @@ fun AuthScreen(
     // 텍스트 필드에 값 입력 됐을 때 버튼 활성화
     val isAuthBtnEnabled = gradeInput.isNotEmpty() && nameInput.isNotEmpty()
 
-    // 임시 결과
-    var tmpAuthState by remember { mutableStateOf(false) }
+    val authStateResult by authViewModel.authUserResult.collectAsStateWithLifecycle()
+    val userAuthInfo = (authStateResult as? RequestResult.Success)?.data
+    val isEnableButton by remember { mutableStateOf(false) }
+    // 에러 메시지 표시
+    var errorMessage by remember { mutableStateOf("") }
+    // 인증 성공 여부
+    var isAuthComplete by remember { mutableStateOf(false) }
+
+
+    // 통신 성공, 실패, 로딩 상태 탐지
+    LaunchedEffect(authStateResult) {
+        Log.d("인증 화면", "authStateResult 변화 ${authStateResult}")
+        Log.d("인증 화면", "응답 정보: ${userAuthInfo}")
+
+        if (authStateResult.isProgress()) {
+            Log.d("인증 상태관리", "로딩 중")
+
+        } else if (authStateResult.isSuccess()) {
+            Log.d("인증 상태관리", "코드: ${userAuthInfo?.code}, 메시지: ${userAuthInfo?.message}")
+            if (userAuthInfo?.code == 200) {
+                // 인증 성공하면 화면 이동
+                MyApplication.saveUserInfo(
+                    gradeInput,
+                    nameInput,
+                    userAuthInfo.data!!.term,
+                    userAuthInfo.data.campus
+                )
+                MyApplication.setAuthCompleted(true)
+
+                navController.navigate("Onboarding")
+
+            } else if (userAuthInfo?.code == 400) {
+                errorMessage = userAuthInfo.message
+            }
+        }
+
+    }
 
     Box(
         Modifier
@@ -141,24 +184,32 @@ fun AuthScreen(
                     }
                 )
                 Spacer(Modifier.height(8.dp))
-                Text(
-                    text = "※ 오류 메시지 표시",
-                    fontFamily = pretendard,
-                    fontWeight = FontWeight(400),
-                    fontSize = 14.sp,
-                    color = colorResource(R.color.textfield_error_text_color)
-                )
+
+                if (errorMessage.isNotEmpty()) {
+                    Text(
+                        text = "※ ${errorMessage}",
+                        fontFamily = pretendard,
+                        fontWeight = FontWeight(400),
+                        fontSize = 14.sp,
+                        color = colorResource(R.color.textfield_error_text_color)
+                    )
+                }
             }
 
             Spacer(Modifier.height(24.dp))
+
+
+
             Button(
                 onClick = {
                     // 인증 통신 수행
-                    tmpAuthState = !tmpAuthState
-
-                    // 통신 성공하면 화면 이동 -> LaunchedEffect에서 쓸 것
-                    navController.navigate("Onboarding")
-
+                    authViewModel.sendAuthUser(
+                        AuthRequestDTO(
+                            name = nameInput,
+                            studentId = gradeInput.toInt()
+                        )
+                    )
+                    errorMessage = ""
                 },
                 modifier = Modifier
                     .fillMaxWidth()
