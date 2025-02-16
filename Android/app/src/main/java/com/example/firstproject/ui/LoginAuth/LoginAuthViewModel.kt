@@ -5,7 +5,10 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.firstproject.MyApplication
+import com.example.firstproject.data.model.dto.request.AuthRequestDTO
+import com.example.firstproject.data.model.dto.response.AuthResponseDTO
 import com.example.firstproject.data.model.dto.response.KakaoTokenDTO
+import com.example.firstproject.data.model.dto.response.common.CommonResponseDTO
 import com.example.firstproject.data.repository.MainRepository
 import com.example.firstproject.data.repository.TokenManager
 import com.kakao.sdk.user.UserApiClient
@@ -13,6 +16,7 @@ import com.rootachieve.requestresult.RequestResult
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -21,8 +25,17 @@ class LoginAuthViewModel : ViewModel() {
     private val repository = MainRepository
     private val tokenManager = TokenManager(MyApplication.appContext)
 
+    var accessToken = tokenManager.getAccessToken()
+
+    // 카카오 로그인
     private val _loginState = MutableStateFlow<RequestResult<Unit>>(RequestResult.None())
     val loginState: StateFlow<RequestResult<Unit>> = _loginState
+
+    // 싸피생 인증
+    private val _authUserResult =
+        MutableStateFlow<RequestResult<CommonResponseDTO<AuthResponseDTO>>>(RequestResult.None())
+    val authUserResult: StateFlow<RequestResult<CommonResponseDTO<AuthResponseDTO>>>
+        get() = _authUserResult
 
     fun loginWithKakao(context: Context) {
         viewModelScope.launch {
@@ -96,4 +109,22 @@ class LoginAuthViewModel : ViewModel() {
             null
         }
     }
+
+    // 인증 요청
+    fun sendAuthUser(request: AuthRequestDTO) {
+        viewModelScope.launch {
+            _authUserResult.update {
+                RequestResult.Progress()
+            }
+
+            val result = repository.sendAuthUser(accessToken!!, request)
+            Log.d("Auth 뷰모델", "${result}")
+            _authUserResult.update {
+                result
+            }
+
+            delay(200)
+        }
+    }
+
 }
