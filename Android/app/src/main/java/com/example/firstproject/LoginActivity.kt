@@ -80,19 +80,15 @@ class LoginActivity : AppCompatActivity() {
 
                     composable(route = "Onboarding") {
                         OnboardingScreen(
-                            navController = navController
+                            navController = navController,
+                            onboardSuccess = {
+                                navigateToMain()
+                                Log.d("LoginActivity", "MainActivity로 이동")
+                            },
                         )
                     }
 
-//                composable("Onboard") {
-//                    OnboardScreen(
-//                        navController = navController,
-//                        onAuthSuccess = {
-//                            navigateToMain()
-//                            Log.d("LoginActivity", "MainActivity로 이동")
-//                        }
-//                    )
-//                }
+
                 }
             }
         }
