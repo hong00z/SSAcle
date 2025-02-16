@@ -80,7 +80,7 @@ class LoginActivity : AppCompatActivity() {
 
                     composable(route = "Onboarding") {
                         OnboardingScreen(
-//                            navController = navController
+                            navController = navController
                         )
                     }
 

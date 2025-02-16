@@ -5,6 +5,7 @@ import android.util.Log
 import com.example.firstproject.BuildConfig
 import com.example.firstproject.MyApplication
 import com.example.firstproject.data.model.dto.request.AuthRequestDTO
+import com.example.firstproject.data.model.dto.request.NicknameRequestDTO
 import com.example.firstproject.data.model.dto.response.AllStudyListResponseDTO
 import com.example.firstproject.data.model.dto.response.AuthResponseDTO
 import com.example.firstproject.data.model.dto.response.KakaoTokenDTO
@@ -193,6 +194,23 @@ class RemoteDataSource {
             } else {
                 RequestResult.Failure(response.code().toString(), Exception("통신 실패"))
             }
+        } catch (e: Exception) {
+            RequestResult.Failure("EXCEPTION", e)
+        }
+    }
+
+    suspend fun CheckNickName(accessToken: String, nickname: NicknameRequestDTO): RequestResult<CommonResponseDTO<Boolean>> {
+        return try {
+            val response = springService.CheckNickName("Bearer $accessToken", nickname)
+
+            if (response.isSuccessful && response.body() != null) {
+                val body = response.body()!!
+
+                RequestResult.Success(body)
+            } else {
+                RequestResult.Failure(response.code().toString(), Exception("통신 실패"))
+            }
+
         } catch (e: Exception) {
             RequestResult.Failure("EXCEPTION", e)
         }
