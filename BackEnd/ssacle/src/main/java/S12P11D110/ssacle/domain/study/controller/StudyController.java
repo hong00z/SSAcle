@@ -24,7 +24,7 @@ import java.util.*;
 @RequestMapping("/api/studies")
 @Tag(name = "Study Controller", description = "This is Study Controller")
 public class StudyController {
-    private final UserService userService;
+
     private final StudyService studyService;
 
     // GPT: 25 ~31
