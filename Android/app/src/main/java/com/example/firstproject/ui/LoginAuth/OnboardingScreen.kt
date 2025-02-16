@@ -36,6 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -52,22 +53,29 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.firstproject.MyApplication
 import com.example.firstproject.R
+import com.example.firstproject.data.model.dto.request.EditProfileRequestDTO
 import com.example.firstproject.data.model.dto.request.NicknameRequestDTO
 import com.example.firstproject.ui.matching.SettingWeekComponent
 import com.example.firstproject.ui.theme.TagAdapter
 import com.example.firstproject.ui.theme.pretendard
 import com.rootachieve.requestresult.RequestResult
+import java.io.File
 
 @Composable
 fun OnboardingScreen(
     navController: NavController,
-    onboardingViewModel: OnboardingViewModel = viewModel()
+    onboardingViewModel: OnboardingViewModel = viewModel(),
+    onboardSuccess: () -> Unit
 ) {
+    val context = LocalContext.current
+
     var nicknameInput by remember { mutableStateOf("") }
     var weekFlag by remember { mutableStateOf(0) }
 
     val checkNicknameStateResult by onboardingViewModel.checkUserNickname.collectAsStateWithLifecycle()
     val checkStateInfo = (checkNicknameStateResult as? RequestResult.Success)?.data
+
+    val onboardingStateResult by onboardingViewModel.onboardingProfile.collectAsStateWithLifecycle()
 
     var checkMessage by remember { mutableStateOf("") }
 
@@ -118,6 +126,16 @@ fun OnboardingScreen(
 
     }
 
+    LaunchedEffect(onboardingStateResult) {
+        if (onboardingStateResult.isSuccess()) {
+            Log.d("온보딩 화면", "온보딩 성공 : ")
+
+            // 온보딩 완료 후 상태 저장 + 화면 이동
+            MyApplication.setOnboardingCompleted(true)
+            onboardSuccess()
+
+        }
+    }
 
     val topicList = listOf(
         "웹 프론트", "백엔드", "모바일", "인공지능", "빅데이터",
@@ -374,10 +392,16 @@ fun OnboardingScreen(
             Button(
                 onClick = {
                     // 인증 통신 수행
+                    onboardingViewModel.onboardingUserProfile(
+                        context = context,
+                        EditProfileRequestDTO(
+                            nickname = nicknameInput,
+                            topics = selectedTopics,
+                            meetingDays = selectedDays
+                        ),
+                        imageFile = null,
+                    )
 
-
-                    // 통신 성공하면 화면 이동 -> LaunchedEffect에서 쓸 것
-//                        navController.navigate("Onboarding")
                 },
                 modifier = Modifier
                     .fillMaxWidth()
