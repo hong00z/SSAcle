@@ -1,5 +1,6 @@
 package com.example.firstproject.ui.LoginAuth
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -26,6 +27,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,24 +45,62 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.firstproject.MyApplication
 import com.example.firstproject.R
+import com.example.firstproject.data.model.dto.request.NicknameRequestDTO
 import com.example.firstproject.ui.matching.SettingWeekComponent
 import com.example.firstproject.ui.theme.TagAdapter
 import com.example.firstproject.ui.theme.pretendard
+import com.rootachieve.requestresult.RequestResult
 
 @Composable
 fun OnboardingScreen(
-//    navController: NavController
+    navController: NavController,
+    onboardingViewModel: OnboardingViewModel = viewModel()
 ) {
-    var nicknameInput by remember { mutableStateOf(generateRandomNickname()) }
+    var nicknameInput by remember { mutableStateOf("") }
     var weekFlag by remember { mutableStateOf(0) }
 
+    val checkNicknameStateResult by onboardingViewModel.checkUserNickname.collectAsStateWithLifecycle()
+    val checkStateInfo = (checkNicknameStateResult as? RequestResult.Success)?.data
+
+    var checkMessage by remember { mutableStateOf("") }
+
+    // 중복확인 통신 후 나타날 메시지 상태
+    var isCheckMessageState by remember { mutableStateOf(false) }
+
+    // 닉네임 중복확인이 완료됐는지 확인
+    var isCheckNicknameComplete by remember { mutableStateOf(false) }
+
     // 닉네임 중복확인 완료 && 관심주제 선택 완료
-    val isBtnEnabled = nicknameInput.isNotEmpty()
+    val isBtnEnabled = isCheckNicknameComplete
+
+    LaunchedEffect(checkNicknameStateResult) {
+
+        if (checkNicknameStateResult.isProgress()) {
+            Log.d("닉네임 중복확인", "통신 로딩 중")
+        }
+        else if (checkNicknameStateResult.isSuccess()) {
+            Log.d("닉네임 중복확인", "통신 완료! : ${checkStateInfo}")
+            checkMessage = checkStateInfo?.message!!
+            isCheckNicknameComplete = true
+            Log.d("닉네임 중복확인", "data 상태 ${checkStateInfo?.data}")
+            isCheckMessageState = true
+        }
+        else if (checkNicknameStateResult.isFailure()) {
+            checkMessage = "서버와 통신에 실패했습니다."
+            isCheckNicknameComplete = false
+            isCheckMessageState = false
+        }
+
+    }
+
+
 
     // 관심 주제 선택
     var selectedCount by remember { mutableStateOf(0) }
@@ -131,6 +171,8 @@ fun OnboardingScreen(
                         value = nicknameInput,
                         onValueChange = { newValue ->
                             nicknameInput = newValue
+                            isCheckNicknameComplete = false
+                            checkMessage = ""
                         },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                         colors = TextFieldDefaults.colors(
@@ -173,6 +215,8 @@ fun OnboardingScreen(
                             .clickable {
                                 // 닉네임 필드에 입력값 있을 때만 실행되도록
                                 if (nicknameInput.isNotEmpty()) {
+                                    onboardingViewModel.checkNickname(NicknameRequestDTO(nicknameInput))
+                                    checkMessage = ""
 
                                 }
                             }
@@ -181,7 +225,10 @@ fun OnboardingScreen(
                 }
                 Divider(color = colorResource(id = R.color.textfield_stroke_color))
 
-                NicknameStateMessage(true)
+                if (!checkMessage.isNullOrEmpty()) {
+                    NicknameStateMessage(
+                        isState = isCheckMessageState)
+                }
 
 
                 Spacer(Modifier.height(32.dp))
@@ -424,7 +471,9 @@ private fun SelectWeekComponent(isChecked: Boolean, text: String, onClick: () ->
             color = if (isChecked) Color.White else Color.Black,
             fontSize = 15.sp,
             fontWeight = if (isChecked) FontWeight.Bold else FontWeight.Medium,
-            modifier = Modifier.align(Alignment.Center).offset(y = -1.dp)
+            modifier = Modifier
+                .align(Alignment.Center)
+                .offset(y = -1.dp)
         )
     }
 }
@@ -474,5 +523,5 @@ fun generateRandomNickname(): String {
 @Composable
 private fun OnboardingPreview() {
 
-    OnboardingScreen()
+//    OnboardingScreen()
 }
