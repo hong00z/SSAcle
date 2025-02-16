@@ -129,11 +129,13 @@ public class UserController {
      * 싸피생 인증
      */
     @PostMapping("/ssafy")
-    @Operation(summary = "싸피생 인증", description = "임시로 무조건 term=12, campus='구미'로 설정")
+    @Operation(summary = "싸피생 인증", description = "이름과 학번 입력 받아서 싸피생 인증 처리")
     public ResultDto<SsafyAuthResponse> ssafyAuth(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestBody SsafyAuthRequest request) {
         try {
             SsafyAuthResponse response = userService.ssafyAuth(userDetail.getId(), request);
             return ResultDto.of(HttpStatusCode.OK, "싸피생 인증 성공", response);
+        } catch (ApiErrorException e) {
+            return ResultDto.of(e.getCode(), e.getErrorMsg(), null);
         } catch (AuthErrorException e) {
             return ResultDto.of(e.getCode(), e.getErrorMsg(), null);
         } catch (Exception e) {
