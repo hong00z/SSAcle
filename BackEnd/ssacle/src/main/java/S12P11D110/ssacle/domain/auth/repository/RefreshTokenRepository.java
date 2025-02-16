@@ -53,20 +53,7 @@ public class RefreshTokenRepository {
 
     /* 로그아웃 또는 탈퇴 시 refresh token 정보 삭제*/
     public void deleteById(String refreshToken) {
-        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-
-        // Redis에 저장된 모든 키 조회
-        Set<String> keys = redisTemplate.keys("*");
-
-        if (keys != null) {
-            for (String key : keys) {
-                String storedToken = valueOperations.get(key);
-                if (storedToken != null && storedToken.equals(refreshToken)) {
-                    // 해당 userId와 연결된 Refresh Token 삭제
-                    redisTemplate.delete(key);
-                    break;
-                }
-            }
-        }
+        redisTemplate.delete(refreshToken);
+        log.info("🗑️ Refresh Token 삭제 완료: {}", refreshToken);
     }
 }
