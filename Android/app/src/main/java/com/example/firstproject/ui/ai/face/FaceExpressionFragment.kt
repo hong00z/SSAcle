@@ -139,7 +139,7 @@ class FaceExpressionFragment : Fragment() {
                 // 분석 시작 시각
                 val processingStartTime = System.currentTimeMillis()
 
-                // 예: 100ms(1초)마다 프레임 추출
+                // 프레임 추출
                 for (timeMs in 0 until durationMs step 500) {
                     val bitmap = retriever.getFrameAtTime(
                         timeMs * 1000,
