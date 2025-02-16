@@ -93,6 +93,10 @@ dependencies {
     // RequestResult 라이브러리
     implementation("com.github.rootachieve:RequestResult:0.1.0")
 
+    // DataStore
+    implementation("androidx.datastore:datastore-preferences:1.1.2")
+    implementation("androidx.datastore:datastore-preferences-core:1.1.2")
+
     // Coil
     implementation ("io.coil-kt:coil-compose:2.4.0")
 
