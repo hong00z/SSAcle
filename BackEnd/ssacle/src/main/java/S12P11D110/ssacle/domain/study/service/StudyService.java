@@ -12,6 +12,7 @@ import S12P11D110.ssacle.domain.study.dto.request.StudyUpdateRequest;
 import S12P11D110.ssacle.domain.study.dto.response.*;
 import S12P11D110.ssacle.domain.study.repository.StudyRepository;
 import S12P11D110.ssacle.domain.study.dto.SearchUser;
+import S12P11D110.ssacle.domain.user.dto.request.NicknameRequest;
 import S12P11D110.ssacle.domain.user.entity.User;
 import S12P11D110.ssacle.domain.user.repository.UserRepository;
 import S12P11D110.ssacle.global.firebase.FirebaseMessagingService;
@@ -114,30 +115,39 @@ public class StudyService {
         List<Study> recruStudy = studyRepository.findAll().stream()
                 .filter(study-> study.getCount() > study.getMembers().size())
                 .toList();
+        log.info("모집중인 스터디 리스트(정제 전) : {}", recruStudy);
 
         return recruStudy.stream()
-                .map(study->RecrutingStudy.builder()
-                        .studyId(study.getId())
-                        .studyName(study.getStudyName())
-                        .topic(study.getTopic())
-                        .meetingDays(study.getMeetingDays())
-                        .count(study.getCount())
-                        .memberCount(study.getMembers().size())
-                        .members(study.getMembers().stream()
-                                .map(user -> {
-                                    String creator = study.getCreatedBy();
-                                    User member = userRepository.findById(user)
-                                            .orElseThrow(()->new NoSuchElementException("유저ID" + user + "를 찾을 수 없습니다."));
-                                    return nicknameImage.builder()
-                                            .nickname(member.getNickname())
-                                            .image(member.getImage())
-                                            .isCreator(member.getUserId().equals(creator))
-                                            .build();
-                                }).collect(Collectors.toList())
-                        )
-                        .build()
+                .map(study->{
+                    // 스터디 팀장
+                    String creator = study.getCreatedBy();
+                    log.info("스터디 팀장 Id: {}", creator);
 
-                ).toList();
+                    // 멤버 닉네임, 이미지, 방장 여부 담기
+                    List<nicknameImage> members = study.getMembers().stream()
+                            .map(user-> {
+                                User member = userRepository.findById(user)
+                                        .orElseThrow(() -> new NoSuchElementException("유저ID" + user + "를 찾을 수 없습니다."));
+                                log.info("멤버: {}", member);
+
+                                return nicknameImage.builder()
+                                        .nickname(member.getNickname())
+                                        .image(member.getImage())
+                                        .isCreator(member.getUserId().equals(creator))
+                                        .build();
+                            }).toList();
+                    log.info("멤버들의 정보(닉네임,이미지,방장여부): {}", members);
+
+                    return RecrutingStudy.builder()
+                            .studyId(study.getId())
+                            .studyName(study.getStudyName())
+                            .topic(study.getTopic())
+                            .meetingDays(study.getMeetingDays())
+                            .count(study.getCount())
+                            .memberCount(study.getMembers().size())
+                            .members(members)
+                            .build();
+                }).toList();
     }
 
 //    //gpt: from
