@@ -77,22 +77,40 @@ fun OnboardingScreen(
     // 닉네임 중복확인이 완료됐는지 확인
     var isCheckNicknameComplete by remember { mutableStateOf(false) }
 
-    // 닉네임 중복확인 완료 && 관심주제 선택 완료
-    val isBtnEnabled = isCheckNicknameComplete
+
+    // 관심 주제 선택
+    var selectedTopics by remember { mutableStateOf<List<String>>(emptyList()) }
+    var selectedCount by remember { mutableStateOf(0) }
+    var showWarning by remember { mutableStateOf(false) }
+
+
+    // 선택한 선호 요일 리스트
+    val selectedDays: List<String> = remember(weekFlag) {
+        val allDays = listOf("일", "월", "화", "수", "목", "금", "토")
+        val result = mutableListOf<String>()
+
+        for (i in 0..6) {
+            if ((weekFlag and (1 shl i)) != 0) {
+                result.add(allDays[i])
+            }
+        }
+        result
+    }
+
+    // 닉네임 중복확인 완료 && 관심주제 선택 완료 시 버튼 활성화
+    val isBtnEnabled = isCheckNicknameComplete && selectedTopics.isNotEmpty() && selectedDays.isNotEmpty()
 
     LaunchedEffect(checkNicknameStateResult) {
 
         if (checkNicknameStateResult.isProgress()) {
             Log.d("닉네임 중복확인", "통신 로딩 중")
-        }
-        else if (checkNicknameStateResult.isSuccess()) {
+        } else if (checkNicknameStateResult.isSuccess()) {
             Log.d("닉네임 중복확인", "통신 완료! : ${checkStateInfo}")
             checkMessage = checkStateInfo?.message!!
             isCheckNicknameComplete = true
             Log.d("닉네임 중복확인", "data 상태 ${checkStateInfo?.data}")
             isCheckMessageState = true
-        }
-        else if (checkNicknameStateResult.isFailure()) {
+        } else if (checkNicknameStateResult.isFailure()) {
             checkMessage = "서버와 통신에 실패했습니다."
             isCheckNicknameComplete = false
             isCheckMessageState = false
@@ -101,10 +119,6 @@ fun OnboardingScreen(
     }
 
 
-
-    // 관심 주제 선택
-    var selectedCount by remember { mutableStateOf(0) }
-    var showWarning by remember { mutableStateOf(false) }
     val topicList = listOf(
         "웹 프론트", "백엔드", "모바일", "인공지능", "빅데이터",
         "임베디드", "인프라", "CS 이론", "알고리즘", "게임", "기타"
@@ -215,7 +229,11 @@ fun OnboardingScreen(
                             .clickable {
                                 // 닉네임 필드에 입력값 있을 때만 실행되도록
                                 if (nicknameInput.isNotEmpty()) {
-                                    onboardingViewModel.checkNickname(NicknameRequestDTO(nicknameInput))
+                                    onboardingViewModel.checkNickname(
+                                        NicknameRequestDTO(
+                                            nicknameInput
+                                        )
+                                    )
                                     checkMessage = ""
 
                                 }
@@ -227,7 +245,8 @@ fun OnboardingScreen(
 
                 if (!checkMessage.isNullOrEmpty()) {
                     NicknameStateMessage(
-                        isState = isCheckMessageState)
+                        isState = isCheckMessageState
+                    )
                 }
 
 
@@ -259,9 +278,13 @@ fun OnboardingScreen(
                     onSelectionChanged = { count, warning ->
                         selectedCount = count
                         showWarning = warning
+                    },
+                    onSelectedTagsUpdated = { newList ->
+                        selectedTopics = newList
                     }
                 )
-
+                // 테스트용 표시
+                Text(text = "선택된 주제: ${selectedTopics.joinToString()}")
 
                 Spacer(Modifier.height(32.dp))
                 Row(
@@ -292,27 +315,7 @@ fun OnboardingScreen(
                         .padding(horizontal = 4.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-//                    val days = listOf("월", "화", "수", "목", "금", "토", "일")
-//
-//                    days.forEachIndexed { index, day ->
-//                        Text(
-//                            text = day,
-//                            fontFamily = pretendard,
-//                            fontWeight = FontWeight(600),
-//                            fontSize = 17.sp,
-//                            modifier = Modifier
-//                                .weight(1f),
-//                            textAlign = TextAlign.Center,
-//                            color = Color(0xFFB2B2B2)
-//                        )
-//
-//                        if (index < 6) {
-//                            VerticalDivider(
-//                                thickness = 1.dp,
-//                                color = Color(0xFFD9D9D9)
-//                            )
-//                        }
-//                    }
+
                     SelectWeekComponent(
                         isChecked = ((weekFlag and (1 shl 0)) == (1 shl 0)),
                         text = "일"
@@ -363,6 +366,10 @@ fun OnboardingScreen(
                     }
                 }
             }
+
+            // 테스트용 표시
+            Text("선택된 요일: ${selectedDays.joinToString()}")
+
             Spacer(Modifier.weight(1f))
             Button(
                 onClick = {
@@ -481,14 +488,20 @@ private fun SelectWeekComponent(isChecked: Boolean, text: String, onClick: () ->
 @Composable
 fun TopicLabelSelectionView(
     labelList: List<String>,
-    onSelectionChanged: (selectedCount: Int, showWarning: Boolean) -> Unit
+    onSelectionChanged: (selectedCount: Int, showWarning: Boolean) -> Unit,
+    onSelectedTagsUpdated: (List<String>) -> Unit,
 ) {
     AndroidView(
         modifier = Modifier.fillMaxWidth(),
         factory = { context ->
             RecyclerView(context).apply {
                 layoutManager = GridLayoutManager(context, 3)
-                adapter = TagAdapter(context, labelList, onSelectionChanged)
+                adapter = TagAdapter(
+                    context,
+                    labelList,
+                    onSelectionChanged,
+                    onSelectedTagsUpdated
+                )
             }
         }
     )
