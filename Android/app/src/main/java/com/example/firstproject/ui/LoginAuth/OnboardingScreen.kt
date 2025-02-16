@@ -26,6 +26,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,15 +43,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.firstproject.MyApplication
 import com.example.firstproject.R
 import com.example.firstproject.ui.matching.SettingWeekComponent
 import com.example.firstproject.ui.theme.TagAdapter
 import com.example.firstproject.ui.theme.pretendard
 
 @Composable
-fun OnboardingScreen(grade: String, name: String) {
+fun OnboardingScreen(
+//    navController: NavController
+) {
     var nicknameInput by remember { mutableStateOf(generateRandomNickname()) }
     var weekFlag by remember { mutableStateOf(0) }
 
@@ -64,6 +69,9 @@ fun OnboardingScreen(grade: String, name: String) {
         "웹 프론트", "백엔드", "모바일", "인공지능", "빅데이터",
         "임베디드", "인프라", "CS 이론", "알고리즘", "게임", "기타"
     )
+
+    val userGradeNum by MyApplication.getUserGrade().collectAsState(initial = "")
+    val userName by MyApplication.getUserName().collectAsState(initial = "")
 
     Column(
         Modifier
@@ -96,9 +104,9 @@ fun OnboardingScreen(grade: String, name: String) {
                     .fillMaxWidth()
                     .padding(horizontal = 28.dp)
             ) {
-                InfoTextComponent(title = "학번", content = grade)
+                userGradeNum?.let { InfoTextComponent(title = "학번", content = it) }
                 Spacer(Modifier.height(24.dp))
-                InfoTextComponent(title = "이름", content = name)
+                userName?.let { InfoTextComponent(title = "이름", content = it) }
                 Spacer(Modifier.height(20.dp))
                 Divider(
                     color = colorResource(id = R.color.textfield_stroke_color),
@@ -466,5 +474,5 @@ fun generateRandomNickname(): String {
 @Composable
 private fun OnboardingPreview() {
 
-    OnboardingScreen("1222988", "장홍준")
+    OnboardingScreen()
 }
