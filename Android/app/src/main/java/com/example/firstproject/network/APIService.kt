@@ -2,9 +2,11 @@ package com.example.firstproject.network
 
 import android.provider.ContactsContract.CommonDataKinds.Nickname
 import com.example.firstproject.data.model.dto.request.AuthRequestDTO
+import com.example.firstproject.data.model.dto.request.EditProfileRequestDTO
 import com.example.firstproject.data.model.dto.request.NicknameRequestDTO
 import com.example.firstproject.data.model.dto.response.AllStudyListResponseDTO
 import com.example.firstproject.data.model.dto.response.AuthResponseDTO
+import com.example.firstproject.data.model.dto.response.EditProfileResponseDTO
 import com.example.firstproject.data.model.dto.response.KakaoTokenDTO
 import com.example.firstproject.data.model.dto.response.MyAppliedStudyListDtoItem
 import com.example.firstproject.data.model.dto.response.MyInvitedStudyListDtoItem
@@ -18,12 +20,17 @@ import com.example.firstproject.data.model.dto.response.StudyRequestedInviteList
 import com.example.firstproject.data.model.dto.response.Top3RecommendedUsersDtoItem
 import com.example.firstproject.data.model.dto.response.UserSuitableStudyDtoItem
 import com.example.firstproject.data.model.dto.response.common.CommonResponseDTO
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
+import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 
 interface APIService {
@@ -132,6 +139,23 @@ interface APIService {
         @Header("Authorization") accessToken: String,
         @Body request: AuthRequestDTO
     ): Response<CommonResponseDTO<AuthResponseDTO>>
+
+    // 온보딩 프로필 등록
+    @Multipart
+    @PATCH("/api/user/profile")
+    suspend fun OnboardingProfile(
+        @Header("Authorization") accessToken: String,
+        @Part("request") request: RequestBody,
+        @Part file: MultipartBody.Part?
+    ): Response<EditProfileResponseDTO>
+
+    // 프로필 수정
+    @Multipart
+    @PATCH("/api/usser/profile")
+    suspend fun editUserProfile(
+        @Header("Authorization") accessToken: String,
+        @Body request: EditProfileRequestDTO
+    ): Response<CommonResponseDTO<EditProfileResponseDTO>>
 
 
     // 내 신청 보내기 (pass)

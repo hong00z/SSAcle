@@ -2,9 +2,11 @@ package com.example.firstproject.data.repository
 
 import com.example.firstproject.MyApplication
 import com.example.firstproject.data.model.dto.request.AuthRequestDTO
+import com.example.firstproject.data.model.dto.request.EditProfileRequestDTO
 import com.example.firstproject.data.model.dto.request.NicknameRequestDTO
 import com.example.firstproject.data.model.dto.response.AllStudyListResponseDTO
 import com.example.firstproject.data.model.dto.response.AuthResponseDTO
+import com.example.firstproject.data.model.dto.response.EditProfileResponseDTO
 import com.example.firstproject.data.model.dto.response.KakaoTokenDTO
 import com.example.firstproject.data.model.dto.response.MyAppliedStudyListDtoItem
 import com.example.firstproject.data.model.dto.response.MyInvitedStudyListDtoItem
@@ -18,6 +20,7 @@ import com.example.firstproject.data.model.dto.response.Top3RecommendedUsersDtoI
 import com.example.firstproject.data.model.dto.response.UserSuitableStudyDtoItem
 import com.example.firstproject.data.model.dto.response.common.CommonResponseDTO
 import com.rootachieve.requestresult.RequestResult
+import java.io.File
 
 object MainRepository {
     private val remoteDataSource = RemoteDataSource()
@@ -71,6 +74,10 @@ object MainRepository {
     // 닉네임 중복검사
     suspend fun getCheckNickName(accessToken: String, nickname: NicknameRequestDTO): RequestResult<CommonResponseDTO<Boolean>> {
         return remoteDataSource.CheckNickName(accessToken, nickname)
+    }
+    // 온보딩 등록
+    suspend fun sendOnboardingProfile(accessToken: String, request: EditProfileRequestDTO, imageFile: File?): RequestResult<EditProfileResponseDTO> {
+        return remoteDataSource.OnboardingProfile(accessToken, request, imageFile)
     }
 
     // /api/studies/{studyId} 특정 스터디 조회
