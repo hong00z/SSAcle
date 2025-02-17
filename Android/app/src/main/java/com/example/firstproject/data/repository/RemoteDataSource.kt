@@ -272,6 +272,7 @@ class RemoteDataSource {
 
 
     // 스터디 관련 통신
+    // 모집 중인 스터디 조회
     suspend fun getAllStudy(accessToken: String): RequestResult<List<StudyDTO>> {
         return try {
             val response = springService.getAllStudies("Bearer $accessToken")

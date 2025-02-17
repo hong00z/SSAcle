@@ -99,10 +99,18 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         Log.d("홈 화면", "모든 스터디 불러오기 ")
 
+        // 모집 중인 스터디 목록 불러오기
         homeViewModel.getAllStudyInfo(context)
+
+        // 내가 참여 중인 스터디 목록 불러오기
         homeViewModel.getJoinedStudy()
         if (myJoinedStudyList != null) Log.d("홈 화면", "내 스터디 목록: $myJoinedStudyList ")
         else Log.d("홈 화면", "내 스터디 목록 null ㅋㅋ ")
+    }
+
+    LaunchedEffect(getJoinedStudyResult) {
+        Log.d("참여 중 상태 변경", "내 스터디 목록: $myJoinedStudyList ")
+        if (myJoinedStudyList == null) Log.d("참여 중 상태 변경", "내 스터디 목록 null ㅋㅋ ")
     }
 
 
@@ -162,6 +170,8 @@ fun HomeScreen(
                 Spacer(Modifier.height(12.dp))
                 TitleTextView("내 스터디 목록")
                 Spacer(Modifier.height(16.dp))
+
+                // 내 스터디 목록이 null이 아닐 때
                 if (myJoinedStudyList != null) {
                     if (myJoinedStudyList.isEmpty()) {
                         Card(
@@ -181,13 +191,61 @@ fun HomeScreen(
                                 colorResource(R.color.border_light_color)
                             )
                         ) {
-                            Column { Text("비어있음") }
+                            Column(
+                                modifier = Modifier.fillMaxSize().background(Color(0xFFF2F2F4)),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Text(
+                                    text = "스터디에 참가해 보는 건 어떠세요?",
+                                    fontFamily = pretendard,
+                                    fontWeight = FontWeight(500),
+                                    fontSize = 15.sp,
+                                    letterSpacing = 1.sp,
+                                    color = Color(0xFFA9A9AB)
+                                )
+                            }
 
                         }
                     } else {
                         MyStudyItem(myJoinedStudyList, navController = navController)
                     }
+                }
+                // 내 스터디 목록이 null일 때
+                else {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(90.dp)
+                            .padding(horizontal = 12.dp)
+                            .shadow(
+                                elevation = 2.dp,
+                                shape = RoundedCornerShape(10.dp),
+                                clip = true,
+                            ),
+                        shape = RoundedCornerShape(5.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.White),
+                        border = BorderStroke(
+                            1.dp,
+                            colorResource(R.color.border_light_color)
+                        )
+                    ) {
+                        Column(
+                            modifier = Modifier.fillMaxSize().background(Color(0xFFF2F2F4)),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = "스터디에 참가해 보는 건 어떠세요?",
+                                fontFamily = pretendard,
+                                fontWeight = FontWeight(500),
+                                fontSize = 15.sp,
+                                letterSpacing = 1.sp,
+                                color = Color(0xFFA9A9AB)
+                            )
+                        }
 
+                    }
                 }
 
                 Spacer(Modifier.height(32.dp))

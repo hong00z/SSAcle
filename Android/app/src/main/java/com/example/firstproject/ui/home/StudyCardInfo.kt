@@ -31,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.firstproject.MyApplication
 import com.example.firstproject.R
 import com.example.firstproject.data.model.dto.response.Member
 import com.example.firstproject.data.model.dto.response.MyJoinedStudyListDtoItem
@@ -41,6 +42,7 @@ import kotlin.math.min
 
 @Composable
 fun StudyCardInfo(studyInfo: MyJoinedStudyListDtoItem) {
+    val isHost = studyInfo.createdBy == MyApplication.USER_ID
 
     Column(
         modifier = Modifier
@@ -63,11 +65,17 @@ fun StudyCardInfo(studyInfo: MyJoinedStudyListDtoItem) {
                 overflow = TextOverflow.Ellipsis
             )
             Spacer(Modifier.weight(1f))
-            Image(
-                painter = painterResource(R.drawable.icon_host), null,
-                modifier = Modifier
-                    .size(22.dp)
-            )
+
+            // 방장인지 표시
+            Box(modifier = Modifier.size(22.dp)) {
+                if (isHost) {
+                    Image(
+                        painter = painterResource(R.drawable.icon_host), null,
+                        modifier = Modifier
+                            .size(22.dp)
+                    )
+                }
+            }
         }
         Spacer(Modifier.weight(1f))
         Row(
@@ -164,7 +172,7 @@ private fun ProfileImgItem(
 ) {
     Box(
         modifier = modifier
-            .size(400.dp)
+            .size(22.dp)
             .background(
                 color = Color.Gray, shape = CircleShape
             ),
@@ -184,10 +192,5 @@ private fun ProfileImgItem(
 @Preview(showBackground = true)
 @Composable
 fun TestPreview() {
-    Box(modifier = Modifier.size(600.dp)) {
-        ProfileImgItem(
-""
-        )
-    }
 
 }
