@@ -1,6 +1,7 @@
 package com.example.firstproject.ui.home
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.firstproject.MyApplication
@@ -46,16 +47,13 @@ class HomeViewModel : ViewModel() {
             }
 
             val result = repository.getMyJoinedStudies(accessToken!!)
+            Log.d("HOME 뷰모델", "내 스터디 목록: ${result}")
 
-            result.onSuccess {
-                _joinedStudyResult.update {
-                    result
-                }
-            }.onFailure { code, e ->
-                _joinedStudyResult.update {
-                    RequestResult.Failure(code, e)
-                }
+            _joinedStudyResult.update {
+                result
             }
+
+            delay(200)
 
         }
     }
@@ -75,18 +73,10 @@ class HomeViewModel : ViewModel() {
             val result = repository.getAllStudyList(accessToken!!)
 
             if (result is RequestResult.Success) {
+
                 val list = result.data
                 _allStudyList.update { list }
             }
-
-//            result.onSuccess { list ->
-//                _allStudyList.value = list
-//                _allStudyListResult.value = RequestResult.Success(list)
-//            }.onFailure { code, e ->
-//                _allStudyListResult.update {
-//                    RequestResult.Failure(code, e)
-//                }
-//            }
 
             delay(200)
 
