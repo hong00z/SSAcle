@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -47,7 +48,12 @@ fun FindPersonScreen() {
             // 뒤로 가기
         })
 
-        Image(painter = painterResource(R.drawable.img_find_person), null)
+        Image(
+            painter = painterResource(R.drawable.img_find_person), null,
+            modifier = Modifier
+                .fillMaxWidth(0.7f)
+                .fillMaxHeight(0.07f)
+        )
         Spacer(Modifier.height(36.dp))
         PersonInfoItem()
 
@@ -57,7 +63,7 @@ fun FindPersonScreen() {
 @Composable
 private fun PersonInfoItem() {
     val weekList = listOf("월", "화", "목", "토")
-    val tagList = listOf("웹 프론트", "알고리즘","백엔드", "CS 이론")
+    val tagList = listOf("웹 프론트", "알고리즘", "백엔드", "CS 이론")
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(
@@ -105,12 +111,13 @@ private fun PersonInfoItem() {
                 )
             }
             Spacer(Modifier.weight(1f))
-            Text(text = "참여 중인 스터디: 1개",
+            Text(
+                text = "참여 중인 스터디: 1개",
                 fontFamily = pretendard,
                 fontWeight = FontWeight(500),
                 fontSize = 14.sp,
                 color = Color(0xFF666666)
-                )
+            )
         }
         Spacer(Modifier.height(16.dp))
         Row(
