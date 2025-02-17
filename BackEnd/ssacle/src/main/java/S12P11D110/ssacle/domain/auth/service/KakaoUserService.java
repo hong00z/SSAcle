@@ -125,7 +125,9 @@ public class KakaoUserService {
         String accessToken = delegateAccessToken(user.getUserId(), user.getEmail(), user.getRole());
         // Refresh Token 생성
         String refreshToken = jwtProvider.generateRefreshToken(user.getUserId());
-        return new TokenDto(type, accessToken, refreshToken);
+        // role 설정
+        UserRole role = user.getRole();
+        return new TokenDto(type, accessToken, refreshToken, role);
     }
 
     /**
