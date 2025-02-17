@@ -7,15 +7,9 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import com.example.firstproject.MyApplication.Companion.USER_ID
 import com.example.firstproject.MyApplication.Companion.tokenManager
-import com.example.firstproject.client.RetrofitClient
-import com.example.firstproject.dto.TokenUpdateRequest
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class FCMService : FirebaseMessagingService() {
 
@@ -56,7 +50,6 @@ class FCMService : FirebaseMessagingService() {
      */
     override fun onNewToken(token: String) {
         Log.d(TAG, "새로운 토큰: $token")
-        // 토큰 서버 전송 로직 추가
 
         tokenManager.saveFcmToken(token)
     }
@@ -94,30 +87,5 @@ class FCMService : FirebaseMessagingService() {
 
         // 알림 ID 0을 사용하여 알림 표시
         notificationManager.notify(0, notificationBuilder.build())
-    }
-
-    /**
-     * 새 토큰을 서버에 전송하는 메서드.
-     */
-    private fun sendRegistrationToServer(fcmToken: String) {
-        // 서버 API 호출 코드 또는 로컬 저장 등의 로직 구현
-        val userId = USER_ID
-
-        // Retrofit 호출은 IO 스레드에서 실행
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                // RetrofitClient와 ApiService는 미리 구성한 객체로 가정합니다.
-                val response = RetrofitClient.userService.updateFcmToken(
-                    userId, TokenUpdateRequest(fcmToken)
-                )
-                if (response.isSuccessful) {
-                    Log.d(TAG, "서버에 토큰 등록 성공: ${response.body()}")
-                } else {
-                    Log.e(TAG, "서버 토큰 등록 실패, 코드: ${response.code()}")
-                }
-            } catch (e: Exception) {
-                Log.e(TAG, "서버에 토큰 전송 중 오류 발생: ${e.message}", e)
-            }
-        }
     }
 }
