@@ -15,30 +15,30 @@ const userSchema = new Schema({
     required: true,
   },
   // 프로필 이미지 URL
-  userImageUrl: {
+  image: {
     type: String,
     default: "",
   },
-  // 기수 (숫자형 또는 문자열로 표현 가능하지만, 여기서는 숫자로 가정)
-  term: {
-    type: Number,
-    required: true,
-  },
-  // 지역 정보 (캠퍼스)
-  campus: {
-    type: String,
-    required: true,
-  },
-  // 관심 주제 (복수 선택 가능하므로 문자열 배열)
-  topics: {
-    type: [String],
-    default: [],
-  },
-  // 스터디를 하길 원하는 요일 (복수 선택 가능하므로 문자열 배열)
-  meetingDays: {
-    type: [String],
-    default: [],
-  },
+  // // 기수 (숫자형 또는 문자열로 표현 가능하지만, 여기서는 숫자로 가정)
+  // term: {
+  //   type: Number,
+  //   required: true,
+  // },
+  // // 지역 정보 (캠퍼스)
+  // campus: {
+  //   type: String,
+  //   required: true,
+  // },
+  // // 관심 주제 (복수 선택 가능하므로 문자열 배열)
+  // topics: {
+  //   type: [String],
+  //   default: [],
+  // },
+  // // 스터디를 하길 원하는 요일 (복수 선택 가능하므로 문자열 배열)
+  // meetingDays: {
+  //   type: [String],
+  //   default: [],
+  // },
   // 사용자가 가입한 스터디 (다른 컬렉션의 ObjectId를 배열로 저장)
   joinedStudies: [
     {
