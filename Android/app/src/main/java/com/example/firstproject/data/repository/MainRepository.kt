@@ -96,7 +96,7 @@ object MainRepository {
         accessToken: String,
         studyId: String
     ): RequestResult<StudyDetailInfoResponseDTO> {
-        return remoteDataSource.getStudyDetailInfo(accessToken)
+        return remoteDataSource.getStudyDetailInfo(accessToken, studyId)
     }
 
     // /api/studies/{studyId}/wishList 스터디내 초대 현황

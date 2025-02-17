@@ -44,7 +44,8 @@ interface APIService {
     suspend fun getAllStudies(@Header("Authorization") accessToken: String): Response<List<StudyDTO>>
 
 
-    // CommonDTO로 감싸져서 있길래, 삭제함. (특정 스터디 조회)
+    // CommonDTO로 감싸져서 있길래, 삭제함.
+    // (특정 스터디 조회)
     @GET("/api/studies/{studyId}")
     suspend fun getStudyDetailInfo(
         @Header("Authorization") accessToken: String,
