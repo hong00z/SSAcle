@@ -1,5 +1,6 @@
 package S12P11D110.ssacle.domain.auth.dto;
 
+import S12P11D110.ssacle.domain.user.entity.UserRole;
 import lombok.*;
 
 
@@ -10,4 +11,5 @@ public class TokenDto {
     private String type;    // Signup 또는 Login
     private String accessToken;
     private String refreshToken;
+    private UserRole role;    // 싸피생 인증 구분 (USER : 일반 사용자 / SSAFYUSER : 싸피생)
 }
