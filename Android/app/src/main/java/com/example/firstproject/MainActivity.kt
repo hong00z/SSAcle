@@ -11,7 +11,11 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.firstproject.MyApplication.Companion.USER_ID
 import com.example.firstproject.MyApplication.Companion.tokenManager
 import com.example.firstproject.databinding.ActivityMainBinding
+import com.example.firstproject.dto.TokenUpdateRequest
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
 import java.util.Base64
@@ -57,6 +61,7 @@ class MainActivity : AppCompatActivity() {
 
         USER_ID = getUserIdFromToken(accessToken)
         Log.d(TAG, "userId = $USER_ID")
+        tokenManager.getFcmToken()?.let { sendRegistrationToServer(it) }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -98,4 +103,25 @@ class MainActivity : AppCompatActivity() {
         return JSONObject(payloadJson)
 
     }
+
+    /**
+     * 새 토큰을 서버에 전송하는 메서드.
+     */
+    private fun sendRegistrationToServer(fcmToken: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = RetrofitClient.userService.updateFcmToken(
+                    USER_ID, TokenUpdateRequest(fcmToken)
+                )
+                if (response.isSuccessful) {
+                    Log.d(TAG, "서버에 토큰 등록 성공: ${response.body()}")
+                } else {
+                    Log.e(TAG, "서버 토큰 등록 실패, 코드: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "서버에 토큰 전송 중 오류 발생: ${e.message}", e)
+            }
+        }
+    }
+
 }

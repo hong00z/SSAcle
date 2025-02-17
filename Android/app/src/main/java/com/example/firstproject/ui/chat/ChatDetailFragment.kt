@@ -284,8 +284,6 @@ class ChatDetailFragment : Fragment() {
 //    }
 
     private fun updateLastReadTimeOnServer() {
-
-
         // 현재 시간을 밀리초 단위로 가져옴
         val currentTime = System.currentTimeMillis()
 
