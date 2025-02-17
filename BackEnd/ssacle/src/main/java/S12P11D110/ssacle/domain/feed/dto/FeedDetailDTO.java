@@ -14,6 +14,5 @@ public class FeedDetailDTO {
     private String title;                       // 제목
     private String content;                     // 내용
     private LocalDateTime createdAt;               // 작성 시간
-    private LocalDateTime updatedAt;               // 업데이트 시간
 
 }
