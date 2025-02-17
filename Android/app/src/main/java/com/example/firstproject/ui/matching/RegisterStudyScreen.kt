@@ -87,6 +87,7 @@ fun RegisterStudyScreen(
 
             registerStateResult.isFailure() -> {
                 Log.d("스터디 개설", "실패")
+                Toast.makeText(context, "죄송합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
             }
         }
     }
