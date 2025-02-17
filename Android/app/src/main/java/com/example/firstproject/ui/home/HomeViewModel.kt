@@ -4,15 +4,12 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.firstproject.MyApplication
 import com.example.firstproject.MyApplication.Companion.tokenManager
 import com.example.firstproject.data.model.dto.response.MyJoinedStudyListDtoItem
 import com.example.firstproject.data.model.dto.response.StudyDTO
 import com.example.firstproject.data.repository.MainRepository
-import com.example.firstproject.data.repository.TokenManager
 import com.rootachieve.requestresult.RequestResult
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
