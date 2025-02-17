@@ -1,13 +1,11 @@
 package com.example.firstproject.data.repository
 
-import android.content.Context
 import android.util.Log
 import com.example.firstproject.BuildConfig
 import com.example.firstproject.MyApplication
 import com.example.firstproject.data.model.dto.request.AuthRequestDTO
 import com.example.firstproject.data.model.dto.request.EditProfileRequestDTO
 import com.example.firstproject.data.model.dto.request.NicknameRequestDTO
-import com.example.firstproject.data.model.dto.response.AllStudyListResponseDTO
 import com.example.firstproject.data.model.dto.response.AuthResponseDTO
 import com.example.firstproject.data.model.dto.response.EditProfileResponseDTO
 import com.example.firstproject.data.model.dto.response.KakaoTokenDTO
@@ -24,10 +22,8 @@ import com.example.firstproject.data.model.dto.response.Top3RecommendedUsersDtoI
 import com.example.firstproject.data.model.dto.response.UserSuitableStudyDtoItem
 import com.example.firstproject.data.model.dto.response.common.CommonResponseDTO
 import com.example.firstproject.network.APIService
-import com.google.android.gms.common.api.Response
 import com.google.gson.Gson
 import com.rootachieve.requestresult.RequestResult
-import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
@@ -36,7 +32,6 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Multipart
 import java.io.File
 import java.util.concurrent.TimeUnit
 
@@ -255,7 +250,8 @@ class RemoteDataSource {
             }
 
 
-            val response = springService.OnboardingProfile("Bearer $accessToken", jsonRequestBody, filePart)
+            val response =
+                springService.OnboardingProfile("Bearer $accessToken", jsonRequestBody, filePart)
 
             if (response.isSuccessful && response.body() != null) {
                 val body = response.body()!!
@@ -475,5 +471,9 @@ class RemoteDataSource {
         } catch (e: Exception) {
             RequestResult.Failure("EXCEPTION", e)
         }
+    }
+
+    fun getImageUrl(url: String): String {
+        return BASE_URL_SPRING + "images/" + url
     }
 }

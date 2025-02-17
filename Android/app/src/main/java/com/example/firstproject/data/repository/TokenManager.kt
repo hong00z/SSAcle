@@ -10,6 +10,7 @@ class TokenManager(context: Context) {
     companion object {
         private const val ACCESS_TOKEN_KEY = "access_token"
         private const val REFRESH_TOKEN_KEY = "refresh_token"
+        private const val FCM_TOKEN_KEY = "fcm_token"
     }
 
     // ✅ Access Token 저장
@@ -37,6 +38,17 @@ class TokenManager(context: Context) {
     fun clearTokens() {
         prefs.edit().remove(ACCESS_TOKEN_KEY).remove(REFRESH_TOKEN_KEY).apply()
         MyApplication.accessToken = null // 전역 변수 초기화
+    }
+
+    // FCM Token 저장
+    fun saveFcmToken(token: String) {
+        prefs.edit().putString(FCM_TOKEN_KEY, token).apply()
+        MyApplication.fcmToken = token // 전역 변수 업데이트
+    }
+
+    // FCM Token 조회
+    fun getFcmToken(): String? {
+        return prefs.getString(FCM_TOKEN_KEY, null)
     }
 
 }
