@@ -3,7 +3,7 @@ package com.example.firstproject.utils
 import com.example.firstproject.R
 
 enum class TopicTagEnum(val title: String, val colorId: Int) {
-    FRONTEND("프론트엔드", R.color.frontend_stack_tag),
+    FRONTEND("웹 프론트", R.color.frontend_stack_tag),
     BACKEND("백엔드", R.color.backend_stack_tag),
     MOBILE("모바일", R.color.mobile_stack_tag),
     AI("인공지능", R.color.ai_stack_tag),
