@@ -3,6 +3,7 @@ package com.example.firstproject.network
 import com.example.firstproject.data.model.dto.request.AuthRequestDTO
 import com.example.firstproject.data.model.dto.request.EditProfileRequestDTO
 import com.example.firstproject.data.model.dto.request.NicknameRequestDTO
+import com.example.firstproject.data.model.dto.request.RegisterStudyRequestDTO
 import com.example.firstproject.data.model.dto.response.AuthResponseDTO
 import com.example.firstproject.data.model.dto.response.EditProfileResponseDTO
 import com.example.firstproject.data.model.dto.response.KakaoTokenDTO
@@ -118,6 +119,12 @@ interface APIService {
 
 
     // 스터디 개설 (pass)
+    @POST("/api/studies")
+    suspend fun registerStudy(
+        @Header("Authorization") accessToken: String,
+        @Body studyInfo: RegisterStudyRequestDTO
+    ): Response<Unit>
+
     // 스터디원 스카웃 제의 추가/ 내 수신함 추가 (pass)
     // 유저의 요청 수락 (pass)
 

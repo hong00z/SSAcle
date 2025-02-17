@@ -1,7 +1,9 @@
 package com.example.firstproject.ui.matching
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.NumberPicker
+import android.widget.Toast
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -27,6 +29,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -42,22 +46,66 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.firstproject.R
+import com.example.firstproject.data.model.dto.request.RegisterStudyRequestDTO
 import com.example.firstproject.ui.common.CommonTopBar
 import com.example.firstproject.ui.common.SelectTopicCard
 
 import com.example.firstproject.ui.theme.pretendard
+import com.example.firstproject.utils.CommonUtils
 
 @Composable
-fun RegisterStudyScreen(xmlNavController: NavController) {
-    val activity = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+fun RegisterStudyScreen(
+    xmlNavController: NavController,
+    registerStudyViewModel: RegisterStudyViewModel = viewModel()
+) {
+    val context = LocalContext.current
+
+    val registerStateResult by registerStudyViewModel.registerResult.collectAsStateWithLifecycle()
 
     var weekFlag by remember { mutableStateOf(0) }
 
     var titleInput by remember { mutableStateOf("") }
     var contentInput by remember { mutableStateOf("") }
+    var selectedTag by remember { mutableStateOf<String?>(null) }
+    var minValue by remember { mutableStateOf(3) }
+    var maxValue by remember { mutableStateOf(3) }
 
+    LaunchedEffect(registerStateResult) {
+        when {
+            registerStateResult.isProgress() -> {
+                Log.d("스터디 개설", "로딩 중")
+            }
+
+            registerStateResult.isSuccess() -> {
+                Log.d("스터디 개설", "개설 성공")
+                Toast.makeText(context, "스터디를 개설했습니다!", Toast.LENGTH_SHORT).show()
+            }
+
+            registerStateResult.isFailure() -> {
+                Log.d("스터디 개설", "실패")
+            }
+        }
+    }
+
+    // 선택한 선호 요일 리스트
+    val selectedDays: List<String> = remember(weekFlag) {
+        val allDays = listOf("일", "월", "화", "수", "목", "금", "토")
+        val result = mutableListOf<String>()
+
+        for (i in 0..6) {
+            if ((weekFlag and (1 shl i)) != 0) {
+                result.add(allDays[i])
+            }
+        }
+        result
+    }
+
+    val isBtnEnabled = titleInput.isNotEmpty() && contentInput.isNotEmpty()
+            && !selectedTag.isNullOrEmpty() && selectedDays.isNotEmpty()
 
     Column(
         modifier = Modifier
@@ -68,7 +116,6 @@ fun RegisterStudyScreen(xmlNavController: NavController) {
             CommonTopBar(
                 title = "스터디 개설",
                 onBackPress = {
-                    //            navController.popBackStack()
                     xmlNavController.navigate(R.id.action_studyRegisterFragment_to_homeFragment)
                 }
             )
@@ -76,11 +123,10 @@ fun RegisterStudyScreen(xmlNavController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-//                .fillMaxSize()
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(modifier = Modifier.padding(horizontal = 32.dp)) {
+            Column(modifier = Modifier.padding(horizontal = 28.dp)) {
                 Spacer(Modifier.height(12.dp))
                 TitleText("스터디 제목")
                 Spacer(Modifier.height(12.dp))
@@ -116,7 +162,13 @@ fun RegisterStudyScreen(xmlNavController: NavController) {
 
                 TitleText("스터디 주제")
                 Spacer(Modifier.height(16.dp))
-                SelectTopicCard()
+                SelectTopicCard(
+                    selectedTag = selectedTag,
+                    onTagSelected = { newTag ->
+                        // 같은 태그 누르면 null, 아니면 newTag
+                        selectedTag = if (selectedTag == newTag) null else newTag
+                    }
+                )
 
                 Spacer(Modifier.height(24.dp))
 
@@ -177,11 +229,17 @@ fun RegisterStudyScreen(xmlNavController: NavController) {
                     }
                 }
 
+
                 Spacer(Modifier.height(24.dp))
                 TitleText("참여 인원")
-                Spacer(Modifier.height(16.dp))
+                Spacer(Modifier.height(20.dp))
 
-                NumberPickerView(onMinValueChange = {}, onMaxValueChange = {})
+                NumberPickerView(
+                    onMinValueChange = { newMin ->
+                        minValue = newMin
+                    },
+                    onMaxValueChange = { maxValue = it }
+                )
                 Spacer(Modifier.height(24.dp))
 
                 TitleText("스터디 소개")
@@ -221,10 +279,22 @@ fun RegisterStudyScreen(xmlNavController: NavController) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(48.dp),
-                    onClick = {},
+                    onClick = {
+                        registerStudyViewModel.sendRegisterStudy(
+                            request = RegisterStudyRequestDTO(
+                                studyName = titleInput,
+                                topic = selectedTag!!,
+                                meetingDays = selectedDays,
+                                count = maxValue,
+                                studyContent = contentInput
+                            )
+                        )
+                        xmlNavController.navigate(R.id.action_studyRegisterFragment_to_homeFragment)
+                    },
                     shape = RoundedCornerShape(8.dp),
                     border = BorderStroke(1.dp, Color(0xFFECECEC)),
                     colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.primary_color)),
+                    enabled = isBtnEnabled
                 ) {
                     Text(
                         text = "등록하기",
@@ -238,7 +308,7 @@ fun RegisterStudyScreen(xmlNavController: NavController) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(48.dp)
+                        .height(32.dp)
                 ) {
 
                 }

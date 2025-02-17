@@ -35,7 +35,10 @@ import com.example.firstproject.ui.theme.pretendard
 import com.example.firstproject.utils.TopicTagEnum
 
 @Composable
-fun SelectTopicCard() {
+fun SelectTopicCard(
+    selectedTag: String?,
+    onTagSelected: (String) -> Unit
+) {
 
     val tagList = mutableListOf(
         "웹 프론트",
@@ -50,8 +53,6 @@ fun SelectTopicCard() {
         "게임",
         "기타"
     )
-
-    var selectedTag by remember { mutableStateOf<String?>(null) }
 
     Card(
         modifier = Modifier
@@ -69,9 +70,7 @@ fun SelectTopicCard() {
             TagGrid(
                 tagList = tagList,
                 selectedTag = selectedTag,
-                onTagSelected = { tagName ->
-                    selectedTag = if (selectedTag == tagName) null else tagName
-                }
+                onTagSelected = onTagSelected
             )
         }
 
@@ -150,11 +149,4 @@ fun CommonStackTag(stackTitle: String, onClick: () -> Unit) {
         )
 
     }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewTest() {
-    SelectTopicCard()
 }

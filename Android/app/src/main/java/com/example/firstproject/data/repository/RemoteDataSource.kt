@@ -6,6 +6,7 @@ import com.example.firstproject.MyApplication
 import com.example.firstproject.data.model.dto.request.AuthRequestDTO
 import com.example.firstproject.data.model.dto.request.EditProfileRequestDTO
 import com.example.firstproject.data.model.dto.request.NicknameRequestDTO
+import com.example.firstproject.data.model.dto.request.RegisterStudyRequestDTO
 import com.example.firstproject.data.model.dto.response.AuthResponseDTO
 import com.example.firstproject.data.model.dto.response.EditProfileResponseDTO
 import com.example.firstproject.data.model.dto.response.KakaoTokenDTO
@@ -289,9 +290,31 @@ class RemoteDataSource {
     }
 
     // /api/studies/{studyId} 특정 스터디 조회
-    suspend fun getStudyDetailInfo(accessToken: String, studyId: String): RequestResult<StudyDetailInfoResponseDTO> {
+    suspend fun getStudyDetailInfo(
+        accessToken: String,
+        studyId: String
+    ): RequestResult<StudyDetailInfoResponseDTO> {
         return try {
             val response = springService.getStudyDetailInfo("Bearer $accessToken", studyId)
+            if (response.isSuccessful && response.body() != null) {
+                val body = response.body()!!
+                RequestResult.Success(body)
+            } else {
+                RequestResult.Failure(response.code().toString(), Exception("통신 실패"))
+            }
+
+        } catch (e: Exception) {
+            RequestResult.Failure("EXCEPTION", e)
+        }
+    }
+
+    // 스터디 개설
+    suspend fun sendRegisterStudy(
+        accessToken: String,
+        request: RegisterStudyRequestDTO
+    ): RequestResult<Unit> {
+        return try {
+            val response = springService.registerStudy("Bearer $accessToken", request)
             if (response.isSuccessful && response.body() != null) {
                 val body = response.body()!!
                 RequestResult.Success(body)
@@ -339,7 +362,10 @@ class RemoteDataSource {
     }
 
     // /api/studies/recommendUser/{studyId} 스터디원 추천
-    suspend fun getTop3StudyCandidates(accessToken: String, studyId: String): RequestResult<List<Top3RecommendedUsersDtoItem>> {
+    suspend fun getTop3StudyCandidates(
+        accessToken: String,
+        studyId: String
+    ): RequestResult<List<Top3RecommendedUsersDtoItem>> {
         return try {
             val response = springService.getTop3StudyCandidates("Bearer $accessToken", studyId)
 
