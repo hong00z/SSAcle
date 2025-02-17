@@ -11,5 +11,5 @@ public class TokenDto {
     private String type;    // Signup 또는 Login
     private String accessToken;
     private String refreshToken;
-    private UserRole role;    // 싸피생 인증 구분 (USER : 일반 사용자 / SSAFYUSER : 싸피생)
+    private boolean isAuth;    // 싸피생 인증 구분 (False : 일반 사용자 / True : 싸피생)
 }
