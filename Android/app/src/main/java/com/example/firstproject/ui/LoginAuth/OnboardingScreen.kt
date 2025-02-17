@@ -302,7 +302,7 @@ fun OnboardingScreen(
                     }
                 )
                 // 테스트용 표시
-                Text(text = "선택된 주제: ${selectedTopics.joinToString()}")
+//                Text(text = "선택된 주제: ${selectedTopics.joinToString()}")
 
                 Spacer(Modifier.height(32.dp))
                 Row(
@@ -386,7 +386,7 @@ fun OnboardingScreen(
             }
 
             // 테스트용 표시
-            Text("선택된 요일: ${selectedDays.joinToString()}")
+//            Text("선택된 요일: ${selectedDays.joinToString()}")
 
             Spacer(Modifier.weight(1f))
             Button(
