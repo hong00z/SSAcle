@@ -230,6 +230,7 @@ public class StudyService {
                             .creatorInfo(creatorInfo)
                             .title(feed.getTitle())
                             .content(feed.getContent())
+                            .createdAt(feed.getCreatedAt())
                             .build();
                 })
                 .collect(Collectors.toList());
@@ -397,9 +398,10 @@ public class StudyService {
         /**
          * FCM 알림 보내는 기능
          */
-
-
-//        sendToUser(user.getFcmToken(), user.getNickname(), study.getStudyName());
+        // 유저가 FCM 토큰을 가지고 있으면 FCM 알림 보내기
+        if(!Objects.equals(user.getFcmToken(), "")){
+            sendToUser(user.getFcmToken(), user.getNickname(), study.getStudyName());
+        }
 
     }
     // 유저에게 FCM 던지기
@@ -455,11 +457,14 @@ public class StudyService {
                         .meetingDays(study.getMeetingDays())
                         .count(study.getCount())
                         .memberCount(study.getMembers().size())
-                        .members(study.getMembers().stream()  // 멤버의 닉네임과 이미지 방장정보 넣음
+                        .members(study.getMembers().stream()  // 멤버의 닉네임과 이미지 팀장정보 넣음
                                 .map(user -> {
+                                    // 1. 팀장의 userID
                                     String creator = study.getCreatedBy();
+                                    // 2. 유저 Entity
                                     User userEntity = userRepository.findById(user)
                                             .orElseThrow(()->new NoSuchElementException("유저ID" + user + "를 찾을 수 없습니다."));
+                                    // 3. 유저의 정보를 nicknameImageDTO에 담기
                                     return nicknameImage.builder()
                                                     .nickname(userEntity.getNickname())
                                                     .image(userEntity.getImage())
@@ -479,19 +484,19 @@ public class StudyService {
 
     // 내 요청함 wishStudy & 스터디 내 수신함  preMembers 추가
     public void addWishStudyPreMember(String userId, String studyId) {
-        // 유저 조회
+        // 1. 유저 조회
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("유저ID" + userId + "에 해당하는 유저가 없습니다."));
 
         log.info("유저 조회 : {}", user.getUserId());
 
-        // 스터디 조회
+        // 2. 스터디 조회
         Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new NoSuchElementException("스터디ID" + studyId + "에 해당하는 스터디가 없습니다."));
 
         log.info("스터디 조회 : {}", study.getId());
 
-        // 이미 요청한 스터디인지 확인
+        // 3. 이미 요청한 스터디인지 확인
         Set<String> preMembers = (study.getPreMembers() == null) ? new HashSet<>() : study.getPreMembers();
         log.info("preMember 확인 : {}", preMembers);
 
@@ -508,7 +513,7 @@ public class StudyService {
         }
 
 
-        // 요청 목록에 추가
+        // 4. 요청 목록에 추가
         user.getWishStudies().add(studyId);
         study.getPreMembers().add(userId);
         log.info("wishStudies, preMembers 추가완료");
@@ -522,14 +527,18 @@ public class StudyService {
          * FCM 알림 보내는 기능
          */
 
-//        // 스터디 팀장 정보
-//        String leaderId = study.getCreatedBy(); // 스터디 장 ID 찾기
-//        User leader = userRepository.findById(leaderId)  // 스터디 장의 Entity
-//                .orElseThrow(() -> new NoSuchElementException("유저ID" + leaderId + "에 해당하는 유저가 없습니다."));
-//        System.out.println("스터디장: " + leader);
-//        System.out.println("스터디장의 토큰: " + leader.getFcmToken());
-//
-//        sendToLeader(leader.getFcmToken(), user.getNickname(), study.getStudyName());
+        // 스터디 팀장 정보
+        String leaderId = study.getCreatedBy(); // 스터디 장 ID 찾기
+        User leader = userRepository.findById(leaderId)  // 스터디 장의 Entity
+                .orElseThrow(() -> new NoSuchElementException("유저ID" + leaderId + "에 해당하는 유저가 없습니다."));
+        System.out.println("스터디장: " + leader);
+        System.out.println("스터디장의 토큰: " + leader.getFcmToken());
+
+        // 팀장이 FCM 토큰을 가지고 있으면 FCM 알림 보내기
+        if(!Objects.equals(leader.getFcmToken(), "")){
+            sendToLeader(leader.getFcmToken(), user.getNickname(), study.getStudyName());
+        }
+
     }
 
     // 스터디 팀장에게 FCM 던지기
@@ -702,12 +711,16 @@ public class StudyService {
          * FCM 알림 보내는 기능
          */
 
-//        // 스터디 팀장 정보
-//        String leaderId = study.getCreatedBy(); // 스터디 장 ID 찾기
-//        User leader = userRepository.findById(leaderId)  // 스터디 장의 Entity
-//                .orElseThrow(() -> new NoSuchElementException("유저ID" + leaderId + "에 해당하는 유저가 없습니다."));
-//
-//        sendToLeaderJoinEvent(leader.getFcmToken(), user.getNickname(), study.getStudyName());
+        // 스터디 팀장 정보
+        String leaderId = study.getCreatedBy(); // 스터디 장 ID 찾기
+        User leader = userRepository.findById(leaderId)  // 스터디 장의 Entity
+                .orElseThrow(() -> new NoSuchElementException("유저ID" + leaderId + "에 해당하는 유저가 없습니다."));
+
+        // 팀장이 FCM 토큰을 가지고 있으면 FCM 알림 보내기
+        if(!Objects.equals(leader.getFcmToken(), "")){
+            sendToLeaderJoinEvent(leader.getFcmToken(), user.getNickname(), study.getStudyName());
+        }
+
 
     }
 

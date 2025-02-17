@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.firstproject.R
 import com.example.firstproject.databinding.SliderItemBinding
@@ -90,23 +91,14 @@ class ViewPagerAdapter(private val items: List<CardItem>) :
 
         // 버튼 클릭 시 프래그먼트 전환
         holder.binding.feedbackButton.setOnClickListener {
-            val fragment = when (item.title) {
-                "자소서 피드백" -> AiFeedbackFragment()
-                "시선 피드백" -> EyeFragment()
-                "표정 피드백" -> FaceExpressionFragment()
-                else -> null
-            }
+            // 현재 뷰에 연결된 NavController를 가져옵니다.
+            val navController = holder.itemView.findNavController()
 
-            fragment?.let {
-                val fragmentManager =
-                    (holder.itemView.context as? AppCompatActivity)?.supportFragmentManager
-
-                fragmentManager?.beginTransaction()
-                    ?.replace(R.id.fragment_container, it)
-                    ?.addToBackStack(null)
-                    ?.commit()
-            } ?: run {
-                Toast.makeText(holder.itemView.context, "오류 발생!", Toast.LENGTH_SHORT).show()
+            when (item.title) {
+                "자소서 피드백" -> navController.navigate(R.id.aiFeedbackFragment)
+                "시선 피드백" -> navController.navigate(R.id.eyeFragment)
+                "표정 피드백" -> navController.navigate(R.id.faceExpressionFragment)
+                else -> Toast.makeText(holder.itemView.context, "오류 발생!", Toast.LENGTH_SHORT).show()
             }
         }
     }

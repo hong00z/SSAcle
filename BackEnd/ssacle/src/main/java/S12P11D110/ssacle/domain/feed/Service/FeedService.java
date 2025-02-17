@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -50,7 +51,10 @@ public class FeedService {
         // 2-3. 스터디 멤버 별로 FCM 토큰 보내기
         for(String token : membersToken){
             System.out.println("멤버의 토큰" + token);
-            sendToMembers(token, study.getStudyName());
+            // 토큰이 없으면 FCM 알림 안감
+            if (!Objects.equals(token, "")){
+                sendToMembers(token, study.getStudyName());
+            }
         }
 
 
