@@ -46,7 +46,7 @@ class MyApplication : Application() {
         private val KEY_GRADE = stringPreferencesKey("user_grade")
         private val KEY_NAME = stringPreferencesKey("user_name")
         private val KEY_TERM = stringPreferencesKey("user_term")
-        private val KEY_CAMPUS = stringPreferencesKey("user_campuss")
+        private val KEY_CAMPUS = stringPreferencesKey("user_campus")
 
         // ✅ 사용자 정보 저장 (비동기)
         fun saveUserInfo(
