@@ -43,7 +43,9 @@ fun FindStudyScreen() {
             .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CommonTopBar("", onBackPress = { })
+        CommonTopBar("", onBackPress = {
+            // 뒤로 가기
+        })
 
         Image(painter = painterResource(R.drawable.img_find_study), null)
         Spacer(Modifier.height(36.dp))
@@ -57,8 +59,8 @@ fun FindStudyScreen() {
 fun StackLabel(stackTitle: String, tint: Color) {
     Box(
         modifier = Modifier
-            .width(56.dp)
-            .height(24.dp)
+            .width(52.dp)
+            .height(22.dp)
             .background(tint, RoundedCornerShape(50.dp)),
         contentAlignment = Alignment.Center
     ) {
@@ -160,7 +162,7 @@ private fun StudyInfoItem() {
 }
 
 @Composable
-fun SendRequestButton() {
+private fun SendRequestButton() {
     Box(
         modifier = Modifier
             .width(82.dp)
@@ -187,7 +189,7 @@ fun SendRequestButton() {
 }
 
 @Composable
-fun CompleteRequestButton() {
+private fun CompleteRequestButton() {
     Box(
         modifier = Modifier
             .width(82.dp)
