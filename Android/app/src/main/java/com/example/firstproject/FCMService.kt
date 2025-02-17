@@ -7,8 +7,9 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.example.firstproject.MyApplication.Companion.USER_ID
+import com.example.firstproject.MyApplication.Companion.tokenManager
 import com.example.firstproject.client.RetrofitClient
-import com.example.firstproject.client.RetrofitClient.USER_ID
 import com.example.firstproject.dto.TokenUpdateRequest
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -56,7 +57,8 @@ class FCMService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         Log.d(TAG, "새로운 토큰: $token")
         // 토큰 서버 전송 로직 추가
-        sendRegistrationToServer(token)
+
+        tokenManager.saveFcmToken(token)
     }
 
     /**
@@ -99,7 +101,7 @@ class FCMService : FirebaseMessagingService() {
      */
     private fun sendRegistrationToServer(fcmToken: String) {
         // 서버 API 호출 코드 또는 로컬 저장 등의 로직 구현
-        val userId = USER_ID // 실제 userId를 가져오는 로직으로 교체하세요.
+        val userId = USER_ID
 
         // Retrofit 호출은 IO 스레드에서 실행
         CoroutineScope(Dispatchers.IO).launch {
