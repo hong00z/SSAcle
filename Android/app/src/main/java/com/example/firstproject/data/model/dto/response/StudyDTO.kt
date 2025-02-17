@@ -2,12 +2,17 @@ package com.example.firstproject.data.model.dto.response
 
 // swagger 기준 GET/api/studies
 data class StudyDTO(
-    val id: String,
+    val studyId: String,
     val studyName: String,
     val topic: String,
     val meetingDays: List<String>,
     val count: Int,
-    val members: List<String>,
-    val studyContent: String,
-    val createdBy:String
+    val memberCount: Int,
+    val members: List<StudyInfoDTO>,
+)
+
+data class StudyInfoDTO(
+    val nickname: String,
+    val image: String,
+    val creator: Boolean
 )

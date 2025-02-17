@@ -4,7 +4,6 @@ import android.provider.ContactsContract.CommonDataKinds.Nickname
 import com.example.firstproject.data.model.dto.request.AuthRequestDTO
 import com.example.firstproject.data.model.dto.request.EditProfileRequestDTO
 import com.example.firstproject.data.model.dto.request.NicknameRequestDTO
-import com.example.firstproject.data.model.dto.response.AllStudyListResponseDTO
 import com.example.firstproject.data.model.dto.response.AuthResponseDTO
 import com.example.firstproject.data.model.dto.response.EditProfileResponseDTO
 import com.example.firstproject.data.model.dto.response.KakaoTokenDTO
@@ -41,7 +40,8 @@ interface APIService {
     @GET("/api/auth/newToken")
     suspend fun getRefreshToken(@Header("Authorization") refreshToken: String): Response<CommonResponseDTO<RefreshTokenDTO>>
 
-    @GET("/api/studies")
+    // 모집 중인 스터디 리스트 조회
+    @GET("/api/studies/recruitingStudy")
     suspend fun getAllStudies(@Header("Authorization") accessToken: String): Response<List<StudyDTO>>
 
 
