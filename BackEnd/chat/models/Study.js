@@ -9,11 +9,6 @@ const studySchema = new Schema(
       type: String,
       required: true,
     },
-    // 프로필 사진 URL
-    image: {
-      type: String,
-      default: "",
-    },
     // 스터디 주제
     topic: {
       type: String,
@@ -62,13 +57,13 @@ const studySchema = new Schema(
       },
     ],
     // 피드 (필요에 따라 Feed 컬렉션 참조 가능, 여기서는 간단하게 문자열 배열로 예시)
-    feeds: {
-      type: [String],
-      default: [],
-    },
+    // feeds: {
+    //   type: [String],
+    //   default: [],
+    // },
   },
   {
-    timestamps: { createdAt: true, updatedAt: false },
+    timestamps: { createdAt: true, updatedAt: true },
   }
 )
 

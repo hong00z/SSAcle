@@ -6,43 +6,6 @@ const Message = require("../models/Message")
 
 /**
  * @openapi
- * /api/users/{userId}:
- *   get:
- *     tags:
- *       - User
- *     summary: 사용자 데이터 조회
- *     description: 주어진 userId에 해당하는 사용자의 상세 정보를 반환합니다.
- *     parameters:
- *       - in: path
- *         name: userId
- *         required: true
- *         schema:
- *           type: string
- *         description: 사용자 고유 ID
- *     responses:
- *       200:
- *         description: 사용자 정보 반환
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/User'
- *       404:
- *         description: 사용자를 찾을 수 없음
- */
-router.get("/:userId", async (req, res) => {
-  try {
-    const user = await User.findById(req.params.userId)
-    if (!user) {
-      return res.status(404).json({ error: "사용자를 찾을 수 없습니다." })
-    }
-    res.status(200).json(user)
-  } catch (err) {
-    res.status(500).json({ error: err.message })
-  }
-})
-
-/**
- * @openapi
  * /api/users/{userId}/fcmToken:
  *   post:
  *     tags:
