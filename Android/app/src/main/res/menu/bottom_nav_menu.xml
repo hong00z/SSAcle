@@ -12,8 +12,9 @@
         android:title="AI"
         />
 
+
     <item
-        android:id="@+id/liveFragment"
+        android:id="@+id/liveMainFragment"
         android:icon="@drawable/podcasts_24"
         android:title="라이브"
         />
