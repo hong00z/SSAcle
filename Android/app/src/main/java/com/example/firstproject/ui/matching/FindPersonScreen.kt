@@ -86,7 +86,7 @@ private fun PersonInfoItem() {
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    GradeTag(12)
+                    GradeTag("12기")
                     Spacer(Modifier.width(4.dp))
                     Text(
                         text = "구미",
@@ -231,7 +231,7 @@ private fun CompleteRequestButton() {
 }
 
 @Composable
-fun GradeTag(grade: Int) {
+fun GradeTag(grade: String) {
     val labelColor = GradeLabelEnum.selectColor(grade)
     Box(
         modifier = Modifier
@@ -244,7 +244,7 @@ fun GradeTag(grade: Int) {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            "${grade}기",
+            "${grade}",
             fontFamily = gmarket,
             fontWeight = FontWeight(400),
             fontSize = 12.sp,
