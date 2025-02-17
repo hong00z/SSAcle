@@ -1,8 +1,10 @@
 package com.example.firstproject.ui.matching
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.firstproject.MyApplication.Companion.tokenManager
+import com.example.firstproject.data.model.dto.response.Top3RecommendedUsersDtoItem
 import com.example.firstproject.data.model.dto.response.UserSuitableStudyDtoItem
 import com.example.firstproject.data.repository.MainRepository
 import com.rootachieve.requestresult.RequestResult
@@ -16,15 +18,14 @@ class FindViewModel:ViewModel() {
     private val repository = MainRepository
     var accessToken = tokenManager.getAccessToken()
 
+    // 추천 스터디 통신
     private val _recommandStudyResult =
         MutableStateFlow<RequestResult<List<UserSuitableStudyDtoItem>>>(RequestResult.None())
     val recommandStudyResult = _recommandStudyResult.asStateFlow()
 
-
     private val _recommandStudyList =
         MutableStateFlow<List<UserSuitableStudyDtoItem>>(emptyList())
     val recommandStudyList = _recommandStudyList.asStateFlow()
-
 
     fun getRecommandStudyList() {
         viewModelScope.launch {
@@ -44,6 +45,41 @@ class FindViewModel:ViewModel() {
             }
 
             delay(200)
+        }
+
+    }
+
+    // 해당 스터디에 추천하는 스터디원 통신
+    private val _personRecommandResult =
+        MutableStateFlow<RequestResult<List<Top3RecommendedUsersDtoItem>>>(RequestResult.None())
+    val personRecommandResult = _personRecommandResult.asStateFlow()
+
+    private val _personRecommandList =
+        MutableStateFlow<List<Top3RecommendedUsersDtoItem>>(emptyList())
+    val personRecommandList = _personRecommandList.asStateFlow()
+
+    fun getPersonRecommandList(studyId: String) {
+        viewModelScope.launch {
+            _personRecommandResult.update {
+                RequestResult.Progress()
+            }
+
+            val result = repository.getTop3StudyCandidates(
+                accessToken = tokenManager.getAccessToken()!!,
+                studyId = studyId
+            )
+
+            _personRecommandResult.update {
+                result
+            }
+
+            // 스터디원 리스트 업데이트
+            if (result is RequestResult.Success) {
+                _personRecommandList.value = result.data
+            }
+
+            delay(200)
+
         }
 
     }

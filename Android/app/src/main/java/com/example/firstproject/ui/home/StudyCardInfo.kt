@@ -106,18 +106,6 @@ fun StudyCardInfo(studyInfo: MyJoinedStudyListDtoItem) {
 
 @Composable
 fun JoinProfiles(personNum: Int, memberList: List<Member>) {
-//    val joinList = mutableListOf(
-//        R.drawable.img_default_profile,
-//        R.drawable.img_default_profile_5,
-//        R.drawable.img_default_profile,
-//        R.drawable.img_default_profile_5,
-//        R.drawable.img_default_profile,
-//        R.drawable.img_default_profile_5,
-//        R.drawable.img_default_profile,
-//        R.drawable.img_default_profile_5,
-//        R.drawable.img_default_profile,
-//        R.drawable.img_default_profile_5,
-//    )
 
     val maxNum = 4
     val profileCount = min(personNum, maxNum)
@@ -130,10 +118,7 @@ fun JoinProfiles(personNum: Int, memberList: List<Member>) {
     ) {
 
         repeat(profileCount) { index ->
-//            ProfileItem(
-//                imgId = joinList[index],
-//                modifier = Modifier.offset(x = (6 * (profileCount - index)).dp)
-//            )
+
             ProfileImgItem(
                 image = memberList[index].image,
                 modifier = Modifier.offset(x = (6 * (profileCount - index)).dp)

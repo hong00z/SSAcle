@@ -18,6 +18,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.findNavController
 import com.example.firstproject.R
 import com.example.firstproject.databinding.FragmentHomeBinding
+import com.example.firstproject.ui.matching.ChooseStudyScreen
+import com.example.firstproject.ui.matching.FindPersonScreen
 import com.example.firstproject.ui.matching.FindStudyScreen
 import com.example.firstproject.ui.matching.RegisterStudyScreen
 
@@ -75,7 +77,15 @@ class HomeFragment : Fragment() {
                     }
 
                     composable("findStudyScreen") {
-                        FindStudyScreen()
+                        FindStudyScreen(navController = navController)
+                    }
+
+                    composable("chooseStudyScreen") {
+                        ChooseStudyScreen(navController = navController)
+                    }
+
+                    composable("findPersonScreen") {
+                        FindPersonScreen(navController = navController)
                     }
 
                 }
