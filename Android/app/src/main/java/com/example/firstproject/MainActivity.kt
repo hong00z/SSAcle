@@ -10,7 +10,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.firstproject.MyApplication.Companion.USER_ID
 import com.example.firstproject.MyApplication.Companion.tokenManager
-import com.example.firstproject.client.RetrofitClient
 import com.example.firstproject.databinding.ActivityMainBinding
 import com.example.firstproject.dto.TokenUpdateRequest
 import kotlinx.coroutines.CoroutineScope

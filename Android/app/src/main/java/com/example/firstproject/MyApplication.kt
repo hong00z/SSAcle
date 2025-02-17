@@ -118,11 +118,6 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        // 다른 초기화 코드들
-//        if (BuildConfig.DEBUG) {
-//            Timber.plant(Timber.DebugTree())
-//        }
-
         // ✅ 카카오 SDK 초기화 (필수)
         KakaoSdk.init(this, "0618f69e1a386d67ec61fc517f36c35d")
 
