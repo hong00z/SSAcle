@@ -63,7 +63,8 @@ import com.example.firstproject.utils.TopicTagEnum
 @Composable
 fun StudyDetailScreen(
     navController: NavController,
-    onNavigateToVideo: () -> Unit
+    onNavigateToVideo: (String) -> Unit,
+    onNavigateToChat: (String) -> Unit
 ) {
 
     Column(
@@ -185,17 +186,74 @@ fun StudyDetailScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 36.dp)
             ) {
-                CardButton(
-                    image = painterResource(R.drawable.img_chatting),
-                    text = "스터디 채팅방",
-                    onMoveScreen = onNavigateToVideo
-                )
+                Card(
+                    modifier = Modifier
+                        .width(150.dp)
+                        .height(100.dp)
+                        .shadow(
+                            elevation = 4.dp,
+                            shape = RoundedCornerShape(10.dp),
+                            clip = true
+                        )
+                        .clickable { onNavigateToVideo(studyId)  },
+                    shape = RoundedCornerShape(10.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    border = BorderStroke(1.dp, colorResource(R.color.border_light_color))
+                ) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Image(
+                            painter = painterResource(R.drawable.img_chatting),
+                            null,
+                            modifier = Modifier.size(48.dp)
+                        )
+                        Spacer(Modifier.height(8.dp))
+                        Text(
+                            text = "스터디 채팅방",
+                            fontFamily = pretendard,
+                            fontWeight = FontWeight(600),
+                            fontSize = 14.5.sp
+                        )
+                    }
+                }
                 Spacer(Modifier.weight(1f))
-                CardButton(
-                    image = painterResource(R.drawable.img_mic),
-                    text = "실시간 모각공",
-                    onMoveScreen = onNavigateToVideo
-                )
+                Card(
+                    modifier = Modifier
+                        .width(150.dp)
+                        .height(100.dp)
+                        .shadow(
+                            elevation = 4.dp,
+                            shape = RoundedCornerShape(10.dp),
+                            clip = true
+                        )
+                        .clickable { onNavigateToChat(studyId) },
+                    shape = RoundedCornerShape(10.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    border = BorderStroke(1.dp, colorResource(R.color.border_light_color))
+                ) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Image(
+                            painter = painterResource(R.drawable.img_mic),
+                            null,
+                            modifier = Modifier.size(48.dp)
+                        )
+                        Spacer(Modifier.height(8.dp))
+                        Text(
+                            text = "실시간 모각공",
+                            fontFamily = pretendard,
+                            fontWeight = FontWeight(600),
+                            fontSize = 14.5.sp
+                        )
+                    }
+
+                }
             }
 
             Spacer(Modifier.height(24.dp))
@@ -454,43 +512,6 @@ private fun UserProfileItem(profileId: Int, userName: String, isHost: Boolean) {
     }
 }
 
-@Composable
-private fun CardButton(image: Painter, text: String, onMoveScreen: () -> Unit) {
-    Card(
-        modifier = Modifier
-            .width(150.dp)
-            .height(100.dp)
-            .shadow(
-                elevation = 4.dp,
-                shape = RoundedCornerShape(10.dp),
-                clip = true
-            )
-            .clickable { onMoveScreen() },
-        shape = RoundedCornerShape(10.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, colorResource(R.color.border_light_color))
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Image(
-                painter = image,
-                null,
-                modifier = Modifier.size(48.dp)
-            )
-            Spacer(Modifier.height(8.dp))
-            Text(
-                text = text,
-                fontFamily = pretendard,
-                fontWeight = FontWeight(600),
-                fontSize = 14.5.sp
-            )
-        }
-
-    }
-}
 
 @Composable
 private fun NoticeItem() {

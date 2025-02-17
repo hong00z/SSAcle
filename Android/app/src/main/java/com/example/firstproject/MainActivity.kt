@@ -10,6 +10,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.firstproject.MyApplication.Companion.USER_ID
 import com.example.firstproject.MyApplication.Companion.tokenManager
+import com.example.firstproject.client.RetrofitClient
 import com.example.firstproject.databinding.ActivityMainBinding
 import com.example.firstproject.dto.TokenUpdateRequest
 import kotlinx.coroutines.CoroutineScope
@@ -71,10 +72,14 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.studyRegisterFragment) {
-                binding.bottomNavigationView.visibility = View.GONE
-            } else {
+
+            if (destination.id == R.id.homeFragment || destination.id == R.id.chatFragment
+                || destination.id == R.id.aiFragment || destination.id == R.id.mypageFragment
+                || destination.id == R.id.liveFragment
+            ) {
                 binding.bottomNavigationView.visibility = View.VISIBLE
+            } else {
+                binding.bottomNavigationView.visibility = View.GONE
             }
 
         }
