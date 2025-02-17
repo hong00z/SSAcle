@@ -79,14 +79,6 @@ fun HomeScreen(
     val myJoinedStudyList = (getJoinedStudyResult as? RequestResult.Success)?.data
 
 
-    val myStudyList = mutableListOf<StudyInfo>(
-        StudyInfo("스프링 입문 스터디", "백엔드", 8, true, true),
-
-        StudyInfo("스터디 제목은 과연 몇 글자까지 가능할까요?", "알고리즘", 3, false, false),
-
-        StudyInfo("스터디 제목", "모바일", 5, true, false),
-    )
-
     // 모든 스터디 리스트
     val allStudyList by homeViewModel.allStudyList.collectAsStateWithLifecycle()
 
@@ -371,6 +363,13 @@ fun MyStudyItem(
                             clip = true,
                         )
                         .clickable {
+                            // 현재 NavBackStackEntry의 savedStateHandle에 'studyItem' 키로 데이터 저장
+                            navController.currentBackStackEntry
+                                ?.savedStateHandle
+                                ?.set("studyId", itemList[it].id)
+
+                            Log.d("홈 화면에서 누름","스터디아이디: ${itemList[it].id}")
+
                             // 해당 스터디 상세정보 화면으로 이동
                             navController.navigate("studyDetailScreen")
 
