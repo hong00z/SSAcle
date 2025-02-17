@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.firstproject.MyApplication
+import com.example.firstproject.MyApplication.Companion.tokenManager
 import com.example.firstproject.R
 import com.example.firstproject.data.model.dto.request.EditProfileRequestDTO
 import com.example.firstproject.data.model.dto.request.NicknameRequestDTO
@@ -23,7 +24,7 @@ import java.io.File
 
 class OnboardingViewModel : ViewModel() {
     private val repository = MainRepository
-    private val tokenManager = TokenManager(MyApplication.appContext)
+//    private val tokenManager = TokenManager(MyApplication.appContext)
     var accessToken = tokenManager.getAccessToken()
 
     // 닉네임 중복확인

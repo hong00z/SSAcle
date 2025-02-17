@@ -135,7 +135,6 @@ dependencies {
 
     // 카카오 로그인
     implementation("com.kakao.sdk:v2-user:2.12.0")
-    implementation("com.jakewharton.timber:timber:5.0.1")
 
     // 프로필 이미지 불러오기 (Glide 사용)
     implementation("com.github.bumptech.glide:glide:4.16.0")

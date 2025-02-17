@@ -2,6 +2,7 @@ package com.example.firstproject.data.repository
 
 import android.content.Context
 import com.example.firstproject.MyApplication
+import com.example.firstproject.MyApplication.Companion.tokenManager
 import com.rootachieve.requestresult.RequestResult
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
@@ -9,7 +10,6 @@ import okhttp3.Response
 
 class TokenInterceptor(private val context: Context) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val tokenManager = TokenManager(context)
         val requestBuilder = chain.request().newBuilder()
 
         // Access Token 가져오기
@@ -49,7 +49,6 @@ class TokenInterceptor(private val context: Context) : Interceptor {
 
     // ✅ Refresh Token으로 Access Token 갱신
     private suspend fun refreshToken(context: Context): String? {
-        val tokenManager = TokenManager(context)
         val refreshToken = tokenManager.getRefreshToken()
 
         return if (!refreshToken.isNullOrEmpty()) {
