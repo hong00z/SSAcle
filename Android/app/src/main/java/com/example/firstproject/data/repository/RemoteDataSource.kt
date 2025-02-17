@@ -289,9 +289,9 @@ class RemoteDataSource {
     }
 
     // /api/studies/{studyId} 특정 스터디 조회
-    suspend fun getStudyDetailInfo(accessToken: String): RequestResult<StudyDetailInfoResponseDTO> {
+    suspend fun getStudyDetailInfo(accessToken: String, studyId: String): RequestResult<StudyDetailInfoResponseDTO> {
         return try {
-            val response = springService.getStudyDetailInfo("Bearer $accessToken", "")
+            val response = springService.getStudyDetailInfo("Bearer $accessToken", studyId)
             if (response.isSuccessful && response.body() != null) {
                 val body = response.body()!!
                 RequestResult.Success(body)

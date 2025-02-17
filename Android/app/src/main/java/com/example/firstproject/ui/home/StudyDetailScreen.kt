@@ -1,5 +1,6 @@
 package com.example.firstproject.ui.home
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -37,14 +38,17 @@ import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -53,19 +57,87 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.firstproject.R
+import com.example.firstproject.data.model.dto.response.Feed
+import com.example.firstproject.data.model.dto.response.Member
+import com.example.firstproject.data.model.dto.response.MyJoinedStudyListDtoItem
 import com.example.firstproject.ui.theme.gmarket
 import com.example.firstproject.ui.theme.pretendard
 import com.example.firstproject.utils.GradeLabelEnum
 import com.example.firstproject.utils.TopicTagEnum
+import com.rootachieve.requestresult.RequestResult
 
 @Composable
 fun StudyDetailScreen(
     navController: NavController,
+    studyDetailViewModel: StudyDetailViewModel = viewModel(),
     onNavigateToVideo: (String) -> Unit,
     onNavigateToChat: (String) -> Unit
 ) {
+
+
+    val getStudyInfo by studyDetailViewModel.studyDetailResult.collectAsStateWithLifecycle()
+    val studyInfo = (getStudyInfo as? RequestResult.Success)?.data
+
+
+    // 이전 BackStackEntry의 savedStateHandle에서 'studyItem'을 가져옴
+    val studyId = navController.previousBackStackEntry
+        ?.savedStateHandle
+        ?.get<String>("studyId")
+
+    Log.d("상세 화면", "스터디 아이디${studyId}")
+
+
+    var studyName: String? = studyInfo?.studyName
+    var studyTopic: String? = studyInfo?.topic
+    var meetingDays: List<String>? = studyInfo?.meetingDays
+    var content: String? = studyInfo?.studyContent
+    var currentCount: Int? = studyInfo?.memberCont
+    var totalCount: Int? = studyInfo?.count
+    var membersList: List<Member>? = studyInfo?.members
+    var feedsList:List<Feed>? = studyInfo?.feeds
+
+
+//    val count: Int,
+//    val createdBy: String,
+//    val feeds: List<Feed>,
+//    val id: String,
+//    val meetingDays: List<String>,
+//    val memberCont: Int,
+//    val members: List<Member>,
+//    val studyContent: String,
+//    val studyName: String,
+//    val topic: String
+//    )
+
+
+    LaunchedEffect(studyId) {
+        studyId?.let {
+            // 예: ViewModel 호출
+            studyDetailViewModel.getStudyDetailInfo(it)
+            Log.d("스터디 상세화면으로 옴", "${studyId}")
+            studyDetailViewModel.getStudyDetailInfo(studyId)
+            studyName = studyInfo?.studyName
+            studyInfo?.topic
+            studyInfo?.meetingDays
+            studyInfo?.studyContent
+            studyInfo?.memberCont
+            studyInfo?.count
+            studyInfo?.members
+            studyInfo?.feeds
+
+        }
+    }
+
+    LaunchedEffect(getStudyInfo) {
+
+        Log.d("스터디 상세 갱신", "${studyInfo}")
+
+    }
 
     Column(
         modifier = Modifier
@@ -95,9 +167,9 @@ fun StudyDetailScreen(
                     .padding(horizontal = 32.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                val tag = TopicTagEnum.fromTitle("CS 이론")
+                val tag = studyTopic?.let { TopicTagEnum.fromTitle(it) }
                 Text(
-                    "스터디 제목 들어감",
+                    text = studyName ?: "",
                     fontFamily = pretendard,
                     fontWeight = FontWeight(700),
                     fontSize = 22.sp,
@@ -107,10 +179,12 @@ fun StudyDetailScreen(
                 )
                 Spacer(Modifier.weight(1f))
 
-                StackTag(
-                    stackTitle = tag!!.title,
-                    tint = colorResource(tag.colorId)
-                )
+                tag?.let {
+                    StackTag(
+                        stackTitle = it.title,
+                        tint = colorResource(tag.colorId)
+                    )
+                }
             }
 
             Spacer(Modifier.height(24.dp))
@@ -154,7 +228,9 @@ fun StudyDetailScreen(
                     .wrapContentHeight()
                     .padding(horizontal = 36.dp)
             ) {
-                ContentInfoCard()
+                if (content != null) {
+                    ContentInfoCard(content)
+                }
             }
             Spacer(Modifier.height(36.dp))
 
@@ -164,12 +240,11 @@ fun StudyDetailScreen(
                     .padding(horizontal = 32.dp),
                 verticalAlignment = Alignment.Bottom
             ) {
-                var currentNum = 4
-                var totalNum = 6
+
                 TitleText("스터디 구성원")
                 Spacer(Modifier.width(12.dp))
                 Text(
-                    text = "${currentNum} / ${totalNum} 명",
+                    text = "${currentCount} / ${totalCount} 명",
                     fontFamily = pretendard,
                     fontWeight = FontWeight(500),
                     fontSize = 14.sp,
@@ -178,7 +253,9 @@ fun StudyDetailScreen(
 
             }
             Spacer(Modifier.height(24.dp))
-            JoinUserProfiles()
+            if (membersList != null) {
+                JoinUserProfiles(membersList)
+            }
 
             Spacer(Modifier.height(20.dp))
             Row(
@@ -195,7 +272,7 @@ fun StudyDetailScreen(
                             shape = RoundedCornerShape(10.dp),
                             clip = true
                         )
-                        .clickable { onNavigateToVideo(studyId)  },
+                        .clickable { onNavigateToChat(studyId ?: "") },
                     shape = RoundedCornerShape(10.dp),
                     colors = CardDefaults.cardColors(containerColor = Color.White),
                     border = BorderStroke(1.dp, colorResource(R.color.border_light_color))
@@ -229,7 +306,10 @@ fun StudyDetailScreen(
                             shape = RoundedCornerShape(10.dp),
                             clip = true
                         )
-                        .clickable { onNavigateToChat(studyId) },
+                        .clickable {
+                            onNavigateToVideo(studyId ?: "")
+                            Log.d("실시간 모각공 버튼", "${studyId}")
+                        },
                     shape = RoundedCornerShape(10.dp),
                     colors = CardDefaults.cardColors(containerColor = Color.White),
                     border = BorderStroke(1.dp, colorResource(R.color.border_light_color))
@@ -290,7 +370,13 @@ fun StudyDetailScreen(
                 }
             }
 
-            NoticeItem()
+            if (feedsList != null) {
+                feedsList.forEachIndexed { index, feed ->
+                    NoticeItem(feed)
+                }
+            }
+
+
 
 
         }
@@ -391,7 +477,7 @@ private fun StackTag(stackTitle: String, tint: Color) {
 }
 
 @Composable
-private fun ContentInfoCard() {
+private fun ContentInfoCard(content: String) {
     Box(
         modifier = Modifier
             .wrapContentSize()
@@ -415,9 +501,7 @@ private fun ContentInfoCard() {
                     .padding(horizontal = 22.dp, vertical = 16.dp)
             ) {
                 Text(
-                    text = "스터디 설명 등 아주 긴 글이 들어갈 예정...\n들어갈 예정...\n들어갈 예정...\n스터디 설명 등 아주 긴 글이 들어갈 예정...\n" +
-                            "들어갈 예정...\n" +
-                            "들어갈 예정...",
+                    text = content,
                     fontSize = 14.sp,
                     fontFamily = pretendard,
                     fontWeight = FontWeight(500)
@@ -436,16 +520,7 @@ private data class TmpUser(
 )
 
 @Composable
-private fun JoinUserProfiles() {
-    val userList = mutableListOf<TmpUser>(
-        TmpUser(userName = "사용자1", imgId = R.drawable.img_default_profile, true),
-        TmpUser(userName = "닉네임은", imgId = R.drawable.img_default_profile_5, false),
-        TmpUser(userName = "닉네임이좀길다", imgId = R.drawable.img_default_profile, false),
-        TmpUser(userName = "12기 구미생", imgId = R.drawable.img_default_profile_5, false),
-        TmpUser(userName = "11기 싸피생", imgId = R.drawable.img_default_profile_5, false),
-        TmpUser(userName = "교육생 화이팅", imgId = R.drawable.img_default_profile_5, false),
-        TmpUser(userName = "흠냐륑", imgId = R.drawable.img_default_profile_5, false)
-    )
+private fun JoinUserProfiles(userList: List<Member>) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -453,7 +528,7 @@ private fun JoinUserProfiles() {
             .horizontalScroll(rememberScrollState())
     ) {
         userList.forEachIndexed { index, User ->
-            UserProfileItem(User.imgId, User.userName, User.isHost)
+            UserProfileItem(User.image, User.nickname, User.creator)
 
             if (index < userList.size - 1) {
                 Spacer(Modifier.width(16.dp))
@@ -467,7 +542,7 @@ private fun JoinUserProfiles() {
 }
 
 @Composable
-private fun UserProfileItem(profileId: Int, userName: String, isHost: Boolean) {
+private fun UserProfileItem(imageUrl: String, userName: String, isHost: Boolean) {
     Column(modifier = Modifier.width(52.dp)) {
         Box(
             modifier = Modifier
@@ -475,13 +550,23 @@ private fun UserProfileItem(profileId: Int, userName: String, isHost: Boolean) {
                 .background(color = Color(0x00FFFFFF), shape = CircleShape)
         ) {
 
-            Image(
-                painter = painterResource(profileId),
-                null,
+            Box(
                 modifier = Modifier
-                    .size(48.dp)
-                    .align(Alignment.Center),
-            )
+                    .size(52.dp)
+                    .background(
+                        color = Color.Gray, shape = CircleShape
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                AsyncImage(model = imageUrl, contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.clip(CircleShape).fillMaxSize(),
+                    placeholder = painterResource(R.drawable.img_default_profile), // 로딩 중 이미지
+                    error = painterResource(R.drawable.img_default_profile), // 실패 이미지
+
+
+                )
+            }
             Box(
                 modifier = Modifier
                     .size(20.dp)
@@ -514,7 +599,7 @@ private fun UserProfileItem(profileId: Int, userName: String, isHost: Boolean) {
 
 
 @Composable
-private fun NoticeItem() {
+private fun NoticeItem(feed: Feed) {
     var isChecked by remember { mutableStateOf(false) }
     var checkCount by remember { mutableStateOf(0) }
 
@@ -522,6 +607,24 @@ private fun NoticeItem() {
     val textColor = if (isChecked) Color.White else Color.Black
     val iconTint = if (isChecked) Color.White else Color.Black
     val buttonText = if (isChecked) "체크 완료" else "체크"
+
+//    val content: String,
+//    val createdAt: String,
+//    val creatorInfo: CreatorInfo,
+//    val study: String,
+//    val title: Strin
+
+    val noticeTitle = feed.title
+    val noticeContent = feed.content
+    val createTime = feed.createdAt
+
+    val writer = feed.creatorInfo
+    val grade_writer = writer.term
+    val nickname_writer = writer.nickname
+    val campus_writer = writer.campus
+    val profile_writer = writer.image
+
+
 
     // 이전 상태를 추적하기 위한 변수
     var previousCheckedState by remember { mutableStateOf(false) }
@@ -548,13 +651,22 @@ private fun NoticeItem() {
                     .background(color = Color(0x00FFFFFF), shape = CircleShape)
             ) {
 
-                Image(
-                    painter = painterResource(R.drawable.img_default_profile_5),
-                    null,
+                Box(
                     modifier = Modifier
                         .size(44.dp)
-                        .align(Alignment.Center),
-                )
+                        .background(
+                            color = Color.Gray, shape = CircleShape
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    AsyncImage(model = profile_writer, contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.clip(CircleShape).fillMaxSize(),
+                        placeholder = painterResource(R.drawable.img_default_profile), // 로딩 중 이미지
+                        error = painterResource(R.drawable.img_default_profile), // 실패 이미지
+
+                    )
+                }
                 Box(
                     modifier = Modifier
                         .size(13.dp)
@@ -575,10 +687,10 @@ private fun NoticeItem() {
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    GradeLabel(12)
+                    GradeLabel(grade_writer)
                     Spacer(Modifier.width(4.dp))
                     Text(
-                        text = "구미",
+                        text = campus_writer,
                         fontFamily = pretendard,
                         fontWeight = FontWeight(500),
                         fontSize = 13.sp,
@@ -587,7 +699,7 @@ private fun NoticeItem() {
                 }
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    text = "사용자 닉네임",
+                    text = nickname_writer,
                     fontFamily = pretendard,
                     fontWeight = FontWeight(500),
                     fontSize = 14.sp
@@ -597,7 +709,7 @@ private fun NoticeItem() {
         Spacer(Modifier.height(16.dp))
 
         Text(
-            text = "공지 제목",
+            text = noticeTitle,
             fontFamily = pretendard,
             fontWeight = FontWeight(600),
             fontSize = 16.sp,
@@ -607,7 +719,7 @@ private fun NoticeItem() {
         )
         Spacer(Modifier.height(6.dp))
         Text(
-            text = "공지 제목",
+            text = noticeContent,
             fontFamily = pretendard,
             fontWeight = FontWeight(400),
             fontSize = 14.sp,
@@ -690,7 +802,7 @@ private fun NoticeItem() {
 }
 
 @Composable
-fun GradeLabel(grade: Int) {
+fun GradeLabel(grade: String) {
     val labelColor = GradeLabelEnum.selectColor(grade)
     Box(
         modifier = Modifier
@@ -702,7 +814,7 @@ fun GradeLabel(grade: Int) {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            "${grade}기",
+            text = grade,
             fontFamily = gmarket,
             fontWeight = FontWeight(400),
             fontSize = 9.sp,
