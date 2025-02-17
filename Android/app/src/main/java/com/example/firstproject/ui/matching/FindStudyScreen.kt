@@ -85,8 +85,11 @@ private fun StudyInfoItem() {
                 .fillMaxWidth()
                 .padding(start = 16.dp)
         ) {
-            val label = TopicTagEnum.fromTitle("프론트엔드")
-            StackLabel(stackTitle = label!!.title, tint = colorResource(label.colorId))
+            val label = TopicTagEnum.fromTitle("웹 프론트")
+            StackLabel(
+                stackTitle = label!!.title,
+                tint = colorResource(label.colorId)
+            )
             Spacer(Modifier.width(16.dp))
             Text(
                 text = "이문경의 강철 스터디",

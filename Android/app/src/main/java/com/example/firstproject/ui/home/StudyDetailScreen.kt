@@ -67,6 +67,7 @@ import com.example.firstproject.data.model.dto.response.Member
 import com.example.firstproject.data.model.dto.response.MyJoinedStudyListDtoItem
 import com.example.firstproject.ui.theme.gmarket
 import com.example.firstproject.ui.theme.pretendard
+import com.example.firstproject.utils.CommonUtils
 import com.example.firstproject.utils.GradeLabelEnum
 import com.example.firstproject.utils.TopicTagEnum
 import com.rootachieve.requestresult.RequestResult
@@ -616,7 +617,7 @@ private fun NoticeItem(feed: Feed) {
 
     val noticeTitle = feed.title
     val noticeContent = feed.content
-    val createTime = feed.createdAt
+    val createTime = CommonUtils.formatDateTime(feed.createdAt)
 
     val writer = feed.creatorInfo
     val grade_writer = writer.term
@@ -766,6 +767,19 @@ private fun NoticeItem(feed: Feed) {
                     )
                 }
             }
+
+            Spacer(Modifier.weight(1f))
+
+            // 글 작성 날짜, 시간
+            Text(text = createTime,
+                fontFamily = pretendard,
+                fontWeight = FontWeight(400),
+                fontSize = 11.sp,
+                color = Color(0xFFC2C2C2)
+                )
+
+
+
         }
 
         Spacer(Modifier.height(12.dp))

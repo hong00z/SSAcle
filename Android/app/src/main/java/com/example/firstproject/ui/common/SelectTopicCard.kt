@@ -38,7 +38,7 @@ import com.example.firstproject.utils.TopicTagEnum
 fun SelectTopicCard() {
 
     val tagList = mutableListOf(
-        "프론트엔드",
+        "웹 프론트",
         "백엔드",
         "모바일",
         "인공지능",
@@ -95,10 +95,12 @@ fun TagGrid(
                 rowTags.forEach { tagName ->
                     val tag = TopicTagEnum.fromTitle(tagName)
                     if (selectedTag == tagName) {
-                        SelectedStackTag(
-                            stackTitle = tag!!.title,
-                            tint = colorResource(tag.colorId)
-                        )
+                        if (tag != null) {
+                            SelectedStackTag(
+                                stackTitle = tag.title,
+                                tint = colorResource(tag.colorId)
+                            )
+                        }
                     } else {
                         CommonStackTag(stackTitle = tagName, onClick = { onTagSelected(tagName) })
                     }
