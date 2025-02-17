@@ -2,6 +2,7 @@ package com.example.firstproject.ui.mypage
 
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,15 +10,25 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.firstproject.R
+import com.example.firstproject.data.model.dto.response.Profile
 import com.example.firstproject.data.repository.MainRepository
 import com.example.firstproject.databinding.FragmentMypageBinding
+import com.rootachieve.requestresult.RequestResult
+import kotlinx.coroutines.launch
 
 class MypageFragment : Fragment() {
     private var _binding: FragmentMypageBinding? = null
     private val binding get() = _binding!!
 
+    private val mypageViewModel: MypageViewModel by viewModels()
+
+    private var userProfile: Profile? = null
 
     val repository = MainRepository
 
@@ -27,6 +38,11 @@ class MypageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMypageBinding.inflate(inflater, container, false)
+
+        // 서버와 통신
+        observeViewModel()
+        mypageViewModel.getUserProfile()
+
 
         val tags = listOf("알고리즘", "백엔드", "CS 이론", "인프라")
 
@@ -46,6 +62,30 @@ class MypageFragment : Fragment() {
         }
         return binding.root
     }
+
+    // viewModel 데이터 변화 탐지
+    private fun observeViewModel() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mypageViewModel.getProfileResult.collect { result ->
+                    when (result) {
+                        is RequestResult.Progress -> {
+                            Log.d("Mypage", "로딩 중...")
+                        }
+                        is RequestResult.Success -> {
+                            userProfile = result.data.data
+                            Log.d("Mypage", "사용자 정보: $userProfile")
+                        }
+                        is RequestResult.Failure -> {
+                            Log.e("Mypage", "오류 발생: ${result.exception?.message}")
+                        }
+                        else -> Unit
+                    }
+                }
+            }
+        }
+    }
+
 
     private fun addTags(container: LinearLayout, tags: List<String>, tagsColors: Map<String, Int>) {
         for (tag in tags) {
