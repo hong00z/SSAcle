@@ -61,6 +61,7 @@ object MainRepository {
         return remoteDataSource.loginWithKakao(accessToken)
     }
 
+    // 모집 중인 스터디 리스트 조회
     suspend fun getAllStudyList(accessToken: String): RequestResult<List<StudyDTO>> {
         return remoteDataSource.getAllStudy(accessToken)
     }
