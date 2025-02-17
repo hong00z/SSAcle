@@ -4,13 +4,11 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.firstproject.MyApplication
+import com.example.firstproject.MyApplication.Companion.tokenManager
 import com.example.firstproject.data.model.dto.request.AuthRequestDTO
 import com.example.firstproject.data.model.dto.response.AuthResponseDTO
-import com.example.firstproject.data.model.dto.response.KakaoTokenDTO
 import com.example.firstproject.data.model.dto.response.common.CommonResponseDTO
 import com.example.firstproject.data.repository.MainRepository
-import com.example.firstproject.data.repository.TokenManager
 import com.kakao.sdk.user.UserApiClient
 import com.rootachieve.requestresult.RequestResult
 import kotlinx.coroutines.delay
@@ -23,7 +21,7 @@ import kotlin.coroutines.suspendCoroutine
 
 class LoginAuthViewModel : ViewModel() {
     private val repository = MainRepository
-    private val tokenManager = TokenManager(MyApplication.appContext)
+//    private val tokenManager = TokenManager(MyApplication.appContext)
 
     var accessToken = tokenManager.getAccessToken()
 
@@ -63,10 +61,12 @@ class LoginAuthViewModel : ViewModel() {
                         delay(500)
                         Log.d("카카오 로그인", "로그인 성공: ${_loginState.value}")
                     }
+
                     is RequestResult.Failure -> {
                         Log.e("카카오 로그인", "로그인 실패: ${result.code} - ${result.exception?.message}")
                         _loginState.value = RequestResult.Failure(result.code, result.exception)
                     }
+
                     else -> {
                         Log.e("카카오 로그인", "알 수 없는 오류 발생")
                         _loginState.value = RequestResult.Failure("UNKNOWN", Exception("알 수 없는 오류"))
@@ -74,7 +74,8 @@ class LoginAuthViewModel : ViewModel() {
                 }
             } else {
                 Log.e("카카오 로그인", "카카오 토큰 가져오기 실패")
-                _loginState.value = RequestResult.Failure("TOKEN_ERROR", Exception("카카오 토큰 가져오기 실패"))
+                _loginState.value =
+                    RequestResult.Failure("TOKEN_ERROR", Exception("카카오 토큰 가져오기 실패"))
             }
         }
     }

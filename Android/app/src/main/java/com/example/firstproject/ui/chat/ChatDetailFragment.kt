@@ -11,8 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.firstproject.MyApplication.Companion.USER_ID
 import com.example.firstproject.client.RetrofitClient.CHAT_API_URL
-import com.example.firstproject.client.RetrofitClient.USER_ID
 import com.example.firstproject.client.RetrofitClient.userService
 import com.example.firstproject.databinding.FragmentChatDetailBinding
 import com.example.firstproject.dto.Message

@@ -8,20 +8,28 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.example.firstproject.MyApplication.Companion.USER_ID
+import com.example.firstproject.MyApplication.Companion.tokenManager
 import com.example.firstproject.data.repository.TokenManager
 import com.example.firstproject.databinding.ActivityMainBinding
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import org.json.JSONObject
+import java.util.Base64
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
 
+    companion object {
+        const val TAG = "MainActivity_TAG"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val tokenManager = TokenManager(this)
+//        val tokenManager = TokenManager(this)
         val accessToken = tokenManager.getAccessToken()
 
         if (accessToken.isNullOrEmpty()) {
@@ -48,6 +56,9 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
+        USER_ID = getUserIdFromToken(accessToken)
+        Log.d(TAG, "userId = $USER_ID")
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -65,6 +76,27 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.bottomNavigationView.setupWithNavController(navController)
+
+    }
+
+
+    // User Id 토큰에서 참조
+    private fun getUserIdFromToken(token: String): String {
+        return decodeJwtPayload(token).optString("id")
+    }
+
+    private fun decodeJwtPayload(token: String): JSONObject {
+        // JWT는 보통 3개의 파트로 구성: header.payload.signature
+        val parts = token.split(".")
+
+        // Header: parts[0], Payload: parts[1], Signature: parts[2]
+        val headerJson = String(Base64.getUrlDecoder().decode(parts[0]))
+        val payloadJson = String(Base64.getUrlDecoder().decode(parts[1]))
+
+//        Log.d(TAG, "Header: $headerJson")
+//        Log.d(TAG, "Payload: $payloadJson")
+
+        return JSONObject(payloadJson)
 
     }
 }
