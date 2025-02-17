@@ -34,13 +34,6 @@ import com.example.firstproject.utils.TopicTagEnum
 
 @Composable
 fun StudyListCard(openStudyList: List<StudyDTO>) {
-//    val openStudyList: MutableList<List<String>> = mutableListOf(
-//        listOf("스터디 제목입니다", "인공지능"),
-//        listOf("스프링 입문 스터디", "백엔드"),
-//        listOf("알고리즘 스터디", "프론트엔드"),
-//        listOf("모바일 개발 스터디", "모바일")
-//
-//    )
 
     Box(modifier = Modifier
         .fillMaxWidth()

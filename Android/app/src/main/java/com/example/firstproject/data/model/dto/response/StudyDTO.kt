@@ -8,7 +8,7 @@ data class StudyDTO(
     val meetingDays: List<String>,
     val count: Int,
     val memberCount: Int,
-    val members: List<StudyInfoDTO>,
+    val members: List<Member>,
 )
 
 data class StudyInfoDTO(
