@@ -22,22 +22,40 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.firstproject.MyApplication
 import com.example.firstproject.R
+import com.example.firstproject.data.model.dto.response.KakaoTokenDTO
 import com.rootachieve.requestresult.RequestResult
 
 @Composable
 fun LoginScreen(
     viewModel: LoginAuthViewModel = viewModel(),
-    navController: NavController
+    navController: NavController,
+    onAuthSuccess: () -> Unit
 ) {
     val loginState by viewModel.loginState.collectAsStateWithLifecycle()
+
     val context = LocalContext.current
 
     LaunchedEffect(loginState) {
 
         if (loginState is RequestResult.Success) {
             Log.d("로그인 스크린: ", "onSuccess: ${loginState}")
-            navController.navigate("Auth")
+
+            val response = (loginState as RequestResult.Success<KakaoTokenDTO>).data
+
+            Log.d("로그인 스크린: ", "인증 완료 여부: ${response.auth}")
+            // 사용자 인증이 완료된 상태 확인
+            if (response.auth) {
+                onAuthSuccess()
+                MyApplication.setAuthCompleted(true)
+                MyApplication.setOnboardingCompleted(true)
+            } else {
+                navController.navigate("Auth")
+                MyApplication.setAuthCompleted(false)
+                MyApplication.setOnboardingCompleted(false)
+            }
+
         }
     }
 

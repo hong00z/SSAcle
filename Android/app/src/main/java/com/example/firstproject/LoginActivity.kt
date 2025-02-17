@@ -59,7 +59,11 @@ class LoginActivity : AppCompatActivity() {
                 NavHost(navController = navController, startDestination = startDestination) {
                     composable("Login") {
                         LoginScreen(
-                            navController = navController
+                            navController = navController,
+                            onAuthSuccess = {
+                                navigateToMain()
+                                Log.d("LoginActivity", "인증 완료함. MainActivity로 이동")
+                            }
                         )
                     }
 

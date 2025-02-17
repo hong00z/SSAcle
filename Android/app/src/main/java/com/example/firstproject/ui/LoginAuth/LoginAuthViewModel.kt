@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.firstproject.MyApplication.Companion.tokenManager
 import com.example.firstproject.data.model.dto.request.AuthRequestDTO
 import com.example.firstproject.data.model.dto.response.AuthResponseDTO
+import com.example.firstproject.data.model.dto.response.KakaoTokenDTO
 import com.example.firstproject.data.model.dto.response.common.CommonResponseDTO
 import com.example.firstproject.data.repository.MainRepository
 import com.kakao.sdk.user.UserApiClient
@@ -26,8 +27,8 @@ class LoginAuthViewModel : ViewModel() {
     var accessToken = tokenManager.getAccessToken()
 
     // 카카오 로그인
-    private val _loginState = MutableStateFlow<RequestResult<Unit>>(RequestResult.None())
-    val loginState: StateFlow<RequestResult<Unit>> = _loginState
+    private val _loginState = MutableStateFlow<RequestResult<KakaoTokenDTO>>(RequestResult.None())
+    val loginState: StateFlow<RequestResult<KakaoTokenDTO>> = _loginState
 
     // 싸피생 인증
     private val _authUserResult =
@@ -57,7 +58,7 @@ class LoginAuthViewModel : ViewModel() {
                         tokenManager.saveRefreshToken(result.data.refreshToken)
                         Log.d("카카오 로그인", "로그인 성공: ${result.data.accessToken}")
 
-                        _loginState.value = RequestResult.Success(Unit) // 로그인 성공 상태
+                        _loginState.value = result // 로그인 성공 상태
                         delay(500)
                         Log.d("카카오 로그인", "로그인 성공: ${_loginState.value}")
                     }
