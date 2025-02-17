@@ -30,7 +30,7 @@ fun CommonTopBar(
     Box (
         Modifier
             .fillMaxWidth()
-            .height(48.dp),
+            .height(60.dp),
 
         ) {
         IconButton(

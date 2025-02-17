@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import java.text.SimpleDateFormat
 import java.time.Instant
+import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Date
@@ -18,6 +19,27 @@ object CommonUtils {
 
     private val dateFormatYMD = SimpleDateFormat("yyyy.MM.dd", Locale.KOREA).apply {
         timeZone = TimeZone.getTimeZone("Asia/Seoul")
+    }
+
+    // 1) 기본 파서 (서버에서 오는 "yyyy-MM-dd'T'HH:mm:ss.SSS" 형태)
+    private val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")
+
+    // 2) 출력 포맷 (원하는 "yyyy.MM.dd. / HH:mm")
+    private val outputFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd. HH:mm")
+
+    /**
+     *  "2025-02-17T07:37:55.817" → "2025.02.17. / 07:37"
+     */
+    fun formatDateTime(input: String): String {
+        return try {
+            // 1) 문자열을 LocalDateTime으로 파싱
+            val localDateTime = LocalDateTime.parse(input, inputFormatter)
+            // 2) 원하는 포맷으로 변환
+            localDateTime.format(outputFormatter)
+        } catch (e: Exception) {
+            // 파싱 에러 시, 예외 처리하거나 기본값 반환
+            ""
+        }
     }
 
     // Long 타입 날짜 포맷

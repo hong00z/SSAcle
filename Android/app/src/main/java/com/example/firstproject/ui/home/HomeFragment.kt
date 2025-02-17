@@ -67,6 +67,12 @@ class HomeFragment : Fragment() {
                         )
                     }
 
+                    composable("allStudyListScreen") {
+                        AllStudyListScreen(
+                            navController = navController
+                        )
+                    }
+
                 }
             }
         }
