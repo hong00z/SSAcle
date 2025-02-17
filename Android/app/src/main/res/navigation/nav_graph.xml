@@ -162,6 +162,11 @@
         android:name="com.example.firstproject.LoginActivity"
         android:label="activity_login"
         tools:layout="@layout/activity_login" />
+    <fragment
+        android:id="@+id/liveMainFragment"
+        android:name="com.example.firstproject.ui.live.LiveMainFragment"
+        android:label="fragment_live_main"
+        tools:layout="@layout/fragment_live_main" />
 
 
 </navigation>
