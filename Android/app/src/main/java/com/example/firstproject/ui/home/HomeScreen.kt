@@ -260,7 +260,12 @@ fun HomeScreen(
                         "전체보기",
                         fontFamily = pretendard,
                         fontWeight = FontWeight(400),
-                        fontSize = 13.sp
+                        fontSize = 13.sp,
+                        modifier = Modifier.clickable {
+                            // 클릭 시 모집 중인 스터디 화면으로 이동
+                            navController.navigate("allStudyListScreen")
+
+                        }
                     )
                     Icon(
                         painter = painterResource(id = R.drawable.ic_right_arrow),
