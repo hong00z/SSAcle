@@ -230,6 +230,8 @@ public class StudyService {
                             .creatorInfo(creatorInfo)
                             .title(feed.getTitle())
                             .content(feed.getContent())
+                            .createdAt(feed.getCreatedAt())
+                            .updatedAt(feed.getUpdatedAt())
                             .build();
                 })
                 .collect(Collectors.toList());
