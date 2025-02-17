@@ -5,7 +5,7 @@ data class UserSuitableStudyDtoItem(
     val meetingDays: List<String>,
     val memberCount: Int,
     val members: List<Member>,
-    val similarity: Int,
+    val similarity: Double,
     val studyId: String,
     val studyName: String,
     val topic: String

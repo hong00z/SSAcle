@@ -134,7 +134,6 @@ private fun StackLabel(stackTitle: String, tint: Color) {
 
 @Composable
 private fun StudyInfoItem(studyInfo: StudyDTO) {
-    val weekList = listOf("월", "화", "목", "토")
 
     Column(
         modifier = Modifier
@@ -223,7 +222,7 @@ private fun StudyInfoItem(studyInfo: StudyDTO) {
 
             JoinProfiles(studyInfo.memberCount, studyInfo.members) // 스터디 참여중인 사람 수 넣기
 
-            Spacer(Modifier.width(12.dp))
+            Spacer(Modifier.width(16.dp))
             Text(
                 text = "인원 :  ",
                 fontFamily = pretendard,
