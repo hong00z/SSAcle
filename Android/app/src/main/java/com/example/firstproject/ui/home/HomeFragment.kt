@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.os.bundleOf
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -52,9 +53,17 @@ class HomeFragment : Fragment() {
 
                     composable("studyDetailScreen") {
                         StudyDetailScreen(navController = navController,
-                            onNavigateToVideo = {
-                                xmlNavController.navigate(R.id.action_homeFragment_to_videoFragment)
+                            onNavigateToVideo = { studyId ->
+                                val bundle = bundleOf("studyId" to studyId)
+                                xmlNavController.navigate(R.id.action_homeFragment_to_videoFragment, bundle)
+                            },
+                            onNavigateToChat = { studyId ->
+                                val bundle = bundleOf("studyId" to studyId)
+                                xmlNavController.navigate(R.id.action_homeFragment_to_chatFragment, bundle)
+
+
                             }
+
                         )
                     }
 
