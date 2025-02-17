@@ -4,7 +4,8 @@ import S12P11D110.ssacle.domain.user.entity.UserRole;
 import lombok.*;
 
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class TokenDto {
