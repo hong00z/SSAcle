@@ -110,7 +110,7 @@ fun HomeScreen(
 
     LaunchedEffect(getJoinedStudyResult) {
         Log.d("참여 중 상태 변경", "내 스터디 목록: $myJoinedStudyList ")
-        if (myJoinedStudyList == null)  Log.d("참여 중 상태 변경", "내 스터디 목록 null ㅋㅋ ")
+        if (myJoinedStudyList == null) Log.d("참여 중 상태 변경", "내 스터디 목록 null ㅋㅋ ")
     }
 
 
@@ -191,7 +191,20 @@ fun HomeScreen(
                                 colorResource(R.color.border_light_color)
                             )
                         ) {
-                            Column { Text("비어있음") }
+                            Column(
+                                modifier = Modifier.fillMaxSize().background(Color(0xFFF2F2F4)),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Text(
+                                    text = "스터디에 참가해 보는 건 어떠세요?",
+                                    fontFamily = pretendard,
+                                    fontWeight = FontWeight(500),
+                                    fontSize = 15.sp,
+                                    letterSpacing = 1.sp,
+                                    color = Color(0xFFA9A9AB)
+                                )
+                            }
 
                         }
                     } else {
@@ -217,7 +230,20 @@ fun HomeScreen(
                             colorResource(R.color.border_light_color)
                         )
                     ) {
-                        Column { Text("비어있음") }
+                        Column(
+                            modifier = Modifier.fillMaxSize().background(Color(0xFFF2F2F4)),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = "스터디에 참가해 보는 건 어떠세요?",
+                                fontFamily = pretendard,
+                                fontWeight = FontWeight(500),
+                                fontSize = 15.sp,
+                                letterSpacing = 1.sp,
+                                color = Color(0xFFA9A9AB)
+                            )
+                        }
 
                     }
                 }
