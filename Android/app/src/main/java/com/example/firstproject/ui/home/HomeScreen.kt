@@ -245,7 +245,17 @@ fun HomeScreen(
                 TitleTextView("스터디 매칭")
                 Spacer(Modifier.height(16.dp))
 
-                FindActionButton()
+                FindActionButton(
+                    onNavigatePerson = {
+                        // 내가 참여 중인 스터디 목록 화면으로 이동
+
+                    },
+                    onNavigateStudy = {
+                        // 스터디 추천 화면으로 이동
+                        navController.navigate("findStudyScreen")
+
+                    }
+                )
                 Spacer(Modifier.height(32.dp))
 
 
@@ -428,7 +438,7 @@ private fun IndicatorDots(isSelected: Boolean) {
 }
 
 @Composable
-private fun FindActionButton() {
+private fun FindActionButton(onNavigatePerson:() -> Unit, onNavigateStudy: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -476,7 +486,11 @@ private fun FindActionButton() {
                     elevation = 4.dp,
                     shape = RoundedCornerShape(10.dp),
                     clip = true
-                ),
+                )
+                .clickable {
+                    onNavigateStudy()
+
+                },
             shape = RoundedCornerShape(10.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White),
             border = BorderStroke(1.dp, colorResource(R.color.border_light_color)),
