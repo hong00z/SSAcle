@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.firstproject.MyApplication
+import com.example.firstproject.MyApplication.Companion.tokenManager
 import com.example.firstproject.data.model.dto.response.AllStudyListResponseDTO
 import com.example.firstproject.data.model.dto.response.JoiningStudyListResponseDTO
 import com.example.firstproject.data.model.dto.response.MyJoinedStudyListDtoItem
@@ -21,7 +22,6 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
     private val repository = MainRepository
-    private val tokenManager = TokenManager(MyApplication.appContext)
 
     var accessToken = tokenManager.getAccessToken()
 

@@ -3,14 +3,11 @@ package com.example.firstproject
 import android.Manifest
 import android.app.Application
 import android.content.Context
-import android.content.SharedPreferences
-import android.preference.Preference
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.firstproject.client.WebRtcClientConnection
-import org.mediasoup.droid.MediasoupClient
 import com.example.firstproject.data.repository.TokenManager
 import com.kakao.sdk.common.KakaoSdk
 import kotlinx.coroutines.CoroutineScope
@@ -18,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import org.mediasoup.droid.MediasoupClient
 
 class MyApplication : Application() {
 
@@ -34,12 +31,16 @@ class MyApplication : Application() {
         lateinit var webRtcClientConnection: WebRtcClientConnection
 
         var accessToken: String? = null
+        var fcmToken: String? = null
+        lateinit var USER_ID: String
 
         lateinit var instance: MyApplication
             private set
 
         val appContext: Context
             get() = instance.applicationContext
+
+        lateinit var tokenManager: TokenManager
 
         // ✅ DataStore Keys
         private val KEY_GRADE = stringPreferencesKey("user_grade")
@@ -118,15 +119,14 @@ class MyApplication : Application() {
         super.onCreate()
 
         // 다른 초기화 코드들
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        }
+//        if (BuildConfig.DEBUG) {
+//            Timber.plant(Timber.DebugTree())
+//        }
 
         // ✅ 카카오 SDK 초기화 (필수)
         KakaoSdk.init(this, "0618f69e1a386d67ec61fc517f36c35d")
 
-
-        val tokenManager = TokenManager(this)
+        tokenManager = TokenManager(this)
         accessToken = tokenManager.getAccessToken()
 
         instance = this

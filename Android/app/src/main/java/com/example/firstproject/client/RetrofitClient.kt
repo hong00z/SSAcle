@@ -9,7 +9,6 @@ object RetrofitClient {
 
     const val WEBRTC_URL = "https://webrtc.43.203.250.200.nip.io/"
     const val CHAT_API_URL = "https://chat.43.203.250.200.nip.io/"
-    const val USER_ID = "67a5e7f43d3fc61ef2203113"
 
     val userService: UserService by lazy {
         Retrofit.Builder()
