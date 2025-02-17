@@ -6,7 +6,7 @@ data class Top3RecommendedUsersDtoItem(
     val image: String,
     val meetingDays: List<String>,
     val nickname: String,
-    val similarity: Int,
+    val similarity: Double,
     val term: String,
     val topics: List<String>,
     val userId: String

@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.firstproject.R
 import com.example.firstproject.data.model.dto.response.UserSuitableStudyDtoItem
 import com.example.firstproject.ui.common.CommonTopBar
@@ -49,6 +50,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun FindStudyScreen(
+    navController: NavController,
     findViewModel: FindViewModel = viewModel()
 
 ) {
@@ -88,6 +90,7 @@ fun FindStudyScreen(
     ) {
         CommonTopBar("", onBackPress = {
             // 뒤로 가기
+            navController.popBackStack()
         })
 
         Image(

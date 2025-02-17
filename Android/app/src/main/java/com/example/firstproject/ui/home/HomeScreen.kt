@@ -248,6 +248,7 @@ fun HomeScreen(
                 FindActionButton(
                     onNavigatePerson = {
                         // 내가 참여 중인 스터디 목록 화면으로 이동
+                        navController.navigate("chooseStudyScreen")
 
                     },
                     onNavigateStudy = {
@@ -453,7 +454,10 @@ private fun FindActionButton(onNavigatePerson:() -> Unit, onNavigateStudy: () ->
                     elevation = 4.dp,
                     shape = RoundedCornerShape(10.dp),
                     clip = true
-                ),
+                )
+                .clickable {
+                    onNavigatePerson()
+                },
             shape = RoundedCornerShape(10.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White),
             border = BorderStroke(1.dp, colorResource(R.color.border_light_color)),
@@ -489,7 +493,6 @@ private fun FindActionButton(onNavigatePerson:() -> Unit, onNavigateStudy: () ->
                 )
                 .clickable {
                     onNavigateStudy()
-
                 },
             shape = RoundedCornerShape(10.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White),

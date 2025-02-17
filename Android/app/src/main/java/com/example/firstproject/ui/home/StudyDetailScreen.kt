@@ -103,25 +103,14 @@ fun StudyDetailScreen(
     var feedsList:List<Feed>? = studyInfo?.feeds
 
 
-//    val count: Int,
-//    val createdBy: String,
-//    val feeds: List<Feed>,
-//    val id: String,
-//    val meetingDays: List<String>,
-//    val memberCont: Int,
-//    val members: List<Member>,
-//    val studyContent: String,
-//    val studyName: String,
-//    val topic: String
-//    )
-
 
     LaunchedEffect(studyId) {
         studyId?.let {
             // 예: ViewModel 호출
             studyDetailViewModel.getStudyDetailInfo(it)
             Log.d("스터디 상세화면으로 옴", "${studyId}")
-            studyDetailViewModel.getStudyDetailInfo(studyId)
+//            studyDetailViewModel.getStudyDetailInfo(studyId)
+
             studyName = studyInfo?.studyName
             studyInfo?.topic
             studyInfo?.meetingDays
