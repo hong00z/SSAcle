@@ -82,7 +82,7 @@ public class JwtProvider {
 
         RefreshToken refreshToken = refreshTokenRepository.findById(token);
         String userId = refreshToken.getUserId();
-        // Optional<TempUser>에서 User를 가져옴 (없으면 예외 발생)
+        // Optional<User>에서 User를 가져옴 (없으면 예외 발생)
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AuthErrorException(AuthErrorStatus.GET_USER_FAILED));
 
