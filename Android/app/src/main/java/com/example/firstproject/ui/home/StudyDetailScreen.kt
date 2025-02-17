@@ -597,43 +597,6 @@ private fun UserProfileItem(imageUrl: String, userName: String, isHost: Boolean)
     }
 }
 
-@Composable
-private fun CardButton(image: Painter, text: String, onMoveScreen: () -> Unit) {
-    Card(
-        modifier = Modifier
-            .width(150.dp)
-            .height(100.dp)
-            .shadow(
-                elevation = 4.dp,
-                shape = RoundedCornerShape(10.dp),
-                clip = true
-            )
-            .clickable { onMoveScreen() },
-        shape = RoundedCornerShape(10.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, colorResource(R.color.border_light_color))
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Image(
-                painter = image,
-                null,
-                modifier = Modifier.size(48.dp)
-            )
-            Spacer(Modifier.height(8.dp))
-            Text(
-                text = text,
-                fontFamily = pretendard,
-                fontWeight = FontWeight(600),
-                fontSize = 14.5.sp
-            )
-        }
-
-    }
-}
 
 @Composable
 private fun NoticeItem(feed: Feed) {
