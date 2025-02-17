@@ -5,6 +5,7 @@ import com.example.firstproject.MyApplication.Companion.tokenManager
 import com.example.firstproject.data.model.dto.request.AuthRequestDTO
 import com.example.firstproject.data.model.dto.request.EditProfileRequestDTO
 import com.example.firstproject.data.model.dto.request.NicknameRequestDTO
+import com.example.firstproject.data.model.dto.request.RegisterStudyRequestDTO
 import com.example.firstproject.data.model.dto.response.AuthResponseDTO
 import com.example.firstproject.data.model.dto.response.EditProfileResponseDTO
 import com.example.firstproject.data.model.dto.response.KakaoTokenDTO
@@ -90,6 +91,14 @@ object MainRepository {
         imageFile: File?
     ): RequestResult<EditProfileResponseDTO> {
         return remoteDataSource.OnboardingProfile(accessToken, request, imageFile)
+    }
+
+    // 스터디 개설
+    suspend fun sendRegisterStudy(
+        accessToken: String,
+        request: RegisterStudyRequestDTO
+    ): RequestResult<Unit> {
+        return remoteDataSource.sendRegisterStudy(accessToken, request)
     }
 
     // /api/studies/{studyId} 특정 스터디 조회
