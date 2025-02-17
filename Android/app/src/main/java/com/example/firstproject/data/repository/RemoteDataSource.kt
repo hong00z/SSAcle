@@ -339,9 +339,9 @@ class RemoteDataSource {
     }
 
     // /api/studies/recommendUser/{studyId} 스터디원 추천
-    suspend fun getTop3StudyCandidates(accessToken: String): RequestResult<List<Top3RecommendedUsersDtoItem>> {
+    suspend fun getTop3StudyCandidates(accessToken: String, studyId: String): RequestResult<List<Top3RecommendedUsersDtoItem>> {
         return try {
-            val response = springService.getTop3StudyCandidates("Bearer $accessToken", "")
+            val response = springService.getTop3StudyCandidates("Bearer $accessToken", studyId)
 
             if (response.isSuccessful && response.body() != null) {
                 val body = response.body()!!

@@ -1,5 +1,6 @@
 package com.example.firstproject.data.repository
 
+import android.util.Log
 import com.example.firstproject.MyApplication.Companion.tokenManager
 import com.example.firstproject.data.model.dto.request.AuthRequestDTO
 import com.example.firstproject.data.model.dto.request.EditProfileRequestDTO
@@ -120,7 +121,7 @@ object MainRepository {
         accessToken: String,
         studyId: String
     ): RequestResult<List<Top3RecommendedUsersDtoItem>> {
-        return remoteDataSource.getTop3StudyCandidates(accessToken)
+        return remoteDataSource.getTop3StudyCandidates(accessToken, studyId)
     }
 
     // /api/studies/recommendStudy 스터디 추천기능
