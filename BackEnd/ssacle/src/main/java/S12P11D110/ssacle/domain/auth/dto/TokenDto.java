@@ -12,4 +12,9 @@ public class TokenDto {
     private String accessToken;
     private String refreshToken;
     private boolean isAuth;    // 싸피생 인증 구분 (False : 일반 사용자 / True : 싸피생)
+
+    // ✅ Lombok이 잘못된 Getter를 생성하는 걸 방지
+    public boolean isAuth() {
+        return isAuth;
+    }
 }
