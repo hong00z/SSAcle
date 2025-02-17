@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.firstproject.MyApplication.Companion.USER_ID
 import com.example.firstproject.R
 import com.example.firstproject.databinding.ItemMessageReceivedBinding
 import com.example.firstproject.databinding.ItemMessageSentBinding
@@ -25,13 +26,11 @@ class MessageAdapter(private val items: MutableList<ChatItem>) :
         const val TYPE_RECEIVED = 2
     }
 
-    private val userId = "67a5e7f43d3fc61ef2203113"
-
     override fun getItemViewType(position: Int): Int {
         return when (val item = items[position]) {
             is ChatItem.DateHeader -> TYPE_DATE_HEADER
             is ChatItem.MessageItem -> {
-                if (item.message.userId == userId) TYPE_SENT else TYPE_RECEIVED
+                if (item.message.userId == USER_ID) TYPE_SENT else TYPE_RECEIVED
             }
         }
     }

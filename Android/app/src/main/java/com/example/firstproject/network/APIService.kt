@@ -1,6 +1,5 @@
 package com.example.firstproject.network
 
-import android.provider.ContactsContract.CommonDataKinds.Nickname
 import com.example.firstproject.data.model.dto.request.AuthRequestDTO
 import com.example.firstproject.data.model.dto.request.EditProfileRequestDTO
 import com.example.firstproject.data.model.dto.request.NicknameRequestDTO
@@ -80,8 +79,6 @@ interface APIService {
     ): Response<List<UserSuitableStudyDtoItem>>
 
 
-
-
     // 로그아웃
     @POST("/api/user")
     suspend fun logout(
@@ -117,7 +114,6 @@ interface APIService {
     suspend fun getMyInvitedStudies(
         @Header("Authorization") accessToken: String
     ): Response<MyInvitedStudyListDtoItem>
-
 
 
     // 스터디 개설 (pass)
