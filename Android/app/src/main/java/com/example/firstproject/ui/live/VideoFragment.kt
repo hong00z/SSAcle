@@ -20,7 +20,9 @@ import androidx.camera.core.ImageProxy
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.example.firstproject.MyApplication.Companion.webRtcClientConnection
 import com.example.firstproject.databinding.FragmentVideoBinding
+import com.example.firstproject.dto.LiveMember
 import java.io.ByteArrayOutputStream
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -28,9 +30,25 @@ import java.util.concurrent.Executors
 
 class VideoFragment : Fragment() {
 
+    companion object {
+        const val TAG = "VideoFragment_TAG"
+
+        private const val REQUEST_CODE_PERMISSIONS = 101
+        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+
+        fun newInstance(): VideoFragment {
+            return VideoFragment()
+        }
+    }
+
     private var _binding: FragmentVideoBinding? = null
     private val binding get() = _binding!!
 
+    private val liveMembers = mutableListOf<LiveMember>()
+    private lateinit var adapter: LiveMemberAdapter
+
+    // WebRTC 연결 객체
+    private var peerId: String? = null
 
     private lateinit var yoloDetector: HumanDetector
 
@@ -58,7 +76,6 @@ class VideoFragment : Fragment() {
         binding.apply {
 
             btnStartFocus.setOnClickListener {
-
             }
 
         }
@@ -67,6 +84,19 @@ class VideoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val studyId = arguments?.getString("studyId")!!
+        Log.d(TAG, "onViewCreated: studyId= $studyId")
+
+
+        webRtcClientConnection.init(requireContext())
+        peerId = webRtcClientConnection.getSocket()?.id()
+
+        adapter = LiveMemberAdapter(liveMembers, webRtcClientConnection.eglBase.eglBaseContext)
+        binding.rvParticipants.adapter = adapter
+
+        liveMembers.add(LiveMember(true))
+        webRtcClientConnection.joinRoom(studyId)
 
         // 1) 모델 로드
         yoloDetector = HumanDetector("yolov8n.tflite", isQuantized = false)
@@ -241,6 +271,8 @@ class VideoFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        webRtcClientConnection.leaveRoom()
+        webRtcClientConnection.close()
         _binding = null
     }
 
@@ -251,12 +283,4 @@ class VideoFragment : Fragment() {
     }
 
 
-    companion object {
-        private const val REQUEST_CODE_PERMISSIONS = 101
-        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
-        fun newInstance(): VideoFragment {
-            return VideoFragment()
-        }
-
-    }
 }

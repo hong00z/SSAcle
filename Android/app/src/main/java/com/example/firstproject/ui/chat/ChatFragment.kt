@@ -7,12 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firstproject.MyApplication.Companion.USER_ID
 import com.example.firstproject.client.RetrofitClient.CHAT_API_URL
-import com.example.firstproject.client.RetrofitClient.chatService
 import com.example.firstproject.client.RetrofitClient.userService
 import com.example.firstproject.databinding.FragmentChatBinding
 import com.example.firstproject.dto.Message
@@ -34,11 +34,14 @@ const val TAG = "ChatFragment_TAG"
 class ChatFragment : Fragment() {
 
     private val studyList: MutableList<Study> = mutableListOf()
+    private var argumentStudyId: String? = null  // 번들로 전달받은 studyId를 저장할 변수
 
     private var _binding: FragmentChatBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var studyAdapter: StudyAdapter
+
+    private val chatViewModel: ChatViewModel by viewModels()
 
     // Socket.IO 관련 변수
     private lateinit var socket: Socket
@@ -54,6 +57,15 @@ class ChatFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.d(TAG, "onViewCreated: ")
+
+        // 번들로 전달된 studyId 저장 (SafeArgs를 사용하지 않는 경우)
+        argumentStudyId = arguments?.getString("studyId")
+        argumentStudyId?.let {
+            Log.d(TAG, "Bundle로 전달받은 studyId: $it")
+            arguments?.clear()
+        }
+
         // 스와이프하여 새로고침 시 채팅방 목록 갱신
         binding.swipeRefreshLayout.setOnRefreshListener {
             fetchJoinedStudies()
@@ -65,7 +77,7 @@ class ChatFragment : Fragment() {
         studyAdapter = StudyAdapter(studyList) { study ->
             // 채팅방 클릭 시, 해당 채팅방의 메시지를 불러옴
             Log.d(TAG, "onCreateView: studyId=${study.id}")
-            fetchChatMessages(study.id) { messages ->
+            chatViewModel.fetchChatMessages(study.id) { messages ->
                 // 메시지 데이터를 ChatDetailFragment로 전달 (네비게이션 SafeArgs 사용)
                 val action = ChatFragmentDirections.actionChatFragmentToChatDetailFragment(
                     studyId = study.id,
@@ -105,6 +117,31 @@ class ChatFragment : Fragment() {
                         }
                         studyAdapter.notifyDataSetChanged()
 
+                        // 번들로 전달받은 studyId가 있을 경우 해당 Study를 찾아 자동으로 ChatDetailFragment로 이동
+                        argumentStudyId?.let { id ->
+                            val study = studyList.find { it.id == id }
+                            if (study != null) {
+                                chatViewModel.fetchChatMessages(study.id) { messages ->
+                                    val action =
+                                        ChatFragmentDirections.actionChatFragmentToChatDetailFragment(
+                                            studyId = study.id,
+                                            roomName = study.studyName,
+                                            count = study.members.count(),
+                                            messages = messages.toTypedArray()
+                                        )
+                                    findNavController().navigate(action)
+                                    // 한 번 이동한 후에는 초기화하여 중복 네비게이션 방지
+                                    argumentStudyId = null
+                                }
+                            } else {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "해당 스터디를 찾을 수 없습니다.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+
                         // 소켓 연결 후, 각 채팅방에 대해 joinRoom 호출
                         joinAllStudyRooms()
                     }
@@ -121,34 +158,6 @@ class ChatFragment : Fragment() {
                         requireContext(), "네트워크 오류: ${e.message}", Toast.LENGTH_SHORT
                     ).show()
                 }
-            }
-        }
-    }
-
-    // 채팅방의 메시지를 불러오는 함수
-    private fun fetchChatMessages(studyId: String, onResult: (List<Message>) -> Unit) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val response = chatService.getMessages(studyId)
-                Log.d(TAG, "fetchChatMessages: $response")
-                if (response.isSuccessful && response.body() != null) {
-                    withContext(Dispatchers.Main) {
-                        onResult(response.body()!!)
-                    }
-                } else {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(
-                            requireContext(), "메시지 목록을 불러올 수 없습니다.", Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        requireContext(), "네트워크 오류: ${e.message}", Toast.LENGTH_SHORT
-                    ).show()
-                }
-                Log.d(TAG, "fetchChatMessages: $e")
             }
         }
     }
@@ -225,6 +234,12 @@ class ChatFragment : Fragment() {
         super.onResume()
     }
 
+    override fun onPause() {
+        super.onPause()
+        argumentStudyId = null
+        Log.d(TAG, "onPause: ")
+    }
+
     override fun onDestroyView() {
         socket.disconnect()
         socket.off(Socket.EVENT_CONNECT, onConnect)
@@ -234,9 +249,4 @@ class ChatFragment : Fragment() {
         super.onDestroyView()
     }
 
-    companion object {
-        fun newInstance(): ChatFragment {
-            return ChatFragment()
-        }
-    }
 }

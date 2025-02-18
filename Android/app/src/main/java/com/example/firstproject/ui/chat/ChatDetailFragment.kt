@@ -41,8 +41,6 @@ class ChatDetailFragment : Fragment() {
     private var allMessages = mutableListOf<Message>() // 전체 메시지 리스트
 
     private var isLoading = false
-    private var currentPage = 0
-    private val pageSize = 8 // 한 번에 불러올 메시지 개수
 
     // Socket.IO 관련 변수
     private lateinit var socket: Socket
@@ -95,8 +93,6 @@ class ChatDetailFragment : Fragment() {
         binding.messagesRecycler.layoutManager = layoutManager
         binding.messagesRecycler.adapter = adapter
 
-        // 첫 페이지 로드 (여기서는 첫 8개 메시지를 로드)
-//        loadMoreMessages(firstLoad = true)
 
         // 스크롤 리스너 (최상단 스크롤 시 추가로 이전 메시지 로드)
         binding.messagesRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -162,9 +158,6 @@ class ChatDetailFragment : Fragment() {
 
                     // 업데이트된 ChatItem 리스트에 새 메시지 추가
                     updateChatItems(newMessage)
-
-//                    visibleMessages.add(newMessage)
-//                    adapter.notifyItemInserted(visibleMessages.size - 1)
 
                     // 현재 스크롤 위치 확인
                     val layoutManager =
@@ -258,30 +251,6 @@ class ChatDetailFragment : Fragment() {
         }
         adapter.notifyDataSetChanged()  // 상황에 따라 notifyItemInserted() 등 세밀하게 갱신 가능
     }
-
-    // 페이징 처리: 8개씩 로딩 (추가로 이전 메시지를 불러옴)
-//    private fun loadMoreMessages(firstLoad: Boolean = false) {
-//        if (isLoading) return
-//        isLoading = true
-//        binding.loading.visibility = View.VISIBLE
-//
-//        val nextPage = currentPage + 1
-//        val startIndex = currentPage * pageSize
-//        val endIndex = (nextPage * pageSize).coerceAtMost(allMessages.size)
-//
-//        if (startIndex < allMessages.size) {
-//            val newMessages = allMessages.subList(startIndex, endIndex)
-//            chatItems.addAll(0, newMessages)
-//            if (firstLoad) {
-//                adapter.notifyDataSetChanged()
-//            } else {
-//                adapter.notifyItemRangeInserted(0, newMessages.size)
-//            }
-//            currentPage = nextPage
-//        }
-//        binding.loading.visibility = View.GONE
-//        isLoading = false
-//    }
 
     private fun updateLastReadTimeOnServer() {
         // 현재 시간을 밀리초 단위로 가져옴
