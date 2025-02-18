@@ -51,4 +51,4 @@ server:
 
 # 파일 업로드 주소
 file:
-  upload-dir: ./uploads
+  upload-dir: /app/uploads

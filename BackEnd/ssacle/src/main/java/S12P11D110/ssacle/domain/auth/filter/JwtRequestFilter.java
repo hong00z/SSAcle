@@ -40,7 +40,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         // "/api/auth/kakao 경로로의 요청은 필터를 실행하지 않도록 걸러낸다.
-        if (!request.getRequestURI().equals("/api/auth/kakao") && !request.getRequestURI().equals("/api/auth/newToken")) {
+        if (!request.getRequestURI().equals("/api/auth/kakao") && !request.getRequestURI().equals("/api/auth/newToken") && !request.getRequestURI().startsWith("/images/")) {
             // request: 헤더에서 넘어오는 JWT
             String jwt = resolveToken(request);
             log.info("jwt token = {}", jwt);

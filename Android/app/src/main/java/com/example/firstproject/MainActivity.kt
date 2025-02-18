@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
 
             if (destination.id == R.id.homeFragment || destination.id == R.id.chatFragment
                 || destination.id == R.id.aiFragment || destination.id == R.id.mypageFragment
-                || destination.id == R.id.liveFragment
+                || destination.id == R.id.liveMainFragment
             ) {
                 binding.bottomNavigationView.visibility = View.VISIBLE
             } else {
