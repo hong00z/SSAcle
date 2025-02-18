@@ -1,11 +1,13 @@
 package com.example.firstproject.ui.chat
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.transform.CircleCropTransformation
 import com.example.firstproject.MyApplication.Companion.USER_ID
 import com.example.firstproject.R
 import com.example.firstproject.data.repository.RemoteDataSource
@@ -111,8 +113,11 @@ class MessageAdapter(private val items: MutableList<ChatItem>) :
             binding.senderName.text = message.nickname
             binding.messageContent.text = message.message
             binding.messageTime.text = CommonUtils.formatKoreanTime(message.createdAt)
-            if (message.image != "") {
-                binding.messageProfile.load(RemoteDataSource().getImageUrl(message.image))
+            if (message.image.isNotEmpty()) {
+                binding.messageProfile.load(RemoteDataSource().getImageUrl(message.image)) {
+                    crossfade(true)
+                    transformations(CircleCropTransformation())
+                }
             }
         }
     }

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.transform.CircleCropTransformation
 import com.example.firstproject.data.repository.RemoteDataSource
 import com.example.firstproject.databinding.ItemChatBinding
 import com.example.firstproject.dto.Study
@@ -23,8 +24,11 @@ class StudyAdapter(
             binding.chatTitle.text = study.studyName
             binding.lastMessage.text = study.lastMessage ?: ""
             Log.d(TAG, "bind: study.image=${study.image}")
-            if (study.image != "") {
-                binding.profileImage.load(RemoteDataSource().getImageUrl(study.image))
+            if (study.image.isNotEmpty()) {
+                binding.profileImage.load(RemoteDataSource().getImageUrl(study.image)) {
+                    crossfade(true)
+                    transformations(CircleCropTransformation())
+                }
             }
             binding.chatTime.text = study.lastMessageCreatedAt?.let {
                 CommonUtils.formatKoreanTime(it)
