@@ -113,11 +113,11 @@ public class UserController {
     public ResultDto<Boolean> checkNickname(@AuthenticationPrincipal CustomUserDetail userDetail, @RequestBody NicknameRequest request) {
         try {
             String currentUserNickname = userDetail.getNickname();    // 현재 로그인한 사용자 닉네임 가져오기
-            boolean isDuplicated = userService.isNicknameDuplicated(request.getNickname(), currentUserNickname);
-            if (isDuplicated) {
-                return ResultDto.of(ApiErrorStatus.DUPLICATED_USER_NAME.getCode(), "이미 사용중인 닉네임입니다.", true);
+            boolean isUsable = userService.isNicknameDuplicated(request.getNickname(), currentUserNickname);
+            if (isUsable) {
+                return ResultDto.of(HttpStatusCode.OK, "사용 가능한 닉네임입니다.", true);
             }
-            return ResultDto.of(HttpStatusCode.OK, "사용 가능한 닉네임입니다.", false);
+            return ResultDto.of(ApiErrorStatus.DUPLICATED_USER_NAME.getCode(), "이미 사용중인 닉네임입니다.", false);
         } catch (AuthErrorException e) {
             return ResultDto.of(e.getCode(), e.getErrorMsg(), null);
         } catch (Exception e) {
