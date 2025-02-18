@@ -15,6 +15,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.firstproject.R
 import com.example.firstproject.data.model.dto.response.Profile
 import com.example.firstproject.data.repository.MainRepository
@@ -43,17 +45,17 @@ class MypageFragment : Fragment() {
         observeViewModel()
         mypageViewModel.getUserProfile()
 
-
-        val tags = listOf("알고리즘", "백엔드", "CS 이론", "인프라")
-
-        val tagsColors = mapOf(
-            "알고리즘" to R.color.algo_stack_tag,
-            "백엔드" to R.color.backend_stack_tag,
-            "CS 이론" to R.color.cs_stack_tag,
-            "인프라" to R.color.infra_stack_tag
-        )
-
-        addTags(binding.tagsContainer, tags, tagsColors)
+//
+//        val tags = listOf("알고리즘", "백엔드", "CS 이론", "인프라")
+//
+//        val tagsColors = mapOf(
+//            "알고리즘" to R.color.algo_stack_tag,
+//            "백엔드" to R.color.backend_stack_tag,
+//            "CS 이론" to R.color.cs_stack_tag,
+//            "인프라" to R.color.infra_stack_tag
+//        )
+//
+//        addTags(binding.tagsContainer, tags, tagsColors)
 
         binding.apply {
             editLayout.setOnClickListener {
@@ -64,6 +66,7 @@ class MypageFragment : Fragment() {
     }
 
     // viewModel 데이터 변화 탐지
+
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -72,17 +75,85 @@ class MypageFragment : Fragment() {
                         is RequestResult.Progress -> {
                             Log.d("Mypage", "로딩 중...")
                         }
+
                         is RequestResult.Success -> {
                             userProfile = result.data.data
                             Log.d("Mypage", "사용자 정보: $userProfile")
+
+                            // 프로필 이미지 로드 (Glide 사용)
+                            userProfile?.image?.let { imageUrl ->
+                                Glide.with(requireContext())
+                                    .load(imageUrl)
+                                    .placeholder(R.drawable.img_default_profile)
+                                    .error(R.drawable.img_default_profile)
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                    .into(binding.profileImage) // CircleImageView에 적용
+                            }
+
+                            binding.campusText.text = "${userProfile?.campus} 캠퍼스"
+
+                            binding.generation.text = "${userProfile?.term}기"
+
+                            binding.nicknameText.text = userProfile?.nickname ?: ""
+
+                            binding.tagsContainer.removeAllViews() // 기존 태그 초기화
+
+                            userProfile?.topics?.let { topics ->
+                                val tagsColors = mapOf(
+                                    "웹 프론트" to R.color.frontend_stack_tag,
+                                    "백엔드" to R.color.backend_stack_tag,
+                                    "모바일" to R.color.mobile_stack_tag,
+                                    "인공지능" to R.color.ai_stack_tag,
+                                    "빅데이터" to R.color.data_stack_tag,
+                                    "임베디드" to R.color.embaded_stack_tag,
+                                    "인프라" to R.color.infra_stack_tag,
+                                    "CS 이론" to R.color.cs_stack_tag,
+                                    "알고리즘" to R.color.algo_stack_tag,
+                                    "게임" to R.color.game_stack_tag,
+                                    "기타" to R.color.etc_stack_tag
+                                )
+                                addTags(binding.tagsContainer, topics, tagsColors)
+                            }
+                            binding.meetingDaysContainer.removeAllViews() // 기존 날짜 초기화
+                            userProfile?.meetingDays?.let { days ->
+                                if (days.isNotEmpty()) {
+                                    addMeetingDays(binding.meetingDaysContainer, days)
+                                }
+                            }
                         }
+
                         is RequestResult.Failure -> {
                             Log.e("Mypage", "오류 발생: ${result.exception?.message}")
                         }
+
                         else -> Unit
                     }
                 }
             }
+        }
+    }
+
+    private fun addMeetingDays(container: LinearLayout, days: List<String>) {
+        for (day in days) {
+            val textView = TextView(requireContext()).apply {
+                text = day
+                textSize = 16f
+                setPadding(32, 16, 32, 16)  // 패딩 조정
+                minWidth = 120
+                minHeight = 56
+                setTextColor(ContextCompat.getColor(requireContext(), android.R.color.white))
+
+                // 개별 날짜에 `back_ground.xml` 적용
+                background = ContextCompat.getDrawable(requireContext(), R.drawable.day_background)
+
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    setMargins(12, 8, 12, 8)  // 간격 조정
+                }
+            }
+            container.addView(textView)
         }
     }
 
