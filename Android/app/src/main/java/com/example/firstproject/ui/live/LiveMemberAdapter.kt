@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.example.firstproject.MyApplication.Companion.webRtcClientConnection
 import com.example.firstproject.databinding.ItemLiveMemberBinding
 import com.example.firstproject.dto.LiveMember
@@ -49,8 +48,11 @@ class LiveMemberAdapter(
             // videoTrack 처리: SurfaceViewRenderer에 연결
             member.videoConsumer?.let { consumer ->
                 with(holder.binding.videoView) {
-                    // 아직 초기화되지 않았다면 init() 호출
-                    init(eglBaseContext, null)
+                    // 이미 초기화되지 않았다면 init() 호출
+                    if (tag == null) {
+                        init(eglBaseContext, null)
+                        tag = "initialized"  // 초기화 완료 후 태그 설정
+                    }
                     setMirror(false)
                     val videoTrack = consumer.track as VideoTrack
                     videoTrack.addSink(this)
