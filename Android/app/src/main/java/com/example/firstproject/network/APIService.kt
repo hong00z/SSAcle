@@ -5,6 +5,7 @@ import com.example.firstproject.data.model.dto.request.EditProfileRequestDTO
 import com.example.firstproject.data.model.dto.request.InviteUserRequestDTO
 import com.example.firstproject.data.model.dto.request.NicknameRequestDTO
 import com.example.firstproject.data.model.dto.request.RegisterStudyRequestDTO
+import com.example.firstproject.data.model.dto.request.SendJoinRequestDTO
 import com.example.firstproject.data.model.dto.response.AuthResponseDTO
 import com.example.firstproject.data.model.dto.response.EditProfileResponseDTO
 import com.example.firstproject.data.model.dto.response.KakaoTokenDTO
@@ -170,5 +171,12 @@ interface APIService {
         @Body request: InviteUserRequestDTO
     ): Response<Unit>
 
-    // 내 신청 보내기 (pass)
+    // 스터디에 가입 요청 보내기
+    @PATCH("/api/user/wish-studies")
+    suspend fun sendJoinRequest(
+        @Header("Authorization") accessToken: String,
+        @Body studyId: SendJoinRequestDTO
+    ): Response<Unit>
+
+
 }

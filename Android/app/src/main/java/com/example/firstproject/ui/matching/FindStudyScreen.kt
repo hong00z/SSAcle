@@ -1,6 +1,8 @@
 package com.example.firstproject.ui.matching
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -42,6 +44,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.firstproject.R
+import com.example.firstproject.data.model.dto.request.SendJoinRequestDTO
 import com.example.firstproject.data.model.dto.response.UserSuitableStudyDtoItem
 import com.example.firstproject.ui.common.CommonTopBar
 import com.example.firstproject.ui.home.JoinProfiles
@@ -56,7 +59,6 @@ fun FindStudyScreen(
 
 ) {
     val context = LocalContext.current
-    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
     val recommandStudyResult by findViewModel.recommandStudyResult.collectAsStateWithLifecycle()
     // 추천 스터디 리스트
@@ -104,7 +106,7 @@ fun FindStudyScreen(
         Spacer(Modifier.height(36.dp))
 
         recommandStudyList.forEach { studyInfo ->
-            StudyInfoItem(navController, studyInfo)
+            StudyInfoItem(navController, studyInfo, findViewModel, context)
         }
 
 
@@ -133,7 +135,48 @@ fun StackLabel(stackTitle: String, tint: Color) {
 }
 
 @Composable
-private fun StudyInfoItem(navController: NavController, studyInfo: UserSuitableStudyDtoItem) {
+private fun StudyInfoItem(
+    navController: NavController,
+    studyInfo: UserSuitableStudyDtoItem,
+    findViewModel: FindViewModel,
+    context: Context
+) {
+    var isInviteSent by remember { mutableStateOf(false) }
+    var isInviteLoading by remember { mutableStateOf(false) }
+
+    fun onSendJoinClick() {
+        isInviteLoading = true
+        findViewModel.sendJoinStudy(SendJoinRequestDTO(studyInfo.studyId)) { success ->
+            isInviteLoading = false
+            if (success) {
+                isInviteSent = true
+            } else {
+                Toast.makeText(context, "죄송합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    val joinStudyResult by findViewModel.joinStudyResult.collectAsStateWithLifecycle()
+
+    LaunchedEffect(joinStudyResult) {
+        when {
+            joinStudyResult.isProgress() -> {
+                Log.d("스터디 초대함", "로딩 중")
+            }
+
+            joinStudyResult.isSuccess() -> {
+                Log.d("스터디 초대함", "초대 성공")
+//                isInviteSent = true
+            }
+
+            joinStudyResult.isFailure() -> {
+                Log.d("스터디 초대함", "실패 ${joinStudyResult}")
+
+                Toast.makeText(context, "죄송합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     val weekList = studyInfo.meetingDays
 
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -248,7 +291,13 @@ private fun StudyInfoItem(navController: NavController, studyInfo: UserSuitableS
             verticalAlignment = Alignment.CenterVertically
         ) {
             Spacer(Modifier.weight(1f))
-            SendRequestButton()
+            if (isInviteSent) {
+                CompleteRequestButton()
+            } else {
+                SendRequestButton(
+                    onClick = { onSendJoinClick() }
+                )
+            }
         }
         Spacer(Modifier.height(14.dp))
         Divider(color = Color(0xFF949494))
@@ -257,15 +306,15 @@ private fun StudyInfoItem(navController: NavController, studyInfo: UserSuitableS
 }
 
 @Composable
-private fun SendRequestButton() {
+private fun SendRequestButton(onClick: () -> Unit) {
     Box(
         modifier = Modifier
-            .width(82.dp)
+            .width(84.dp)
             .height(28.dp)
             .background(color = Color.Black, shape = RoundedCornerShape(50.dp))
             .clickable {
                 // 스터디 신청 통신 요청
-
+                onClick()
             },
         contentAlignment = Alignment.Center
     ) {
@@ -277,7 +326,7 @@ private fun SendRequestButton() {
                 modifier = Modifier.size(18.dp),
             )
             Text(
-                "신청하기", fontFamily = pretendard,
+                "가입 신청", fontFamily = pretendard,
                 fontWeight = FontWeight(700),
                 fontSize = 13.sp,
                 color = Color.White
@@ -291,7 +340,7 @@ private fun SendRequestButton() {
 private fun CompleteRequestButton() {
     Box(
         modifier = Modifier
-            .width(82.dp)
+            .width(84.dp)
             .height(28.dp)
             .background(color = Color(0xFF15CD6C), shape = RoundedCornerShape(50.dp)),
         contentAlignment = Alignment.Center
@@ -304,7 +353,7 @@ private fun CompleteRequestButton() {
                 modifier = Modifier.size(18.dp),
             )
             Text(
-                "신청완료", fontFamily = pretendard,
+                "신청 완료", fontFamily = pretendard,
                 fontWeight = FontWeight(700),
                 fontSize = 13.sp,
                 color = Color.White
