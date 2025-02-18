@@ -59,7 +59,8 @@ public class SecurityConfig {
                                 "/swagger-resources/**",        // Swagger 리소스 허용
                                 "/webjars/**",                  // Swagger UI에서 사용하는 WebJars 리소스 허용
                                 "/error",                       // 에러 핸들링 경로
-                                "/api/auth/**"                 // ✅ 인증 관련 API (로그인, 회원가입 등)
+                                "/api/auth/**",                 // ✅ 인증 관련 API (로그인, 회원가입 등)
+                                "/images/**"
                         ).permitAll()
                         .requestMatchers(
                                 "/api/user/**",
