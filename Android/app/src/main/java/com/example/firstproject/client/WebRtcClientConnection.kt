@@ -41,8 +41,8 @@ import kotlin.coroutines.resumeWithException
 class WebRtcClientConnection : CoroutineScope {
 
     // UI에 원격 비디오 트랙을 전달하기 위한 콜백 (VideoTrack와 해당 producerId를 전달)
-    var onRemoteVideo: ((VideoTrack, Consumer, nickname: String) -> Unit)? = null
-    var onRemoteAudio: ((AudioTrack, Consumer) -> Unit)? = null
+    var onRemoteVideo: ((VideoTrack, Consumer, nickname: String, peerId: String) -> Unit)? = null
+    var onRemoteAudio: ((AudioTrack, Consumer, nickname: String, peerId: String) -> Unit)? = null
     var onPeerClosed: ((peerId: String) -> Unit)? = null
     var onNewChat: ((peerId: String, message: String) -> Unit)? = null
 
@@ -143,7 +143,7 @@ class WebRtcClientConnection : CoroutineScope {
             socket.on("newProducer") { data ->
                 val payload = data[0] as JSONObject
 
-                val nickname = payload.getString("nickname")
+                val nickname = payload.optString("nickname")
                 val newProducerId = payload.getString("producerId")
                 val peerId = payload.optString("peerId")
                 val kind = payload.getString("kind") // "video" 또는 "audio"
@@ -157,7 +157,7 @@ class WebRtcClientConnection : CoroutineScope {
                 }
 
                 // 새로운 프로듀서의 미디어 소비 시작
-                consume(nickname, newProducerId, kind)
+                consume(nickname, peerId, newProducerId, kind)
             }
 
             // 프로듀서 종료 이벤트 처리
@@ -381,13 +381,13 @@ class WebRtcClientConnection : CoroutineScope {
                     for (i in 0 until it.length()) {
                         val producerJson = it.getJSONObject(i)
 
-                        val nickname = producerJson.getString("nickname")
+                        val nickname = producerJson.optString("nickname")
                         val producerId = producerJson.getString("producerId")
                         val kind = producerJson.getString("kind")
                         val peerId = producerJson.optString("peerId")
 
                         if (peerId != mSocket?.id()) {
-                            consume(nickname, producerId, kind)
+                            consume(nickname, peerId, producerId, kind)
                         }
                     }
                 }
@@ -490,7 +490,7 @@ class WebRtcClientConnection : CoroutineScope {
      * @param producerId 소비할 프로듀서의 ID
      * @param kind 미디어 타입 ("video" 또는 "audio")
      */
-    private fun consume(nickname: String, producerId: String, kind: String) {
+    private fun consume(nickname: String, peerId: String, producerId: String, kind: String) {
         Log.d(TAG, "Consuming media from producer: $producerId, kind: $kind")
 
         val data = JSONObject().apply {
@@ -527,10 +527,11 @@ class WebRtcClientConnection : CoroutineScope {
 
                 consumer?.let {
                     Log.d(TAG, "consume: producerId=${it.producerId}")
-                    if (kind == "video") onRemoteVideo?.invoke(it.track as VideoTrack, it, nickname)
+                    if (kind == "video") onRemoteVideo?.invoke(
+                        it.track as VideoTrack, it, nickname, peerId
+                    )
                     else if (kind == "audio") onRemoteAudio?.invoke(
-                        it.track as AudioTrack,
-                        it
+                        it.track as AudioTrack, it, nickname, peerId
                     )
                 }
             })

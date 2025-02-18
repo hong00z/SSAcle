@@ -12,5 +12,6 @@ data class Message(
     @SerializedName("nickname") val nickname: String,
     @SerializedName("message") val message: String,
     @SerializedName("isInOut") val isInOut: Boolean,
-    @SerializedName("createdAt") val createdAt: String
+    @SerializedName("createdAt") val createdAt: String,
+    @SerializedName("image") val image: String = "",
 ) : Parcelable
