@@ -188,11 +188,11 @@ class WebRtcClientConnection : CoroutineScope {
             socket.on("newChatMessage") { data ->
                 val payload = data[0] as JSONObject
 
-                val peerId = payload.getString("peerId")
+                val nickname = payload.getString("nickname")
                 val message = payload.optString("message")
 
-                Log.d(TAG, "Chat message from $peerId: $message")
-                onNewChat?.invoke(peerId, message)
+                Log.d(TAG, "Chat message from $nickname: $message")
+                onNewChat?.invoke(nickname, message)
             }
 
 
