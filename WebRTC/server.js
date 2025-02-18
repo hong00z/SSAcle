@@ -286,7 +286,7 @@ class SocketHandler {
               console.log(`[${socket.id}] Notifying newProducer to -> ${peerId}`)
               const otherPeer = this.peers.get(peerId)
               otherPeer.socket.emit("newProducer", {
-                nickname: otherPeer.nickname,
+                nickname: peer.nickname,
                 producerId: producer.id,
                 peerId: socket.id,
                 kind,
@@ -387,7 +387,7 @@ class SocketHandler {
           const otherPeer = this.peers.get(peerId)
           if (otherPeer) {
             otherPeer.socket.emit("newChatMessage", {
-              peerId: socket.id,
+              nickname: peer.nickname,
               message,
             })
           }
