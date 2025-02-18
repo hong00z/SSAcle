@@ -32,7 +32,10 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:visibility="gone"/>
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
         <!-- 설명 -->
         <TextView
             android:id="@+id/descriptionTextView"
@@ -42,8 +45,13 @@
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:textStyle="bold"
+            android:fontFamily="@font/pretendard_medium"
             android:text="AI를 통해 자소서 첨삭을 받아보세요"
-            android:textSize="18sp" />
+            android:textSize="20sp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
         <!-- 버튼 -->
         <Button
@@ -51,9 +59,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            android:textSize="24dp"
-            android:backgroundTint="@color/logo_blue"
+
+            android:textSize="22dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/pretendard_bold"
+            android:backgroundTint="@color/primary_color"
             android:text="자소서 피드백 받기"
             android:textColor="@android:color/white" />
     </LinearLayout>

@@ -17,26 +17,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/back_button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="?attr/selectableItemBackground"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginLeft="12dp"
                 android:contentDescription="뒤로가기"
-                android:src="@drawable/baseline_arrow_back_24"
+                android:src="@drawable/ic_arrow_back"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/primary_color" />
 
             <TextView
                 android:id="@+id/toolbar_title"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_bold"
                 android:gravity="center"
                 android:padding="16dp"
                 android:text="AI 표정 피드백"
-                android:textColor="@color/chat_blue"
-                android:textSize="18sp"
+                android:textColor="@color/primary_color"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -72,6 +74,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginBottom="16dp"
+                        android:fontFamily="@font/pretendard_bold"
                         android:text="표정 분석 결과입니다."
                         android:textSize="24sp"
                         android:textStyle="bold" />
@@ -87,11 +90,11 @@
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="120dp"
                             android:layout_height="wrap_content"
-                            app:cardCornerRadius="12dp"
                             android:layout_marginStart="2dp"
                             app:cardBackgroundColor="@color/white"
-                            app:strokeWidth="2dp"
-                            app:cardElevation="4dp">
+                            app:cardCornerRadius="12dp"
+                            app:cardElevation="4dp"
+                            app:strokeWidth="2dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -104,6 +107,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginBottom="10dp"
+                                    android:fontFamily="@font/pretendard_medium"
                                     android:text="표정"
                                     android:textSize="20sp"
                                     android:textStyle="bold" />
@@ -113,6 +117,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
+                                    android:fontFamily="@font/pretendard_regular"
                                     android:text="긍정 30%"
                                     android:textSize="16sp" />
 
@@ -121,6 +126,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/pretendard_regular"
                                     android:text="부정 30%"
                                     android:textSize="16sp" />
 
@@ -129,6 +135,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/pretendard_regular"
                                     android:text="중립 40%"
                                     android:textSize="16sp" />
                             </LinearLayout>
@@ -178,6 +185,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="긍정"
+                                        android:fontFamily="@font/pretendard_regular"
                                         android:textColor="@color/black"
                                         android:textSize="14sp" />
                                 </LinearLayout>
@@ -205,6 +213,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="부정"
+                                        android:fontFamily="@font/pretendard_regular"
                                         android:textColor="@color/black"
                                         android:textSize="14sp" />
 
@@ -236,6 +245,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="중립"
+                                        android:fontFamily="@font/pretendard_regular"
                                         android:textColor="@color/black"
                                         android:textSize="14sp" />
                                 </LinearLayout>
@@ -247,8 +257,8 @@
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:cardBackgroundColor="#ECECEC"
                         android:layout_marginTop="8dp"
+                        app:cardBackgroundColor="#ECECEC"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="4dp">
 
@@ -256,12 +266,13 @@
                             android:id="@+id/detectText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="16dp"
-                            android:gravity="center"
                             android:layout_gravity="center"
+                            android:gravity="center"
+                            android:fontFamily="@font/pretendard_medium"
+                            android:padding="16dp"
                             android:text="영상 분석 결과, 무표정이 40%로 \n 가장 많이 감지되었습니다."
                             android:textColor="#333333"
-                            android:textSize="14sp" />
+                            android:textSize="15sp" />
                     </androidx.cardview.widget.CardView>
 
 
@@ -286,6 +297,7 @@
                                 android:layout_marginLeft="4dp"
                                 android:layout_marginTop="8dp"
                                 android:layout_marginBottom="8dp"
+                                android:fontFamily="@font/pretendard_bold"
                                 android:text="분석 결과 피드백"
                                 android:textSize="20sp"
                                 android:textStyle="bold" />
@@ -296,6 +308,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="4dp"
                                 android:layout_marginBottom="16dp"
+                                android:lineSpacingExtra="2dp"
+                                android:fontFamily="@font/pretendard_medium"
                                 android:text="내용이 여기에 들어갈 거에요.\n오늘 점심은 좀 별로였네요"
                                 android:textSize="18sp" />
                         </LinearLayout>
@@ -307,11 +321,12 @@
             <android.widget.Button
                 android:id="@+id/btnSaveResult"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_margin="16dp"
                 android:background="@drawable/button_ai_feedback"
                 android:minWidth="200dp"
+                android:fontFamily="@font/pretendard_medium"
                 android:text="분석 결과 저장"
                 android:textColor="@color/white"
                 android:textSize="20sp" />

@@ -16,31 +16,35 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="64dp"
             android:layout_marginBottom="50dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/back_button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="?attr/selectableItemBackground"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginLeft="12dp"
+                android:background="@color/white"
                 android:contentDescription="뒤로가기"
-                android:src="@drawable/baseline_arrow_back_24"
+                android:src="@drawable/ic_arrow_back"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:stateListAnimator="@null"
+                app:tint="@color/primary_color" />
 
             <TextView
                 android:id="@+id/toolbar_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_bold"
                 android:gravity="center"
                 android:padding="16dp"
                 android:text="AI 자소서 피드백"
-                android:textColor="@color/chat_blue"
-                android:textSize="18sp"
+                android:textColor="@color/primary_color"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -55,8 +59,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:textSize="20sp"
-            android:text="" />
+            android:fontFamily="@font/pretendard_medium"
+
+            android:text=""
+            android:textSize="20sp" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardViewWeb"
@@ -86,6 +92,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="60dp"
             android:layout_marginEnd="16dp"
+            android:fontFamily="@font/pretendard_bold"
             android:gravity="center"
             android:text="문항과 자소서가 포함된 \nPDF 파일을 업로드해보세요!"
             android:textSize="20sp"
@@ -99,6 +106,7 @@
             android:layout_marginTop="30dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="30dp"
+            android:fontFamily="@font/pretendard_bold"
             android:gravity="center"
             android:text="AI가 당신의 자소서를 \n피드백 해드릴게요."
             android:textSize="20sp"
@@ -108,11 +116,13 @@
         <android.widget.Button
             android:id="@+id/btnSelectPdf"
             android:layout_width="wrap_content"
-            android:layout_height="33dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/button_outline"
+            android:stateListAnimator="@null"
+            android:fontFamily="@font/pretendard_medium"
             android:gravity="center"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
@@ -127,6 +137,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="80dp"
+            android:fontFamily="@font/pretendard_light"
             android:gravity="center"
             android:text="피드백 받을 자기소개서를 pdf 파일로 업로드 해주세요. "
             android:textSize="12sp" />
@@ -140,13 +151,16 @@
             <android.widget.Button
                 android:id="@+id/btnSubmit"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:background="@drawable/button_ai_feedback"
+                android:stateListAnimator="@null"
+                android:fontFamily="@font/pretendard_bold"
                 android:gravity="center"
                 android:minWidth="200dp"
                 android:text="AI 피드백 받기"
                 android:textColor="@color/white"
                 android:textSize="20dp"
+                app:layout_constraintBottom_toTopOf="@+id/deleteLinear"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -156,7 +170,9 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginLeft="5dp"
+                android:layout_marginBottom="5dp"
                 android:src="@drawable/help_24px"
+                app:layout_constraintBottom_toTopOf="@+id/deleteLinear"
                 app:layout_constraintStart_toEndOf="@+id/btnSubmit"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -182,6 +198,7 @@
                     android:id="@+id/tvPdfPath"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_light"
                     android:gravity="center"
                     android:paddingLeft="4dp"
                     android:paddingTop="4dp"
@@ -193,10 +210,11 @@
         <android.widget.Button
             android:id="@+id/btnDownloadPdf"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_margin="16dp"
             android:background="@drawable/button_ai_feedback"
+            android:fontFamily="@font/pretendard_bold"
             android:minWidth="200dp"
             android:text="카카오톡으로 공유"
             android:textColor="@color/white"
@@ -215,10 +233,9 @@
         android:layout_marginEnd="60dp"
         android:background="@color/border_light_color"
         android:orientation="vertical"
-        android:visibility="gone"
-        android:padding="8dp">
-<!--
-        android:visibility="gone"-->
+        android:padding="8dp"
+        android:visibility="gone">
+
         <TextView
             android:id="@+id/helpOverlayText"
             android:layout_width="wrap_content"
@@ -230,8 +247,8 @@
             \n 3. 논리적 흐름과 스토리텔링의 적합성 판단
             \n 4. 신입 개발자에 맞은 성장 가능성에 대한 피드백"
             android:textColor="@android:color/black"
-            android:textSize="14sp"
-            />
+            android:fontFamily="@font/pretendard_light"
+            android:textSize="14sp" />
     </LinearLayout>
 
 </FrameLayout>
