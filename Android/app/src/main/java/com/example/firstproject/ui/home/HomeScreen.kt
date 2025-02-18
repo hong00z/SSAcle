@@ -157,7 +157,7 @@ fun HomeScreen(
             Column(
                 Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 24.dp)
+                    .padding(horizontal = 28.dp)
             ) {
                 Spacer(Modifier.height(12.dp))
                 TitleTextView("내 스터디 목록")
@@ -285,7 +285,7 @@ fun HomeScreen(
                     )
                 }
                 Spacer(Modifier.height(20.dp))
-                StudyListCard(openStudyList = allStudyList)
+                StudyListCard(openStudyList = allStudyList, navController = navController)
                 Spacer(Modifier.height(8.dp))
             }
 

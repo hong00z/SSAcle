@@ -1,5 +1,6 @@
 package com.example.firstproject.ui.home
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -104,7 +105,7 @@ fun AllStudyListScreen(
                 .wrapContentHeight()
         ) {
             items(allStudyList) { study ->
-                StudyInfoItem(study)
+                StudyInfoItem(navController, study)
                 Spacer(Modifier.height(16.dp))
             }
         }
@@ -133,7 +134,7 @@ private fun StackLabel(stackTitle: String, tint: Color) {
 }
 
 @Composable
-private fun StudyInfoItem(studyInfo: StudyDTO) {
+private fun StudyInfoItem(navController: NavController, studyInfo: StudyDTO) {
 
     Column(
         modifier = Modifier
@@ -165,12 +166,19 @@ private fun StudyInfoItem(studyInfo: StudyDTO) {
 
             Spacer(Modifier.weight(1f))
 
-            Row(modifier = Modifier
-                .clickable {
-                    // 클릭하면 스터디 상세정보화면으로
+            Row(
+                modifier = Modifier
+                    .height(24.dp)
+                    .clickable {
+                        // 클릭하면 스터디 상세정보화면으로
+                        navController.currentBackStackEntry
+                            ?.savedStateHandle
+                            ?.set("studyId", studyInfo.studyId)
+                        Log.d("전체 스터디 목록에서 누름", "스터디아이디: ${studyInfo.studyId}")
 
-
-                }
+                        navController.navigate("studyDetailScreen")
+                    },
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     "자세히 보기",
