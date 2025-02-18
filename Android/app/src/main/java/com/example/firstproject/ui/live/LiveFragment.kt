@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.firstproject.MyApplication
 import com.example.firstproject.MyApplication.Companion.requiredPermissions
+import com.example.firstproject.MyApplication.Companion.webRtcClientConnection
 import com.example.firstproject.client.WebRtcClientConnection
 import com.example.firstproject.databinding.FragmentLiveBinding
 import com.example.firstproject.utils.PermissionChecker
@@ -27,7 +28,6 @@ class LiveFragment : Fragment() {
     private var _binding: FragmentLiveBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var webRtcClientConnection: WebRtcClientConnection
     private var localVideoTrack: VideoTrack? = null
     private var localAudioTrack: AudioTrack? = null
 
@@ -66,7 +66,6 @@ class LiveFragment : Fragment() {
     }
 
     private fun initWebRTC() {
-        webRtcClientConnection = MyApplication.webRtcClientConnection
         webRtcClientConnection.init(requireContext())
 
         binding.localVideoView.init(webRtcClientConnection.eglBase.eglBaseContext, null)
@@ -80,21 +79,21 @@ class LiveFragment : Fragment() {
         Log.d(TAG, "initWebRTC: ${localVideoTrack?.id()}")
 
         // 원격 소비(consume)가 완료되면 displayRemoteVideo() 호출
-        webRtcClientConnection.onRemoteVideo = { videoTrack, producerId ->
+        webRtcClientConnection.onRemoteVideo = { videoTrack, consumer ->
             // UI 업데이트는 메인 스레드에서 실행
             lifecycleScope.launch(Dispatchers.Main) {
-                displayRemoteVideo(videoTrack, producerId)
+                displayRemoteVideo(videoTrack, consumer.producerId)
             }
         }
-        webRtcClientConnection.onRemoteAudio = { audioTrack, producerId ->
+        webRtcClientConnection.onRemoteAudio = { audioTrack, consumer ->
             audioTrack.let {
                 it.setEnabled(true)
-                Log.d(TAG, "AudioTrack enabled: $producerId")
+                Log.d(TAG, "AudioTrack enabled: ${consumer.producerId}")
             }
         }
 
         // 원격 프로듀서 종료 이벤트 처리 콜백 설정
-        webRtcClientConnection.onProducerClosed = { producerId ->
+        webRtcClientConnection.onPeerClosed = { producerId ->
             lifecycleScope.launch(Dispatchers.Main) {
                 removeRemoteVideo(producerId)
             }
