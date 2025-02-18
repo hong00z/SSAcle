@@ -8,6 +8,8 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.firstproject.client.WebRtcClientConnection
+import com.example.firstproject.data.repository.MainRepository
+import com.example.firstproject.data.repository.RemoteDataSource
 import com.example.firstproject.data.repository.TokenManager
 import com.kakao.sdk.common.KakaoSdk
 import kotlinx.coroutines.CoroutineScope
@@ -33,6 +35,8 @@ class MyApplication : Application() {
         var accessToken: String? = null
         var fcmToken: String? = null
         lateinit var USER_ID: String
+        lateinit var NICKNAME: String
+        lateinit var IMAGE_URL: String
 
         lateinit var instance: MyApplication
             private set

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.firstproject.MyApplication.Companion.tokenManager
+import com.example.firstproject.data.model.dto.request.InviteUserRequestDTO
 import com.example.firstproject.data.model.dto.response.Top3RecommendedUsersDtoItem
 import com.example.firstproject.data.model.dto.response.UserSuitableStudyDtoItem
 import com.example.firstproject.data.repository.MainRepository
@@ -14,7 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class FindViewModel:ViewModel() {
+class FindViewModel : ViewModel() {
     private val repository = MainRepository
     var accessToken = tokenManager.getAccessToken()
 
@@ -80,6 +81,39 @@ class FindViewModel:ViewModel() {
 
             delay(200)
 
+        }
+
+    }
+
+    // 유저에게 스터디 초대 보내기
+    private val _inviteUserResult =
+        MutableStateFlow<RequestResult<Unit>>(RequestResult.None())
+    val inviteUserResult = _inviteUserResult.asStateFlow()
+
+    fun sendInviteUser(
+        studyId: String,
+        request: InviteUserRequestDTO,
+        onResult: (Boolean) -> Unit
+    ) {
+        viewModelScope.launch {
+            _inviteUserResult.update {
+                RequestResult.Progress()
+            }
+            try {
+                val result = repository.inviteStudyToUser(
+                    accessToken = tokenManager.getAccessToken()!!,
+                    studyId = studyId,
+                    request = request
+                )
+
+                _inviteUserResult.update {
+                    result
+                }
+                onResult(result.isSuccess())
+            } catch (e: Exception) {
+                _inviteUserResult.value = RequestResult.Failure(e.toString())
+                onResult(false)
+            }
         }
 
     }

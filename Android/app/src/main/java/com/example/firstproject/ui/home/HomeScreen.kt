@@ -1,5 +1,6 @@
 package com.example.firstproject.ui.home
 
+import android.provider.ContactsContract.CommonDataKinds.Nickname
 import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.BorderStroke
@@ -55,9 +56,15 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import com.example.firstproject.MyApplication
+import com.example.firstproject.MyApplication.Companion.tokenManager
 import com.example.firstproject.R
 import com.example.firstproject.data.model.dto.response.MyJoinedStudyListDtoItem
 import com.example.firstproject.data.model.dto.response.StudyInfo
+import com.example.firstproject.data.repository.RemoteDataSource
+import com.example.firstproject.ui.mypage.MypageViewModel
 import com.example.firstproject.ui.theme.notosans
 import com.example.firstproject.ui.theme.pretendard
 import com.rootachieve.requestresult.RequestResult
@@ -68,7 +75,8 @@ fun HomeScreen(
     onNavigateToFragment: () -> Unit,
     // 이거 추가
     onNotificationClick: () -> Unit,
-    homeViewModel: HomeViewModel = viewModel()
+    homeViewModel: HomeViewModel = viewModel(),
+    mypageViewModel: MypageViewModel = viewModel()
 
 ) {
     val context = LocalContext.current
@@ -77,6 +85,9 @@ fun HomeScreen(
 
     val getJoinedStudyResult by homeViewModel.joinedStudyResult.collectAsStateWithLifecycle()
     val myJoinedStudyList = (getJoinedStudyResult as? RequestResult.Success)?.data
+
+    val getUserProfileResult by mypageViewModel.getProfileResult.collectAsStateWithLifecycle()
+    val getUserInfo = (getUserProfileResult as? RequestResult.Success)?.data
 
 
     // 모든 스터디 리스트
@@ -98,11 +109,28 @@ fun HomeScreen(
         homeViewModel.getJoinedStudy()
         if (myJoinedStudyList != null) Log.d("홈 화면", "내 스터디 목록: $myJoinedStudyList ")
         else Log.d("홈 화면", "내 스터디 목록 null ㅋㅋ ")
+
+        // 내 프로필 정보 조회
+        mypageViewModel.getUserProfile()
     }
 
     LaunchedEffect(getJoinedStudyResult) {
         Log.d("참여 중 상태 변경", "내 스터디 목록: $myJoinedStudyList ")
         if (myJoinedStudyList == null) Log.d("참여 중 상태 변경", "내 스터디 목록 null ㅋㅋ ")
+    }
+
+    LaunchedEffect(getUserProfileResult) {
+        if (getUserProfileResult.isSuccess()) {
+            if (getUserInfo != null) {
+                Log.d("홈 화면에서 프로필 조회", "${getUserInfo.data}")
+                MyApplication.NICKNAME = getUserInfo.data?.nickname ?: ""
+                MyApplication.IMAGE_URL =
+                    RemoteDataSource().getImageUrl(getUserInfo.data?.image ?: "")
+                Log.d("홈 화면에서 닉네임 저장", "${MyApplication.NICKNAME}")
+                Log.d("홈 화면 이미지 주소", "${MyApplication.IMAGE_URL}")
+            }
+        }
+
     }
 
 
