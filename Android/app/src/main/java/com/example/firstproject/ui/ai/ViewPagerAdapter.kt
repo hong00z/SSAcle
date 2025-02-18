@@ -59,7 +59,7 @@ class ViewPagerAdapter(private val items: List<CardItem>) :
 
         // 버튼 컬러 설정
         val buttonColor = when (position) {
-            0 -> ContextCompat.getColor(context, R.color.myself_button)
+            0 -> ContextCompat.getColor(context, R.color.primary_color)
             1 -> ContextCompat.getColor(context, R.color.eye_button)
             2 -> ContextCompat.getColor(context, R.color.face_button)
             else -> ContextCompat.getColor(context, R.color.chart_blue)
@@ -70,7 +70,7 @@ class ViewPagerAdapter(private val items: List<CardItem>) :
         if (position == 0) {
             // 원하는 dp 값을 설정 (예시: 이미지 16dp, 텍스트 8dp, 버튼 12dp)
             val imageMargin = dpToPx(context, 72)
-            val textMargin = dpToPx(context, 80)
+            val textMargin = dpToPx(context, 30)
             val buttonMargin = dpToPx(context, 18)
 
             // 이미지 뷰 margin 적용
@@ -80,7 +80,7 @@ class ViewPagerAdapter(private val items: List<CardItem>) :
 
             // 텍스트 뷰 margin 적용 (타이틀 텍스트에 margin을 주고 싶다면)
             val titleLayoutParams = holder.binding.descriptionTextView.layoutParams as ViewGroup.MarginLayoutParams
-            titleLayoutParams.setMargins(0, 0, 0, 0)
+            titleLayoutParams.setMargins(0, textMargin, 0, 0)
             holder.binding.descriptionTextView.layoutParams = titleLayoutParams
 
             // 버튼 margin 적용

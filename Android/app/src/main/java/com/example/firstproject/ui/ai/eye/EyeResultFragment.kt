@@ -559,21 +559,8 @@ class EyeResultFragment : Fragment() {
         shareImageFile(imageFile)
     }
 
-
-    /**
-     * View -> Bitmap추출
-     */
     private fun getBitmapFromView(view: View): Bitmap {
-        // 실제 크기로 측정
-        view.measure(
-            View.MeasureSpec.makeMeasureSpec(view.width, View.MeasureSpec.EXACTLY),
-            View.MeasureSpec.makeMeasureSpec(view.height, View.MeasureSpec.EXACTLY)
-        )
-        view.layout(0, 0, view.measuredWidth, view.measuredHeight)
-
-        // Bitmap 생성
-        val bitmap =
-            Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
+        val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         view.draw(canvas)
         return bitmap

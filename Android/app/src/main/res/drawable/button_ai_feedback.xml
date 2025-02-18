@@ -3,7 +3,7 @@
     android:shape="rectangle">
 
     <!-- Button background color -->
-    <solid android:color="@color/blue_ai" />
+    <solid android:color="@color/primary_color" />
 
     <!-- Rounded corners -->
     <corners android:radius="24dp" />
