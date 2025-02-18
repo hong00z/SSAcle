@@ -32,6 +32,8 @@ class VideoFragment : Fragment() {
 
     // WebRTC 연결 객체
     private var peerId: String? = null
+    lateinit var studyName: String
+    lateinit var studyId: String
 
     private val liveChatMessages = mutableListOf<LiveChatMessage>()
     private lateinit var liveChatAdapter: LiveChatAdapter
@@ -47,8 +49,10 @@ class VideoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val studyId = arguments?.getString("studyId")!!
+        studyId = arguments?.getString("studyId")!!
         Log.d(TAG, "onViewCreated: studyId= $studyId")
+        studyName = arguments?.getString("studyName")!!
+        Log.d(TAG, "onViewCreated: studyName= $studyName")
 
         initUI()
         webRtcClientConnection.init(requireContext())
@@ -58,7 +62,8 @@ class VideoFragment : Fragment() {
             LiveMemberAdapter(liveMembers, webRtcClientConnection.eglBase.eglBaseContext)
         binding.rvParticipants.adapter = liveMemberAdapter
 
-        liveMembers.add(LiveMember(true))
+        liveMembers.add(LiveMember(true, NICKNAME))
+        lifecycleScope.launch { updatePeopleCount() }
         webRtcClientConnection.joinRoom(studyId)
 
         liveChatAdapter = LiveChatAdapter(liveChatMessages)
@@ -66,10 +71,28 @@ class VideoFragment : Fragment() {
         binding.rvChat.adapter = liveChatAdapter
 
         // 원격 비디오 수신 시 처리
-        webRtcClientConnection.onRemoteVideo = { _, consumer, nickname ->
-            activity?.runOnUiThread {
-                liveMembers.add(LiveMember(false, nickname, peerId, consumer))
-                liveMemberAdapter.notifyItemInserted(liveMembers.lastIndex)
+        webRtcClientConnection.onRemoteVideo = { _, consumer, nickname, peerId ->
+            lifecycleScope.launch {
+                val index = liveMembers.indexOfFirst { it.peerId == peerId }
+                if (index != -1) {
+                    liveMembers[index].videoConsumer = consumer
+                } else {
+                    liveMembers.add(LiveMember(false, nickname, peerId, videoConsumer = consumer))
+                    updatePeopleCount()
+                    liveMemberAdapter.notifyItemInserted(liveMembers.lastIndex)
+                }
+            }
+        }
+        webRtcClientConnection.onRemoteAudio = { _, consumer, nickname, peerId ->
+            lifecycleScope.launch {
+                val index = liveMembers.indexOfFirst { it.peerId == peerId }
+                if (index != -1) {
+                    liveMembers[index].videoConsumer = consumer
+                } else {
+                    liveMembers.add(LiveMember(false, nickname, peerId, audioConsumer = consumer))
+                    updatePeopleCount()
+                    liveMemberAdapter.notifyItemInserted(liveMembers.lastIndex)
+                }
             }
         }
 
@@ -78,9 +101,12 @@ class VideoFragment : Fragment() {
             val index = liveMembers.indexOfFirst { it.peerId == peerId }
             Log.d(TAG, "closed index=$index, peerId=$peerId")
             if (index != -1) {
+                liveMembers[index].videoConsumer?.close()
+                liveMembers[index].audioConsumer?.close()
 
                 liveMembers.removeAt(index)
                 lifecycleScope.launch {
+                    updatePeopleCount()
                     liveMemberAdapter.notifyItemRemoved(index)
                 }
             }
@@ -103,6 +129,14 @@ class VideoFragment : Fragment() {
     }
 
     private fun initUI() {
+
+        // Toolbar 설정
+        binding.detailToolbar.apply {
+            title = studyName
+            setNavigationOnClickListener {
+                requireActivity().onBackPressedDispatcher.onBackPressed()
+            }
+        }
 
         binding.tbCam.setOnCheckedChangeListener { button, isChecked ->
             if (isChecked) {
@@ -155,6 +189,9 @@ class VideoFragment : Fragment() {
         }
     }
 
+    private fun updatePeopleCount() {
+        binding.peopleCountTextView.text = "${liveMembers.size}"
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

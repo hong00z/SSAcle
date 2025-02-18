@@ -77,18 +77,18 @@ class LiveFragment : Fragment() {
         Log.d(TAG, "initWebRTC: ${localVideoTrack?.id()}")
 
         // 원격 소비(consume)가 완료되면 displayRemoteVideo() 호출
-        webRtcClientConnection.onRemoteVideo = { videoTrack, consumer, peerId ->
-            // UI 업데이트는 메인 스레드에서 실행
-            lifecycleScope.launch(Dispatchers.Main) {
-                displayRemoteVideo(videoTrack, consumer.producerId)
-            }
-        }
-        webRtcClientConnection.onRemoteAudio = { audioTrack, consumer ->
-            audioTrack.let {
-                it.setEnabled(true)
-                Log.d(TAG, "AudioTrack enabled: ${consumer.producerId}")
-            }
-        }
+//        webRtcClientConnection.onRemoteVideo = { videoTrack, consumer, peerId ->
+//            // UI 업데이트는 메인 스레드에서 실행
+//            lifecycleScope.launch(Dispatchers.Main) {
+//                displayRemoteVideo(videoTrack, consumer.producerId)
+//            }
+//        }
+//        webRtcClientConnection.onRemoteAudio = { audioTrack, consumer ->
+//            audioTrack.let {
+//                it.setEnabled(true)
+//                Log.d(TAG, "AudioTrack enabled: ${consumer.producerId}")
+//            }
+//        }
 
         // 원격 프로듀서 종료 이벤트 처리 콜백 설정
         webRtcClientConnection.onPeerClosed = { producerId ->
