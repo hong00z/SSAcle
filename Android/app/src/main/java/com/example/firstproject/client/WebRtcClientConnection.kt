@@ -40,9 +40,10 @@ import kotlin.coroutines.resumeWithException
 class WebRtcClientConnection : CoroutineScope {
 
     // UI에 원격 비디오 트랙을 전달하기 위한 콜백 (VideoTrack와 해당 producerId를 전달)
-    var onRemoteVideo: ((VideoTrack, Consumer) -> Unit)? = null
+    var onRemoteVideo: ((VideoTrack, Consumer, peerId: String) -> Unit)? = null
     var onRemoteAudio: ((AudioTrack, Consumer) -> Unit)? = null
-    var onPeerClosed: ((String) -> Unit)? = null
+    var onPeerClosed: ((peerId: String) -> Unit)? = null
+    var onNewChat: ((peerId: String, message: String) -> Unit)? = null
 
     companion object {
         const val TAG = "WebRtcClientConnection_TAG"
@@ -165,34 +166,14 @@ class WebRtcClientConnection : CoroutineScope {
 
                 val producerId = payload.getString("producerId")
                 Log.d(TAG, "producerClosed -> producerId = $producerId")
+            }
 
-//                onPeerClosed?.invoke(producerId)
+            socket.on("peerLeft") { data ->
+                val payload = data[0] as JSONObject
+                val peerId = payload.getString("peerId")
+                Log.d(TAG, "Peer left event: peerId=$peerId")
 
-                // consumers 리스트에서 해당 producerId와 일치하는 소비자(Consumer) 제거
-//                val iterator = consumers.iterator()
-//                val iterator = liveMembers.iterator()
-
-//                while (iterator.hasNext()) {
-//                    val member = iterator.next()
-//                    if (member.videoConsumer?.producerId == producerId) {
-//                        member.videoConsumer?.close()
-//                        Log.d(TAG, "Removed video consumer for producerId: $producerId")
-//                    } else if (member.audioConsumer?.producerId == producerId) {
-//                        member.audioConsumer?.close()
-//                        Log.d(TAG, "Removed audio consumer for producerId: $producerId")
-//                    }
-//
-//                    if (member.videoConsumer == null && member.audioConsumer == null) {
-//                        iterator.remove()
-//                        Log.d(TAG, "Removed member nickname= ${member.nickname} ")
-//                    }
-//                    val consumer = iterator.next()
-//                    if (consumer.producerId == producerId) { // consumer 객체에 producerId 프로퍼티가 있다고 가정
-//                        consumer.close()  // 소비자 객체를 닫거나 필요한 리소스를 해제
-//                        iterator.remove()
-//                        Log.d(TAG, "Removed consumer for producerId: $producerId")
-//                    }
-//                }
+                onPeerClosed?.invoke(peerId)
             }
 
             socket.on("peerClosed") { data ->
@@ -211,6 +192,7 @@ class WebRtcClientConnection : CoroutineScope {
                 val message = payload.optString("message")
 
                 Log.d(TAG, "Chat message from $peerId: $message")
+                onNewChat?.invoke(peerId, message)
             }
 
 
@@ -544,7 +526,7 @@ class WebRtcClientConnection : CoroutineScope {
                 consumer?.let {
 //                    consumers.add(it)
                     Log.d(TAG, "consume: producerId=${it.producerId}")
-                    if (kind == "video") onRemoteVideo?.invoke(it.track as VideoTrack, it)
+                    if (kind == "video") onRemoteVideo?.invoke(it.track as VideoTrack, it, peerId)
                     else if (kind == "audio") onRemoteAudio?.invoke(
                         it.track as AudioTrack,
                         it
