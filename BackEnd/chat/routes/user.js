@@ -141,6 +141,61 @@ router.get("/:userId/studies", async (req, res) => {
 })
 
 /**
+ * @openapi
+ * /api/users/{userId}/studies/{studyId}:
+ *   get:
+ *     tags:
+ *       - User
+ *     summary: 사용자가 가입한 특정 스터디 조회
+ *     description: 주어진 userId가 가입한 스터디 중 studyId에 해당하는 스터디 정보를 반환합니다.
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: 사용자 고유 ID
+ *       - in: path
+ *         name: studyId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: 스터디 고유 ID
+ *     responses:
+ *       200:
+ *         description: 가입한 특정 스터디 정보 반환
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Study'
+ *       404:
+ *         description: 사용자 또는 스터디를 찾을 수 없음
+ *       500:
+ *         description: 서버 에러
+ */
+router.get("/:userId/studies/:studyId", async (req, res) => {
+  const { userId, studyId } = req.params
+  try {
+    // 사용자를 조회하며 joinedStudies를 populate
+    const user = await User.findById(userId).populate("joinedStudies")
+    if (!user) {
+      return res.status(404).json({ error: "사용자를 찾을 수 없습니다." })
+    }
+
+    // 사용자가 가입한 스터디 중 해당 studyId와 일치하는 스터디를 찾음
+    const study = user.joinedStudies.find((study) => study._id.toString() === studyId)
+    if (!study) {
+      return res.status(404).json({ error: "가입한 스터디 중 해당 스터디를 찾을 수 없습니다." })
+    }
+
+    res.status(200).json(study)
+  } catch (err) {
+    console.error("특정 스터디 조회 중 에러 발생:", err)
+    res.status(500).json({ error: err.message })
+  }
+})
+
+/**
  * 사용자의 채팅방별 마지막 읽은 시간을 업데이트하는 API
  * POST /api/users/:userId/lastRead
  * Request Body: { studyId: String, lastReadTime: Number }

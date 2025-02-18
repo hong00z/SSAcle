@@ -182,7 +182,7 @@ class SocketHandler {
           room.forEach((otherPeerId) => {
             const otherPeer = this.peers.get(otherPeerId)
             if (otherPeer) {
-              otherPeer.socket.emit("peerLeft", { peerId: socket.id })
+              otherPeer.socket.emit("peerClosed", { peerId: socket.id })
             }
           })
           // 만약 방에 남은 피어가 없다면 해당 방을 삭제
