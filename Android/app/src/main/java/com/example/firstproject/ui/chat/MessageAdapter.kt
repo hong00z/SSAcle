@@ -5,8 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.firstproject.MyApplication.Companion.USER_ID
 import com.example.firstproject.R
+import com.example.firstproject.data.repository.RemoteDataSource
 import com.example.firstproject.databinding.ItemMessageReceivedBinding
 import com.example.firstproject.databinding.ItemMessageSentBinding
 import com.example.firstproject.dto.Message
@@ -109,20 +111,9 @@ class MessageAdapter(private val items: MutableList<ChatItem>) :
             binding.senderName.text = message.nickname
             binding.messageContent.text = message.message
             binding.messageTime.text = CommonUtils.formatKoreanTime(message.createdAt)
-
-//            if (message.imageResId != null) {
-//                binding.messageProfile.visibility = View.VISIBLE
-//                binding.messageProfile.setImageResource(message.imageResId)
-//            } else {
-//                binding.messageProfile.visibility = View.GONE
-//            }
+            if (message.image != "") {
+                binding.messageProfile.load(RemoteDataSource().getImageUrl(message.image))
+            }
         }
-    }
-
-    // 항목을 갱신하는 메서드 (필요에 따라 추가)
-    fun updateItems(newItems: List<ChatItem>) {
-        items.clear()
-        items.addAll(newItems)
-        notifyDataSetChanged()
     }
 }

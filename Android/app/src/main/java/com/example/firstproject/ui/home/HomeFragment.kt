@@ -56,8 +56,8 @@ class HomeFragment : Fragment() {
 
                     composable("studyDetailScreen") {
                         StudyDetailScreen(navController = navController,
-                            onNavigateToVideo = { studyId ->
-                                val bundle = bundleOf("studyId" to studyId)
+                            onNavigateToVideo = { studyId, studyName ->
+                                val bundle = bundleOf("studyId" to studyId, "studyName" to studyName)
                                 xmlNavController.navigate(R.id.action_homeFragment_to_videoFragment, bundle)
                             },
                             onNavigateToChat = { studyId ->

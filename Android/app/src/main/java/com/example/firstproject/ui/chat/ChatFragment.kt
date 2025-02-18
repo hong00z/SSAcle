@@ -56,7 +56,6 @@ class ChatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         Log.d(TAG, "onViewCreated: ")
 
         // 번들로 전달된 studyId 저장 (SafeArgs를 사용하지 않는 경우)
@@ -65,6 +64,7 @@ class ChatFragment : Fragment() {
             Log.d(TAG, "Bundle로 전달받은 studyId: $it")
             arguments?.clear()
         }
+
 
         // 스와이프하여 새로고침 시 채팅방 목록 갱신
         binding.swipeRefreshLayout.setOnRefreshListener {
@@ -178,10 +178,6 @@ class ChatFragment : Fragment() {
 
     // 연결 성공 시 모든 채팅방에 joinRoom 호출
     private val onConnect = Emitter.Listener {
-        lifecycleScope.launch {
-            // 사용자가 가입한 각 스터디 채팅방에 입장
-//            joinAllStudyRooms()
-        }
     }
 
     private fun joinAllStudyRooms() {
