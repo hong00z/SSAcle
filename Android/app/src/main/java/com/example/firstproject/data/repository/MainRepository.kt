@@ -7,6 +7,7 @@ import com.example.firstproject.data.model.dto.request.EditProfileRequestDTO
 import com.example.firstproject.data.model.dto.request.InviteUserRequestDTO
 import com.example.firstproject.data.model.dto.request.NicknameRequestDTO
 import com.example.firstproject.data.model.dto.request.RegisterStudyRequestDTO
+import com.example.firstproject.data.model.dto.request.SendJoinRequestDTO
 import com.example.firstproject.data.model.dto.response.AuthResponseDTO
 import com.example.firstproject.data.model.dto.response.EditProfileResponseDTO
 import com.example.firstproject.data.model.dto.response.KakaoTokenDTO
@@ -172,6 +173,11 @@ object MainRepository {
     // 유저에게 스터디 초대 보내기
     suspend fun inviteStudyToUser(accessToken: String, studyId: String, request: InviteUserRequestDTO): RequestResult<Unit> {
         return remoteDataSource.inviteStudyToUser(accessToken, studyId, request)
+    }
+
+    // 스터디에 가입 요청 보내기
+    suspend fun sendJoinRequest(accessToken: String, studyId: SendJoinRequestDTO): RequestResult<Unit> {
+        return remoteDataSource.sendJoinRequest(accessToken, studyId)
     }
 
 }

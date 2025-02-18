@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.firstproject.MyApplication.Companion.tokenManager
 import com.example.firstproject.data.model.dto.request.InviteUserRequestDTO
+import com.example.firstproject.data.model.dto.request.SendJoinRequestDTO
 import com.example.firstproject.data.model.dto.response.Top3RecommendedUsersDtoItem
 import com.example.firstproject.data.model.dto.response.UserSuitableStudyDtoItem
 import com.example.firstproject.data.repository.MainRepository
@@ -118,4 +119,33 @@ class FindViewModel : ViewModel() {
 
     }
 
+    // 스터디에 가입 신청하기
+    private val _joinStudyResult =
+        MutableStateFlow<RequestResult<Unit>>(RequestResult.None())
+    val joinStudyResult = _joinStudyResult.asStateFlow()
+
+    fun sendJoinStudy(
+        studyId: SendJoinRequestDTO,
+        onResult: (Boolean) -> Unit
+    ) {
+        viewModelScope.launch {
+            _joinStudyResult.update {
+                RequestResult.Progress()
+            }
+
+            try {
+                val result = repository.sendJoinRequest(
+                    accessToken = tokenManager.getAccessToken()!!,
+                    studyId = studyId
+                )
+
+                _joinStudyResult.update { result }
+                onResult(result.isSuccess())
+            } catch (e: Exception) {
+                _joinStudyResult.value = RequestResult.Failure(e.toString())
+                onResult(false)
+            }
+
+        }
+    }
 }
