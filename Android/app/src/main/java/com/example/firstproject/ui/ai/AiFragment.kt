@@ -43,7 +43,7 @@ class AiFragment : Fragment() {
             ),
             CardItem(
                 title = "표정 피드백",
-                description = "차가운 면접장,\n표정관리가 안되시나요?",
+                description = "차가운 면접장,\n표정 피드백이 필요하신가요?",
                 buttonText = "표정 피드백 받기",
                 imageRes = R.drawable.eye_image,
                 backgroundColorRes = R.color.card_eye,
