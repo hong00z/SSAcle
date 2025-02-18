@@ -4,45 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
+    android:orientation="vertical"
     tools:context=".ui.ai.AiFragment">
-<!--modifier = Modifier
-                .align(Alignment.CenterStart)
-                .padding(start = 20.dp),
-            text = "SSAcle",
-            fontFamily = notosans,
-            fontSize = 30.sp,-->
-    <!-- 상단 텍스트 -->
-    <TextView
+
+    <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
         android:paddingStart="20dp"
-        android:layout_marginTop="16dp"
-        android:text="SSAcle"
-        android:textStyle="bold"
-        android:fontFamily="@font/notosans_black"
-        android:textSize="30sp"
-        android:textColor="@color/logo_blue" />
+        android:src="@drawable/ssacle_logo" />
 
     <!-- 슬라이더 뷰 -->
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="600dp"
+        android:layout_margin="16dp"
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
         android:overScrollMode="never"
-        android:layout_margin="16dp"/>
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp" />
 
     <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
         android:id="@+id/dotsIndicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        app:dotsSize="7dp"/>
+        app:dotsColor="@color/primary_color"
+        app:dotsSize="7dp" />
 
 
 </LinearLayout>

@@ -112,7 +112,6 @@ class AiFeedbackFragment : Fragment() {
             webView.settings.javaScriptEnabled = true
             webView.settings.defaultTextEncodingName = "UTF-8"
 
-
             // 1) PDF 파일 선택
             btnSelectPdf.setOnClickListener {
                 selectPdfFile()
@@ -195,8 +194,18 @@ class AiFeedbackFragment : Fragment() {
             for (word in wordsToHighlight) {
                 val start = spannable.indexOf(word)
                 if (start >= 0) {
-                    spannable.setSpan(StyleSpan(Typeface.BOLD), start, start + word.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                    spannable.setSpan(ForegroundColorSpan(Color.RED), start, start + word.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    spannable.setSpan(
+                        StyleSpan(Typeface.BOLD),
+                        start,
+                        start + word.length,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                    spannable.setSpan(
+                        ForegroundColorSpan(Color.RED),
+                        start,
+                        start + word.length,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
                 }
             }
 
@@ -502,7 +511,7 @@ class AiFeedbackFragment : Fragment() {
         binding.apply {
             webView.webViewClient = object : WebViewClient() {
                 override fun onPageFinished(view: WebView?, url: String?) {
-                    // 콘텐츠 높이가 제대로 계산되도록 약간의 딜레이를 줄 수도 있습니다.
+                    // 콘텐츠 높이가 제대로 계산되도록 딜레이
                     webView.post {
                         val contentHeight = (webView.contentHeight * webView.scale).toInt()
                         val maxHeight = (350 * webView.resources.displayMetrics.density).toInt()
