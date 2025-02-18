@@ -73,10 +73,12 @@ fun FindPersonScreen(
                 isLoading = true
                 Log.d("사람 추천", "로딩 중")
             }
+
             personRecommandResult.isSuccess() -> {
                 isLoading = false
                 Log.d("사람 추천", "통신 성공")
             }
+
             personRecommandResult.isFailure() -> {
                 isLoading = false
                 Log.d("사람 추천", "통신 실패")
@@ -90,9 +92,12 @@ fun FindPersonScreen(
             .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CommonTopBar("", onBackPress = {
-            // 뒤로 가기
-        })
+        CommonTopBar("",
+            onBackPress = {
+                // 뒤로 가기
+                navController.popBackStack()
+            }
+        )
 
         Image(
             painter = painterResource(R.drawable.img_find_person), null,
