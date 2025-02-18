@@ -1,6 +1,7 @@
 package com.example.firstproject.ui.matching
 
 import android.util.Log
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -55,6 +56,7 @@ fun FindStudyScreen(
 
 ) {
     val context = LocalContext.current
+    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
     val recommandStudyResult by findViewModel.recommandStudyResult.collectAsStateWithLifecycle()
     // 추천 스터디 리스트
@@ -90,7 +92,7 @@ fun FindStudyScreen(
     ) {
         CommonTopBar("", onBackPress = {
             // 뒤로 가기
-            navController.popBackStack()
+            navController.navigate("homeScreen")
         })
 
         Image(
