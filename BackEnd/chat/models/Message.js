@@ -17,9 +17,7 @@ const messageSchema = new Schema(
       required: true,
     },
     nickname: {
-      type: Schema.Types.String,
-      ref: "User",
-      swaggertype: "string",
+      type: String,
       required: true,
     },
     message: {
