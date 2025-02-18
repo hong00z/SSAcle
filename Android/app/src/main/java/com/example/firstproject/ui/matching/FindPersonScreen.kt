@@ -1,6 +1,7 @@
 package com.example.firstproject.ui.matching
 
 import android.util.Log
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -53,6 +54,8 @@ fun FindPersonScreen(
         ?.savedStateHandle
         ?.get<String>("studyId")
 
+    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+
     val personRecommandResult by findViewModel.personRecommandResult.collectAsStateWithLifecycle()
 
     val personRecommandList by findViewModel.personRecommandList.collectAsStateWithLifecycle()
@@ -95,7 +98,7 @@ fun FindPersonScreen(
         CommonTopBar("",
             onBackPress = {
                 // 뒤로 가기
-                navController.popBackStack()
+                backDispatcher?.onBackPressed()
             }
         )
 

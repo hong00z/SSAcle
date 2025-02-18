@@ -1,6 +1,7 @@
 package com.example.firstproject.ui.home
 
 import android.util.Log
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -84,6 +85,7 @@ fun StudyDetailScreen(
     val getStudyInfo by studyDetailViewModel.studyDetailResult.collectAsStateWithLifecycle()
     val studyInfo = (getStudyInfo as? RequestResult.Success)?.data
 
+    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
     // 이전 BackStackEntry의 savedStateHandle에서 'studyItem'을 가져옴
     val studyId = navController.previousBackStackEntry
@@ -139,7 +141,7 @@ fun StudyDetailScreen(
                 title = "스터디 상세보기",
                 onBackPress = {
                     // 뒤로가기
-                    navController.popBackStack()
+                    navController.navigate("homeScreen")
                 }
             )
         }
