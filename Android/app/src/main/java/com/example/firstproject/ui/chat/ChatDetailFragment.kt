@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.firstproject.MyApplication.Companion.USER_ID
 import com.example.firstproject.client.RetrofitClient.CHAT_API_URL
 import com.example.firstproject.client.RetrofitClient.userService
@@ -39,8 +38,6 @@ class ChatDetailFragment : Fragment() {
 
     private lateinit var adapter: MessageAdapter
     private var allMessages = mutableListOf<Message>() // 전체 메시지 리스트
-
-    private var isLoading = false
 
     // Socket.IO 관련 변수
     private lateinit var socket: Socket
@@ -92,17 +89,6 @@ class ChatDetailFragment : Fragment() {
         adapter = MessageAdapter(chatItems)
         binding.messagesRecycler.layoutManager = layoutManager
         binding.messagesRecycler.adapter = adapter
-
-
-        // 스크롤 리스너 (최상단 스크롤 시 추가로 이전 메시지 로드)
-        binding.messagesRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (!recyclerView.canScrollVertically(-1) && !isLoading) {
-//                    loadMoreMessages()
-                }
-            }
-        })
 
         // 전송 버튼 클릭 시 메시지 전송
         binding.sendButton.setOnClickListener {

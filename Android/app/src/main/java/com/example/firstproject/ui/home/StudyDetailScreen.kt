@@ -77,7 +77,7 @@ import com.rootachieve.requestresult.RequestResult
 fun StudyDetailScreen(
     navController: NavController,
     studyDetailViewModel: StudyDetailViewModel = viewModel(),
-    onNavigateToVideo: (String) -> Unit,
+    onNavigateToVideo: (String, String) -> Unit,
     onNavigateToChat: (String) -> Unit
 ) {
 
@@ -299,7 +299,7 @@ fun StudyDetailScreen(
                             clip = true
                         )
                         .clickable {
-                            onNavigateToVideo(studyId ?: "")
+                            onNavigateToVideo(studyId ?: "", studyName ?: "")
                             Log.d("실시간 모각공 버튼", "${studyId}")
                         },
                     shape = RoundedCornerShape(10.dp),
