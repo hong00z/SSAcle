@@ -24,6 +24,9 @@ WORKDIR /app
 # 보통 Spring Boot 프로젝트는 build/libs 디렉토리에 단일 jar 파일을 생성합니다.
 COPY --from=build /home/gradle/project/build/libs/*.jar app.jar
 
+# 업로드 디렉토리를 도커 볼륨으로 지정합니다.
+VOLUME ["/app/uploads"]
+
 # 애플리케이션이 사용하는 포트를 EXPOSE (예: 8080)
 EXPOSE 8080
 

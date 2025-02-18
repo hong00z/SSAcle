@@ -184,7 +184,9 @@ fun HomeScreen(
                             )
                         ) {
                             Column(
-                                modifier = Modifier.fillMaxSize().background(Color(0xFFF2F2F4)),
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(Color(0xFFF2F2F4)),
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center
                             ) {
@@ -223,7 +225,9 @@ fun HomeScreen(
                         )
                     ) {
                         Column(
-                            modifier = Modifier.fillMaxSize().background(Color(0xFFF2F2F4)),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(Color(0xFFF2F2F4)),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center
                         ) {
@@ -305,17 +309,17 @@ private fun TopBarMain(
     Box(
         Modifier
             .fillMaxWidth()
-            .height(60.dp)
+            .height(64.dp)
     ) {
-        Text(
+        Image(
+            painter = painterResource(R.drawable.ssacle_logo),
+            null,
             modifier = Modifier
                 .align(Alignment.CenterStart)
-                .padding(start = 20.dp),
-            text = "SSAcle",
-            fontFamily = notosans,
-            fontSize = 30.sp,
-            fontWeight = FontWeight(700),
-            color = Color(0xFF1181F0)
+                .padding(
+                    start = 20.dp
+                )
+
         )
         IconButton(
             modifier = Modifier
@@ -384,7 +388,7 @@ fun MyStudyItem(
                                 ?.savedStateHandle
                                 ?.set("studyId", itemList[it].id)
 
-                            Log.d("홈 화면에서 누름","스터디아이디: ${itemList[it].id}")
+                            Log.d("홈 화면에서 누름", "스터디아이디: ${itemList[it].id}")
 
                             // 해당 스터디 상세정보 화면으로 이동
                             navController.navigate("studyDetailScreen")
@@ -439,7 +443,7 @@ private fun IndicatorDots(isSelected: Boolean) {
 }
 
 @Composable
-private fun FindActionButton(onNavigatePerson:() -> Unit, onNavigateStudy: () -> Unit) {
+private fun FindActionButton(onNavigatePerson: () -> Unit, onNavigateStudy: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

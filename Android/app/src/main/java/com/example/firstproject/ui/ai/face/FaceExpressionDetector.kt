@@ -191,7 +191,7 @@ class FaceExpressionDetector(
             // letterbox 좌표를 뷰 좌표로 변환
             var originalRect = letterboxToOriginalCoords(letterboxRect, lbInfo, viewMatrix)
 
-            val offsetY = 40f
+            val offsetY = -60f
             originalRect = RectF(
                 originalRect.left,
                 originalRect.top - offsetY,
@@ -294,7 +294,6 @@ class FaceExpressionDetector(
 
         return LetterboxInfo(letterboxBitmap, scale, padLeft, padTop)
     }
-
 
 
     /**

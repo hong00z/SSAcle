@@ -47,6 +47,8 @@ services:
     container_name: spring
     ports:
       - "5001:5001"
+    volumes:
+      - ./uploads:/app/uploads
     depends_on:
       - mongodb # 몽고db 먼저 실행되어야 함
       - redis
