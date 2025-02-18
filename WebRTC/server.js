@@ -87,6 +87,7 @@ class Peer {
     this.producers = new Map() // Map<producerId, producer>
     this.consumers = new Map() // Map<consumerId, consumer>
     this.roomId = null // 현재 입장한 방의 ID (없으면 null)
+    this.nickname = null // 닉네임
   }
 }
 
@@ -131,8 +132,8 @@ class SocketHandler {
     })
 
     // 3) 클라이언트가 방에 입장 요청하는 이벤트
-    socket.on("joinRoom", ({ roomId }, callback) => {
-      console.log(`[${socket.id}] joinRoom -> ${roomId}`)
+    socket.on("joinRoom", ({ roomId, nickname }, callback) => {
+      console.log(`[${socket.id} : ${nickname}] joinRoom -> ${roomId}`)
       try {
         // 해당 roomId가 없으면 새 방을 생성
         if (!this.rooms.has(roomId)) {
@@ -143,6 +144,7 @@ class SocketHandler {
         this.rooms.get(roomId).add(socket.id)
         // 피어의 roomId를 업데이트
         peer.roomId = roomId
+        peer.nickname = nickname
 
         // 같은 방에 이미 존재하는 다른 피어들의 Producer 목록 수집 (자신 제외)
         const producers = []
@@ -151,6 +153,7 @@ class SocketHandler {
             const otherPeer = this.peers.get(peerId)
             otherPeer.producers.forEach((producer) => {
               producers.push({
+                nickname: otherPeer.nickname,
                 producerId: producer.id,
                 peerId,
                 kind: producer.kind,
@@ -283,6 +286,7 @@ class SocketHandler {
               console.log(`[${socket.id}] Notifying newProducer to -> ${peerId}`)
               const otherPeer = this.peers.get(peerId)
               otherPeer.socket.emit("newProducer", {
+                nickname: otherPeer.nickname,
                 producerId: producer.id,
                 peerId: socket.id,
                 kind,
