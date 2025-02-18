@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.firstproject.MyApplication.Companion.webRtcClientConnection
 import com.example.firstproject.databinding.ItemLiveMemberBinding
 import com.example.firstproject.dto.LiveMember
 import org.webrtc.AudioTrack
 import org.webrtc.EglBase
-import org.webrtc.RendererCommon
 import org.webrtc.VideoTrack
 
 class LiveMemberAdapter(
@@ -54,6 +54,7 @@ class LiveMemberAdapter(
                     setMirror(false)
                     val videoTrack = consumer.track as VideoTrack
                     videoTrack.addSink(this)
+                    holder.binding.ivAvatar.visibility = View.GONE
                     visibility = View.VISIBLE
                 }
             } ?: run {
