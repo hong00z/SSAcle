@@ -2,6 +2,7 @@ package com.example.firstproject.network
 
 import com.example.firstproject.data.model.dto.request.AuthRequestDTO
 import com.example.firstproject.data.model.dto.request.EditProfileRequestDTO
+import com.example.firstproject.data.model.dto.request.InviteUserRequestDTO
 import com.example.firstproject.data.model.dto.request.NicknameRequestDTO
 import com.example.firstproject.data.model.dto.request.RegisterStudyRequestDTO
 import com.example.firstproject.data.model.dto.response.AuthResponseDTO
@@ -155,12 +156,19 @@ interface APIService {
 
     // 프로필 수정
     @Multipart
-    @PATCH("/api/usser/profile")
+    @PATCH("/api/user/profile")
     suspend fun editUserProfile(
         @Header("Authorization") accessToken: String,
         @Body request: EditProfileRequestDTO
     ): Response<CommonResponseDTO<EditProfileResponseDTO>>
 
+    // 유저에게 스터디 초대(가입) 요청
+    @PATCH("/api/studies/{studyId}/addStudyRequest")
+    suspend fun inviteStudyToUser(
+        @Header("Authorization") accessToken: String,
+        @Path("studyId") studyId: String,
+        @Body request: InviteUserRequestDTO
+    ): Response<Unit>
 
     // 내 신청 보내기 (pass)
 }
