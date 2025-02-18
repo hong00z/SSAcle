@@ -1,6 +1,7 @@
 package com.example.firstproject.ui.home
 
 import android.util.Log
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -56,7 +57,7 @@ fun AllStudyListScreen(
 ) {
     val context = LocalContext.current
 
-
+    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
     val allStudyListResult by homeViewModel.allStudyListResult.collectAsStateWithLifecycle()
     // 모든 스터디 리스트
     val allStudyList by homeViewModel.allStudyList.collectAsStateWithLifecycle()
@@ -93,7 +94,7 @@ fun AllStudyListScreen(
             title = "모집 중인 스터디",
             onBackPress = {
                 // 뒤로 가기
-                navController.popBackStack()
+                navController.navigate("homeScreen")
             }
         )
 
