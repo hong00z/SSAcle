@@ -93,34 +93,47 @@ router.post("/:userId/fcmToken", async (req, res) => {
 router.get("/:userId/studies", async (req, res) => {
   const { userId } = req.params
   try {
-    const user = await User.findById(userId).populate("joinedStudies")
+    // 1. User를 찾고, joinedStudies 필드를 populate합니다.
+    //    joinedStudies의 각 Study에서 members 배열도 populate하여, User의 nickname과 image만 선택합니다.
+    const user = await User.findById(userId).populate({
+      path: "joinedStudies",
+      populate: {
+        path: "members",
+        select: "nickname image",
+      },
+    })
+
     if (!user) {
       return res.status(404).json({ error: "사용자를 찾을 수 없습니다." })
     }
     console.log(`사용자 ${userId}의 가입한 스터디 조회 - 총 ${user.joinedStudies.length}개`)
 
-    // 각 Study마다 읽지 않은 메시지 개수를 계산하여 Study 객체에 추가
+    // 2. 각 Study마다 사용자가 마지막으로 읽은 시각 이후 생성된 메시지 개수(unreadCount)와
+    //    마지막 메시지 정보를 가져와 Study 객체에 추가합니다.
     const studiesWithUnreadCount = await Promise.all(
       user.joinedStudies.map(async (study) => {
-        // 사용자의 studyReadTimestamps 배열에서 해당 Study의 마지막 읽은 시각을 찾음
-        let lastReadTime = new Date(0) // 기본값: epoch (읽은 기록이 없으면 전체 메시지 모두 읽지 않음)
+        // studyReadTimestamps 배열에서 해당 Study의 마지막 읽은 시각을 찾습니다.
+        // 만약 읽은 기록이 없으면 기본값으로 epoch를 사용합니다.
+        let lastReadTime = new Date(0)
         if (user.studyReadTimestamps && Array.isArray(user.studyReadTimestamps)) {
           const readObj = user.studyReadTimestamps.find((item) => item.studyId.toString() === study._id.toString())
           if (readObj && readObj.lastRead) {
             lastReadTime = readObj.lastRead
           }
         }
-        // 해당 Study에 대해, lastReadTime 이후에 생성된 메시지 개수를 unreadCount로 계산
+
+        // 해당 Study에서 lastReadTime 이후에 생성된 메시지의 개수를 계산합니다.
         const unreadCount = await Message.countDocuments({
           studyId: study._id,
           createdAt: { $gt: lastReadTime },
         })
 
-        // 마지막 메시지 조회 (생성시간 기준 내림차순)
+        // 마지막 메시지를 조회합니다. (생성시간 내림차순 정렬)
         const lastMsg = await Message.findOne({ studyId: study._id }).sort({ createdAt: -1 }).exec()
 
-        // Study 객체를 일반 객체로 변환하고, 필요한 필드를 추가
+        // Mongoose 문서를 일반 객체로 변환하여 추가 필드를 삽입할 수 있도록 합니다.
         const studyObj = study.toObject()
+        studyObj.unreadCount = unreadCount
         if (lastMsg) {
           studyObj.lastMessage = lastMsg.message
           studyObj.lastMessageCreatedAt = lastMsg.createdAt
@@ -128,11 +141,46 @@ router.get("/:userId/studies", async (req, res) => {
           studyObj.lastMessage = ""
           studyObj.lastMessageCreatedAt = null
         }
-        studyObj.unreadCount = unreadCount
+
+        // 3. members 배열을 순회하면서, populate된 User 객체에서 nickname과 image를 가져옵니다.
+        //    Study 스키마의 members가 단순 ObjectId 배열이라면, populate 후 각 member는 User 객체가 됩니다.
+        if (studyObj.members && Array.isArray(studyObj.members)) {
+          studyObj.members = studyObj.members.map((member) => {
+            // member가 객체이고 _id가 있다면, 이는 populate된 User 객체입니다.
+            if (typeof member === "object" && member._id) {
+              return {
+                userId: member._id, // User의 ObjectId
+                nickname: member.nickname,
+                image: member.image,
+              }
+            } else {
+              // 그렇지 않으면 그대로 반환
+              return member
+            }
+          })
+        }
+
+        // 4. study.image 필드에 study.createdBy에 해당하는 User의 image를 추가합니다.
+        //    먼저, createdBy가 population되어 있다면 바로 사용하고,
+        //    아니라면 별도로 User.findById로 조회하여 가져옵니다.
+        if (studyObj.createdBy) {
+          if (typeof studyObj.createdBy === "object" && studyObj.createdBy.image) {
+            // 이미 population된 경우
+            studyObj.image = studyObj.createdBy.image
+          } else {
+            // population되지 않은 경우, 별도로 조회
+            const creator = await User.findById(studyObj.createdBy).select("image")
+            studyObj.image = creator ? creator.image : ""
+          }
+        } else {
+          studyObj.image = ""
+        }
+
         return studyObj
       })
     )
 
+    // 4. 최종 결과를 클라이언트에 JSON 형태로 반환합니다.
     res.status(200).json(studiesWithUnreadCount)
   } catch (err) {
     console.error("가입한 스터디 조회 중 에러 발생:", err)
