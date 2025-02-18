@@ -2,6 +2,7 @@ package com.example.firstproject.client
 
 import android.content.Context
 import android.util.Log
+import com.example.firstproject.MyApplication.Companion.NICKNAME
 import com.example.firstproject.client.RetrofitClient.WEBRTC_URL
 import io.socket.client.Ack
 import io.socket.client.IO
@@ -40,7 +41,7 @@ import kotlin.coroutines.resumeWithException
 class WebRtcClientConnection : CoroutineScope {
 
     // UI에 원격 비디오 트랙을 전달하기 위한 콜백 (VideoTrack와 해당 producerId를 전달)
-    var onRemoteVideo: ((VideoTrack, Consumer, peerId: String) -> Unit)? = null
+    var onRemoteVideo: ((VideoTrack, Consumer, nickname: String) -> Unit)? = null
     var onRemoteAudio: ((AudioTrack, Consumer) -> Unit)? = null
     var onPeerClosed: ((peerId: String) -> Unit)? = null
     var onNewChat: ((peerId: String, message: String) -> Unit)? = null
@@ -60,20 +61,18 @@ class WebRtcClientConnection : CoroutineScope {
     private var recvTransport: RecvTransport? = null
 
     // 미디어 프로듀서(자신의 미디어)와 소비자(타인의 미디어)
-    var camProducer: Producer? = null
-    var micProducer: Producer? = null
+    private var camProducer: Producer? = null
+    private var micProducer: Producer? = null
 
-    //    val liveMembers = mutableListOf<LiveMember>()
-//    val consumers = mutableListOf<Consumer>()
-    var producersJsonArray: JSONArray? = null
+    private var producersJsonArray: JSONArray? = null
 
     // WebRTC 미디어 관련 변수
-    var videoCapturer: VideoCapturer? = null
+    private var videoCapturer: VideoCapturer? = null
     var localVideoTrack: VideoTrack? = null
-    var videoSource: VideoSource? = null
+    private var videoSource: VideoSource? = null
 
     var localAudioTrack: AudioTrack? = null
-    var audioSource: AudioSource? = null
+    private var audioSource: AudioSource? = null
 
     lateinit var eglBase: EglBase
 
@@ -144,6 +143,7 @@ class WebRtcClientConnection : CoroutineScope {
             socket.on("newProducer") { data ->
                 val payload = data[0] as JSONObject
 
+                val nickname = payload.getString("nickname")
                 val newProducerId = payload.getString("producerId")
                 val peerId = payload.optString("peerId")
                 val kind = payload.getString("kind") // "video" 또는 "audio"
@@ -157,7 +157,7 @@ class WebRtcClientConnection : CoroutineScope {
                 }
 
                 // 새로운 프로듀서의 미디어 소비 시작
-                consume(peerId, newProducerId, kind)
+                consume(nickname, newProducerId, kind)
             }
 
             // 프로듀서 종료 이벤트 처리
@@ -381,12 +381,13 @@ class WebRtcClientConnection : CoroutineScope {
                     for (i in 0 until it.length()) {
                         val producerJson = it.getJSONObject(i)
 
+                        val nickname = producerJson.getString("nickname")
                         val producerId = producerJson.getString("producerId")
                         val kind = producerJson.getString("kind")
                         val peerId = producerJson.optString("peerId")
 
                         if (peerId != mSocket?.id()) {
-                            consume(peerId, producerId, kind)
+                            consume(nickname, producerId, kind)
                         }
                     }
                 }
@@ -461,6 +462,7 @@ class WebRtcClientConnection : CoroutineScope {
 
         val data = JSONObject().apply {
             put("roomId", roomId)
+            put("nickname", NICKNAME)
         }
 
         launch {
@@ -488,7 +490,7 @@ class WebRtcClientConnection : CoroutineScope {
      * @param producerId 소비할 프로듀서의 ID
      * @param kind 미디어 타입 ("video" 또는 "audio")
      */
-    private fun consume(peerId: String, producerId: String, kind: String) {
+    private fun consume(nickname: String, producerId: String, kind: String) {
         Log.d(TAG, "Consuming media from producer: $producerId, kind: $kind")
 
         val data = JSONObject().apply {
@@ -524,9 +526,8 @@ class WebRtcClientConnection : CoroutineScope {
                 )
 
                 consumer?.let {
-//                    consumers.add(it)
                     Log.d(TAG, "consume: producerId=${it.producerId}")
-                    if (kind == "video") onRemoteVideo?.invoke(it.track as VideoTrack, it, peerId)
+                    if (kind == "video") onRemoteVideo?.invoke(it.track as VideoTrack, it, nickname)
                     else if (kind == "audio") onRemoteAudio?.invoke(
                         it.track as AudioTrack,
                         it

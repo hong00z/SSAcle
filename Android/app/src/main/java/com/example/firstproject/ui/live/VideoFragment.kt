@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.firstproject.MyApplication.Companion.NICKNAME
 import com.example.firstproject.MyApplication.Companion.webRtcClientConnection
 import com.example.firstproject.R
 import com.example.firstproject.databinding.FragmentVideoBinding
@@ -65,9 +66,9 @@ class VideoFragment : Fragment() {
         binding.rvChat.adapter = liveChatAdapter
 
         // 원격 비디오 수신 시 처리
-        webRtcClientConnection.onRemoteVideo = { videoTrack, consumer, peerId ->
+        webRtcClientConnection.onRemoteVideo = { _, consumer, nickname ->
             activity?.runOnUiThread {
-                liveMembers.add(LiveMember(false, "상대", peerId, consumer))
+                liveMembers.add(LiveMember(false, nickname, peerId, consumer))
                 liveMemberAdapter.notifyItemInserted(liveMembers.lastIndex)
             }
         }
@@ -77,6 +78,7 @@ class VideoFragment : Fragment() {
             val index = liveMembers.indexOfFirst { it.peerId == peerId }
             Log.d(TAG, "closed index=$index, peerId=$peerId")
             if (index != -1) {
+
                 liveMembers.removeAt(index)
                 lifecycleScope.launch {
                     liveMemberAdapter.notifyItemRemoved(index)
@@ -87,9 +89,14 @@ class VideoFragment : Fragment() {
         webRtcClientConnection.onNewChat = { nickname, message ->
             liveChatMessages.add(LiveChatMessage(false, nickname, message))
             lifecycleScope.launch {
-                Log.d(TAG, "onViewCreated: 메세지 추가 $message")
-                Log.d(TAG, "onViewCreated: ${liveChatMessages.size}")
+                Log.d(TAG, "새로운 메세지: $message")
                 liveChatAdapter.notifyItemInserted(liveChatMessages.lastIndex)
+
+                val layoutManager = binding.rvChat.layoutManager as LinearLayoutManager
+                // 현재 마지막으로 보이는 아이템이 전체 아이템의 마지막 바로 위라면(즉, 사용자가 맨 아래에 있을 때)
+                if (layoutManager.findLastVisibleItemPosition() >= liveChatMessages.lastIndex - 1) {
+                    binding.rvChat.smoothScrollToPosition(liveChatMessages.lastIndex)
+                }
             }
         }
 
@@ -129,7 +136,7 @@ class VideoFragment : Fragment() {
             lifecycleScope.launch {
                 val result = webRtcClientConnection.sendChatMessage(message)
                 if (result) {
-                    displayChatMessage(true, "나", message)
+                    displayChatMessage(true, NICKNAME, message)
                 }
                 binding.etChatInput.setText("")
             }
