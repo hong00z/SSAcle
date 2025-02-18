@@ -40,9 +40,10 @@ import kotlin.coroutines.resumeWithException
 class WebRtcClientConnection : CoroutineScope {
 
     // UI에 원격 비디오 트랙을 전달하기 위한 콜백 (VideoTrack와 해당 producerId를 전달)
-    var onRemoteVideo: ((VideoTrack, String) -> Unit)? = null
-    var onRemoteAudio: ((AudioTrack, String) -> Unit)? = null
-    var onProducerClosed: ((String) -> Unit)? = null
+    var onRemoteVideo: ((VideoTrack, Consumer, peerId: String) -> Unit)? = null
+    var onRemoteAudio: ((AudioTrack, Consumer) -> Unit)? = null
+    var onPeerClosed: ((peerId: String) -> Unit)? = null
+    var onNewChat: ((peerId: String, message: String) -> Unit)? = null
 
     companion object {
         const val TAG = "WebRtcClientConnection_TAG"
@@ -61,7 +62,9 @@ class WebRtcClientConnection : CoroutineScope {
     // 미디어 프로듀서(자신의 미디어)와 소비자(타인의 미디어)
     var camProducer: Producer? = null
     var micProducer: Producer? = null
-    val consumers = mutableListOf<Consumer>()
+
+    //    val liveMembers = mutableListOf<LiveMember>()
+//    val consumers = mutableListOf<Consumer>()
     var producersJsonArray: JSONArray? = null
 
     // WebRTC 미디어 관련 변수
@@ -81,7 +84,7 @@ class WebRtcClientConnection : CoroutineScope {
      * WebRTC 및 PeerConnectionFactory 초기화
      * Application이나 Activity의 onCreate 등 초기에 호출
      */
-    fun init(context: Context) {
+    fun init(context: Context, onInitialized: (() -> Unit)? = null) {
         connectSocket()
 
         // 1. WebRTC 라이브러리 초기화
@@ -116,6 +119,8 @@ class WebRtcClientConnection : CoroutineScope {
 
         getAudioTrack()
         getVideoTrack()
+
+        onInitialized?.invoke()
     }
 
     /**
@@ -152,7 +157,7 @@ class WebRtcClientConnection : CoroutineScope {
                 }
 
                 // 새로운 프로듀서의 미디어 소비 시작
-                consume(newProducerId, kind)
+                consume(peerId, newProducerId, kind)
             }
 
             // 프로듀서 종료 이벤트 처리
@@ -161,19 +166,22 @@ class WebRtcClientConnection : CoroutineScope {
 
                 val producerId = payload.getString("producerId")
                 Log.d(TAG, "producerClosed -> producerId = $producerId")
+            }
 
-                onProducerClosed?.invoke(producerId)
+            socket.on("peerLeft") { data ->
+                val payload = data[0] as JSONObject
+                val peerId = payload.getString("peerId")
+                Log.d(TAG, "Peer left event: peerId=$peerId")
 
-                // consumers 리스트에서 해당 producerId와 일치하는 소비자(Consumer) 제거
-                val iterator = consumers.iterator()
-                while (iterator.hasNext()) {
-                    val consumer = iterator.next()
-                    if (consumer.producerId == producerId) { // consumer 객체에 producerId 프로퍼티가 있다고 가정
-                        consumer.close()  // 소비자 객체를 닫거나 필요한 리소스를 해제
-                        iterator.remove()
-                        Log.d(TAG, "Removed consumer for producerId: $producerId")
-                    }
-                }
+                onPeerClosed?.invoke(peerId)
+            }
+
+            socket.on("peerClosed") { data ->
+                val payload = data[0] as JSONObject
+                val peerId = payload.getString("peerId")
+                Log.d(TAG, "Peer closed event: peerId=$peerId")
+
+                onPeerClosed?.invoke(peerId)
             }
 
             // 채팅 메시지 수신 처리
@@ -184,6 +192,7 @@ class WebRtcClientConnection : CoroutineScope {
                 val message = payload.optString("message")
 
                 Log.d(TAG, "Chat message from $peerId: $message")
+                onNewChat?.invoke(peerId, message)
             }
 
 
@@ -377,7 +386,7 @@ class WebRtcClientConnection : CoroutineScope {
                         val peerId = producerJson.optString("peerId")
 
                         if (peerId != mSocket?.id()) {
-                            consume(producerId, kind)
+                            consume(peerId, producerId, kind)
                         }
                     }
                 }
@@ -410,9 +419,10 @@ class WebRtcClientConnection : CoroutineScope {
 
 
     private fun getVideoTrack() {
-        videoCapturer?.startCapture(1280, 720, 30)
+        videoCapturer?.startCapture(300, 300, 30)
         localVideoTrack = peerConnectionFactory?.createVideoTrack("videoTrack", videoSource)
         Log.d(TAG, "getVideoTrack: start")
+        Log.d(TAG, "getVideoTrack: ${localVideoTrack?.id()}")
     }
 
     /**
@@ -478,7 +488,7 @@ class WebRtcClientConnection : CoroutineScope {
      * @param producerId 소비할 프로듀서의 ID
      * @param kind 미디어 타입 ("video" 또는 "audio")
      */
-    private fun consume(producerId: String, kind: String) {
+    private fun consume(peerId: String, producerId: String, kind: String) {
         Log.d(TAG, "Consuming media from producer: $producerId, kind: $kind")
 
         val data = JSONObject().apply {
@@ -514,12 +524,12 @@ class WebRtcClientConnection : CoroutineScope {
                 )
 
                 consumer?.let {
-                    consumers.add(it)
+//                    consumers.add(it)
                     Log.d(TAG, "consume: producerId=${it.producerId}")
-                    if (kind == "video") onRemoteVideo?.invoke(it.track as VideoTrack, producerId)
+                    if (kind == "video") onRemoteVideo?.invoke(it.track as VideoTrack, it, peerId)
                     else if (kind == "audio") onRemoteAudio?.invoke(
                         it.track as AudioTrack,
-                        producerId
+                        it
                     )
                 }
             })

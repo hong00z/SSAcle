@@ -5,14 +5,17 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.firstproject.MyApplication.Companion.USER_ID
+import com.example.firstproject.MyApplication.Companion.requiredPermissions
 import com.example.firstproject.MyApplication.Companion.tokenManager
 import com.example.firstproject.client.RetrofitClient
 import com.example.firstproject.databinding.ActivityMainBinding
 import com.example.firstproject.dto.TokenUpdateRequest
+import com.example.firstproject.utils.PermissionChecker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -66,6 +69,17 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 권한 체크 (카메라, 마이크 등)
+        val checker = PermissionChecker(this)
+        if (!checker.checkPermission(this, requiredPermissions)) {
+            checker.setOnGrantedListener {
+                // 권한이 허용되면 WebRTC 초기화 및 signaling 서버 연결
+            }
+            checker.requestPermissionLauncher.launch(requiredPermissions)
+        } else {
+            // 이미 권한이 있는 경우
+        }
 
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.fragment_container) as NavHostFragment
