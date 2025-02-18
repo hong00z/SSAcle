@@ -41,11 +41,17 @@ router.get("/:studyId/messages", async (req, res) => {
     // 2. 각 메시지에서 userId가 populate된 경우, 해당 User의 image로 message.image 필드를 업데이트합니다.
     const messagesWithUserImage = messages.map((msg) => {
       const msgObj = msg.toObject()
-      // userId가 populate되어 있다면 해당 User의 image를 추가 (없으면 빈 문자열로 설정)
-      msgObj.image = msgObj.userId && msgObj.userId.image ? msgObj.userId.image : ""
+      if (msgObj.userId && typeof msgObj.userId === "object") {
+        const user = msgObj.userId // 원래 객체를 임시 변수에 저장
+        msgObj.userId = user._id // userId를 id 값으로 대체
+        msgObj.image = user.image ? user.image : ""
+      } else {
+        msgObj.image = ""
+      }
       return msgObj
     })
 
+    console.log("messages= ", messagesWithUserImage)
     res.status(200).json(messagesWithUserImage)
   } catch (err) {
     console.error("메시지 조회 중 에러 발생:", err)
