@@ -5,8 +5,10 @@ import com.example.firstproject.BuildConfig
 import com.example.firstproject.MyApplication
 import com.example.firstproject.data.model.dto.request.AuthRequestDTO
 import com.example.firstproject.data.model.dto.request.EditProfileRequestDTO
+import com.example.firstproject.data.model.dto.request.InviteUserRequestDTO
 import com.example.firstproject.data.model.dto.request.NicknameRequestDTO
 import com.example.firstproject.data.model.dto.request.RegisterStudyRequestDTO
+import com.example.firstproject.data.model.dto.request.SendJoinRequestDTO
 import com.example.firstproject.data.model.dto.response.AuthResponseDTO
 import com.example.firstproject.data.model.dto.response.EditProfileResponseDTO
 import com.example.firstproject.data.model.dto.response.KakaoTokenDTO
@@ -502,5 +504,38 @@ class RemoteDataSource {
 
     fun getImageUrl(url: String): String {
         return BASE_URL_SPRING + "images/" + url
+    }
+
+    // 유저에게 스터디 초대 보내기
+    suspend fun inviteStudyToUser(accessToken: String, studyId: String,request: InviteUserRequestDTO): RequestResult<Unit> {
+        return try {
+            val response = springService.inviteStudyToUser("Bearer $accessToken", studyId, request)
+
+            if (response.isSuccessful && response.body() != null) {
+                val body = response.body()!!
+                RequestResult.Success(body)
+            } else {
+                RequestResult.Failure(response.code().toString(), Exception("통신 실패"))
+            }
+
+        } catch (e: Exception) {
+            RequestResult.Failure("EXCEPTION", e)
+        }
+    }
+
+    suspend fun sendJoinRequest(accessToken: String, studyId: SendJoinRequestDTO): RequestResult<Unit> {
+        return try {
+            val response = springService.sendJoinRequest("Bearer $accessToken", studyId)
+
+            if (response.isSuccessful && response.body() != null) {
+                val body = response.body()!!
+                RequestResult.Success(body)
+            } else {
+                RequestResult.Failure(response.code().toString(), Exception("통신 실패"))
+            }
+
+        } catch (e: Exception) {
+            RequestResult.Failure("EXCEPTION", e)
+        }
     }
 }

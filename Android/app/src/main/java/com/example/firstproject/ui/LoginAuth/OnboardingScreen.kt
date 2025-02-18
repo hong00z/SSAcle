@@ -115,9 +115,9 @@ fun OnboardingScreen(
         } else if (checkNicknameStateResult.isSuccess()) {
             Log.d("닉네임 중복확인", "통신 완료! : ${checkStateInfo}")
             checkMessage = checkStateInfo?.message!!
-            isCheckNicknameComplete = true
-            Log.d("닉네임 중복확인", "data 상태 ${checkStateInfo?.data}")
-            isCheckMessageState = true
+            isCheckNicknameComplete = checkStateInfo.data!!
+            Log.d("닉네임 중복확인", "data 상태 ${checkStateInfo.data}")
+            isCheckMessageState = checkStateInfo.data
         } else if (checkNicknameStateResult.isFailure()) {
             checkMessage = "서버와 통신에 실패했습니다."
             isCheckNicknameComplete = false
