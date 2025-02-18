@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -103,6 +104,27 @@ fun StudyCardInfo(studyInfo: MyJoinedStudyListDtoItem) {
 
     }
 }
+
+@Composable
+private fun ListStackTag(stackTitle: String, tint: Color) {
+    Box(
+        modifier = Modifier
+            .width(52.dp)
+            .height(22.dp)
+            .background(tint, RoundedCornerShape(50.dp)),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = stackTitle,
+            color = Color.White,
+            fontFamily = pretendard,
+            fontWeight = FontWeight(500),
+            fontSize = 10.sp
+        )
+
+    }
+}
+
 
 @Composable
 fun JoinProfiles(personNum: Int, memberList: List<Member>) {
