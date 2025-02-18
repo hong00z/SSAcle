@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.firstproject.R
 import com.example.firstproject.databinding.FragmentEyeBinding
 import kotlinx.coroutines.Dispatchers
@@ -248,24 +249,24 @@ class EyeFragment : Fragment() {
             rightFalseCount * 100f / totalFrameCount
         } else 0f
 
-
         val feedbackText = ""
 
-        val fragment = EyeResultFragment().apply {
-            arguments = Bundle().apply {
-                putFloat("leftTrue", leftTrueRatio)
-                putFloat("leftFalse", leftFalseRatio)
-                putFloat("rightTrue", rightTrueRatio)
-                putFloat("rightFalse", rightFalseRatio)
-                putString("feedback", feedbackText)
-            }
+        // 전달할 데이터 Bundle
+        val bundle = Bundle().apply {
+            putFloat("leftTrue", leftTrueRatio)
+            putFloat("leftFalse", leftFalseRatio)
+            putFloat("rightTrue", rightTrueRatio)
+            putFloat("rightFalse", rightFalseRatio)
+            putString("feedback", feedbackText)
         }
 
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .addToBackStack(null)
-            .commit()
+        // ** Navigation Component로 화면 전환 **
+        findNavController().navigate(
+            R.id.action_eyeFragment_to_eyeResultFragment,
+            bundle
+        )
     }
+
 
     private suspend fun animateAnalysisStatus() {
         val baseText = "분석 중입니다."

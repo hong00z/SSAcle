@@ -79,7 +79,7 @@ class FaceExpressionFragment : Fragment() {
                     faceExpressionDetector?.loadModel(requireContext().assets)
                 }
 
-                binding.apply{
+                binding.apply {
                     const1.visibility = View.GONE
                     deleteText.visibility = View.GONE
                     deleteImg.visibility = View.GONE
@@ -238,7 +238,7 @@ class FaceExpressionFragment : Fragment() {
 
             binding.circleProgressBar.visibility = View.VISIBLE
             binding.tvCircleProgress.visibility = View.VISIBLE
-            binding.txtV.visibility= View.VISIBLE
+            binding.txtV.visibility = View.VISIBLE
 
             binding.circleProgressBar.progress = progress
             binding.tvCircleProgress.text = "$progress%"
@@ -267,18 +267,17 @@ class FaceExpressionFragment : Fragment() {
         val feedbackText = "분석이 완료되었습니다!\n" +
                 ""
 
-        val fragment = FaceResultFragment().apply {
-            arguments = Bundle().apply {
-                putFloat("positive", positiveRatio)
-                putFloat("negative", negativeRatio)
-                putFloat("neutral", neutralRatio)
-                putString("feedback", feedbackText)
-            }
+        val bundle = Bundle().apply {
+            putFloat("positive", positiveRatio)
+            putFloat("negative", negativeRatio)
+            putFloat("neutral", neutralRatio)
+            putString("feedback", feedbackText)
         }
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .addToBackStack(null)
-            .commit()
+
+        findNavController().navigate(
+            R.id.action_faceExpressionFragment_to_faceResultFragment,
+            bundle
+        )
     }
 
     private suspend fun animateAnalysisStatus() {
@@ -290,7 +289,8 @@ class FaceExpressionFragment : Fragment() {
             // 진행률에 따라 남은 시간 예측 (진행률이 0일 경우 계산 중 메시지)
             val remainingText = if (latestProgress > 0) {
                 val estimatedTotalTime = latestElapsedTime / (latestProgress / 100.0)
-                val estimatedRemainingSeconds =((estimatedTotalTime - latestElapsedTime) / 1000).toInt()
+                val estimatedRemainingSeconds =
+                    ((estimatedTotalTime - latestElapsedTime) / 1000).toInt()
                 "예상 남은 시간: ${estimatedRemainingSeconds}초"
             } else {
                 "예상 남은 시간 : 계산 중..."
