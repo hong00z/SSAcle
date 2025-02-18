@@ -1,9 +1,12 @@
 package com.example.firstproject.ui.matching
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -38,6 +42,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.firstproject.R
+import com.example.firstproject.data.model.dto.request.InviteUserRequestDTO
 import com.example.firstproject.data.model.dto.response.Top3RecommendedUsersDtoItem
 import com.example.firstproject.ui.common.CommonTopBar
 import com.example.firstproject.ui.theme.gmarket
@@ -50,6 +55,7 @@ fun FindPersonScreen(
     navController: NavController,
     findViewModel: FindViewModel = viewModel()
 ) {
+    val context = LocalContext.current
     val studyId = navController.previousBackStackEntry
         ?.savedStateHandle
         ?.get<String>("studyId")
@@ -57,7 +63,6 @@ fun FindPersonScreen(
     val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
     val personRecommandResult by findViewModel.personRecommandResult.collectAsStateWithLifecycle()
-
     val personRecommandList by findViewModel.personRecommandList.collectAsStateWithLifecycle()
 
     // 통신 상태
@@ -69,25 +74,25 @@ fun FindPersonScreen(
             findViewModel.getPersonRecommandList(it)
         }
     }
-
-    LaunchedEffect(personRecommandResult) {
-        when {
-            personRecommandResult.isProgress() -> {
-                isLoading = true
-                Log.d("사람 추천", "로딩 중")
-            }
-
-            personRecommandResult.isSuccess() -> {
-                isLoading = false
-                Log.d("사람 추천", "통신 성공")
-            }
-
-            personRecommandResult.isFailure() -> {
-                isLoading = false
-                Log.d("사람 추천", "통신 실패")
-            }
-        }
-    }
+//
+//    LaunchedEffect(personRecommandResult) {
+//        when {
+//            personRecommandResult.isProgress() -> {
+//                isLoading = true
+//                Log.d("사람 추천", "로딩 중")
+//            }
+//
+//            personRecommandResult.isSuccess() -> {
+//                isLoading = false
+//                Log.d("사람 추천", "통신 성공")
+//            }
+//
+//            personRecommandResult.isFailure() -> {
+//                isLoading = false
+//                Log.d("사람 추천", "통신 실패")
+//            }
+//        }
+//    }
 
     Column(
         modifier = Modifier
@@ -111,7 +116,9 @@ fun FindPersonScreen(
         Spacer(Modifier.height(36.dp))
 
         personRecommandList.forEach { personInfo ->
-            PersonInfoItem(personInfo)
+            if (studyId != null) {
+                PersonInfoItem(personInfo, studyId, findViewModel, context)
+            }
         }
 
 
@@ -119,7 +126,53 @@ fun FindPersonScreen(
 }
 
 @Composable
-private fun PersonInfoItem(personInfo: Top3RecommendedUsersDtoItem) {
+private fun PersonInfoItem(
+    personInfo: Top3RecommendedUsersDtoItem,
+    studyId: String,
+    findViewModel: FindViewModel,
+    context: Context
+) {
+    // 초대 성공 여부를 로컬 상태로 관리 (초기값 false)
+    var isInviteSent by remember { mutableStateOf(false) }
+    var isInviteLoading by remember { mutableStateOf(false) }
+
+    fun onInviteClick() {
+        isInviteLoading = true
+        findViewModel.sendInviteUser(
+            studyId,
+            InviteUserRequestDTO(userId = personInfo.userId)
+        ) { success ->
+            isInviteLoading = false
+            if (success) {
+                isInviteSent = true
+            } else {
+                Toast.makeText(context, "죄송합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    // ViewModel에서 초대 요청 결과를 collect (※ 실제로 여러 리스트 항목이 있다면 각 항목별로 상태 관리가 필요)
+    val inviteUserResult by findViewModel.inviteUserResult.collectAsStateWithLifecycle()
+
+    // 유저에게 초대 보내기
+    LaunchedEffect(inviteUserResult) {
+        when {
+            inviteUserResult.isProgress() -> {
+                Log.d("스터디 초대함", "로딩 중")
+            }
+
+            inviteUserResult.isSuccess() -> {
+                Log.d("스터디 초대함", "초대 성공")
+//                isInviteSent = true
+            }
+
+            inviteUserResult.isFailure() -> {
+                Log.d("스터디 초대함", "실패 ${inviteUserResult}")
+
+                Toast.makeText(context, "죄송합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
     val weekList = personInfo.meetingDays
     val tagList = personInfo.topics
 
@@ -215,19 +268,12 @@ private fun PersonInfoItem(personInfo: Top3RecommendedUsersDtoItem) {
                 fontSize = 15.sp,
             )
             Spacer(Modifier.width(8.dp))
-//            val label = TopicTagEnum.fromTitle("알고리즘")
-//            StackLabel(stackTitle = label!!.title, tint = colorResource(label.colorId))
-//            Spacer(Modifier.width(8.dp))
 
             tagList.forEach { title ->
                 val label = TopicTagEnum.fromTitle(title)
                 val color = colorResource(label!!.colorId)
                 StackLabel(stackTitle = title, tint = color)
                 Spacer(Modifier.width(8.dp))
-//                if (label != null) {
-//                    val color = colorResource(label.colorId)
-//                    StackLabel(stackTitle = title, tint = color)
-//                }
             }
         }
         Spacer(Modifier.height(14.dp))
@@ -240,7 +286,14 @@ private fun PersonInfoItem(personInfo: Top3RecommendedUsersDtoItem) {
             Spacer(Modifier.weight(1f))
 
             // 버튼 눌렀을 때 초대 요청 수행
-            SendRequestButton()
+            if (isInviteSent) {
+                CompleteRequestButton()
+            } else {
+                SendRequestButton(
+                    enabled = !isInviteLoading,
+                    onClick = { onInviteClick() }
+                )
+            }
         }
         Spacer(Modifier.height(14.dp))
         Divider(color = Color(0xFF949494))
@@ -250,12 +303,18 @@ private fun PersonInfoItem(personInfo: Top3RecommendedUsersDtoItem) {
 }
 
 @Composable
-private fun SendRequestButton() {
+private fun SendRequestButton(
+    enabled: Boolean = true,
+    onClick: () -> Unit
+) {
     Box(
         modifier = Modifier
             .width(82.dp)
             .height(28.dp)
-            .background(color = Color.Black, shape = RoundedCornerShape(50.dp)),
+            .background(color = Color.Black, shape = RoundedCornerShape(50.dp))
+            .clickable {
+                onClick()
+            },
         contentAlignment = Alignment.Center
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
