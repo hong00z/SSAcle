@@ -1,6 +1,7 @@
 package com.example.firstproject.ui.matching
 
 import android.util.Log
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -65,6 +66,7 @@ fun ChooseStudyScreen(
     val getJoinedStudyResult by homeViewModel.joinedStudyResult.collectAsStateWithLifecycle()
     val myJoinedStudyList = (getJoinedStudyResult as? RequestResult.Success)?.data
 
+    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
     // 통신 상태
     var isLoading by remember { mutableStateOf(false) }
@@ -98,7 +100,7 @@ fun ChooseStudyScreen(
             title = "",
             onBackPress = {
                 // 뒤로 가기
-                navController.popBackStack()
+                navController.navigate("homeScreen")
             }
         )
 
