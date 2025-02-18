@@ -160,11 +160,14 @@ public class UserService {
      * 닉네임 중복 검사
      */
     public boolean isNicknameDuplicated(String nickname, String currentUserNickname) {
-        // 현재 로그인한 사용자의 닉네임이면 중복으로 판단하지 않음
-        if (nickname.equals(currentUserNickname)) {
-            return false;
+        if (userRepository.existsByNickname(nickname)){
+            // 현재 로그인한 사용자의 닉네임이면 중복으로 판단하지 않음
+            if (nickname.equals(currentUserNickname)) {
+                return true;    // '사용 가능한 닉네임입니다.'
+            }
+            return false;       // '이미 사용중인 닉네임입니다.'
         }
-        return userRepository.existsByNickname(nickname);
+        return true;            // '사용 가능한 닉네임입니다.'
     }
 
     /**
