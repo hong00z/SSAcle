@@ -49,7 +49,6 @@ import com.example.firstproject.data.model.dto.response.MyJoinedStudyListDtoItem
 import com.example.firstproject.ui.common.CommonTopBar
 import com.example.firstproject.ui.home.HomeViewModel
 import com.example.firstproject.ui.home.JoinProfiles
-import com.example.firstproject.ui.home.ListStackTag
 import com.example.firstproject.ui.home.StudyCardInfo
 import com.example.firstproject.ui.theme.pretendard
 import com.example.firstproject.utils.TopicTagEnum
@@ -99,7 +98,7 @@ fun ChooseStudyScreen(
             title = "",
             onBackPress = {
                 // 뒤로 가기
-//                navController.popBackStack()
+                navController.popBackStack()
             }
         )
 

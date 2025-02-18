@@ -102,7 +102,7 @@ fun FindStudyScreen(
         Spacer(Modifier.height(36.dp))
 
         recommandStudyList.forEach { studyInfo ->
-            StudyInfoItem(studyInfo)
+            StudyInfoItem(navController, studyInfo)
         }
 
 
@@ -131,7 +131,7 @@ fun StackLabel(stackTitle: String, tint: Color) {
 }
 
 @Composable
-private fun StudyInfoItem(studyInfo: UserSuitableStudyDtoItem) {
+private fun StudyInfoItem(navController: NavController, studyInfo: UserSuitableStudyDtoItem) {
     val weekList = studyInfo.meetingDays
 
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -160,12 +160,19 @@ private fun StudyInfoItem(studyInfo: UserSuitableStudyDtoItem) {
             )
             Spacer(Modifier.weight(1f))
 
-            Row(modifier = Modifier
-                .clickable {
-                    // 클릭하면 스터디 상세정보화면으로
+            Row(
+                modifier = Modifier
+                    .height(24.dp)
+                    .clickable {
+                        // 클릭하면 스터디 상세정보화면으로
+                        navController.currentBackStackEntry
+                            ?.savedStateHandle
+                            ?.set("studyId", studyInfo.studyId)
+                        Log.d("전체 스터디 목록에서 누름", "스터디아이디: ${studyInfo.studyId}")
 
-
-                }
+                        navController.navigate("studyDetailScreen")
+                    },
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     "자세히 보기",

@@ -384,7 +384,7 @@ private fun DetailTopBar(
     Box(
         Modifier
             .fillMaxWidth()
-            .height(48.dp),
+            .height(60.dp),
 
         ) {
         IconButton(
@@ -399,7 +399,7 @@ private fun DetailTopBar(
                 painter = painterResource(id = R.drawable.ic_arrow_back),
                 contentDescription = null,
                 tint = tint,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(28.dp)
             )
         }
         Text(
