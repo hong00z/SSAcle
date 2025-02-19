@@ -44,6 +44,7 @@ class NotificationFragment : Fragment() {
 
     private val notificationViewModel: NotificationViewModel by viewModels()
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -51,22 +52,7 @@ class NotificationFragment : Fragment() {
     ): View? {
         _binding = FragmentNotificationBinding.inflate(inflater, container, false)
 
-        observeViewModel()
-        notificationViewModel.getMyAppliedInfo()
-        notificationViewModel.getInviteStudyInfo()
 
-        // ✅ StateFlow를 사용하여 값 변경을 자동 감지
-        viewLifecycleOwner.lifecycleScope.launch {
-            inviteList.collect { list ->
-                Log.d("내 수신함 통신완료", "신청 현황: ${list}") // ✅ 값 변경 시 자동 출력
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            studyList.collect { list ->
-                Log.d("내 수신함 통신완료", "초대온거: ${list}") // ✅ 값 변경 시 자동 출력
-            }
-        }
 
         binding.apply {
             topbarComposeView.setContent {
@@ -79,7 +65,7 @@ class NotificationFragment : Fragment() {
                 )
             }
 
-            viewPager.adapter = NotificationPagerAdapter(requireActivity(), inviteList, studyList)
+            viewPager.adapter = NotificationPagerAdapter(requireActivity(), inviteList.value, studyList.value)
 
             TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                 tab.text = if (position == 0) "내 신청 현황" else "내 수신함"
@@ -89,49 +75,49 @@ class NotificationFragment : Fragment() {
         return binding.root
     }
 
-    // viewModel 통신
-    private fun observeViewModel() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                notificationViewModel.myAppliedResult.collect { result ->
-                    when (result) {
-                        is RequestResult.Success -> {
-                            _inviteList.value = result.data
-
-                        }
-
-                        is RequestResult.Failure -> {
-                            Log.e("Mypage", "오류 발생: ${result.exception?.message}")
-                        }
-
-                        else -> Unit
-                    }
-                }
-
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                notificationViewModel.inviteResult.collect { result ->
-                    when (result) {
-                        is RequestResult.Success -> {
-                            _studyList.value = result.data
-
-                        }
-
-                        is RequestResult.Failure -> {
-                            Log.e("Mypage", "오류 발생: ${result.exception?.message}")
-                        }
-
-                        else -> Unit
-                    }
-                }
-
-
-            }
-        }
-    }
+//    // viewModel 통신
+//    private fun observeViewModel() {
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                notificationViewModel.myAppliedResult.collect { result ->
+//                    when (result) {
+//                        is RequestResult.Success -> {
+//                            _inviteList.value = result.data
+//                            Log.d("뷰모델 실행", "1번 : ${inviteList.value}")
+//                        }
+//
+//                        is RequestResult.Failure -> {
+//                            Log.e("Mypage", "오류 발생: ${result.exception?.message}")
+//                        }
+//
+//                        else -> Unit
+//                    }
+//                }
+//
+//            }
+//        }
+//
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                notificationViewModel.inviteResult.collect { result ->
+//                    when (result) {
+//                        is RequestResult.Success -> {
+//                            _studyList.value = result.data
+//
+//                        }
+//
+//                        is RequestResult.Failure -> {
+//                            Log.e("Mypage", "오류 발생: ${result.exception?.message}")
+//                        }
+//
+//                        else -> Unit
+//                    }
+//                }
+//
+//
+//            }
+//        }
+//    }
 
 
     override fun onDestroyView() {
