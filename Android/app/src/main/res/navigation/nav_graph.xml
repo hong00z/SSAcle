@@ -68,11 +68,6 @@
             android:id="@+id/action_aiFragment_to_faceExpressionFragment"
             app:destination="@id/faceExpressionFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/liveFragment"
-        android:name="com.example.firstproject.ui.live.LiveFragment"
-        android:label="fragment_live"
-        tools:layout="@layout/fragment_live" />
 
     <fragment
         android:id="@+id/mypageFragment"
