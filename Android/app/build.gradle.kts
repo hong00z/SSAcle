@@ -152,6 +152,9 @@ dependencies {
     // 인디케이터 기능
     implementation("com.tbuonomo:dotsindicator:4.3")
 
+    // TabLayout, ViewPager 라이브러리
+    implementation("com.google.accompanist:accompanist-pager:0.36.0")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.36.0")
 
     // ai 관련 (카메라)
 
