@@ -154,7 +154,7 @@ private fun StudyListItem(studyInfo: MyJoinedStudyListDtoItem) {
 
             // 방장인지 표시
             Box(modifier = Modifier.size(24.dp)) {
-                if (!isHost) {
+                if (isHost) {
                     Image(
                         painter = painterResource(R.drawable.icon_host), null,
                         modifier = Modifier
