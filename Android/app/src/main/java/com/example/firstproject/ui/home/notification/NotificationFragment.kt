@@ -44,6 +44,14 @@ class NotificationFragment : Fragment() {
 
     private val notificationViewModel: NotificationViewModel by viewModels()
 
+    // ✅ 리스트를 StateFlow로 관리하여 값 변경 감지 가능
+    private val _inviteList = MutableStateFlow<List<MyAppliedStudyListDtoItem>>(emptyList())
+    val inviteList: StateFlow<List<MyAppliedStudyListDtoItem>> get() = _inviteList
+
+    private val _studyList = MutableStateFlow<List<MyInvitedStudyListDtoItem>>(emptyList())
+    val studyList: StateFlow<List<MyInvitedStudyListDtoItem>> get() = _studyList
+
+    private val notificationViewModel: NotificationViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
