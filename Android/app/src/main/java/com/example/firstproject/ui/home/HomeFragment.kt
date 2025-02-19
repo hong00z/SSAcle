@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,6 +38,15 @@ class HomeFragment : Fragment() {
                 val navController = rememberNavController()
                 val xmlNavController = findNavController()
 
+                // HomeFragment로 전달된 studyId (RequestListFragment에서 Bundle로 보낸 값)
+                val passedStudyId = arguments?.getString("studyId")
+                // 만약 studyId가 전달되었다면, 현재 NavController의 백스택 Entry(savedStateHandle)에 저장
+                LaunchedEffect(passedStudyId) {
+                    if (!passedStudyId.isNullOrEmpty()) {
+                        navController.currentBackStackEntry?.savedStateHandle?.set("studyId", passedStudyId)
+                        navController.navigate("studyDetailScreen")
+                    }
+                }
 
                 NavHost(
                     navController = navController,
@@ -54,8 +64,14 @@ class HomeFragment : Fragment() {
                         )
                     }
 
+
                     composable("studyDetailScreen") {
-                        StudyDetailScreen(navController = navController,
+//                        val studyId = navController.previousBackStackEntry
+//                            ?.savedStateHandle
+//                            ?.get<String>("studyId") ?: ""
+                        StudyDetailScreen(
+                            navController = navController,
+//                            id = studyId,
                             onNavigateToVideo = { studyId, studyName ->
                                 val bundle = bundleOf("studyId" to studyId, "studyName" to studyName)
                                 xmlNavController.navigate(R.id.action_homeFragment_to_videoFragment, bundle)
