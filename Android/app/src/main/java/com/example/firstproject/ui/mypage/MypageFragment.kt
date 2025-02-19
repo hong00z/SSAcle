@@ -10,25 +10,32 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
+import coil.load
+import coil.transform.CircleCropTransformation
+import com.example.firstproject.MyApplication.Companion.EMAIL
 import com.example.firstproject.R
 import com.example.firstproject.data.model.dto.response.Profile
 import com.example.firstproject.data.repository.MainRepository
+import com.example.firstproject.data.repository.RemoteDataSource
 import com.example.firstproject.databinding.FragmentMypageBinding
 import com.rootachieve.requestresult.RequestResult
 import kotlinx.coroutines.launch
 
 class MypageFragment : Fragment() {
+
+    companion object {
+        const val TAG = "MypageFragment_TAG"
+    }
+
     private var _binding: FragmentMypageBinding? = null
     private val binding get() = _binding!!
 
-    private val mypageViewModel: MypageViewModel by viewModels()
+    private val mypageViewModel: MypageViewModel by activityViewModels()
 
     private var userProfile: Profile? = null
 
@@ -45,18 +52,6 @@ class MypageFragment : Fragment() {
         observeViewModel()
         mypageViewModel.getUserProfile()
 
-//
-//        val tags = listOf("알고리즘", "백엔드", "CS 이론", "인프라")
-//
-//        val tagsColors = mapOf(
-//            "알고리즘" to R.color.algo_stack_tag,
-//            "백엔드" to R.color.backend_stack_tag,
-//            "CS 이론" to R.color.cs_stack_tag,
-//            "인프라" to R.color.infra_stack_tag
-//        )
-//
-//        addTags(binding.tagsContainer, tags, tagsColors)
-
         binding.apply {
             editLayout.setOnClickListener {
                 findNavController().navigate(R.id.editMyPageFragment)
@@ -64,8 +59,6 @@ class MypageFragment : Fragment() {
         }
         return binding.root
     }
-
-    // viewModel 데이터 변화 탐지
 
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -80,21 +73,15 @@ class MypageFragment : Fragment() {
                             userProfile = result.data.data
                             Log.d("Mypage", "사용자 정보: $userProfile")
 
-                            // 프로필 이미지 로드 (Glide 사용)
-                            userProfile?.image?.let { imageUrl ->
-                                Glide.with(requireContext())
-                                    .load(imageUrl)
-                                    .placeholder(R.drawable.img_default_profile)
-                                    .error(R.drawable.img_default_profile)
-                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                    .into(binding.profileImage) // CircleImageView에 적용
+                            binding.profileImage.load(RemoteDataSource().getImageUrl(userProfile!!.image)) {
+                                crossfade(true)
+                                transformations(CircleCropTransformation())
                             }
 
                             binding.campusText.text = "${userProfile?.campus} 캠퍼스"
-
-                            binding.generation.text = "${userProfile?.term}기"
-
+                            binding.generation.text = "${userProfile?.term}"
                             binding.nicknameText.text = userProfile?.nickname ?: ""
+                            binding.emailText.text = EMAIL
 
                             binding.tagsContainer.removeAllViews() // 기존 태그 초기화
 
@@ -144,7 +131,7 @@ class MypageFragment : Fragment() {
                 setTextColor(ContextCompat.getColor(requireContext(), android.R.color.white))
 
                 // 개별 날짜에 `back_ground.xml` 적용
-                background = ContextCompat.getDrawable(requireContext(), R.drawable.day_background)
+//                background = ContextCompat.getDrawable(requireContext())
 
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,

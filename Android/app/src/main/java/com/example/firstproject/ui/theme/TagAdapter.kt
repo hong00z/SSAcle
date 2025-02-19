@@ -21,6 +21,14 @@ class TagAdapter(
     // 선택된 태그 저장 변수
     private val selectedTags = mutableSetOf<String>()
 
+    // 외부에서 선택된 태그를 설정할 수 있는 함수 추가
+    fun setSelectedTags(tags: List<String>) {
+        selectedTags.clear()
+        selectedTags.addAll(tags)
+        onSelectedTagsUpdated(selectedTags.toList())
+        notifyDataSetChanged()
+    }
+
     // 카테고리별 배경(선택 시 채워질 색) 매핑
     private val categoryColors = mapOf(
         "웹 프론트" to ContextCompat.getColor(context, R.color.frontend_stack_tag),

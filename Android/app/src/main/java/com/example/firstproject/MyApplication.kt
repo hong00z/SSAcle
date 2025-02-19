@@ -37,6 +37,7 @@ class MyApplication : Application() {
         lateinit var USER_ID: String
         lateinit var NICKNAME: String
         lateinit var IMAGE_URL: String
+        lateinit var EMAIL: String
 
         lateinit var instance: MyApplication
             private set
