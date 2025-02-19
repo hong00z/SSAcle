@@ -62,6 +62,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.example.firstproject.MyApplication
 import com.example.firstproject.R
 import com.example.firstproject.data.model.dto.response.Feed
 import com.example.firstproject.data.model.dto.response.Member
@@ -76,6 +77,7 @@ import com.rootachieve.requestresult.RequestResult
 @Composable
 fun StudyDetailScreen(
     navController: NavController,
+//    id: String,
     studyDetailViewModel: StudyDetailViewModel = viewModel(),
     onNavigateToVideo: (String, String) -> Unit,
     onNavigateToChat: (String) -> Unit,
@@ -104,6 +106,8 @@ fun StudyDetailScreen(
     var membersList: List<Member>? = studyInfo?.members
     var feedsList: List<Feed>? = studyInfo?.feeds
 
+    val isJoining = remember { mutableStateOf(false) }
+    val isHostMember = remember { mutableStateOf(false) }
 
 
     LaunchedEffect(studyId) {
@@ -121,7 +125,6 @@ fun StudyDetailScreen(
             studyInfo?.count
             studyInfo?.members
             studyInfo?.feeds
-
         }
     }
 
@@ -129,6 +132,17 @@ fun StudyDetailScreen(
 
         Log.d("스터디 상세 갱신", "${studyInfo}")
 
+    }
+
+    LaunchedEffect(membersList) {
+        if (membersList != null) {
+            isJoining.value = membersList.any { it.nickname == MyApplication.NICKNAME }
+            isHostMember.value = membersList.any { member: Member ->
+                member.nickname == MyApplication.NICKNAME && member.creator
+            }
+        }
+        Log.d("스터디 멤버인가?", "${isJoining.value}")
+        Log.d("방장 인가?", "${isHostMember.value}")
     }
 
     Column(
@@ -256,86 +270,91 @@ fun StudyDetailScreen(
                 JoinUserProfiles(membersList)
             }
 
-            Spacer(Modifier.height(20.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 36.dp)
-            ) {
-                Card(
+            if (isJoining.value) {
+                Spacer(Modifier.height(20.dp))
+                Row(
                     modifier = Modifier
-                        .width(150.dp)
-                        .height(100.dp)
-                        .shadow(
-                            elevation = 4.dp,
-                            shape = RoundedCornerShape(10.dp),
-                            clip = true
-                        )
-                        .clickable { onNavigateToChat(studyId ?: "") },
-                    shape = RoundedCornerShape(10.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
-                    border = BorderStroke(1.dp, colorResource(R.color.border_light_color))
+                        .fillMaxWidth()
+                        .padding(horizontal = 36.dp),
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
+                    Card(
+                        modifier = Modifier
+                            .width(150.dp)
+                            .height(100.dp)
+                            .shadow(
+                                elevation = 4.dp,
+                                shape = RoundedCornerShape(10.dp),
+                                clip = true
+                            )
+                            .clickable { onNavigateToChat(studyId ?: "") },
+                        shape = RoundedCornerShape(10.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.White),
+                        border = BorderStroke(1.dp, colorResource(R.color.border_light_color))
                     ) {
-                        Image(
-                            painter = painterResource(R.drawable.img_chatting),
-                            null,
-                            modifier = Modifier.size(48.dp)
-                        )
-                        Spacer(Modifier.height(8.dp))
-                        Text(
-                            text = "스터디 채팅방",
-                            fontFamily = pretendard,
-                            fontWeight = FontWeight(600),
-                            fontSize = 14.5.sp
-                        )
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Image(
+                                painter = painterResource(R.drawable.img_chatting),
+                                null,
+                                modifier = Modifier.size(48.dp)
+                            )
+                            Spacer(Modifier.height(8.dp))
+                            Text(
+                                text = "스터디 채팅방",
+                                fontFamily = pretendard,
+                                fontWeight = FontWeight(600),
+                                fontSize = 14.5.sp
+                            )
+                        }
                     }
-                }
-                Spacer(Modifier.weight(1f))
-                Card(
-                    modifier = Modifier
-                        .width(150.dp)
-                        .height(100.dp)
-                        .shadow(
-                            elevation = 4.dp,
-                            shape = RoundedCornerShape(10.dp),
-                            clip = true
-                        )
-                        .clickable {
-                            onNavigateToVideo(studyId ?: "", studyName ?: "")
-                            Log.d("실시간 모각공 버튼", "${studyId}")
-                        },
-                    shape = RoundedCornerShape(10.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
-                    border = BorderStroke(1.dp, colorResource(R.color.border_light_color))
-                ) {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
+                    Spacer(Modifier.width(28.dp))
+                    Card(
+                        modifier = Modifier
+                            .width(150.dp)
+                            .height(100.dp)
+                            .shadow(
+                                elevation = 4.dp,
+                                shape = RoundedCornerShape(10.dp),
+                                clip = true
+                            )
+                            .clickable {
+                                onNavigateToVideo(studyId ?: "", studyName ?: "")
+                                Log.d("실시간 모각공 버튼", "${studyId}")
+                            },
+                        shape = RoundedCornerShape(10.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.White),
+                        border = BorderStroke(1.dp, colorResource(R.color.border_light_color))
                     ) {
-                        Image(
-                            painter = painterResource(R.drawable.img_mic),
-                            null,
-                            modifier = Modifier.size(48.dp)
-                        )
-                        Spacer(Modifier.height(8.dp))
-                        Text(
-                            text = "실시간 모각공",
-                            fontFamily = pretendard,
-                            fontWeight = FontWeight(600),
-                            fontSize = 14.5.sp
-                        )
-                    }
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Image(
+                                painter = painterResource(R.drawable.img_mic),
+                                null,
+                                modifier = Modifier.size(48.dp)
+                            )
+                            Spacer(Modifier.height(8.dp))
+                            Text(
+                                text = "실시간 모각공",
+                                fontFamily = pretendard,
+                                fontWeight = FontWeight(600),
+                                fontSize = 14.5.sp
+                            )
+                        }
 
+                    }
                 }
+//                Spacer(Modifier.height(12.dp))
             }
 
-            Spacer(Modifier.height(24.dp))
+
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -344,29 +363,36 @@ fun StudyDetailScreen(
             ) {
                 TitleText("공지사항")
                 Spacer(Modifier.weight(1f))
-                Box(
-                    modifier = Modifier
-                        .width(64.dp)
-                        .height(28.dp)
-                        .background(color = Color.Black, shape = RoundedCornerShape(50.dp)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_add_plus),
-                            null,
-                            tint = Color.White,
-                            modifier = Modifier.size(16.dp),
-                        )
-                        Text(
-                            "글쓰기", fontFamily = pretendard,
-                            fontWeight = FontWeight(700),
-                            fontSize = 12.sp,
-                            color = Color.White
-                        )
-                        Spacer(Modifier.width(4.dp))
+
+                if (isHostMember.value) {
+                    Box(
+                        modifier = Modifier
+                            .width(64.dp)
+                            .height(28.dp)
+                            .background(color = Color.Black, shape = RoundedCornerShape(50.dp))
+                            .clickable {
+
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_add_plus),
+                                null,
+                                tint = Color.White,
+                                modifier = Modifier.size(16.dp),
+                            )
+                            Text(
+                                "글쓰기", fontFamily = pretendard,
+                                fontWeight = FontWeight(700),
+                                fontSize = 12.sp,
+                                color = Color.White
+                            )
+                            Spacer(Modifier.width(4.dp))
+                        }
                     }
                 }
+
             }
 
             if (feedsList != null) {
@@ -511,11 +537,6 @@ private fun ContentInfoCard(content: String) {
     }
 }
 
-private data class TmpUser(
-    val userName: String,
-    val imgId: Int,
-    val isHost: Boolean
-)
 
 @Composable
 private fun JoinUserProfiles(userList: List<Member>) {
