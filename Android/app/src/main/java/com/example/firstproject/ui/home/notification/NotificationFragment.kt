@@ -35,23 +35,6 @@ class NotificationFragment : Fragment() {
 
     val repository = MainRepository
 
-    // ✅ 리스트를 StateFlow로 관리하여 값 변경 감지 가능
-    private val _inviteList = MutableStateFlow<List<MyAppliedStudyListDtoItem>>(emptyList())
-    val inviteList: StateFlow<List<MyAppliedStudyListDtoItem>> get() = _inviteList
-
-    private val _studyList = MutableStateFlow<List<MyInvitedStudyListDtoItem>>(emptyList())
-    val studyList: StateFlow<List<MyInvitedStudyListDtoItem>> get() = _studyList
-
-    private val notificationViewModel: NotificationViewModel by viewModels()
-
-    // ✅ 리스트를 StateFlow로 관리하여 값 변경 감지 가능
-    private val _inviteList = MutableStateFlow<List<MyAppliedStudyListDtoItem>>(emptyList())
-    val inviteList: StateFlow<List<MyAppliedStudyListDtoItem>> get() = _inviteList
-
-    private val _studyList = MutableStateFlow<List<MyInvitedStudyListDtoItem>>(emptyList())
-    val studyList: StateFlow<List<MyInvitedStudyListDtoItem>> get() = _studyList
-
-    private val notificationViewModel: NotificationViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -73,7 +56,7 @@ class NotificationFragment : Fragment() {
                 )
             }
 
-            viewPager.adapter = NotificationPagerAdapter(requireActivity(), inviteList.value, studyList.value)
+            viewPager.adapter = NotificationPagerAdapter(requireActivity())
 
             TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                 tab.text = if (position == 0) "내 신청 현황" else "내 수신함"
@@ -82,50 +65,6 @@ class NotificationFragment : Fragment() {
 
         return binding.root
     }
-
-//    // viewModel 통신
-//    private fun observeViewModel() {
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                notificationViewModel.myAppliedResult.collect { result ->
-//                    when (result) {
-//                        is RequestResult.Success -> {
-//                            _inviteList.value = result.data
-//                            Log.d("뷰모델 실행", "1번 : ${inviteList.value}")
-//                        }
-//
-//                        is RequestResult.Failure -> {
-//                            Log.e("Mypage", "오류 발생: ${result.exception?.message}")
-//                        }
-//
-//                        else -> Unit
-//                    }
-//                }
-//
-//            }
-//        }
-//
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                notificationViewModel.inviteResult.collect { result ->
-//                    when (result) {
-//                        is RequestResult.Success -> {
-//                            _studyList.value = result.data
-//
-//                        }
-//
-//                        is RequestResult.Failure -> {
-//                            Log.e("Mypage", "오류 발생: ${result.exception?.message}")
-//                        }
-//
-//                        else -> Unit
-//                    }
-//                }
-//
-//
-//            }
-//        }
-//    }
 
 
     override fun onDestroyView() {
