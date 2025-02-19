@@ -17,6 +17,7 @@ import S12P11D110.ssacle.global.service.FileStorageServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -100,11 +101,13 @@ public class UserService {
      */
     @Transactional
     public UserProfileResponse modifyUserProfile(String userId, UserProfileRequest request, MultipartFile file) {
-        // 유저 찾기
+        // 1. 유저 찾기
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("유저 정보를 찾을 수 없습니다."));
 
-        // 닉네임 변경이 됐다면 중복검사
+
+
+        // 2. 닉네임 변경이 됐다면 중복검사
         if(request.getNickname() != null && !request.getNickname().equals(user.getNickname())){
             if(userRepository.existsByNickname(request.getNickname())){
                 throw new IllegalArgumentException("이미 사용 중인 닉네임입니다.");
@@ -113,28 +116,35 @@ public class UserService {
             user.setNickname(request.getNickname());
         }
 
-        //  프로필 이미지 수정 후 저장
+        // 3. 프로필 이미지 수정 후 저장
         try{
-            // 파일 저장 경로 생성
-            String uploadDir = fileStorageServiceImpl.getUploadDir(); // getUploadDir: 저장된 파일이 들어갈 디렉토리 경로를 반환하는 함수
-            // 고유 파일명 생성
-            logger.debug("Upload Directory: {}", uploadDir);
+            // 3-1. 이미지 기본값: 빈 문자열
+            String uniqueFileName = "";
 
-            String originalFileName = file.getOriginalFilename(); // 클라이언트에서 보낸 원본 파일명
-            String extension = originalFileName.substring(originalFileName.lastIndexOf(".")); // 확장자 추출
-            String uniqueFileName = UUID.randomUUID().toString() + extension;// UUID를 붙여 고유한 파일명 생성
+            // 파일이 null이거나 빈 값이 아니면 파일이름 저장
+            if (file != null && !file.isEmpty()) {
+
+                // 3-2. 파일 저장 경로 생성
+                String uploadDir = fileStorageServiceImpl.getUploadDir(); // getUploadDir: 저장된 파일이 들어갈 디렉토리 경로를 반환하는 함수
+                // 고유 파일명 생성
+                logger.debug("Upload Directory: {}", uploadDir);
+
+                String originalFileName = file.getOriginalFilename(); // 클라이언트에서 보낸 원본 파일명
+                String extension = originalFileName.substring(originalFileName.lastIndexOf(".")); // 확장자 추출
+                uniqueFileName = UUID.randomUUID().toString() + extension;// UUID를 붙여 고유한 파일명 생성
 
 
-            //최종 파일 저장 경로
-            Path filePath = Paths.get(uploadDir, uniqueFileName);
-            logger.debug("Image saved at filePath={}", filePath);
+                // 3-3. 최종 파일 저장 경로
+                Path filePath = Paths.get(uploadDir, uniqueFileName);
+                logger.debug("Image saved at filePath={}", filePath);
 
-            // 파일 저장
-            Files.write(filePath, file.getBytes());
-            logger.info("File saved successfully: {}", filePath.toAbsolutePath());
-
-            // 저장된 파일명을 TempUser 엔티티에 반영
+                // 3.4 파일 저장
+                Files.write(filePath, file.getBytes());
+                logger.info("File saved successfully: {}", filePath.toAbsolutePath());
+            }
+            // 3.5 저장된 파일명을 TempUser 엔티티에 반영 +  파일이 null이거나 빈 값이면 빈 스트링
             user.setImage(uniqueFileName);
+
 
 
         }catch (IOException e){
