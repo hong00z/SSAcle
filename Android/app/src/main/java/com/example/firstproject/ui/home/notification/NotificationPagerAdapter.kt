@@ -11,8 +11,6 @@ import kotlinx.coroutines.flow.StateFlow
 
 class NotificationPagerAdapter(
     fragmentActivity: FragmentActivity,
-    private val inviteList: List<MyAppliedStudyListDtoItem>,
-    private val studyList: List<MyInvitedStudyListDtoItem>
 ) :
     FragmentStateAdapter(fragmentActivity) {
 
@@ -20,21 +18,11 @@ class NotificationPagerAdapter(
 
     override fun createFragment(position: Int): Fragment {
 
-        Log.d("어뎁터", "1번 : ${inviteList}")
-        Log.d("어뎁터", "2번 : ${studyList}")
         return when (position) {
             // 내 신청 현황
-            0 -> RequestListFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelableArrayList("inviteList", ArrayList(inviteList))
-                }
-            }
+            0 -> RequestListFragment()
             // 내 수신함
-            1 -> InboxListFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelableArrayList("studyList", ArrayList(studyList))
-                }
-            }
+            1 -> InboxListFragment()
 
             else -> throw IllegalStateException("Unexpected position $position")
         }
