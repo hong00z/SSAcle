@@ -166,7 +166,11 @@
         android:id="@+id/liveMainFragment"
         android:name="com.example.firstproject.ui.live.LiveMainFragment"
         android:label="fragment_live_main"
-        tools:layout="@layout/fragment_live_main" />
+        tools:layout="@layout/fragment_live_main" >
+        <action
+            android:id="@+id/action_liveMainFragment_to_videoFragment"
+            app:destination="@id/videoFragment" />
+    </fragment>
 
 
 </navigation>

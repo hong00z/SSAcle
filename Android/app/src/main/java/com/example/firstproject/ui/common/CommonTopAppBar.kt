@@ -52,7 +52,7 @@ fun CommonTopBar(
             modifier = Modifier.align(Alignment.Center),
             text = title,
             fontFamily = pretendard,
-            fontSize = 20.sp,
+            fontSize = 22.sp,
             fontWeight = FontWeight(700),
             color = tint
 
