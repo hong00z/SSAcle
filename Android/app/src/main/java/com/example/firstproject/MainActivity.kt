@@ -9,6 +9,7 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.example.firstproject.MyApplication.Companion.EMAIL
 import com.example.firstproject.MyApplication.Companion.USER_ID
 import com.example.firstproject.MyApplication.Companion.requiredPermissions
 import com.example.firstproject.MyApplication.Companion.tokenManager
@@ -64,7 +65,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         USER_ID = getUserIdFromToken(accessToken)
-        Log.d(TAG, "userId = $USER_ID")
+        Log.d(TAG, "USER_ID = $USER_ID")
+        EMAIL = getUesrEmailFromToken(accessToken)
+        Log.d(TAG, "EMAIL = $EMAIL")
         tokenManager.getFcmToken()?.let { sendRegistrationToServer(it) }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -106,6 +109,11 @@ class MainActivity : AppCompatActivity() {
     // User Id 토큰에서 참조
     private fun getUserIdFromToken(token: String): String {
         return decodeJwtPayload(token).optString("id")
+    }
+
+    // Email 가져오기
+    private fun getUesrEmailFromToken(token: String): String {
+        return decodeJwtPayload(token).optString("sub")
     }
 
     private fun decodeJwtPayload(token: String): JSONObject {
