@@ -149,7 +149,11 @@
         android:id="@+id/notificationFragment"
         android:name="com.example.firstproject.ui.home.notification.NotificationFragment"
         android:label="fragment_notification"
-        tools:layout="@layout/fragment_notification" />
+        tools:layout="@layout/fragment_notification" >
+        <action
+            android:id="@+id/action_notificationFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/videoFragment"
         android:name="com.example.firstproject.ui.live.VideoFragment"
@@ -173,6 +177,22 @@
         android:id="@+id/studyNotificationFragment"
         android:name="com.example.firstproject.ui.home.detail.StudyNotificationFragment"
         android:label="StudyNotificationFragment" />
+    <fragment
+        android:id="@+id/inboxListFragment"
+        android:name="com.example.firstproject.ui.home.notification.InboxListFragment"
+        android:label="InboxListFragment" >
+        <action
+            android:id="@+id/action_inboxListFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/requestListFragment"
+        android:name="com.example.firstproject.ui.home.notification.RequestListFragment"
+        android:label="RequestListFragment" >
+        <action
+            android:id="@+id/action_requestListFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 
 
 </navigation>
