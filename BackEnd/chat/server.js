@@ -114,8 +114,11 @@ io.on("connection", (socket) => {
       await newMsg.save()
       console.log(`\n메시지 저장 성공: \nchatRoomId = ${studyId}\nsenderId = ${userId}\nmessage = ${message}`)
 
+      const msgObj = newMsg.toObject()
+      msgObj.image = user.image
+
       // 스터디 내 모든 클라이언트에게 메시지 브로드캐스트
-      io.to(studyId).emit("newMessage", newMsg)
+      io.to(studyId).emit("newMessage", msgObj)
 
       // FCM 알림 전송: study.members에 해당하는 사용자들의 FCM 토큰 조회
       // 1. 현재 채팅방(studyId)에 연결되어 있는 소켓들의 userId 목록 수집
