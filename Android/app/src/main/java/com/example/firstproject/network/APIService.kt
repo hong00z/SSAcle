@@ -118,7 +118,7 @@ interface APIService {
     @GET("/api/user/invited-studies")
     suspend fun getMyInvitedStudies(
         @Header("Authorization") accessToken: String
-    ): Response<MyInvitedStudyListDtoItem>
+    ): Response<List<MyInvitedStudyListDtoItem>>
 
 
     // 스터디 개설 (pass)
@@ -188,5 +188,10 @@ interface APIService {
         @Body studyId: SendJoinRequestDTO
     ): Response<Unit>
 
-
+    // 수신함에서 초대 수락
+    @PATCH("/api/user/invited-studies/accept")
+    suspend fun acceptJoinStudy(
+        @Header("Authorization") accessToken: String,
+        @Body request: SendJoinRequestDTO
+    ): Response<Unit>
 }

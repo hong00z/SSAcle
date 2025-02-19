@@ -492,7 +492,7 @@ class RemoteDataSource {
     }
 
     // /api/user/invited-studies 내 수신함
-    suspend fun getMyInvitedStudies(accessToken: String): RequestResult<MyInvitedStudyListDtoItem> {
+    suspend fun getMyInvitedStudies(accessToken: String): RequestResult<List<MyInvitedStudyListDtoItem>> {
         return try {
             val response = springService.getMyInvitedStudies("Bearer $accessToken")
 
@@ -560,6 +560,26 @@ class RemoteDataSource {
     ): RequestResult<Unit> {
         return try {
             val response = springService.AcceptJoinUser("Bearer $accessToken", studyId, request)
+
+            if (response.isSuccessful && response.body() != null) {
+                val body = response.body()!!
+                RequestResult.Success(body)
+            } else {
+                RequestResult.Failure(response.code().toString(), Exception("통신 실패"))
+            }
+
+        } catch (e: Exception) {
+            RequestResult.Failure("EXCEPTION", e)
+        }
+    }
+
+    // 나에게 온 스터디 초대 수락
+    suspend fun acceptJoinStudy(
+        accessToken: String,
+        request: SendJoinRequestDTO
+    ) : RequestResult<Unit> {
+        return try {
+            val response = springService.acceptJoinStudy("Bearer $accessToken", request)
 
             if (response.isSuccessful && response.body() != null) {
                 val body = response.body()!!

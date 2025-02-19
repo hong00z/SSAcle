@@ -45,18 +45,6 @@ class MypageFragment : Fragment() {
         observeViewModel()
         mypageViewModel.getUserProfile()
 
-//
-//        val tags = listOf("알고리즘", "백엔드", "CS 이론", "인프라")
-//
-//        val tagsColors = mapOf(
-//            "알고리즘" to R.color.algo_stack_tag,
-//            "백엔드" to R.color.backend_stack_tag,
-//            "CS 이론" to R.color.cs_stack_tag,
-//            "인프라" to R.color.infra_stack_tag
-//        )
-//
-//        addTags(binding.tagsContainer, tags, tagsColors)
-
         binding.apply {
             editLayout.setOnClickListener {
                 findNavController().navigate(R.id.editMyPageFragment)
