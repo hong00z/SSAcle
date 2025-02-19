@@ -229,6 +229,7 @@ fun HomeScreen(
                             }
 
                         }
+                        Spacer(Modifier.height(20.dp))
                     } else {
                         MyStudyItem(myJoinedStudyList, navController = navController)
                     }
@@ -447,7 +448,7 @@ fun MyStudyItem(
 private fun PageIndicator(pageCount: Int, currentPage: Int) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         repeat(pageCount) {
             IndicatorDots(isSelected = it == currentPage)
@@ -475,8 +476,8 @@ private fun FindActionButton(onNavigatePerson: () -> Unit, onNavigateStudy: () -
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(horizontal = 32.dp)
+            .wrapContentHeight(),
+        horizontalArrangement = Arrangement.Center
     ) {
         Card(
             modifier = Modifier
@@ -513,7 +514,7 @@ private fun FindActionButton(onNavigatePerson: () -> Unit, onNavigateStudy: () -
                 )
             }
         }
-        Spacer(Modifier.weight(1f))
+        Spacer(Modifier.width(48.dp))
         Card(
             modifier = Modifier
                 .width(130.dp)
