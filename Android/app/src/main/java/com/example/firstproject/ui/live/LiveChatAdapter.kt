@@ -1,5 +1,6 @@
 package com.example.firstproject.ui.live
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -23,14 +24,13 @@ class LiveChatAdapter(private val chatList: List<LiveChatMessage>) :
 
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
         val chat = chatList[position]
-
         if (chat.isMe) {
-            with(holder.binding.tvName) {
-                gravity = android.view.Gravity.END
-            }
-            with(holder.binding.tvChat) {
-                gravity = android.view.Gravity.END
-            }
+            holder.binding.tvName.gravity = android.view.Gravity.END
+            holder.binding.tvChat.gravity = android.view.Gravity.END
+        }
+        else {
+            holder.binding.tvName.gravity = android.view.Gravity.START
+            holder.binding.tvChat.gravity = android.view.Gravity.START
         }
         holder.binding.tvName.text = chat.nickname
         holder.binding.tvChat.text = chat.message

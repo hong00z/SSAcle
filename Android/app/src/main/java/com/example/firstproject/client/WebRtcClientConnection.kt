@@ -119,6 +119,15 @@ class WebRtcClientConnection : CoroutineScope {
         getAudioTrack()
         getVideoTrack()
 
+        // 오디오 출력 설정: AudioManager를 사용하여 오디오를 미디어 스트림으로 출력
+        val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as android.media.AudioManager
+        audioManager.mode = android.media.AudioManager.MODE_RINGTONE
+        audioManager.isSpeakerphoneOn = true
+        // 미디어 스트림에 대한 오디오 포커스 요청 (필수는 아니지만, 안정적 출력에 도움)
+        audioManager.requestAudioFocus({ /* focus change listener, 필요시 구현 */ },
+            android.media.AudioManager.STREAM_MUSIC,
+            android.media.AudioManager.AUDIOFOCUS_GAIN)
+
         onInitialized?.invoke()
     }
 
@@ -188,7 +197,7 @@ class WebRtcClientConnection : CoroutineScope {
             socket.on("newChatMessage") { data ->
                 val payload = data[0] as JSONObject
 
-                val nickname = payload.getString("nickname")
+                val nickname = payload.optString("nickname")
                 val message = payload.optString("message")
 
                 Log.d(TAG, "Chat message from $nickname: $message")
