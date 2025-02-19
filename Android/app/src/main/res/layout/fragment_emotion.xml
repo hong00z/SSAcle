@@ -34,7 +34,7 @@
             android:fontFamily="@font/pretendard_bold"
             android:gravity="center"
             android:padding="16dp"
-            android:text="AI 면접 피드백"
+            android:text="AI 표정 피드백"
             android:textColor="@color/primary_color"
             android:textSize="20sp"
             android:textStyle="bold"

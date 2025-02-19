@@ -64,6 +64,11 @@ class EyeFragment : Fragment() {
             openVideoGallery()
         }
 
+        // 뒤로가기 버튼
+        binding.backButton.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
         // 분석(피드백 받기) 버튼
         binding.btnFeedbackEye.setOnClickListener {
             if (selectedVideoUri != null) {
@@ -77,7 +82,7 @@ class EyeFragment : Fragment() {
                 }
                 binding.apply {
                     const1.visibility = View.GONE
-                    deleteImgEye.visibility =View.GONE
+                    deleteImgEye.visibility = View.GONE
                     deleteTextEye.visibility = View.GONE
 
                     deleteLinear.visibility = View.GONE
@@ -277,7 +282,8 @@ class EyeFragment : Fragment() {
             // 진행률에 따라 남은 시간 예측 (진행률이 0일 경우 계산 중 메시지)
             val remainingText = if (latestProgress > 0) {
                 val estimatedTotalTime = latestElapsedTime / (latestProgress / 100.0)
-                val estimatedRemainingSeconds =((estimatedTotalTime - latestElapsedTime) / 1000).toInt()
+                val estimatedRemainingSeconds =
+                    ((estimatedTotalTime - latestElapsedTime) / 1000).toInt()
                 "예상 남은 시간: ${estimatedRemainingSeconds}초"
             } else {
                 "예상 남은 시간 : 계산 중..."
