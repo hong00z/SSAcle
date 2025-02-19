@@ -9,8 +9,8 @@
     <!-- 프로필 이미지 -->
     <ImageView
         android:id="@+id/profile_image"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:scaleType="centerCrop"
         android:src="@drawable/default_profile"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -23,28 +23,32 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
-        android:text="스터디"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/last_message"
         app:layout_constraintEnd_toStartOf="@id/chat_time"
         app:layout_constraintStart_toEndOf="@id/profile_image"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="스터디" />
 
     <!-- 마지막 메시지 -->
     <TextView
         android:id="@+id/last_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="최근 메시지 내용"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:textColor="@color/gray"
-        android:textSize="14sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/chat_title"
         app:layout_constraintStart_toStartOf="@id/chat_title"
-        app:layout_constraintTop_toBottomOf="@id/chat_title" />
+        app:layout_constraintTop_toBottomOf="@id/chat_title"
+        tools:text="최근 메시지 내용" />
 
     <!-- 시간 -->
     <TextView
@@ -53,7 +57,7 @@
         android:layout_height="wrap_content"
         android:text="오전 10:54"
         android:textColor="@color/gray"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/chat_title" />
 
@@ -67,7 +71,7 @@
         android:paddingHorizontal="8dp"
         android:paddingVertical="4dp"
         android:textColor="@android:color/white"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
