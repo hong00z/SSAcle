@@ -116,7 +116,7 @@ object MainRepository {
         accessToken: String,
         studyId: String
     ): RequestResult<List<StudyRequestedInviteListDtoItem>> {
-        return remoteDataSource.getStudyInvitedMembers(accessToken)
+        return remoteDataSource.getStudyInvitedMembers(accessToken, studyId)
     }
 
     // /api/studies/{studyId}/preList 스터디내 수신함
@@ -124,7 +124,7 @@ object MainRepository {
         accessToken: String,
         studyId: String
     ): RequestResult<List<StudyJoinRequestListDtoItem>> {
-        return remoteDataSource.getStudyJoinRequests(accessToken)
+        return remoteDataSource.getStudyJoinRequests(accessToken, studyId)
     }
 
     // /api/studies/recommendUser/{studyId} 스터디원 추천
@@ -178,6 +178,11 @@ object MainRepository {
     // 스터디에 가입 요청 보내기
     suspend fun sendJoinRequest(accessToken: String, studyId: SendJoinRequestDTO): RequestResult<Unit> {
         return remoteDataSource.sendJoinRequest(accessToken, studyId)
+    }
+
+    // 가입요청 수락
+    suspend fun acceptUserJoin(accessToken: String, studyId: String, request: InviteUserRequestDTO): RequestResult<Unit> {
+        return remoteDataSource.AcceptJoinUser(accessToken, studyId, request)
     }
 
 }

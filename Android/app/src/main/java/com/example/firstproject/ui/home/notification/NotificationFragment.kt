@@ -1,13 +1,17 @@
 package com.example.firstproject.ui.home.notification
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.example.firstproject.R
+import com.example.firstproject.ui.common.CommonTopBar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -17,8 +21,10 @@ class NotificationFragment : Fragment() {
     private lateinit var viewPager: ViewPager2
     private lateinit var backButton: ImageButton
     private lateinit var pagerAdapter: NotificationPagerAdapter
+    private lateinit var topBarComposeView: ComposeView
 
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,11 +34,22 @@ class NotificationFragment : Fragment() {
 
         tabLayout = view.findViewById<TabLayout>(R.id.tabLayout)
         viewPager = view.findViewById(R.id.viewPager)
-        backButton = view.findViewById(R.id.back_button)
+//        backButton = view.findViewById(R.id.back_button)
+        topBarComposeView = view.findViewById(R.id.topbar_compose_view)
 
-        backButton.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+        topBarComposeView.setContent {
+
+            CommonTopBar(
+                title = "나의 알림함",
+                onBackPress = {
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                }
+            )
         }
+
+//        backButton.setOnClickListener {
+//            requireActivity().onBackPressedDispatcher.onBackPressed()
+//        }
         pagerAdapter = NotificationPagerAdapter(requireActivity())
         viewPager.adapter = pagerAdapter
 

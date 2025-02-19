@@ -330,9 +330,12 @@ class RemoteDataSource {
     }
 
     // /api/studies/{studyId}/wishList 스터디내 초대 현황
-    suspend fun getStudyInvitedMembers(accessToken: String): RequestResult<List<StudyRequestedInviteListDtoItem>> {
+    suspend fun getStudyInvitedMembers(
+        accessToken: String,
+        studyId: String
+    ): RequestResult<List<StudyRequestedInviteListDtoItem>> {
         return try {
-            val response = springService.getStudyInvitedMembers("Bearer $accessToken", "")
+            val response = springService.getStudyInvitedMembers("Bearer $accessToken", studyId)
 
             if (response.isSuccessful && response.body() != null) {
                 val body = response.body()!!
@@ -347,9 +350,12 @@ class RemoteDataSource {
     }
 
     // /api/studies/{studyId}/preList 스터디내 수신함
-    suspend fun getStudyJoinRequests(accessToken: String): RequestResult<List<StudyJoinRequestListDtoItem>> {
+    suspend fun getStudyJoinRequests(
+        accessToken: String,
+        studyId: String
+    ): RequestResult<List<StudyJoinRequestListDtoItem>> {
         return try {
-            val response = springService.getStudyJoinRequests("Bearer $accessToken", "")
+            val response = springService.getStudyJoinRequests("Bearer $accessToken", studyId)
 
             if (response.isSuccessful && response.body() != null) {
                 val body = response.body()!!
@@ -507,7 +513,11 @@ class RemoteDataSource {
     }
 
     // 유저에게 스터디 초대 보내기
-    suspend fun inviteStudyToUser(accessToken: String, studyId: String,request: InviteUserRequestDTO): RequestResult<Unit> {
+    suspend fun inviteStudyToUser(
+        accessToken: String,
+        studyId: String,
+        request: InviteUserRequestDTO
+    ): RequestResult<Unit> {
         return try {
             val response = springService.inviteStudyToUser("Bearer $accessToken", studyId, request)
 
@@ -523,9 +533,33 @@ class RemoteDataSource {
         }
     }
 
-    suspend fun sendJoinRequest(accessToken: String, studyId: SendJoinRequestDTO): RequestResult<Unit> {
+    suspend fun sendJoinRequest(
+        accessToken: String,
+        studyId: SendJoinRequestDTO
+    ): RequestResult<Unit> {
         return try {
             val response = springService.sendJoinRequest("Bearer $accessToken", studyId)
+
+            if (response.isSuccessful && response.body() != null) {
+                val body = response.body()!!
+                RequestResult.Success(body)
+            } else {
+                RequestResult.Failure(response.code().toString(), Exception("통신 실패"))
+            }
+
+        } catch (e: Exception) {
+            RequestResult.Failure("EXCEPTION", e)
+        }
+    }
+
+    // 스터디에 온 가입 요청 수락
+    suspend fun AcceptJoinUser(
+        accessToken: String,
+        studyId: String,
+        request: InviteUserRequestDTO
+    ): RequestResult<Unit> {
+        return try {
+            val response = springService.AcceptJoinUser("Bearer $accessToken", studyId, request)
 
             if (response.isSuccessful && response.body() != null) {
                 val body = response.body()!!

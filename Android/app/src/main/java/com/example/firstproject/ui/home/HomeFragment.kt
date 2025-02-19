@@ -63,8 +63,10 @@ class HomeFragment : Fragment() {
                             onNavigateToChat = { studyId ->
                                 val bundle = bundleOf("studyId" to studyId)
                                 xmlNavController.navigate(R.id.action_homeFragment_to_chatFragment, bundle)
-
-
+                            },
+                            onNotificationClick = { studyId ->
+                                val bundle = bundleOf("studyId" to studyId)
+                                xmlNavController.navigate(R.id.action_homeFragment_to_studyNotificationFragment, bundle)
                             }
 
                         )
