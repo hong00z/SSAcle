@@ -27,7 +27,7 @@
                 android:gravity="center"
                 android:padding="16dp"
                 android:text="채팅 목록"
-                android:textColor="@color/chat_blue"
+                android:textColor="@color/primary_color"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
