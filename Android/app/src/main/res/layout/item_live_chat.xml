@@ -6,8 +6,8 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingVertical="4dp"
-    android:paddingHorizontal="12dp">
+    android:paddingHorizontal="12dp"
+    android:paddingVertical="4dp">
 
     <!-- 중앙 텍스트(제목/설명 등) -->
     <LinearLayout
@@ -20,7 +20,8 @@
             android:id="@+id/tvName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:textSize="12sp"
             android:textStyle="bold"
             tools:text="이름" />
 
@@ -31,7 +32,7 @@
             android:layout_marginTop="2dp"
             android:maxHeight="60dp"
             android:textColor="#666666"
-            android:textSize="12sp"
+            android:textSize="14sp"
             tools:text="채팅메세지" />
     </LinearLayout>
 

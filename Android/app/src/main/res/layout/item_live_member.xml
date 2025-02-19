@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     app:cardCornerRadius="12dp"
     app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:orientation="vertical"
         android:paddingHorizontal="12dp"
         android:paddingVertical="8dp">
@@ -21,11 +23,13 @@
             android:layout_marginHorizontal="6dp"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:textColor="@color/black"
             tools:text="이름" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="140dp"
             android:layout_height="140dp"
+            android:background="@color/white"
             app:cardBackgroundColor="#E5F9F4"
             app:cardCornerRadius="12dp"
             app:cardUseCompatPadding="true">

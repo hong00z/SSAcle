@@ -92,7 +92,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/white">
 
             <!-- 1) 채팅 목록 (RecyclerView) -->
             <androidx.recyclerview.widget.RecyclerView
@@ -112,6 +113,7 @@
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_marginHorizontal="8dp"
+                android:background="@color/white"
                 android:src="@drawable/baseline_send_24"
                 app:layout_constraintBottom_toBottomOf="@id/etChatInput"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -128,6 +130,7 @@
                 android:imeOptions="actionSend"
                 android:inputType="text"
                 android:padding="8dp"
+                android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/ivSendChat"
@@ -151,20 +154,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_marginBottom="16dp"
             android:orientation="horizontal"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/llBtnContainer2"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ToggleButton
                 android:id="@+id/tbCam"
-                android:layout_width="90dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginVertical="4dp"
                 android:background="@drawable/button_outline"
-                android:backgroundTint="@color/red_light"
-                android:drawableStart="@drawable/cam_off"
+                android:backgroundTint="@color/green_light"
+                android:checked="true"
+                android:drawableStart="@drawable/cam_on"
                 android:paddingHorizontal="16dp"
                 android:textOff="OFF"
                 android:textOn="ON"
@@ -172,59 +178,32 @@
 
             <ToggleButton
                 android:id="@+id/tbMic"
-                android:layout_width="90dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginVertical="4dp"
                 android:background="@drawable/button_outline"
-                android:backgroundTint="@color/red_light"
-                android:drawableStart="@drawable/mic_off"
+                android:backgroundTint="@color/green_light"
+                android:checked="true"
+                android:drawableStart="@drawable/mic_on"
                 android:paddingHorizontal="16dp"
                 android:textOff="OFF"
                 android:textOn="ON"
                 android:textStyle="bold" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llBtnContainer2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/llBtnContainer1">
-
             <!-- 라이브 종료 버튼 -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnEndLive"
-                android:layout_width="160dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginVertical="4dp"
                 android:background="@drawable/button_outline"
-                android:paddingHorizontal="20dp"
+                android:paddingHorizontal="32dp"
                 android:text="라이브 종료"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
-
-
-            <!-- 모각공 시작 버튼(또는 다른 기능 버튼) -->
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnStartFocus"
-                android:layout_width="160dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_outline"
-                android:backgroundTint="@color/primary_color"
-                android:paddingHorizontal="20dp"
-                android:text="모각공 시작"
-                android:textColor="@android:color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

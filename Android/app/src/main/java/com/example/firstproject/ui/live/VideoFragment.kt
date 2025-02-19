@@ -113,16 +113,8 @@ class VideoFragment : Fragment() {
         }
 
         webRtcClientConnection.onNewChat = { nickname, message ->
-            liveChatMessages.add(LiveChatMessage(false, nickname, message))
             lifecycleScope.launch {
-                Log.d(TAG, "새로운 메세지: $message")
-                liveChatAdapter.notifyItemInserted(liveChatMessages.lastIndex)
-
-                val layoutManager = binding.rvChat.layoutManager as LinearLayoutManager
-                // 현재 마지막으로 보이는 아이템이 전체 아이템의 마지막 바로 위라면(즉, 사용자가 맨 아래에 있을 때)
-                if (layoutManager.findLastVisibleItemPosition() >= liveChatMessages.lastIndex - 1) {
-                    binding.rvChat.smoothScrollToPosition(liveChatMessages.lastIndex)
-                }
+                displayChatMessage(false, nickname, message)
             }
         }
 
@@ -148,7 +140,7 @@ class VideoFragment : Fragment() {
                 button.backgroundTintList =
                     ContextCompat.getColorStateList(button.context, R.color.red_light)
             }
-            webRtcClientConnection.localVideoTrack?.setEnabled(!isChecked)
+            webRtcClientConnection.localVideoTrack?.setEnabled(isChecked)
         }
 
         binding.tbMic.setOnCheckedChangeListener { button, isChecked ->
@@ -161,12 +153,11 @@ class VideoFragment : Fragment() {
                 button.backgroundTintList =
                     ContextCompat.getColorStateList(button.context, R.color.red_light)
             }
-            webRtcClientConnection.localAudioTrack?.setEnabled(!isChecked)
+            webRtcClientConnection.localAudioTrack?.setEnabled(isChecked)
         }
 
         binding.ivSendChat.setOnClickListener {
             val message = binding.etChatInput.text.toString().trim()
-            Log.d(TAG, "click sendMessage: $message")
             lifecycleScope.launch {
                 val result = webRtcClientConnection.sendChatMessage(message)
                 if (result) {
@@ -182,10 +173,17 @@ class VideoFragment : Fragment() {
     }
 
     private fun displayChatMessage(isMe: Boolean, nickname: String, message: String) {
-        val chat = LiveChatMessage(isMe, nickname, message)
-        liveChatMessages.add(chat)
         lifecycleScope.launch {
+            val chat = LiveChatMessage(isMe, nickname, message)
+            Log.d(TAG, "displayChatMessage: $chat")
+            liveChatMessages.add(chat)
             liveChatAdapter.notifyItemInserted(liveChatMessages.lastIndex)
+
+            val layoutManager = binding.rvChat.layoutManager as LinearLayoutManager
+            // 현재 마지막으로 보이는 아이템이 전체 아이템의 마지막 바로 위라면(즉, 사용자가 맨 아래에 있을 때)
+            if (layoutManager.findLastVisibleItemPosition() >= liveChatMessages.lastIndex - 1) {
+                binding.rvChat.smoothScrollToPosition(liveChatMessages.lastIndex)
+            }
         }
     }
 
