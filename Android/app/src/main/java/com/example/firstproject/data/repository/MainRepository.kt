@@ -166,7 +166,7 @@ object MainRepository {
     }
 
     // /api/user/invited-studies 내 수신함
-    suspend fun getMyInvitedStudies(accessToken: String): RequestResult<MyInvitedStudyListDtoItem> {
+    suspend fun getMyInvitedStudies(accessToken: String): RequestResult<List<MyInvitedStudyListDtoItem>> {
         return remoteDataSource.getMyInvitedStudies(accessToken)
     }
 
@@ -185,4 +185,8 @@ object MainRepository {
         return remoteDataSource.AcceptJoinUser(accessToken, studyId, request)
     }
 
+    // 스터디 초대 수락
+    suspend fun acceptStudyJoin(accessToken: String, request: SendJoinRequestDTO): RequestResult<Unit> {
+        return remoteDataSource.acceptJoinStudy(accessToken, request)
+    }
 }
