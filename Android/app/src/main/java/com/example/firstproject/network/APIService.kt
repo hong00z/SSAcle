@@ -33,6 +33,7 @@ import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface APIService {
 
@@ -59,14 +60,14 @@ interface APIService {
     @GET("/api/studies/{studyId}/wishList")
     suspend fun getStudyInvitedMembers(
         @Header("Authorization") accessToken: String,
-        @Path("studyId") studyId: String
+        @Query("studyId") studyId: String
     ): Response<List<StudyRequestedInviteListDtoItem>>
 
     // 스터디내 수신함
     @GET("/api/studies/{studyId}/preList")
     suspend fun getStudyJoinRequests(
         @Header("Authorization") accessToken: String,
-        @Path("studyId") studyId: String
+        @Query("studyId") studyId: String
     ): Response<List<StudyJoinRequestListDtoItem>>
 
     // 탑3 스터디원 추천
@@ -128,7 +129,16 @@ interface APIService {
     ): Response<Unit>
 
     // 스터디원 스카웃 제의 추가/ 내 수신함 추가 (pass)
+    @PATCH("/api/studies/{studyId}/accept")
+    suspend fun AcceptJoinUser(
+        @Header("Authorization") accessToken: String,
+        @Path("studyId") studyId: String,
+        @Body request: InviteUserRequestDTO
+    ): Response<Unit>
+
     // 유저의 요청 수락 (pass)
+
+
 
     // 피드 생성 (pass)
 

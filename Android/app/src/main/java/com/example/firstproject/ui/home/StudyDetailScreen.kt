@@ -78,14 +78,14 @@ fun StudyDetailScreen(
     navController: NavController,
     studyDetailViewModel: StudyDetailViewModel = viewModel(),
     onNavigateToVideo: (String, String) -> Unit,
-    onNavigateToChat: (String) -> Unit
+    onNavigateToChat: (String) -> Unit,
+    onNotificationClick: (String) -> Unit
 ) {
 
 
     val getStudyInfo by studyDetailViewModel.studyDetailResult.collectAsStateWithLifecycle()
     val studyInfo = (getStudyInfo as? RequestResult.Success)?.data
 
-    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
     // 이전 BackStackEntry의 savedStateHandle에서 'studyItem'을 가져옴
     val studyId = navController.previousBackStackEntry
@@ -102,7 +102,7 @@ fun StudyDetailScreen(
     var currentCount: Int? = studyInfo?.memberCont
     var totalCount: Int? = studyInfo?.count
     var membersList: List<Member>? = studyInfo?.members
-    var feedsList:List<Feed>? = studyInfo?.feeds
+    var feedsList: List<Feed>? = studyInfo?.feeds
 
 
 
@@ -142,7 +142,11 @@ fun StudyDetailScreen(
                 onBackPress = {
                     // 뒤로가기
                     navController.navigate("homeScreen")
-                }
+                },
+                onNotificationClick = {
+                    onNotificationClick(studyId ?: "")
+                    Log.d("메시지 클릭", "전달 ${studyId}")
+                },
             )
         }
         Spacer(Modifier.height(16.dp))
@@ -194,12 +198,15 @@ fun StudyDetailScreen(
                     Text(
                         text = day,
                         fontFamily = pretendard,
-                        fontWeight = FontWeight(600),
-                        fontSize = 16.sp,
+                        fontWeight = if (meetingDays?.contains(day) == true) FontWeight(700)
+                        else FontWeight(600),
+                        fontSize = if (meetingDays?.contains(day) == true) 17.sp
+                        else 16.sp,
                         modifier = Modifier
                             .weight(1f),
                         textAlign = TextAlign.Center,
-                        color = Color(0xFFB2B2B2)
+                        color = if (meetingDays?.contains(day) == true) colorResource(R.color.primary_color)
+                        else Color(0xFFC2C2C2)
                     )
 
                     if (index < 6) {
@@ -369,8 +376,6 @@ fun StudyDetailScreen(
             }
 
 
-
-
         }
 
     }
@@ -381,7 +386,8 @@ fun StudyDetailScreen(
 private fun DetailTopBar(
     title: String,
     tint: Color = colorResource(R.color.primary_color),
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
+    onNotificationClick: () -> Unit
 ) {
     Box(
         Modifier
@@ -408,7 +414,7 @@ private fun DetailTopBar(
             modifier = Modifier.align(Alignment.Center),
             text = title,
             fontFamily = pretendard,
-            fontSize = 20.sp,
+            fontSize = 22.sp,
             fontWeight = FontWeight(700),
             color = tint
 
@@ -420,7 +426,7 @@ private fun DetailTopBar(
                 .align(Alignment.CenterEnd),
             onClick = {
                 // 알림 목록 화면으로
-
+                onNotificationClick()
             }
         ) {
             Icon(
@@ -550,9 +556,12 @@ private fun UserProfileItem(imageUrl: String, userName: String, isHost: Boolean)
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                AsyncImage(model = imageUrl, contentDescription = null,
+                AsyncImage(
+                    model = imageUrl, contentDescription = null,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.clip(CircleShape).fillMaxSize(),
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .fillMaxSize(),
                     placeholder = painterResource(R.drawable.img_default_profile), // 로딩 중 이미지
                     error = painterResource(R.drawable.img_default_profile), // 실패 이미지
 
@@ -562,7 +571,7 @@ private fun UserProfileItem(imageUrl: String, userName: String, isHost: Boolean)
             Box(
                 modifier = Modifier
                     .size(20.dp)
-                    .align(Alignment.TopEnd)
+                    .align(Alignment.BottomEnd)
             ) {
                 if (isHost) {
                     Image(
@@ -617,7 +626,6 @@ private fun NoticeItem(feed: Feed) {
     val profile_writer = writer.image
 
 
-
     // 이전 상태를 추적하기 위한 변수
     var previousCheckedState by remember { mutableStateOf(false) }
 
@@ -651,9 +659,12 @@ private fun NoticeItem(feed: Feed) {
                         ),
                     contentAlignment = Alignment.Center
                 ) {
-                    AsyncImage(model = profile_writer, contentDescription = null,
+                    AsyncImage(
+                        model = profile_writer, contentDescription = null,
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier.clip(CircleShape).fillMaxSize(),
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .fillMaxSize(),
                         placeholder = painterResource(R.drawable.img_default_profile), // 로딩 중 이미지
                         error = painterResource(R.drawable.img_default_profile), // 실패 이미지
 
@@ -661,7 +672,7 @@ private fun NoticeItem(feed: Feed) {
                 }
                 Box(
                     modifier = Modifier
-                        .size(13.dp)
+                        .size(16.dp)
                         .align(Alignment.BottomEnd)
                 ) {
                     if (true) {
@@ -762,13 +773,13 @@ private fun NoticeItem(feed: Feed) {
             Spacer(Modifier.weight(1f))
 
             // 글 작성 날짜, 시간
-            Text(text = createTime,
+            Text(
+                text = createTime,
                 fontFamily = pretendard,
                 fontWeight = FontWeight(400),
                 fontSize = 11.sp,
                 color = Color(0xFFC2C2C2)
-                )
-
+            )
 
 
         }
