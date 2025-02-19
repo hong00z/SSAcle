@@ -42,7 +42,7 @@
                 android:fontFamily="@font/pretendard_bold"
                 android:gravity="center"
                 android:padding="16dp"
-                android:text="AI 자소서 피드백"
+                android:text="AI 자기소개서 피드백"
                 android:textColor="@color/primary_color"
                 android:textSize="20sp"
                 android:textStyle="bold"
