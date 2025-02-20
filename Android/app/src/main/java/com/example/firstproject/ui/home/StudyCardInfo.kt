@@ -37,6 +37,7 @@ import com.example.firstproject.R
 import com.example.firstproject.data.model.dto.response.Member
 import com.example.firstproject.data.model.dto.response.MyJoinedStudyListDtoItem
 import com.example.firstproject.data.model.dto.response.StudyInfo
+import com.example.firstproject.data.repository.RemoteDataSource
 import com.example.firstproject.ui.theme.pretendard
 import com.example.firstproject.utils.TopicTagEnum
 import kotlin.math.min
@@ -159,20 +160,6 @@ fun JoinProfiles(personNum: Int, memberList: List<Member>) {
 }
 
 @Composable
-private fun ProfileItem(
-    imgId: Int,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier
-            .size(22.dp)
-            .background(color = Color.LightGray, shape = CircleShape)
-    ) {
-        Image(painter = painterResource(imgId), null)
-    }
-}
-
-@Composable
 private fun ProfileImgItem(
     image: String,
     modifier: Modifier = Modifier
@@ -185,7 +172,7 @@ private fun ProfileImgItem(
             ),
         contentAlignment = Alignment.Center
     ) {
-        AsyncImage(model = image, contentDescription = null,
+        AsyncImage(model = RemoteDataSource().getImageUrl(image), contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier.clip(CircleShape).fillMaxSize(),
             placeholder = painterResource(R.drawable.img_default_profile), // 로딩 중 이미지
