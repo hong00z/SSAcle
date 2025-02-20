@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firstproject.MyApplication.Companion.USER_ID
 import com.example.firstproject.client.RetrofitClient.CHAT_API_URL
@@ -71,7 +72,8 @@ class ChatFragment : Fragment() {
             fetchJoinedStudies()
             binding.swipeRefreshLayout.isRefreshing = false
         }
-
+        val dividerItemDecoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+        binding.chatListRecycler.addItemDecoration(dividerItemDecoration)
         // RecyclerView 설정
         binding.chatListRecycler.layoutManager = LinearLayoutManager(requireContext())
         studyAdapter = StudyAdapter(studyList) { study ->

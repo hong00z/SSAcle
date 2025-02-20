@@ -185,7 +185,7 @@ fun HomeScreen(
             Column(
                 Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 28.dp)
+                    .padding(horizontal = 20.dp)
             ) {
                 Spacer(Modifier.height(12.dp))
                 TitleTextView("내 스터디 목록")
@@ -240,7 +240,7 @@ fun HomeScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(90.dp)
-                            .padding(horizontal = 12.dp)
+                            .padding(horizontal = 0.dp)
                             .shadow(
                                 elevation = 2.dp,
                                 shape = RoundedCornerShape(10.dp),
@@ -301,10 +301,10 @@ fun HomeScreen(
 
                     Spacer(Modifier.weight(1f))
                     Text(
-                        "전체보기",
+                        "전체 보기",
                         fontFamily = pretendard,
                         fontWeight = FontWeight(400),
-                        fontSize = 13.sp,
+                        fontSize = 13.5.sp,
                         modifier = Modifier.clickable {
                             // 클릭 시 모집 중인 스터디 화면으로 이동
                             navController.navigate("allStudyListScreen")
@@ -514,7 +514,7 @@ private fun FindActionButton(onNavigatePerson: () -> Unit, onNavigateStudy: () -
                 )
             }
         }
-        Spacer(Modifier.width(48.dp))
+        Spacer(Modifier.width(28.dp))
         Card(
             modifier = Modifier
                 .width(130.dp)

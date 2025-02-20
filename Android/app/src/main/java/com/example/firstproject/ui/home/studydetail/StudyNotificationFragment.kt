@@ -1,12 +1,15 @@
-package com.example.firstproject.ui.home.detail
+package com.example.firstproject.ui.home.studydetail
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import com.example.firstproject.R
 import com.example.firstproject.databinding.FragmentStudyNotificationBinding
 import com.example.firstproject.ui.common.CommonTopBar
+import com.example.firstproject.ui.home.detail.DetailNotificationPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 
 
@@ -31,7 +34,7 @@ class StudyNotificationFragment : Fragment() {
                 CommonTopBar(
                     title = "스터디 수신함",
                     onBackPress = {
-                        requireActivity().onBackPressedDispatcher.onBackPressed()
+                        findNavController().navigate(R.id.action_studyNotificationFragment_to_homeFragment)
                     }
                 )
             }

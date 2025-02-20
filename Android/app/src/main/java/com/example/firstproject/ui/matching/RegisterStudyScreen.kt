@@ -108,211 +108,221 @@ fun RegisterStudyScreen(
     val isBtnEnabled = titleInput.isNotEmpty() && contentInput.isNotEmpty()
             && !selectedTag.isNullOrEmpty() && selectedDays.isNotEmpty()
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
+    Box(
+        Modifier
+            .fillMaxSize()
             .background(Color.White)
     ) {
-        Box {
-            CommonTopBar(
-                title = "스터디 개설",
-                onBackPress = {
-                    xmlNavController.navigate(R.id.action_studyRegisterFragment_to_homeFragment)
-                }
-            )
-        }
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(modifier = Modifier.padding(horizontal = 28.dp)) {
-                Spacer(Modifier.height(12.dp))
-                TitleText("스터디 제목")
-                Spacer(Modifier.height(12.dp))
-
-                OutlinedTextField(
-                    value = titleInput,
-                    onValueChange = { titleInput = it },
-                    modifier = Modifier.fillMaxWidth(),
-                    textStyle = TextStyle(
-                        fontSize = 16.sp,
-                        fontFamily = pretendard,
-                        fontWeight = FontWeight(500),
-                        textAlign = TextAlign.Start,
-                        color = Color(0xFF201704)
-                    ),
-                    placeholder = {
-                        Text(
-                            text = "제목을 입력해주세요. (최대 15글자)",
-                            fontSize = 14.sp,
-                            fontFamily = pretendard,
-                            fontWeight = FontWeight(400),
-                            color = colorResource(R.color.textfile_placeholder_color)
-                        )
-                    },
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = colorResource(R.color.primary_color),
-                        unfocusedBorderColor = colorResource(R.color.border_input_color)
-                    ),
-                    singleLine = true
-                )
-
-                Spacer(Modifier.height(20.dp))
-
-                TitleText("스터디 주제")
-                Spacer(Modifier.height(16.dp))
-                SelectTopicCard(
-                    selectedTag = selectedTag,
-                    onTagSelected = { newTag ->
-                        // 같은 태그 누르면 null, 아니면 newTag
-                        selectedTag = if (selectedTag == newTag) null else newTag
-                    }
-                )
-
-                Spacer(Modifier.height(24.dp))
-
-                TitleText("모임 요일")
-                Spacer(Modifier.height(16.dp))
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 4.dp)
-                ) {
-                    SettingWeekComponent(
-                        isChecked = ((weekFlag and (1 shl 0)) == (1 shl 0)),
-                        text = "일"
-                    ) {
-                        weekFlag = ((weekFlag) xor (1 shl 0))
-                    }
-                    Spacer(Modifier.weight(1f))
-                    SettingWeekComponent(
-                        isChecked = ((weekFlag and (1 shl 1)) == (1 shl 1)),
-                        text = "월"
-                    ) {
-                        weekFlag = ((weekFlag) xor (1 shl 1))
-                    }
-                    Spacer(Modifier.weight(1f))
-                    SettingWeekComponent(
-                        isChecked = ((weekFlag and (1 shl 2)) == (1 shl 2)),
-                        text = "화"
-                    ) {
-                        weekFlag = ((weekFlag) xor (1 shl 2))
-                    }
-                    Spacer(Modifier.weight(1f))
-                    SettingWeekComponent(
-                        isChecked = ((weekFlag and (1 shl 3)) == (1 shl 3)),
-                        text = "수"
-                    ) {
-                        weekFlag = ((weekFlag) xor (1 shl 3))
-                    }
-                    Spacer(Modifier.weight(1f))
-                    SettingWeekComponent(
-                        isChecked = ((weekFlag and (1 shl 4)) == (1 shl 4)),
-                        text = "목"
-                    ) {
-                        weekFlag = ((weekFlag) xor (1 shl 4))
-                    }
-                    Spacer(Modifier.weight(1f))
-                    SettingWeekComponent(
-                        isChecked = ((weekFlag and (1 shl 5)) == (1 shl 5)),
-                        text = "금"
-                    ) {
-                        weekFlag = ((weekFlag) xor (1 shl 5))
-                    }
-                    Spacer(Modifier.weight(1f))
-                    SettingWeekComponent(
-                        isChecked = ((weekFlag and (1 shl 6)) == (1 shl 6)),
-                        text = "토"
-                    ) {
-                        weekFlag = ((weekFlag) xor (1 shl 6))
-                    }
-                }
-
-
-                Spacer(Modifier.height(24.dp))
-                TitleText("참여 인원")
-                Spacer(Modifier.height(20.dp))
-
-                NumberPickerView(
-                    onMinValueChange = { newMin ->
-                        minValue = newMin
-                    },
-                    onMaxValueChange = { maxValue = it }
-                )
-                Spacer(Modifier.height(24.dp))
-
-                TitleText("스터디 소개")
-                Spacer(Modifier.height(16.dp))
-                OutlinedTextField(
-                    value = contentInput,
-                    onValueChange = { contentInput = it },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = 100.dp, max = 300.dp),
-                    textStyle = TextStyle(
-                        fontSize = 16.sp,
-                        fontFamily = pretendard,
-                        fontWeight = FontWeight(500),
-                        textAlign = TextAlign.Start,
-                        color = Color(0xFF201704)
-                    ),
-                    placeholder = {
-                        Text(
-                            text = "스터디에 대한 소개글을 작성해주세요.",
-                            fontSize = 14.sp,
-                            fontFamily = pretendard,
-                            fontWeight = FontWeight(400),
-                            color = colorResource(R.color.textfile_placeholder_color)
-                        )
-                    },
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = colorResource(R.color.primary_color),
-                        unfocusedBorderColor = colorResource(R.color.border_input_color)
-                    ),
-                    maxLines = Int.MAX_VALUE
-                )
-
-                Spacer(Modifier.height(12.dp))
-
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(48.dp),
-                    onClick = {
-                        registerStudyViewModel.sendRegisterStudy(
-                            request = RegisterStudyRequestDTO(
-                                studyName = titleInput,
-                                topic = selectedTag!!,
-                                meetingDays = selectedDays,
-                                count = maxValue,
-                                studyContent = contentInput
-                            )
-                        )
+            Box {
+                CommonTopBar(
+                    title = "스터디 개설",
+                    onBackPress = {
                         xmlNavController.navigate(R.id.action_studyRegisterFragment_to_homeFragment)
-                    },
-                    shape = RoundedCornerShape(8.dp),
-                    border = BorderStroke(1.dp, Color(0xFFECECEC)),
-                    colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.primary_color)),
-                    enabled = isBtnEnabled
-                ) {
-                    Text(
-                        text = "등록하기",
-                        fontSize = 16.sp,
-                        fontFamily = pretendard,
-                        fontWeight = FontWeight(600),
-                        color = Color.White
+                    }
+                )
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Column(modifier = Modifier.padding(horizontal = 28.dp)) {
+                    Spacer(Modifier.height(4.dp))
+                    TitleText("스터디 제목")
+                    Spacer(Modifier.height(12.dp))
+
+                    OutlinedTextField(
+                        value = titleInput,
+                        onValueChange = { titleInput = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        textStyle = TextStyle(
+                            fontSize = 16.sp,
+                            fontFamily = pretendard,
+                            fontWeight = FontWeight(500),
+                            textAlign = TextAlign.Start,
+                            color = Color(0xFF201704)
+                        ),
+                        placeholder = {
+                            Text(
+                                text = "제목을 입력해주세요. (최대 15글자)",
+                                fontSize = 14.sp,
+                                fontFamily = pretendard,
+                                fontWeight = FontWeight(400),
+                                color = colorResource(R.color.textfile_placeholder_color)
+                            )
+                        },
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = colorResource(R.color.primary_color),
+                            unfocusedBorderColor = colorResource(R.color.border_input_color)
+                        ),
+                        singleLine = true
                     )
-                }
 
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(32.dp)
-                ) {
+                    Spacer(Modifier.height(20.dp))
+
+                    TitleText("스터디 주제")
+                    Spacer(Modifier.height(16.dp))
+                    SelectTopicCard(
+                        selectedTag = selectedTag,
+                        onTagSelected = { newTag ->
+                            // 같은 태그 누르면 null, 아니면 newTag
+                            selectedTag = if (selectedTag == newTag) null else newTag
+                        }
+                    )
+
+                    Spacer(Modifier.height(24.dp))
+
+                    TitleText("모임 요일")
+                    Spacer(Modifier.height(16.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 4.dp)
+                    ) {
+                        SettingWeekComponent(
+                            isChecked = ((weekFlag and (1 shl 0)) == (1 shl 0)),
+                            text = "일"
+                        ) {
+                            weekFlag = ((weekFlag) xor (1 shl 0))
+                        }
+                        Spacer(Modifier.weight(1f))
+                        SettingWeekComponent(
+                            isChecked = ((weekFlag and (1 shl 1)) == (1 shl 1)),
+                            text = "월"
+                        ) {
+                            weekFlag = ((weekFlag) xor (1 shl 1))
+                        }
+                        Spacer(Modifier.weight(1f))
+                        SettingWeekComponent(
+                            isChecked = ((weekFlag and (1 shl 2)) == (1 shl 2)),
+                            text = "화"
+                        ) {
+                            weekFlag = ((weekFlag) xor (1 shl 2))
+                        }
+                        Spacer(Modifier.weight(1f))
+                        SettingWeekComponent(
+                            isChecked = ((weekFlag and (1 shl 3)) == (1 shl 3)),
+                            text = "수"
+                        ) {
+                            weekFlag = ((weekFlag) xor (1 shl 3))
+                        }
+                        Spacer(Modifier.weight(1f))
+                        SettingWeekComponent(
+                            isChecked = ((weekFlag and (1 shl 4)) == (1 shl 4)),
+                            text = "목"
+                        ) {
+                            weekFlag = ((weekFlag) xor (1 shl 4))
+                        }
+                        Spacer(Modifier.weight(1f))
+                        SettingWeekComponent(
+                            isChecked = ((weekFlag and (1 shl 5)) == (1 shl 5)),
+                            text = "금"
+                        ) {
+                            weekFlag = ((weekFlag) xor (1 shl 5))
+                        }
+                        Spacer(Modifier.weight(1f))
+                        SettingWeekComponent(
+                            isChecked = ((weekFlag and (1 shl 6)) == (1 shl 6)),
+                            text = "토"
+                        ) {
+                            weekFlag = ((weekFlag) xor (1 shl 6))
+                        }
+                    }
+
+
+                    Spacer(Modifier.height(24.dp))
+                    TitleText("참여 인원")
+                    Spacer(Modifier.height(20.dp))
+
+                    NumberPickerView(
+                        onMinValueChange = { newMin ->
+                            minValue = newMin
+                        },
+                        onMaxValueChange = { maxValue = it }
+                    )
+                    Spacer(Modifier.height(24.dp))
+
+                    TitleText("스터디 소개")
+                    Spacer(Modifier.height(16.dp))
+                    OutlinedTextField(
+                        value = contentInput,
+                        onValueChange = { contentInput = it },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = 100.dp, max = 300.dp),
+                        textStyle = TextStyle(
+                            fontSize = 16.sp,
+                            fontFamily = pretendard,
+                            fontWeight = FontWeight(500),
+                            textAlign = TextAlign.Start,
+                            color = Color(0xFF201704)
+                        ),
+                        placeholder = {
+                            Text(
+                                text = "스터디에 대한 소개글을 작성해주세요.",
+                                fontSize = 14.sp,
+                                fontFamily = pretendard,
+                                fontWeight = FontWeight(400),
+                                color = colorResource(R.color.textfile_placeholder_color)
+                            )
+                        },
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = colorResource(R.color.primary_color),
+                            unfocusedBorderColor = colorResource(R.color.border_input_color)
+                        ),
+                        maxLines = Int.MAX_VALUE
+                    )
+
+                    Spacer(Modifier.height(72.dp))
+
 
                 }
+            }
+
+
+        }
+
+
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .height(68.dp)
+                .align(Alignment.BottomCenter)
+                .background(Color.White),
+            contentAlignment = Alignment.Center
+        ) {
+            Button(
+                onClick = {
+                    registerStudyViewModel.sendRegisterStudy(
+                        request = RegisterStudyRequestDTO(
+                            studyName = titleInput,
+                            topic = selectedTag!!,
+                            meetingDays = selectedDays,
+                            count = maxValue,
+                            studyContent = contentInput
+                        )
+                    )
+                    xmlNavController.navigate(R.id.action_studyRegisterFragment_to_homeFragment)
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp)
+                    .padding(horizontal = 28.dp),
+                colors = ButtonDefaults.buttonColors(colorResource(R.color.primary_color)),
+                enabled = isBtnEnabled
+            ) {
+                Text(
+                    "개설 하기",
+                    fontSize = 18.sp,
+                    fontFamily = pretendard,
+                    fontWeight = FontWeight(500),
+                    color = Color.White
+                )
             }
         }
 
