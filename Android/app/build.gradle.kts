@@ -181,6 +181,9 @@ dependencies {
     // 프로필 원형으로 받아 오는 패키지
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
+    // splash
+    implementation("androidx.core:core-splashscreen:1.0.0")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
