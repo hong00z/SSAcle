@@ -56,7 +56,7 @@
 
                 <!-- 프로필 이미지 -->
                 <ImageView
-                    android:id="@+id/profileImage"
+                    android:id="@+id/ivProfileImage"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_gravity="center"
@@ -64,7 +64,7 @@
 
                 <!-- 카메라 아이콘 -->
                 <ImageView
-                    android:id="@+id/cameraIcon"
+                    android:id="@+id/ivAlbum"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="bottom|end"
@@ -136,13 +136,13 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearSub"
+            android:id="@+id/llTags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="32dp"
             android:layout_marginTop="20dp"
             android:padding="8dp"
-            app:layout_constraintBottom_toTopOf="@id/tagsRecyclerView"
+            app:layout_constraintBottom_toTopOf="@id/rvTags"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"
@@ -164,17 +164,17 @@
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/tagsRecyclerView"
+            android:id="@+id/rvTags"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
             android:padding="8dp"
-            app:layout_constraintEnd_toEndOf="@+id/linearSub"
-            app:layout_constraintStart_toStartOf="@+id/linearSub"
-            app:layout_constraintTop_toBottomOf="@+id/linearSub" />
+            app:layout_constraintEnd_toEndOf="@+id/llTags"
+            app:layout_constraintStart_toStartOf="@+id/llTags"
+            app:layout_constraintTop_toBottomOf="@+id/llTags" />
 
         <TextView
-            android:id="@+id/txtSelectedTags"
+            android:id="@+id/tvSelectedTags"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
@@ -184,7 +184,7 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tagsRecyclerView" />
+            app:layout_constraintTop_toBottomOf="@+id/rvTags" />
 
         <LinearLayout
             android:id="@+id/llBtnContainer2"
@@ -198,11 +198,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtSelectedTags"
+            app:layout_constraintTop_toBottomOf="@+id/tvSelectedTags"
             app:layout_constraintVertical_bias="1.0">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/editFinishText"
+                android:id="@+id/btnFinish"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
@@ -215,7 +215,7 @@
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/txtCancle"
+                android:id="@+id/btnCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"

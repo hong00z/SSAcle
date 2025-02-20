@@ -592,4 +592,39 @@ class RemoteDataSource {
             RequestResult.Failure("EXCEPTION", e)
         }
     }
+
+    // 프로필 수정
+    suspend fun editUserProfile(
+        accessToken: String,
+        request: EditProfileRequestDTO,
+        imageFile: File?
+    ): RequestResult<CommonResponseDTO<EditProfileResponseDTO>> {
+        return try {
+            val jsonString = Gson().toJson(request)
+            val jsonRequestBody = jsonString.toRequestBody("application/json".toMediaTypeOrNull())
+
+            val filePart = if (imageFile != null && imageFile.exists()) {
+                val requestFile = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
+                MultipartBody.Part.createFormData("MultipartFile", imageFile.name, requestFile)
+            } else {
+                null
+            }
+
+
+            val response =
+                springService.editUserProfile("Bearer $accessToken", jsonRequestBody, filePart)
+
+            if (response.isSuccessful && response.body() != null) {
+                val body = response.body()!!
+                RequestResult.Success(body)
+            } else {
+                RequestResult.Failure(
+                    code = response.code().toString(),
+                    exception = Exception(response.errorBody()?.string() ?: "통신 실패")
+                )
+            }
+        } catch (e: Exception) {
+            RequestResult.Failure("EXCEPTION", e)
+        }
+    }
 }
