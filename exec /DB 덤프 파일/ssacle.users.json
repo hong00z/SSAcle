@@ -1,0 +1,998 @@
+[{
+  "_id": {
+    "$oid": "67ade36df1346ffe4a2b8559"
+  },
+  "email": "hornaustin@hunt-maldonado.info",
+  "nickname": "우렁각시",
+  "image": "",
+  "term": "11기",
+  "campus": "서울",
+  "role": "SSAFYUSER",
+  "topics": [
+    "게임",
+    "웹 프론트",
+    "백엔드"
+  ],
+  "meetingDays": [
+    "월",
+    "금"
+  ],
+  "createdStudies": [
+    "67ade75cf1346ffe4a2b857e"
+  ],
+  "joinedStudies": [
+    "67ade75cf1346ffe4a2b857e",
+    "67ade36df1346ffe4a2b8559",
+    "67ade75cf1346ffe4a2b858d"
+  ],
+  "wishStudies": [
+    "67ade75cf1346ffe4a2b858f"
+  ],
+  "invitedStudies": [],
+  "fcmToken": "",
+  "createdAt": "2025-02-12T07:21:50.709+00:00",
+  "updatedAt": "2025-02-12T07:21:50.709+00:00"
+},
+{
+  "_id": {
+    "$oid": "67ade36df1346ffe4a2b855a"
+  },
+  "email": "cherrychristopher@barnett.com",
+  "nickname": "동기비동기",
+  "image": "",
+  "term": "11기",
+  "campus": "부산",
+  "role": "SSAFYUSER",
+  "topics": [
+    "웹 프론트"
+  ],
+  "meetingDays": [
+    "화"
+  ],
+  "createdStudies": [
+    "67ade75cf1346ffe4a2b857f"
+  ],
+  "joinedStudies": [
+    "67ade75cf1346ffe4a2b857f"
+  ],
+  "wishStudies": [],
+  "invitedStudies": [
+    "67ade75cf1346ffe4a2b858d",
+    "67ade75cf1346ffe4a2b857e"
+  ],
+  "fcmToken": "",
+  "createdAt": "2025-02-12T07:21:50.709+00:00",
+  "updatedAt": "2025-02-12T07:21:50.709+00:00"
+},
+{
+  "_id": {
+    "$oid": "67ade36df1346ffe4a2b855b"
+  },
+  "email": "lisacooper@hotmail.com",
+  "nickname": "에러제발안나게해주세요",
+  "image": "",
+  "term": "12기",
+  "campus": "부산",
+  "role": "SSAFYUSER",
+  "topics": [
+    "CS 이론"
+  ],
+  "meetingDays": [
+    "화",
+    "일"
+  ],
+  "createdStudies": [
+    "67ade75cf1346ffe4a2b8580"
+  ],
+  "joinedStudies": [
+    "67ade75cf1346ffe4a2b8580",
+    "67ade75cf1346ffe4a2b858c",
+    "67ade75cf1346ffe4a2b857e"
+  ],
+  "wishStudies": [],
+  "invitedStudies": [],
+  "fcmToken": "",
+  "createdAt": "2025-02-12T07:21:50.709+00:00",
+  "updatedAt": "2025-02-12T07:21:50.709+00:00"
+},
+{
+  "_id": {
+    "$oid": "67ade36df1346ffe4a2b855c"
+  },
+  "email": "zallen@wilson.org",
+  "nickname": "ssafy0101",
+  "image": "",
+  "term": "11기",
+  "campus": "구미",
+  "role": "SSAFYUSER",
+  "topics": [
+    "인공지능"
+  ],
+  "meetingDays": [
+    "월",
+    "화",
+    "토"
+  ],
+  "createdStudies": [
+    "67ade75cf1346ffe4a2b8581"
+  ],
+  "joinedStudies": [
+    "67ade75cf1346ffe4a2b8581",
+    "67ade75cf1346ffe4a2b858b"
+  ],
+  "wishStudies": [],
+  "invitedStudies": [],
+  "fcmToken": "",
+  "createdAt": "2025-02-12T07:21:50.709+00:00",
+  "updatedAt": "2025-02-12T07:21:50.709+00:00"
+},
+{
+  "_id": {
+    "$oid": "67ade36df1346ffe4a2b855d"
+  },
+  "email": "christopherthornton@gmail.com",
+  "nickname": "안드로이드짱",
+  "image": "",
+  "term": "11기",
+  "campus": "광주",
+  "role": "SSAFYUSER",
+  "topics": [
+    "모바일"
+  ],
+  "meetingDays": [
+    "화",
+    "수",
+    "목"
+  ],
+  "createdStudies": [
+    "67ade75cf1346ffe4a2b8582"
+  ],
+  "joinedStudies": [
+    "67ade75cf1346ffe4a2b8582",
+    "67ade75cf1346ffe4a2b857f"
+  ],
+  "wishStudies": [
+    "67ade75cf1346ffe4a2b858f"
+  ],
+  "invitedStudies": [],
+  "fcmToken": "",
+  "createdAt": "2025-02-12T07:21:50.709+00:00",
+  "updatedAt": "2025-02-12T07:21:50.709+00:00"
+},
+{
+  "_id": {
+    "$oid": "67ade36df1346ffe4a2b855e"
+  },
+  "email": "april97@yahoo.com",
+  "nickname": "구미알고리즘신",
+  "image": "",
+  "term": "12기",
+  "campus": "광주",
+  "role": "SSAFYUSER",
+  "topics": [
+    "알고리즘",
+    "CS 이론"
+  ],
+  "meetingDays": [
+    "목",
+    "토"
+  ],
+  "createdStudies": [
+    "67ade75cf1346ffe4a2b8583",
+    "67ade36df1346ffe4a2b855e"
+  ],
+  "joinedStudies": [
+    "67ade75cf1346ffe4a2b8583",
+    "67ade75cf1346ffe4a2b857f",
+    "67ade36df1346ffe4a2b855e"
+  ],
+  "wishStudies": [],
+  "invitedStudies": [
+    "67ade75cf1346ffe4a2b8591"
+  ],
+  "fcmToken": "",
+  "createdAt": {
+    "$date": "2025-02-12T07:21:50.709Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-18T07:31:29.834Z"
+  },
+  "_class": "S12P11D110.ssacle.domain.user.entity.User"
+},
+{
+  "_id": {
+    "$oid": "67ade36df1346ffe4a2b855f"
+  },
+  "email": "scottjoann@yahoo.com",
+  "nickname": "올해는취뽀",
+  "image": "",
+  "term": "10기",
+  "campus": "부산",
+  "role": "SSAFYUSER",
+  "topics": [
+    "알고리즘"
+  ],
+  "meetingDays": [
+    "화"
+  ],
+  "createdStudies": [
+    "67ade75cf1346ffe4a2b8584"
+  ],
+  "joinedStudies": [
+    "67ade75cf1346ffe4a2b8584"
+  ],
+  "wishStudies": [],
+  "invitedStudies": [
+    "67ade75cf1346ffe4a2b8591"
+  ],
+  "fcmToken": "",
+  "createdAt": {
+    "$date": "2025-02-12T07:21:50.709Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-18T07:27:11.270Z"
+  },
+  "_class": "S12P11D110.ssacle.domain.user.entity.User"
+},
+{
+  "_id": {
+    "$oid": "67ade36df1346ffe4a2b8560"
+  },
+  "email": "frankhernandez@gmail.com",
+  "nickname": "플젝3관왕",
+  "image": "",
+  "term": "11기",
+  "campus": "부산",
+  "role": "SSAFYUSER",
+  "topics": [
+    "모바일",
+    "기타",
+    "인공지능",
+    "게임"
+  ],
+  "meetingDays": [
+    "토"
+  ],
+  "createdStudies": [
+    "67ade75cf1346ffe4a2b8585",
+    "67ade75cf1346ffe4a2b858f"
+  ],
+  "joinedStudies": [
+    "67ade75cf1346ffe4a2b8585",
+    "67ade75cf1346ffe4a2b858f"
+  ],
+  "wishStudies": [],
+  "invitedStudies": [
+    "67b6bf51a2fd4218bc26841c"
+  ],
+  "fcmToken": "",
+  "createdAt": {
+    "$date": "2025-02-12T07:21:50.709Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-20T07:01:03.413Z"
+  },
+  "_class": "S12P11D110.ssacle.domain.user.entity.User"
+},
+{
+  "_id": {
+    "$oid": "67ade36df1346ffe4a2b8561"
+  },
+  "email": "karenwalker@gmail.com",
+  "nickname": "버니즈",
+  "image": "",
+  "term": "10기",
+  "campus": "광주",
+  "role": "SSAFYUSER",
+  "topics": [
+    "알고리즘"
+  ],
+  "meetingDays": [
+    "화",
+    "목",
+    "일"
+  ],
+  "createdStudies": [
+    "67ade75cf1346ffe4a2b8586"
+  ],
+  "joinedStudies": [
+    "67ade75cf1346ffe4a2b8586",
+    "67ade75cf1346ffe4a2b858e"
+  ],
+  "wishStudies": [],
+  "invitedStudies": [
+    "67ade75cf1346ffe4a2b8591"
+  ],
+  "fcmToken": "",
+  "createdAt": {
+    "$date": "2025-02-12T07:21:50.709Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-18T11:57:56.023Z"
+  },
+  "_class": "S12P11D110.ssacle.domain.user.entity.User"
+},
+{
+  "_id": {
+    "$oid": "67ade36df1346ffe4a2b8562"
+  },
+  "email": "dianabrown@lucas.com",
+  "nickname": "뉴진스네버다이",
+  "image": "",
+  "term": "12기",
+  "campus": "부산",
+  "role": "SSAFYUSER",
+  "topics": [
+    "CS 이론",
+    "게임",
+    "빅데이터"
+  ],
+  "meetingDays": [
+    "화",
+    "일"
+  ],
+  "createdStudies": [
+    "67ade75cf1346ffe4a2b8587"
+  ],
+  "joinedStudies": [
+    "67ade75cf1346ffe4a2b8587"
+  ],
+  "wishStudies": [
+    "67ade75cf1346ffe4a2b858d"
+  ],
+  "invitedStudies": [
+    "67ade75cf1346ffe4a2b858c"
+  ],
+  "fcmToken": "",
+  "createdAt": {
+    "$date": "2025-02-12T07:21:50.709Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-20T12:58:14.020Z"
+  },
+  "_class": "S12P11D110.ssacle.domain.user.entity.User"
+},
+{
+  "_id": {
+    "$oid": "67ade36df1346ffe4a2b8563"
+  },
+  "email": "ortegamary@yahoo.com",
+  "nickname": "마이구미",
+  "image": "",
+  "term": "12기",
+  "campus": "서울",
+  "role": "SSAFYUSER",
+  "topics": [
+    "인공지능",
+    "알고리즘",
+    "인프라",
+    "백엔드"
+  ],
+  "meetingDays": [
+    "목"
+  ],
+  "createdStudies": [
+    "67ade75cf1346ffe4a2b8588"
+  ],
+  "joinedStudies": [
+    "67ade75cf1346ffe4a2b8588"
+  ],
+  "wishStudies": [],
+  "invitedStudies": [
+    "67ade75cf1346ffe4a2b858e",
+    "67ade75cf1346ffe4a2b8591"
+  ],
+  "fcmToken": "",
+  "createdAt": {
+    "$date": "2025-02-12T07:21:50.709Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-20T07:58:10.297Z"
+  },
+  "_class": "S12P11D110.ssacle.domain.user.entity.User"
+},
+{
+  "_id": {
+    "$oid": "67ade36df1346ffe4a2b8564"
+  },
+  "email": "danielpena@gmail.com",
+  "nickname": "외계인",
+  "image": "",
+  "term": "10기",
+  "campus": "대전",
+  "role": "SSAFYUSER",
+  "topics": [
+    "백엔드",
+    "알고리즘",
+    "CS 이론",
+    "게임"
+  ],
+  "meetingDays": [
+    "목",
+    "금",
+    "일"
+  ],
+  "createdStudies": [
+    "67ade75cf1346ffe4a2b8589"
+  ],
+  "joinedStudies": [
+    "67ade75cf1346ffe4a2b8589"
+  ],
+  "wishStudies": [],
+  "invitedStudies": [
+    "67ade75cf1346ffe4a2b858e",
+    "67ade75cf1346ffe4a2b8591"
+  ],
+  "fcmToken": "",
+  "createdAt": {
+    "$date": "2025-02-12T07:21:50.709Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-20T07:56:38.449Z"
+  },
+  "_class": "S12P11D110.ssacle.domain.user.entity.User"
+},
+{
+  "_id": {
+    "$oid": "67ade36df1346ffe4a2b8565"
+  },
+  "email": "sarah00@gmail.com",
+  "nickname": "자격증그만",
+  "image": "",
+  "term": "12기",
+  "campus": "광주",
+  "role": "SSAFYUSER",
+  "topics": [
+    "알고리즘",
+    "임베디드"
+  ],
+  "meetingDays": [
+    "목",
+    "일"
+  ],
+  "createdStudies": [
+    "67ade75cf1346ffe4a2b858a"
+  ],
+  "joinedStudies": [
+    "67ade75cf1346ffe4a2b858a"
+  ],
+  "wishStudies": [],
+  "invitedStudies": [
+    "67ade75cf1346ffe4a2b8591"
+  ],
+  "fcmToken": "",
+  "createdAt": {
+    "$date": "2025-02-12T07:21:50.709Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-18T07:27:06.747Z"
+  },
+  "_class": "S12P11D110.ssacle.domain.user.entity.User"
+},
+{
+  "_id": {
+    "$oid": "67ade36df1346ffe4a2b8566"
+  },
+  "email": "gregory03@kirk.com",
+  "nickname": "면접광탈",
+  "image": "",
+  "term": "12기",
+  "campus": "서울",
+  "role": "SSAFYUSER",
+  "topics": [
+    "인프라",
+    "기타",
+    "모바일",
+    "임베디드"
+  ],
+  "meetingDays": [
+    "화",
+    "금",
+    "일"
+  ],
+  "createdStudies": [
+    "67ade75cf1346ffe4a2b858b"
+  ],
+  "joinedStudies": [
+    "67ade75cf1346ffe4a2b858b"
+  ],
+  "wishStudies": [],
+  "invitedStudies": [
+    "67b37c71242f3a7bfbd976b2",
+    "67b6bf51a2fd4218bc26841c"
+  ],
+  "fcmToken": "",
+  "createdAt": {
+    "$date": "2025-02-12T07:21:50.709Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-20T07:01:07.479Z"
+  },
+  "_class": "S12P11D110.ssacle.domain.user.entity.User"
+},
+{
+  "_id": {
+    "$oid": "67ade36df1346ffe4a2b8567"
+  },
+  "email": "rossjohn@hotmail.com",
+  "nickname": "감자러브",
+  "image": "",
+  "term": "12기",
+  "campus": "대전",
+  "role": "SSAFYUSER",
+  "topics": [
+    "알고리즘"
+  ],
+  "meetingDays": [
+    "화",
+    "금"
+  ],
+  "createdStudies": [
+    "67ade75cf1346ffe4a2b858c"
+  ],
+  "joinedStudies": [
+    "67ade75cf1346ffe4a2b858c"
+  ],
+  "wishStudies": [],
+  "invitedStudies": [
+    "67ade75cf1346ffe4a2b8591"
+  ],
+  "fcmToken": "",
+  "createdAt": "2025-02-12T07:21:50.709+00:00",
+  "updatedAt": "2025-02-12T07:21:50.709+00:00"
+},
+{
+  "_id": {
+    "$oid": "67ade36df1346ffe4a2b8568"
+  },
+  "email": "jocelynfritz@gmail.com",
+  "nickname": "풀스택이될려던건아닌데",
+  "image": "",
+  "term": "12기",
+  "campus": "서울",
+  "role": "USER",
+  "topics": [
+    "임베디드",
+    "인프라",
+    "모바일"
+  ],
+  "meetingDays": [
+    "수",
+    "목"
+  ],
+  "createdStudies": [
+    "67ade75cf1346ffe4a2b858d"
+  ],
+  "joinedStudies": [
+    "67ade75cf1346ffe4a2b858d"
+  ],
+  "wishStudies": [
+    "67ade75cf1346ffe4a2b8591"
+  ],
+  "invitedStudies": [],
+  "fcmToken": "",
+  "createdAt": "2025-02-12T07:21:50.709+00:00",
+  "updatedAt": "2025-02-12T07:21:50.709+00:00"
+},
+{
+  "_id": {
+    "$oid": "67ade36df1346ffe4a2b8569"
+  },
+  "email": "jenningsrebecca@hotmail.com",
+  "nickname": "괜찮아닝닝닝닝닝닝",
+  "image": "",
+  "term": "12기",
+  "campus": "구미",
+  "role": "SSAFYUSER",
+  "topics": [
+    "웹 프론트"
+  ],
+  "meetingDays": [
+    "목",
+    "일"
+  ],
+  "createdStudies": [
+    "67ade75cf1346ffe4a2b858e"
+  ],
+  "joinedStudies": [
+    "67ade75cf1346ffe4a2b858e",
+    "67ade75cf1346ffe4a2b8591"
+  ],
+  "wishStudies": [],
+  "invitedStudies": [],
+  "fcmToken": "",
+  "createdAt": {
+    "$date": "2025-02-12T07:21:50.709Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-19T05:08:27.010Z"
+  },
+  "_class": "S12P11D110.ssacle.domain.user.entity.User"
+},
+{
+  "_id": {
+    "$oid": "67b1a823b3d0cc5eabade671"
+  },
+  "email": "jun99421@naver.com",
+  "nickname": "열공짱구갓",
+  "image": "1e59fa01-54f9-4c3f-8fbd-6ae997999b96.png",
+  "term": "12기",
+  "campus": "구미",
+  "role": "SSAFYUSER",
+  "topics": [
+    "CS 이론",
+    "모바일",
+    "인프라",
+    "알고리즘"
+  ],
+  "meetingDays": [
+    "월"
+  ],
+  "createdStudies": [
+    "67b37c71242f3a7bfbd976b2"
+  ],
+  "joinedStudies": [
+    "67ade75cf1346ffe4a2b8591",
+    "67b37c71242f3a7bfbd976b2",
+    "67ade75cf1346ffe4a2b8585",
+    "67ade75cf1346ffe4a2b8588",
+    "67b6bf51a2fd4218bc26841c"
+  ],
+  "wishStudies": [
+    "67ade75cf1346ffe4a2b8590"
+  ],
+  "invitedStudies": [],
+  "fcmToken": "eygeAqKBQM-zT06uSeLGji:APA91bEBNjqKHgFN0ww7uk3Kmt9qZivnNDhtra18pVGZulqtZ7S52SpjTeOA-PQWLDXJcFR181x-0tiRVjImZb3Y2Y4CXPX8JQoBQFddrFCaP1GLeLL-7M0",
+  "createdAt": {
+    "$date": "2025-02-16T08:56:03.224Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-20T06:49:54.007Z"
+  },
+  "_class": "S12P11D110.ssacle.domain.user.entity.User",
+  "__v": 5,
+  "studyReadTimestamps": [
+    {
+      "studyId": {
+        "$oid": "67ade75cf1346ffe4a2b8591"
+      },
+      "lastRead": {
+        "$date": "2025-02-20T07:07:17.874Z"
+      },
+      "_id": {
+        "$oid": "67b6d44f5bbdb23734026010"
+      }
+    },
+    {
+      "studyId": {
+        "$oid": "67b6bf51a2fd4218bc26841c"
+      },
+      "lastRead": {
+        "$date": "2025-02-20T07:05:51.727Z"
+      },
+      "_id": {
+        "$oid": "67b6d4505bbdb2373402602f"
+      }
+    },
+    {
+      "studyId": {
+        "$oid": "67ade75cf1346ffe4a2b8585"
+      },
+      "lastRead": {
+        "$date": "2025-02-20T07:05:52.675Z"
+      },
+      "_id": {
+        "$oid": "67b6d4515bbdb23734026050"
+      }
+    },
+    {
+      "studyId": {
+        "$oid": "67b37c71242f3a7bfbd976b2"
+      },
+      "lastRead": {
+        "$date": "2025-02-20T07:05:53.921Z"
+      },
+      "_id": {
+        "$oid": "67b6d4525bbdb23734026076"
+      }
+    },
+    {
+      "studyId": {
+        "$oid": "67ade75cf1346ffe4a2b8588"
+      },
+      "lastRead": {
+        "$date": "2025-02-20T07:07:14.846Z"
+      },
+      "_id": {
+        "$oid": "67b6d4a35bbdb2373402614c"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "email": "ghwjd5684@naver.com",
+  "nickname": "호정1004",
+  "image": "9c1ad8a3-99d8-45aa-88fc-c0eb21bb688c.jpg",
+  "term": "12기",
+  "campus": "구미",
+  "role": "SSAFYUSER",
+  "topics": [
+    "백엔드",
+    "모바일",
+    "인공지능",
+    "알고리즘"
+  ],
+  "meetingDays": [
+    "월"
+  ],
+  "createdStudies": [],
+  "joinedStudies": [
+    "67ade75cf1346ffe4a2b8591",
+    "67b68770a40f144a4c103bef"
+  ],
+  "wishStudies": [
+    "67ade75cf1346ffe4a2b857e",
+    "67ade75cf1346ffe4a2b8580",
+    "67ade75cf1346ffe4a2b8588",
+    "67ade75cf1346ffe4a2b8585",
+    "67ade75cf1346ffe4a2b8582"
+  ],
+  "invitedStudies": [],
+  "fcmToken": "fGurB0eiT9a6g2Vx5vlZ0c:APA91bGRjLVUCut7Q-ba868ji_2MtDr15tGlQrrMQwwuR8_QCI0lPYtv2-B7vukP1uBHccSv2SZnmXwDH6V7l-033U0gkbycRRAVnEem8I--QOKliMuZRQY",
+  "createdAt": {
+    "$date": "2025-02-17T00:18:54.823Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-20T07:56:42.608Z"
+  },
+  "_class": "S12P11D110.ssacle.domain.user.entity.User",
+  "__v": 2,
+  "studyReadTimestamps": [
+    {
+      "studyId": {
+        "$oid": "67ade75cf1346ffe4a2b8591"
+      },
+      "lastRead": {
+        "$date": "2025-02-20T12:27:08.541Z"
+      },
+      "_id": {
+        "$oid": "67b6e1285bbdb237340262f0"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "67b28e29c5603b7e36d45a4b"
+  },
+  "email": "jhanoo@naver.com",
+  "nickname": "자누",
+  "image": "4b28f246-ce78-4c82-a0d8-3eafd9519ae0.jpg",
+  "term": "12기",
+  "campus": "구미",
+  "role": "SSAFYUSER",
+  "topics": [
+    "백엔드",
+    "모바일",
+    "기타",
+    "게임"
+  ],
+  "meetingDays": [
+    "월"
+  ],
+  "createdStudies": [
+    "67ade75cf1346ffe4a2b8591",
+    "67b6bf51a2fd4218bc26841c"
+  ],
+  "joinedStudies": [
+    "67ade75cf1346ffe4a2b8591",
+    "67b6bf51a2fd4218bc26841c",
+    "67b37c71242f3a7bfbd976b2"
+  ],
+  "wishStudies": [
+    "67ade75cf1346ffe4a2b857e"
+  ],
+  "invitedStudies": [],
+  "fcmToken": "fbBwwWqnQGGa9lgq6GFpax:APA91bH7UkboMBOxy5brT1Q_FWjheqPOotl5eK3wEOOX8eI1vWUd2alOL3GnZBPjjuseXfDZQiTythALWZYBZRbhj8e-kuim3rAxKujok6-ZVwwYxQcavN0",
+  "createdAt": {
+    "$date": "2025-02-17T01:17:29.459Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-20T07:07:20.479Z"
+  },
+  "_class": "S12P11D110.ssacle.domain.user.entity.User",
+  "__v": 3,
+  "studyReadTimestamps": [
+    {
+      "studyId": {
+        "$oid": "67b6bf51a2fd4218bc26841c"
+      },
+      "lastRead": {
+        "$date": "2025-02-20T07:47:11.990Z"
+      },
+      "_id": {
+        "$oid": "67b6d4b25bbdb237340261a3"
+      }
+    },
+    {
+      "studyId": {
+        "$oid": "67ade75cf1346ffe4a2b8591"
+      },
+      "lastRead": {
+        "$date": "2025-02-20T09:41:06.168Z"
+      },
+      "_id": {
+        "$oid": "67b6d4da5bbdb237340261ba"
+      }
+    },
+    {
+      "studyId": {
+        "$oid": "67b37c71242f3a7bfbd976b2"
+      },
+      "lastRead": {
+        "$date": "2025-02-20T07:47:28.300Z"
+      },
+      "_id": {
+        "$oid": "67b6ddfa5bbdb2373402626f"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "email": "moon9433@naver.com",
+  "nickname": "우하하",
+  "image": "1c4c51a3-5c53-4e1d-9f4c-020236305e38.jpg",
+  "term": "12기",
+  "campus": "구미",
+  "role": "SSAFYUSER",
+  "topics": [
+    "알고리즘"
+  ],
+  "meetingDays": [
+    "화"
+  ],
+  "createdStudies": [],
+  "joinedStudies": [
+    "67ade75cf1346ffe4a2b858c",
+    "67ade75cf1346ffe4a2b858e",
+    "67ade75cf1346ffe4a2b8591"
+  ],
+  "wishStudies": [
+    "67ade75cf1346ffe4a2b8588"
+  ],
+  "invitedStudies": [],
+  "fcmToken": "cCEVvbeZRiOBOOOKM-iEnq:APA91bEn7Xp1JQQVLJFhjRr0Ssn4Evwxj1OHaYdGS6UPleZoDuZlE0E5ySIUE6o5uSWUuR4qR83XRxxrsjx1dvFCa2rdbRIk5ndw3dl0aonot-lwe_pHrFM",
+  "createdAt": {
+    "$date": "2025-02-18T11:38:09.879Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-20T01:40:26.317Z"
+  },
+  "_class": "S12P11D110.ssacle.domain.user.entity.User",
+  "__v": 3,
+  "studyReadTimestamps": [
+    {
+      "studyId": {
+        "$oid": "67ade75cf1346ffe4a2b8591"
+      },
+      "lastRead": {
+        "$date": "2025-02-20T12:47:47.211Z"
+      },
+      "_id": {
+        "$oid": "67b6885c57262d61618a2866"
+      }
+    },
+    {
+      "studyId": {
+        "$oid": "67ade75cf1346ffe4a2b858c"
+      },
+      "lastRead": {
+        "$date": "2025-02-20T12:23:25.009Z"
+      },
+      "_id": {
+        "$oid": "67b71ebd5bbdb237340264ff"
+      }
+    },
+    {
+      "studyId": {
+        "$oid": "67ade75cf1346ffe4a2b858e"
+      },
+      "lastRead": {
+        "$date": "2025-02-20T12:23:26.705Z"
+      },
+      "_id": {
+        "$oid": "67b71ebe5bbdb23734026518"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "67b52dc770204a6a9ccb6bd9"
+  },
+  "email": "gkgkdnrl@nate.com",
+  "nickname": "에러인가요",
+  "image": "22dcaa76-f484-4320-b146-c3b63f4a2f50.jpg",
+  "term": "12기",
+  "campus": "구미",
+  "role": "SSAFYUSER",
+  "topics": [
+    "백엔드",
+    "CS 이론",
+    "인공지능"
+  ],
+  "meetingDays": [
+    "월",
+    "수",
+    "금"
+  ],
+  "createdStudies": [],
+  "joinedStudies": [
+    "67ade75cf1346ffe4a2b8591"
+  ],
+  "wishStudies": [],
+  "invitedStudies": [],
+  "fcmToken": "dTNXmZHxRyqSvaCVtkfRTa:APA91bEp35m6JwQYnAKc7LLBe2IRrDnyhmNbTjuTkywX1b8Oaj-GaVaboA9UiClmYID427uvrOuNq9nJOlKPyXhV8kI8AR9cRZLNHkdCAucqs585cSKG5G8",
+  "createdAt": {
+    "$date": "2025-02-19T01:03:03.875Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-19T05:56:11.576Z"
+  },
+  "_class": "S12P11D110.ssacle.domain.user.entity.User",
+  "__v": 2,
+  "studyReadTimestamps": [
+    {
+      "studyId": {
+        "$oid": "67ade75cf1346ffe4a2b8591"
+      },
+      "lastRead": {
+        "$date": "2025-02-20T12:27:00.519Z"
+      },
+      "_id": {
+        "$oid": "67b57dd6481c184cb2eda803"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "67b7286a7a78c4463233f00a"
+  },
+  "email": "hong00z@naver.com",
+  "nickname": "버니즈짱",
+  "image": "ee773702-abf0-446f-b7ca-3ca07cef099e.png",
+  "term": "12기",
+  "campus": "서울",
+  "role": "SSAFYUSER",
+  "topics": [
+    "백엔드",
+    "CS 이론",
+    "모바일",
+    "인공지능"
+  ],
+  "meetingDays": [
+    "수",
+    "금"
+  ],
+  "createdStudies": [],
+  "joinedStudies": [],
+  "wishStudies": [],
+  "invitedStudies": [],
+  "fcmToken": "c4pq8mW4ShGjh7ZIldc9tn:APA91bFx7enEtJjLTXntnQEkeJ4jtqewZ713IKG6gTlb4Gn1PRzdZe43Hjqm3Kj70Shh-QZxrB2J4FvwqdIO1WeeDApY9MhlRomDTHS8yA1nIanW7ihWMV4",
+  "createdAt": {
+    "$date": "2025-02-20T13:04:42.653Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-20T13:05:13.030Z"
+  },
+  "_class": "S12P11D110.ssacle.domain.user.entity.User",
+  "__v": 1,
+  "studyReadTimestamps": []
+}]

@@ -1,0 +1,602 @@
+[{
+  "_id": {
+    "$oid": "67ade75cf1346ffe4a2b857e"
+  },
+  "studyName": "다이브인투데이터",
+  "topic": "빅데이터",
+  "meetingDays": [
+    "월",
+    "금",
+    "토"
+  ],
+  "count": 6,
+  "members": [
+    "67ade36df1346ffe4a2b8559",
+    "67ade36df1346ffe4a2b855b"
+  ],
+  "studyContent": "빅데이터에 대한 심화 학습을 진행하는 스터디입니다. 정기적인 모임을 통해 경험을 공유하고 프로젝트를 진행합니다. 참여를 원하시면 신청해주세요.",
+  "wishMembers": [
+    "67ade36df1346ffe4a2b855a"
+  ],
+  "preMembers": [
+    "67b2806ef6722f36d2af569a",
+    "67b28e29c5603b7e36d45a4b"
+  ],
+  "createdAt": {
+    "$date": "2025-02-13T12:30:37.298Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-20T06:33:22.208Z"
+  },
+  "createdBy": "67ade36df1346ffe4a2b8559",
+  "_class": "S12P11D110.ssacle.domain.study.entity.Study"
+},
+{
+  "_id": {
+    "$oid": "67ade75cf1346ffe4a2b857f"
+  },
+  "studyName": "프로게이머스",
+  "topic": "게임",
+  "meetingDays": [
+    "월",
+    "화",
+    "목",
+    "토"
+  ],
+  "count": 3,
+  "members": [
+    "67ade36df1346ffe4a2b855a",
+    "67ade36df1346ffe4a2b855d",
+    "67ade36df1346ffe4a2b855e"
+  ],
+  "studyContent": "게임에 대한 심화 학습을 진행하는 스터디입니다. 정기적인 모임을 통해 경험을 공유하고 프로젝트를 진행합니다. 참여를 원하시면 신청해주세요.",
+  "wishMembers": [],
+  "preMembers": [],
+  "createdAt": {
+    "$date": "2025-02-13T12:30:37.298Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T04:25:06.576Z"
+  },
+  "createdBy": "67ade36df1346ffe4a2b855a",
+  "_class": "S12P11D110.ssacle.domain.study.entity.Study"
+},
+{
+  "_id": {
+    "$oid": "67ade75cf1346ffe4a2b8580"
+  },
+  "studyName": "AI랑",
+  "topic": "인공지능",
+  "meetingDays": [
+    "금",
+    "토",
+    "일"
+  ],
+  "count": 5,
+  "members": [
+    "67ade36df1346ffe4a2b855b"
+  ],
+  "studyContent": "인공지능에 대한 심화 학습을 진행하는 스터디입니다. 정기적인 모임을 통해 경험을 공유하고 프로젝트를 진행합니다. 참여를 원하시면 신청해주세요.",
+  "wishMembers": [],
+  "preMembers": [
+    "67b2806ef6722f36d2af569a"
+  ],
+  "createdAt": {
+    "$date": "2025-02-13T12:30:37.298Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-20T01:27:30.613Z"
+  },
+  "createdBy": "67ade36df1346ffe4a2b855b",
+  "_class": "S12P11D110.ssacle.domain.study.entity.Study"
+},
+{
+  "_id": {
+    "$oid": "67ade75cf1346ffe4a2b8581"
+  },
+  "studyName": "게임게발",
+  "topic": "게임",
+  "meetingDays": [
+    "목"
+  ],
+  "count": 4,
+  "members": [
+    "67ade36df1346ffe4a2b855c"
+  ],
+  "studyContent": "게임에 대한 심화 학습을 진행하는 스터디입니다. 정기적인 모임을 통해 경험을 공유하고 프로젝트를 진행합니다. 참여를 원하시면 신청해주세요.",
+  "wishMembers": [],
+  "preMembers": [],
+  "createdAt": "2025-02-13T12:30:37.298+00:00",
+  "updatedAt": "2025-02-13T12:30:37.298+00:00",
+  "createdBy": "67ade36df1346ffe4a2b855c"
+},
+{
+  "_id": {
+    "$oid": "67ade75cf1346ffe4a2b8582"
+  },
+  "studyName": "우리에게 봄이 올까요",
+  "topic": "백엔드",
+  "meetingDays": [
+    "월",
+    "일"
+  ],
+  "count": 9,
+  "members": [
+    "67ade36df1346ffe4a2b855d"
+  ],
+  "studyContent": "백엔드에 대한 심화 학습을 진행하는 스터디입니다. 정기적인 모임을 통해 경험을 공유하고 프로젝트를 진행합니다. 참여를 원하시면 신청해주세요.",
+  "wishMembers": [],
+  "preMembers": [
+    "67b2806ef6722f36d2af569a"
+  ],
+  "createdAt": {
+    "$date": "2025-02-13T12:30:37.298Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-20T07:56:42.610Z"
+  },
+  "createdBy": "67ade36df1346ffe4a2b855d",
+  "_class": "S12P11D110.ssacle.domain.study.entity.Study"
+},
+{
+  "_id": {
+    "$oid": "67ade75cf1346ffe4a2b8583"
+  },
+  "studyName": "로봇삐리리",
+  "topic": "임베디드",
+  "meetingDays": [
+    "월",
+    "토",
+    "일"
+  ],
+  "count": 3,
+  "members": [
+    "67ade36df1346ffe4a2b855e"
+  ],
+  "studyContent": "임베디드에 대한 심화 학습을 진행하는 스터디입니다. 정기적인 모임을 통해 경험을 공유하고 프로젝트를 진행합니다. 참여를 원하시면 신청해주세요.",
+  "wishMembers": [],
+  "preMembers": [],
+  "createdAt": {
+    "$date": "2025-02-13T12:30:37.298Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-14T07:45:26.287Z"
+  },
+  "createdBy": "67ade36df1346ffe4a2b855e",
+  "_class": "S12P11D110.ssacle.domain.study.entity.Study"
+},
+{
+  "_id": {
+    "$oid": "67ade75cf1346ffe4a2b8584"
+  },
+  "studyName": "스몰데이터스터디",
+  "topic": "빅데이터",
+  "meetingDays": [
+    "월",
+    "화",
+    "수"
+  ],
+  "count": 7,
+  "members": [
+    "67ade36df1346ffe4a2b855f"
+  ],
+  "studyContent": "빅데이터에 대한 심화 학습을 진행하는 스터디입니다. 정기적인 모임을 통해 경험을 공유하고 프로젝트를 진행합니다. 참여를 원하시면 신청해주세요.",
+  "wishMembers": [],
+  "preMembers": [],
+  "createdAt": "2025-02-13T12:30:37.298+00:00",
+  "updatedAt": "2025-02-13T12:30:37.298+00:00",
+  "createdBy": "67ade36df1346ffe4a2b855f"
+},
+{
+  "_id": {
+    "$oid": "67ade75cf1346ffe4a2b8585"
+  },
+  "studyName": "실버탈출대",
+  "topic": "알고리즘",
+  "meetingDays": [
+    "금"
+  ],
+  "count": 9,
+  "members": [
+    "67ade36df1346ffe4a2b8560",
+    "67b1a823b3d0cc5eabade671"
+  ],
+  "studyContent": "알고리즘에 대한 심화 학습을 진행하는 스터디입니다. 정기적인 모임을 통해 경험을 공유하고 프로젝트를 진행합니다. 참여를 원하시면 신청해주세요.",
+  "wishMembers": [],
+  "preMembers": [
+    "67b444a66cf0e735c6230b89",
+    "67b2806ef6722f36d2af569a"
+  ],
+  "createdAt": {
+    "$date": "2025-02-13T12:30:37.298Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-20T06:49:36.057Z"
+  },
+  "createdBy": "67ade36df1346ffe4a2b8560",
+  "_class": "S12P11D110.ssacle.domain.study.entity.Study"
+},
+{
+  "_id": {
+    "$oid": "67ade75cf1346ffe4a2b8586"
+  },
+  "studyName": "안스안쓰면안됨",
+  "topic": "모바일",
+  "meetingDays": [
+    "수"
+  ],
+  "count": 10,
+  "members": [
+    "67ade36df1346ffe4a2b8561"
+  ],
+  "studyContent": "모바일에 대한 심화 학습을 진행하는 스터디입니다. 정기적인 모임을 통해 경험을 공유하고 프로젝트를 진행합니다. 참여를 원하시면 신청해주세요.",
+  "wishMembers": [],
+  "preMembers": [],
+  "createdAt": "2025-02-13T12:30:37.298+00:00",
+  "updatedAt": "2025-02-13T12:30:37.298+00:00",
+  "createdBy": "67ade36df1346ffe4a2b8561"
+},
+{
+  "_id": {
+    "$oid": "67ade75cf1346ffe4a2b8587"
+  },
+  "studyName": "겜개발자가 되고싶어",
+  "topic": "게임",
+  "meetingDays": [
+    "토"
+  ],
+  "count": 5,
+  "members": [
+    "67ade36df1346ffe4a2b8562"
+  ],
+  "studyContent": "게임에 대한 심화 학습을 진행하는 스터디입니다. 정기적인 모임을 통해 경험을 공유하고 프로젝트를 진행합니다. 참여를 원하시면 신청해주세요.",
+  "wishMembers": [],
+  "preMembers": [],
+  "createdAt": "2025-02-13T12:30:37.298+00:00",
+  "updatedAt": "2025-02-13T12:30:37.298+00:00",
+  "createdBy": "67ade36df1346ffe4a2b8562"
+},
+{
+  "_id": {
+    "$oid": "67ade75cf1346ffe4a2b8588"
+  },
+  "studyName": "Algo있지",
+  "topic": "알고리즘",
+  "meetingDays": [
+    "목",
+    "일"
+  ],
+  "count": 10,
+  "members": [
+    "67ade36df1346ffe4a2b8563",
+    "67b1a823b3d0cc5eabade671"
+  ],
+  "studyContent": "알고리즘에 대한 심화 학습을 진행하는 스터디입니다. 정기적인 모임을 통해 경험을 공유하고 프로젝트를 진행합니다. 참여를 원하시면 신청해주세요.",
+  "wishMembers": [],
+  "preMembers": [
+    "67b47121c99b1a3148b09637",
+    "67b2806ef6722f36d2af569a"
+  ],
+  "createdAt": {
+    "$date": "2025-02-13T12:30:37.298Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-20T05:18:50.689Z"
+  },
+  "createdBy": "67ade36df1346ffe4a2b8563",
+  "_class": "S12P11D110.ssacle.domain.study.entity.Study"
+},
+{
+  "_id": {
+    "$oid": "67ade75cf1346ffe4a2b8589"
+  },
+  "studyName": "AI HI",
+  "topic": "인공지능",
+  "meetingDays": [
+    "금",
+    "일"
+  ],
+  "count": 4,
+  "members": [
+    "67ade36df1346ffe4a2b8564"
+  ],
+  "studyContent": "인공지능에 대한 심화 학습을 진행하는 스터디입니다. 정기적인 모임을 통해 경험을 공유하고 프로젝트를 진행합니다. 참여를 원하시면 신청해주세요.",
+  "wishMembers": [],
+  "preMembers": [],
+  "createdAt": "2025-02-13T12:30:37.298+00:00",
+  "updatedAt": "2025-02-13T12:30:37.298+00:00",
+  "createdBy": "67ade36df1346ffe4a2b8564"
+},
+{
+  "_id": {
+    "$oid": "67ade75cf1346ffe4a2b858a"
+  },
+  "studyName": "임베디드모여라",
+  "topic": "임베디드",
+  "meetingDays": [
+    "월",
+    "화",
+    "일"
+  ],
+  "count": 4,
+  "members": [
+    "67ade36df1346ffe4a2b8565"
+  ],
+  "studyContent": "임베디드에 대한 심화 학습을 진행하는 스터디입니다. 정기적인 모임을 통해 경험을 공유하고 프로젝트를 진행합니다. 참여를 원하시면 신청해주세요.",
+  "wishMembers": [],
+  "preMembers": [],
+  "createdAt": "2025-02-13T12:30:37.298+00:00",
+  "updatedAt": "2025-02-13T12:30:37.298+00:00",
+  "createdBy": "67ade36df1346ffe4a2b8565"
+},
+{
+  "_id": {
+    "$oid": "67ade75cf1346ffe4a2b858b"
+  },
+  "studyName": "인공능지처참",
+  "topic": "인공지능",
+  "meetingDays": [
+    "화"
+  ],
+  "count": 3,
+  "members": [
+    "67ade36df1346ffe4a2b8566",
+    "67ade36df1346ffe4a2b855c"
+  ],
+  "studyContent": "인공지능에 대한 심화 학습을 진행하는 스터디입니다. 정기적인 모임을 통해 경험을 공유하고 프로젝트를 진행합니다. 참여를 원하시면 신청해주세요.",
+  "wishMembers": [],
+  "preMembers": [],
+  "createdAt": "2025-02-13T12:30:37.298+00:00",
+  "updatedAt": "2025-02-13T12:30:37.298+00:00",
+  "createdBy": "67ade36df1346ffe4a2b8566"
+},
+{
+  "_id": {
+    "$oid": "67ade75cf1346ffe4a2b858c"
+  },
+  "studyName": "CS 정복자들",
+  "topic": "CS 이론",
+  "meetingDays": [
+    "월",
+    "화",
+    "수"
+  ],
+  "count": 4,
+  "members": [
+    "67ade36df1346ffe4a2b8567",
+    "67ade36df1346ffe4a2b855b",
+    "67b47121c99b1a3148b09637"
+  ],
+  "studyContent": "CS 이론에 대한 심화 학습을 진행하는 스터디입니다. 정기적인 모임을 통해 경험을 공유하고 프로젝트를 진행합니다. 참여를 원하시면 신청해주세요.",
+  "wishMembers": [
+    "67ade36df1346ffe4a2b8562"
+  ],
+  "preMembers": [],
+  "createdAt": {
+    "$date": "2025-02-13T12:30:37.298Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-20T12:58:14.019Z"
+  },
+  "createdBy": "67ade36df1346ffe4a2b8567",
+  "_class": "S12P11D110.ssacle.domain.study.entity.Study"
+},
+{
+  "_id": {
+    "$oid": "67ade75cf1346ffe4a2b858d"
+  },
+  "studyName": "프론트개발자들",
+  "topic": "웹 프론트",
+  "meetingDays": [
+    "월",
+    "화",
+    "금"
+  ],
+  "count": 5,
+  "members": [
+    "67ade36df1346ffe4a2b8568",
+    "67ade36df1346ffe4a2b8559"
+  ],
+  "studyContent": "프론트엔드에 대한 심화 학습을 진행하는 스터디입니다. 정기적인 모임을 통해 경험을 공유하고 프로젝트를 진행합니다. 참여를 원하시면 신청해주세요.",
+  "wishMembers": [
+    "67ade36df1346ffe4a2b855a"
+  ],
+  "preMembers": [
+    "67ade36df1346ffe4a2b8562"
+  ],
+  "createdAt": "2025-02-13T12:30:37.298+00:00",
+  "updatedAt": "2025-02-13T12:30:37.298+00:00",
+  "createdBy": "67ade36df1346ffe4a2b8568"
+},
+{
+  "_id": {
+    "$oid": "67ade75cf1346ffe4a2b858e"
+  },
+  "studyName": "백엔드TheEnd",
+  "topic": "백엔드",
+  "meetingDays": [
+    "월",
+    "수",
+    "목",
+    "일"
+  ],
+  "count": 4,
+  "members": [
+    "67ade36df1346ffe4a2b8569",
+    "67ade36df1346ffe4a2b8561",
+    "67b47121c99b1a3148b09637"
+  ],
+  "studyContent": "백엔드에 대한 심화 학습을 진행하는 스터디입니다. 정기적인 모임을 통해 경험을 공유하고 프로젝트를 진행합니다. 참여를 원하시면 신청해주세요.",
+  "wishMembers": [
+    "67ade36df1346ffe4a2b8563",
+    "67ade36df1346ffe4a2b8564"
+  ],
+  "preMembers": [],
+  "createdAt": "2025-02-13T12:30:37.298+00:00",
+  "updatedAt": "2025-02-13T12:30:37.299+00:00",
+  "createdBy": "67ade36df1346ffe4a2b8569"
+},
+{
+  "_id": {
+    "$oid": "67ade75cf1346ffe4a2b858f"
+  },
+  "studyName": "모바몰봐",
+  "topic": "모바일",
+  "meetingDays": [
+    "목",
+    "금",
+    "일"
+  ],
+  "count": 5,
+  "members": [
+    "67ade36df1346ffe4a2b8560"
+  ],
+  "studyContent": "모바일에 대한 심화 학습을 진행하는 스터디입니다. 정기적인 모임을 통해 경험을 공유하고 프로젝트를 진행합니다. 참여를 원하시면 신청해주세요.",
+  "wishMembers": [],
+  "preMembers": [
+    "67ade36df1346ffe4a2b8559",
+    "67ade36df1346ffe4a2b855d"
+  ],
+  "createdAt": {
+    "$date": "2025-02-13T12:30:37.299Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-14T06:41:29.074Z"
+  },
+  "createdBy": "67ade36df1346ffe4a2b8560",
+  "_class": "S12P11D110.ssacle.domain.study.entity.Study"
+},
+{
+  "_id": {
+    "$oid": "67ade75cf1346ffe4a2b8590"
+  },
+  "studyName": "알고덤벼",
+  "topic": "알고리즘",
+  "meetingDays": [
+    "화",
+    "목",
+    "금",
+    "토"
+  ],
+  "count": 8,
+  "members": [
+    "67ade36df1346ffe4a2b855e"
+  ],
+  "studyContent": "알고리즘에 대한 심화 학습을 진행하는 스터디입니다. 정기적인 모임을 통해 경험을 공유하고 프로젝트를 진행합니다. 참여를 원하시면 신청해주세요.",
+  "wishMembers": [],
+  "preMembers": [
+    "67b1a823b3d0cc5eabade671"
+  ],
+  "createdAt": {
+    "$date": "2025-02-13T12:30:37.299Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-18T08:41:13.522Z"
+  },
+  "createdBy": "67ade36df1346ffe4a2b855e",
+  "_class": "S12P11D110.ssacle.domain.study.entity.Study"
+},
+{
+  "_id": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "studyName": "알고리즘대장들",
+  "topic": "알고리즘",
+  "meetingDays": [
+    "화",
+    "목",
+    "일"
+  ],
+  "count": 6,
+  "members": [
+    "67b28e29c5603b7e36d45a4b",
+    "67b2806ef6722f36d2af569a",
+    "67b1a823b3d0cc5eabade671",
+    "67b52dc770204a6a9ccb6bd9",
+    "67ade36df1346ffe4a2b8569",
+    "67b47121c99b1a3148b09637"
+  ],
+  "studyContent": "알고리즘 문제를 함께 풀어가는 스터디입니다. 정기적인 모임을 할 수 있고 의지가 있는 분들은 언제든 신청해주세요.",
+  "wishMembers": [
+    "67ade36df1346ffe4a2b8567",
+    "67ade36df1346ffe4a2b8565",
+    "67ade36df1346ffe4a2b855f",
+    "67ade36df1346ffe4a2b855e",
+    "67ade36df1346ffe4a2b8561",
+    "67ade36df1346ffe4a2b8564",
+    "67ade36df1346ffe4a2b8563"
+  ],
+  "preMembers": [
+    "67ade36df1346ffe4a2b8568"
+  ],
+  "createdAt": {
+    "$date": "2025-02-13T12:30:37.299Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-20T07:58:10.295Z"
+  },
+  "createdBy": "67b28e29c5603b7e36d45a4b",
+  "_class": "S12P11D110.ssacle.domain.study.entity.Study"
+},
+{
+  "_id": {
+    "$oid": "67b37c71242f3a7bfbd976b2"
+  },
+  "studyName": "낮잠스터디는없나요",
+  "topic": "기타",
+  "meetingDays": [
+    "월",
+    "화",
+    "수",
+    "목",
+    "금"
+  ],
+  "count": 10,
+  "members": [
+    "67b1a823b3d0cc5eabade671",
+    "67b28e29c5603b7e36d45a4b"
+  ],
+  "studyContent": "자고싶어요....\n침대에서 자게 해주세요...\n교육장에 복지로 수면실이 있었으면 좋겠어요 ㅠㅠ\n제발 살려주세요 사람 죽어요오오오오오오\n오끼에에에에에에겍\n홍준아 파이팅....",
+  "wishMembers": [
+    "67ade36df1346ffe4a2b8566"
+  ],
+  "preMembers": [],
+  "createdAt": {
+    "$date": "2025-02-17T18:14:09.986Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-20T07:01:24.560Z"
+  },
+  "createdBy": "67b1a823b3d0cc5eabade671",
+  "_class": "S12P11D110.ssacle.domain.study.entity.Study"
+},
+{
+  "_id": {
+    "$oid": "67b6bf51a2fd4218bc26841c"
+  },
+  "studyName": "새스터디",
+  "topic": "기타",
+  "meetingDays": [
+    "토",
+    "일"
+  ],
+  "count": 7,
+  "members": [
+    "67b28e29c5603b7e36d45a4b",
+    "67b1a823b3d0cc5eabade671"
+  ],
+  "studyContent": "새를 공부해요",
+  "wishMembers": [
+    "67ade36df1346ffe4a2b8560",
+    "67ade36df1346ffe4a2b8566"
+  ],
+  "preMembers": [],
+  "createdAt": {
+    "$date": "2025-02-20T05:36:17.222Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-20T07:01:07.478Z"
+  },
+  "createdBy": "67b28e29c5603b7e36d45a4b",
+  "_class": "S12P11D110.ssacle.domain.study.entity.Study"
+}]

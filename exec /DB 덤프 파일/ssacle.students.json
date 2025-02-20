@@ -1,0 +1,129 @@
+[{
+  "_id": {
+    "$oid": "67aee3d93584436298e7e4ed"
+  },
+  "name": "김민주",
+  "studentId": 1229156,
+  "term": "12기",
+  "campus": "구미",
+  "userId": "",
+  "_class": "S12P11D110.ssacle.domain.user.entity.Student"
+},
+{
+  "_id": {
+    "$oid": "67aee3d93584436298e7e4ee"
+  },
+  "name": "이호정",
+  "studentId": 1225647,
+  "term": "12기",
+  "campus": "구미",
+  "userId": "67b2806ef6722f36d2af569a",
+  "_class": "S12P11D110.ssacle.domain.user.entity.Student"
+},
+{
+  "_id": {
+    "$oid": "67aee3d93584436298e7e4ef"
+  },
+  "name": "장홍준",
+  "studentId": 1222988,
+  "term": "12기",
+  "campus": "구미",
+  "userId": "67b1a823b3d0cc5eabade671",
+  "_class": "S12P11D110.ssacle.domain.user.entity.Student"
+},
+{
+  "_id": {
+    "$oid": "67aee3d93584436298e7e4f0"
+  },
+  "name": "정찬우",
+  "studentId": 1223109,
+  "term": "12기",
+  "campus": "구미",
+  "userId": "67b28e29c5603b7e36d45a4b",
+  "_class": "S12P11D110.ssacle.domain.user.entity.Student"
+},
+{
+  "_id": {
+    "$oid": "67aee3d93584436298e7e4f1"
+  },
+  "name": "이문경",
+  "studentId": 1223484,
+  "term": "12기",
+  "campus": "구미",
+  "userId": "67b47121c99b1a3148b09637",
+  "_class": "S12P11D110.ssacle.domain.user.entity.Student"
+},
+{
+  "_id": {
+    "$oid": "67aee3d93584436298e7e4f2"
+  },
+  "name": "김웅기",
+  "studentId": 1225894,
+  "term": "12기",
+  "campus": "구미",
+  "userId": "67b52dc770204a6a9ccb6bd9",
+  "_class": "S12P11D110.ssacle.domain.user.entity.Student"
+},
+{
+  "_id": {
+    "$oid": "67aee3d93584436298e7e4f4"
+  },
+  "name": "팜하니",
+  "studentId": 1204106,
+  "term": "12기",
+  "campus": "서울",
+  "userId": "67b7286a7a78c4463233f00a",
+  "_class": "S12P11D110.ssacle.domain.user.entity.Student"
+},
+{
+  "_id": {
+    "$oid": "67aee3d93584436298e7e4f5"
+  },
+  "name": "김민지",
+  "studentId": 1204507,
+  "term": "13기",
+  "campus": "대전",
+  "userId": "",
+  "_class": "S12P11D110.ssacle.domain.user.entity.Student"
+},
+{
+  "_id": {
+    "$oid": "67aee3d93584436298e7e4f6"
+  },
+  "name": "강해린",
+  "studentId": 1206515,
+  "term": "12기",
+  "campus": "부울경",
+  "userId": "",
+  "_class": "S12P11D110.ssacle.domain.user.entity.Student"
+},
+{
+  "_id": {
+    "$oid": "67aee3d93584436298e7e4f7"
+  },
+  "name": "이혜인",
+  "studentId": 1208421,
+  "term": "11기",
+  "campus": "광주",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "67aee3d93584436298e7e4f8"
+  },
+  "name": "모다니",
+  "studentId": 1205411,
+  "term": "10기",
+  "campus": "구미",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "67b72eef8bcf473435596925"
+  },
+  "name": "테스트",
+  "studentId": 1201234,
+  "term": "12기",
+  "campus": "구미",
+  "userId": ""
+}]

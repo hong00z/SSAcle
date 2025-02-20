@@ -1,0 +1,2358 @@
+[{
+  "_id": {
+    "$oid": "67b28fb915bc0c2f1159fb1a"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b28e29c5603b7e36d45a4b"
+  },
+  "nickname": "자누",
+  "message": "ㅎㅇ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-17T01:24:09.008Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b296e6d3ba180a5fdd75ec"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b28e29c5603b7e36d45a4b"
+  },
+  "nickname": "자누",
+  "message": "굿",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-17T01:54:46.676Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b29f9ca551cbef584dd6b0"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b28e29c5603b7e36d45a4b"
+  },
+  "nickname": "자누",
+  "message": "ㅇㅇ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-17T02:31:56.415Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b2b952436a9cc463be6738"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b28e29c5603b7e36d45a4b"
+  },
+  "nickname": "자누",
+  "message": "ㅁㅁ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-17T04:21:38.588Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b2cc03490e96a443420c31"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "이호정",
+  "message": "ㅎㅇ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-17T05:41:23.888Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b40f2b6d6dbcca8d7e764b"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b28e29c5603b7e36d45a4b"
+  },
+  "nickname": "자누",
+  "message": "아아",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T04:40:11.249Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b40f306d6dbcca8d7e765a"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "이호정",
+  "message": "하이",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T04:40:16.965Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b40f346d6dbcca8d7e7662"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b28e29c5603b7e36d45a4b"
+  },
+  "nickname": "자누",
+  "message": "가가",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T04:40:20.440Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b40f366d6dbcca8d7e766a"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "이호정",
+  "message": "메롱",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T04:40:22.124Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b40f396d6dbcca8d7e7672"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "이호정",
+  "message": "하이",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T04:40:25.997Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b40f546d6dbcca8d7e76b8"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "이호정",
+  "message": "하이",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T04:40:52.141Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b40fdd6d6dbcca8d7e7700"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "이호정",
+  "message": "하이하이",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T04:43:09.946Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b43fe7591ee4b1b584a017"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b28e29c5603b7e36d45a4b"
+  },
+  "nickname": "자누",
+  "message": "ㅕㅗㅗ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T08:08:07.119Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b4426e591ee4b1b584a059"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b28e29c5603b7e36d45a4b"
+  },
+  "nickname": "자누",
+  "message": "ㅋㅋ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T08:18:54.036Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b46fb959c4ceb3231d109d"
+  },
+  "studyId": {
+    "$oid": "67b37c71242f3a7bfbd976b2"
+  },
+  "userId": {
+    "$oid": "67b1a823b3d0cc5eabade671"
+  },
+  "nickname": "열공짱구",
+  "message": "ㅋ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T11:32:09.076Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b46fbd59c4ceb3231d10a4"
+  },
+  "studyId": {
+    "$oid": "67b37c71242f3a7bfbd976b2"
+  },
+  "userId": {
+    "$oid": "67b1a823b3d0cc5eabade671"
+  },
+  "nickname": "열공짱구",
+  "message": "?",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T11:32:13.051Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b49cd30b17b3664be238a1"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "잘 만들었다!!!!",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T14:44:35.876Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b49ceb0b17b3664be238b7"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "자누야 넌 최고의 WebRTC 외계인이야!!",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T14:44:59.085Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b49d2823c6a10a957c8a87"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b28e29c5603b7e36d45a4b"
+  },
+  "nickname": "자누",
+  "message": "ㄴㅇㅇㅇㄱ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T14:46:00.906Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b49d3a23c6a10a957c8a95"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "어어어어어어엄청 긴 메시지입니다",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T14:46:18.101Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b49d4b23c6a10a957c8aae"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "짧은 거",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T14:46:35.722Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b49dc823c6a10a957c8adb"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "하이이이ㅣ이이잉",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T14:48:40.245Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b49dd323c6a10a957c8ae6"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "또 터졌나요?",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T14:48:51.393Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b49dd523c6a10a957c8af1"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "그만 터져",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T14:48:53.606Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b49dd723c6a10a957c8afc"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "제발",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T14:48:55.274Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b49de323c6a10a957c8b0a"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "젭R",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T14:49:07.729Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b49dea23c6a10a957c8b15"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "젭Rtc",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T14:49:14.354Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b49e0c23c6a10a957c8b2e"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "다시 보냄",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T14:49:48.087Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b4a11ba6ff8b199f9e91c5"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "찬우야",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T15:02:51.098Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b4a123a6ff8b199f9e91d0"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "아직도,,,,",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T15:02:59.374Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b4a154a6ff8b199f9e9233"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "찬",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T15:03:48.741Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b4a185a924175befe107a7"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "우",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T15:04:37.563Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b4a199a924175befe107b2"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "잘했어!!!!!",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-18T15:04:57.372Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b530a18fafb569ead3956e"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b52dc770204a6a9ccb6bd9"
+  },
+  "nickname": "에러인가요",
+  "message": "궁금해서 테스트",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T01:15:13.914Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b530ea8fafb569ead3963d"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b52dc770204a6a9ccb6bd9"
+  },
+  "nickname": "에러인가요",
+  "message": "근데 이거 내 메시지도 나한테 1로 뜨네요",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T01:16:26.562Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b530fe8fafb569ead39689"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "이호정",
+  "message": "하이",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T01:16:46.757Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b531038fafb569ead396a3"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "이호정",
+  "message": "하이",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T01:16:51.291Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5310f8fafb569ead396dc"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b52dc770204a6a9ccb6bd9"
+  },
+  "nickname": "에러인가요",
+  "message": "내꺼만 그러네",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T01:17:03.708Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b531158fafb569ead396eb"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b52dc770204a6a9ccb6bd9"
+  },
+  "nickname": "에러인가요",
+  "message": "억까하네",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T01:17:09.045Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5311f8fafb569ead3971e"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b52dc770204a6a9ccb6bd9"
+  },
+  "nickname": "에러인가요",
+  "message": "보내",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T01:17:19.820Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5312a8fafb569ead39754"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "이호정",
+  "message": "하이",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T01:17:30.678Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5313b8fafb569ead39787"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b52dc770204a6a9ccb6bd9"
+  },
+  "nickname": "에러인가요",
+  "message": "보낸 사람 제외 다 터짐 채팅",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T01:17:47.464Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b531438fafb569ead397a0"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b52dc770204a6a9ccb6bd9"
+  },
+  "nickname": "에러인가요",
+  "message": "들어가 있으면.",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T01:17:55.795Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5314c8fafb569ead397c9"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "이호정",
+  "message": "하이하니",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T01:18:04.460Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b531508fafb569ead397d8"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "이호정",
+  "message": "하이하이",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T01:18:08.178Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b531888fafb569ead39843"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b28e29c5603b7e36d45a4b"
+  },
+  "nickname": "자누",
+  "message": "채팅보내버ㅏ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T01:19:04.853Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b531998fafb569ead3985a"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "이호정",
+  "message": "하이하이",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T01:19:21.463Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b531af8fafb569ead3987f"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b52dc770204a6a9ccb6bd9"
+  },
+  "nickname": "에러인가요",
+  "message": "ㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T01:19:43.915Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b531e68fafb569ead3989e"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b28e29c5603b7e36d45a4b"
+  },
+  "nickname": "자누",
+  "message": "아니 이거 서버왜 그대로임 어제 고쳐논거 올렸는데",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T01:20:38.181Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b533ba97b22d9467e9a96a"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "이호정",
+  "message": "?",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T01:28:26.605Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b534d397b22d9467e9a9d8"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하하",
+  "message": "오키",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T01:33:07.406Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b534d697b22d9467e9a9e4"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하하",
+  "message": "그냥 들어옴",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T01:33:10.345Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b534d897b22d9467e9a9f0"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하하",
+  "message": "자누자누",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T01:33:12.895Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b53b752cfc1d8efcf5818a"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b28e29c5603b7e36d45a4b"
+  },
+  "nickname": "자누",
+  "message": "민주야 jwt토큰에 이메일 변수명 뭐로 담았어",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T02:01:25.949Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b53b7c2cfc1d8efcf58196"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b28e29c5603b7e36d45a4b"
+  },
+  "nickname": "자누",
+  "message": "email이야??",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T02:01:32.098Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5412b2cfc1d8efcf5825f"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하하",
+  "message": "sub",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T02:25:47.284Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5603e2cfc1d8efcf582fd"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b52dc770204a6a9ccb6bd9"
+  },
+  "nickname": "에러인가요",
+  "message": "여러분 이번주에는",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T04:38:22.609Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5604a2cfc1d8efcf5830c"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b52dc770204a6a9ccb6bd9"
+  },
+  "nickname": "에러인가요",
+  "message": "어디서 회의할까요?",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T04:38:34.590Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b560642cfc1d8efcf58318"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b52dc770204a6a9ccb6bd9"
+  },
+  "nickname": "에러인가요",
+  "message": "너는 투썸이 좋을 거 같은데",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T04:39:00.667Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5609b2cfc1d8efcf58324"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b52dc770204a6a9ccb6bd9"
+  },
+  "nickname": "에러인가요",
+  "message": "자리도 많고",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T04:39:55.022Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5609e2cfc1d8efcf58330"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b52dc770204a6a9ccb6bd9"
+  },
+  "nickname": "에러인가요",
+  "message": "단체 회의석도 있더라구요",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T04:39:58.043Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b560c92cfc1d8efcf5834a"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b52dc770204a6a9ccb6bd9"
+  },
+  "nickname": "에러인가요",
+  "message": "다들 어떻게 생각하세요?",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T04:40:41.119Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b560d12cfc1d8efcf5835d"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "이호정",
+  "message": "전 좋아요",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T04:40:49.910Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b560d72cfc1d8efcf5836c"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "이호정",
+  "message": "제가 예약해놓을까요??",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T04:40:55.506Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b560f62cfc1d8efcf5839c"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "이호정",
+  "message": "다른분들은 어떠셔요??",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T04:41:26.056Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b561242cfc1d8efcf583ab"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b52dc770204a6a9ccb6bd9"
+  },
+  "nickname": "에러인가요",
+  "message": "저두요~~",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T04:42:12.495Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b561432cfc1d8efcf583c8"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하하",
+  "message": "저는 에이바우트가 좋을 거 같아요",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T04:42:43.357Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b561502cfc1d8efcf583d4"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하하",
+  "message": "거기 콘센트도 많고 싸피생 할인도 돼요 ㅎㅎ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T04:42:56.022Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b561f52cfc1d8efcf58410"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하하",
+  "message": "그러면 에이바우트 가도 괜찮을까요 다들?",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T04:45:41.158Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b58fe6dd4c8d01f7500562"
+  },
+  "studyId": {
+    "$oid": "67b37c71242f3a7bfbd976b2"
+  },
+  "userId": {
+    "$oid": "67b1a823b3d0cc5eabade671"
+  },
+  "nickname": "열공짱구",
+  "message": "ㅎㅇ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T08:01:42.179Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b58ff3dd4c8d01f750059e"
+  },
+  "studyId": {
+    "$oid": "67b37c71242f3a7bfbd976b2"
+  },
+  "userId": {
+    "$oid": "67b1a823b3d0cc5eabade671"
+  },
+  "nickname": "열공짱구",
+  "message": "ㅎㅇ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T08:01:55.287Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b58ff8dd4c8d01f75005c2"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8585"
+  },
+  "userId": {
+    "$oid": "67b1a823b3d0cc5eabade671"
+  },
+  "nickname": "열공짱구",
+  "message": "ㅎㅇ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T08:02:00.197Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b59010dd4c8d01f7500635"
+  },
+  "studyId": {
+    "$oid": "67b37c71242f3a7bfbd976b2"
+  },
+  "userId": {
+    "$oid": "67b1a823b3d0cc5eabade671"
+  },
+  "nickname": "열공짱구",
+  "message": "ㅗ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T08:02:24.142Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b59015dd4c8d01f7500674"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8585"
+  },
+  "userId": {
+    "$oid": "67b1a823b3d0cc5eabade671"
+  },
+  "nickname": "열공짱구",
+  "message": "ㅗㅗ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T08:02:29.892Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5b636dd4c8d01f75006dc"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "이호정",
+  "message": "싱험",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T10:45:10.410Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5b63fdd4c8d01f75006f5"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "이호정",
+  "message": "실험",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T10:45:19.370Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5b647dd4c8d01f7500705"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "이호정",
+  "message": "실험",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T10:45:27.803Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5b672dd4c8d01f7500723"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "시험",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T10:46:10.927Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5b67bdd4c8d01f7500731"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "에에에엥ㅇ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T10:46:19.321Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5b681dd4c8d01f750073e"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "에에에에엥ㅇ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T10:46:25.378Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5b68ddd4c8d01f7500757"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "ㅇㄹㄴㄴㄴㄴㅇㅇㅇㅇㄴㄴ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T10:46:37.553Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5b69edd4c8d01f7500765"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "오노나너엉",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T10:46:54.141Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5b6a4dd4c8d01f750077a"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "오어어어",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T10:47:00.565Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5b6a6dd4c8d01f7500788"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "ㅇㅍ유러루아ㅏ넌",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T10:47:02.414Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5b6a7dd4c8d01f7500795"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "ㄴㅍ로랄",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T10:47:03.729Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5b6b0dd4c8d01f75007a5"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "ㅗ거오오터차팦",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T10:47:12.367Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5b6bfdd4c8d01f75007c8"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "노노어터텉",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T10:47:27.449Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5b783dd4c8d01f750080d"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "ㄹㄴㅇ화",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T10:50:43.970Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5bd07dd4c8d01f7500861"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "ㅎㄹㅇ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T11:14:15.412Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5bd07dd4c8d01f7500864"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "ㅇ호ㅓㅓ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T11:14:15.414Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5dbcadd4c8d01f7500914"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b52dc770204a6a9ccb6bd9"
+  },
+  "nickname": "에러인가요",
+  "message": "ㅎㅎ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T13:25:30.578Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5dbf7dd4c8d01f7500937"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b52dc770204a6a9ccb6bd9"
+  },
+  "nickname": "에러인가요",
+  "message": "ㅎㅇㅎㅇ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T13:26:15.214Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5dc08dd4c8d01f7500944"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b52dc770204a6a9ccb6bd9"
+  },
+  "nickname": "에러인가요",
+  "message": "ㅎㄹㅎㅇ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T13:26:32.543Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b5dce3dd4c8d01f7500967"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "이호정",
+  "message": "감사합니다!",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-19T13:30:11.788Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6801457262d61618a25e3"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b858c"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "안녕하세요",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T01:06:28.882Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6802d57262d61618a2620"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b858e"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "그럼 자세한 사항은 회의때 정하기로해요",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T01:06:53.224Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6848157262d61618a2703"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "안녕하세요!",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T01:25:21.866Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6851c57262d61618a2746"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b52dc770204a6a9ccb6bd9"
+  },
+  "nickname": "에러인가요",
+  "message": "넵 감사합니다!!",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T01:27:56.098Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6885157262d61618a285b"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "후헤헷",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T01:41:37.810Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6885a57262d61618a2861"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "네 감사합니다!",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T01:41:46.285Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6b369c727a34cceb17ca8"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b28e29c5603b7e36d45a4b"
+  },
+  "nickname": "자누",
+  "message": "ㅋ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T04:45:29.063Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6b37dc727a34cceb17ce3"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b1a823b3d0cc5eabade671"
+  },
+  "nickname": "열공짱구",
+  "message": "냠",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T04:45:49.430Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6bc5032fc2a80074bcb29"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b1a823b3d0cc5eabade671"
+  },
+  "nickname": "열공짱구",
+  "message": "엥 뭐지",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T05:23:28.628Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6bc6232fc2a80074bcb42"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b1a823b3d0cc5eabade671"
+  },
+  "nickname": "열공짱구",
+  "message": "되나?",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T05:23:46.835Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6be5b32fc2a80074bcbaf"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "호정1004",
+  "message": "해치웠나??",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T05:32:11.695Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6be7232fc2a80074bcbbd"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "호정1004",
+  "message": "알람켜라",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T05:32:34.734Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6be7932fc2a80074bcbc8"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "호정1004",
+  "message": "빠른대",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T05:32:41.435Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6be8432fc2a80074bcbdf"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b28e29c5603b7e36d45a4b"
+  },
+  "nickname": "자누",
+  "message": "굿",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T05:32:52.823Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6be8432fc2a80074bcbea"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "호정1004",
+  "message": "메시지 하나씩 오네",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T05:32:52.836Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6be9132fc2a80074bcc01"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b28e29c5603b7e36d45a4b"
+  },
+  "nickname": "자누",
+  "message": "오",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T05:33:05.958Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6bf8632fc2a80074bcc42"
+  },
+  "studyId": {
+    "$oid": "67b6bf51a2fd4218bc26841c"
+  },
+  "userId": {
+    "$oid": "67b1a823b3d0cc5eabade671"
+  },
+  "nickname": "열공짱구",
+  "message": "안녕하새요",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T05:37:10.606Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6bf8a32fc2a80074bcc47"
+  },
+  "studyId": {
+    "$oid": "67b6bf51a2fd4218bc26841c"
+  },
+  "userId": {
+    "$oid": "67b28e29c5603b7e36d45a4b"
+  },
+  "nickname": "자누",
+  "message": "하이요",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T05:37:14.678Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6bf9532fc2a80074bcc4c"
+  },
+  "studyId": {
+    "$oid": "67b6bf51a2fd4218bc26841c"
+  },
+  "userId": {
+    "$oid": "67b1a823b3d0cc5eabade671"
+  },
+  "nickname": "열공짱구",
+  "message": "신기하네이거",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T05:37:25.772Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6cbb05bbdb23734025abd"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "호정1004",
+  "message": "후.. 된다",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T06:29:04.479Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6cd175bbdb23734025c54"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b1a823b3d0cc5eabade671"
+  },
+  "nickname": "열공짱구",
+  "message": "머지?",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T06:35:03.755Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6d4595bbdb2373402609b"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8588"
+  },
+  "userId": {
+    "$oid": "67b1a823b3d0cc5eabade671"
+  },
+  "nickname": "열공짱구갓",
+  "message": "호호",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T07:06:01.491Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6d4655bbdb237340260a4"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b28e29c5603b7e36d45a4b"
+  },
+  "nickname": "자누",
+  "message": "오늘 문제는 ~~입니다",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T07:06:13.591Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6d4725bbdb237340260be"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "호정1004",
+  "message": "넵 감사합니다!",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T07:06:26.814Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6dafc5bbdb23734026232"
+  },
+  "studyId": {
+    "$oid": "67b6bf51a2fd4218bc26841c"
+  },
+  "userId": {
+    "$oid": "67b28e29c5603b7e36d45a4b"
+  },
+  "nickname": "자누",
+  "message": "긴거긴거긴거@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#@#@#@#@#@#@@#@#^272@72^@&@7@&@^@%@^#^!₩%@&#&@%!^#&@&!%#^@&&!^#^#",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T07:34:20.024Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6de0d5bbdb237340262a5"
+  },
+  "studyId": {
+    "$oid": "67b37c71242f3a7bfbd976b2"
+  },
+  "userId": {
+    "$oid": "67b28e29c5603b7e36d45a4b"
+  },
+  "nickname": "자누",
+  "message": "ㄷㄷ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T07:47:25.733Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6e1895bbdb2373402631e"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "호정1004",
+  "message": "하이요!!",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T08:02:17.224Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b6e18b5bbdb2373402632f"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "ㅎㅇ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T08:02:19.782Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b71ed15bbdb23734026534"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "단체 회의석도 있더라구요",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T12:23:45.956Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b71ed95bbdb23734026549"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "다들 어떻게 생각하세요?",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T12:23:53.355Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b71efc5bbdb23734026572"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "호정1004",
+  "message": "전 좋아요",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T12:24:28.257Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b71f0e5bbdb23734026585"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "호정1004",
+  "message": "제가 예약해놓을까요??",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T12:24:46.911Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b71f185bbdb23734026598"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "호정1004",
+  "message": "다른분들은 어떠세요??",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T12:24:56.979Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b71f2c5bbdb237340265ad"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b47121c99b1a3148b09637"
+  },
+  "nickname": "우하하",
+  "message": "좋습니다~~",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T12:25:16.513Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b71f3f5bbdb237340265c0"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b52dc770204a6a9ccb6bd9"
+  },
+  "nickname": "에러인가요",
+  "message": "저는 에이바우트가 좋을 거 같아요",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T12:25:35.356Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b71f4f5bbdb237340265d3"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b52dc770204a6a9ccb6bd9"
+  },
+  "nickname": "에러인가요",
+  "message": "거기 콘센트도 많고 싸피생 할인도 돼요ㅎㅎ",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T12:25:51.177Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b71f715bbdb237340265e9"
+  },
+  "studyId": {
+    "$oid": "67ade75cf1346ffe4a2b8591"
+  },
+  "userId": {
+    "$oid": "67b2806ef6722f36d2af569a"
+  },
+  "nickname": "호정1004",
+  "message": "그러면 에이바우트 가도 다들 괜찮으실까요??",
+  "isInOut": false,
+  "createdAt": {
+    "$date": "2025-02-20T12:26:25.253Z"
+  },
+  "__v": 0
+}]

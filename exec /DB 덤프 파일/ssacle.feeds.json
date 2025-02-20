@@ -1,0 +1,44 @@
+[{
+  "_id": {
+    "$oid": "67b2c38dbbf68c58ee7b0885"
+  },
+  "study": "67ade75cf1346ffe4a2b8591",
+  "title": "다음주 공지사항",
+  "content": "다음주에는 다들 프로젝트때문에 바빠서 한 주 쉬어가겠습니다.",
+  "createdAt": {
+    "$date": "2025-02-17T05:05:17.859Z"
+  },
+  "createdBy": "67b28e29c5603b7e36d45a4b",
+  "_class": "S12P11D110.ssacle.domain.feed.entity.Feed",
+  "updatedAt": "2025-02-17T05:05:17.859+00:00"
+},
+{
+  "_id": {
+    "$oid": "67b2e753115af44858036fa6"
+  },
+  "study": "67ade75cf1346ffe4a2b8591",
+  "title": "다음 알고리즘 문제",
+  "content": "다음 알고리즘 문제는 백준 5434번으로 하겠습니다. 다들 화이팅",
+  "createdAt": {
+    "$date": "2025-02-17T07:37:55.817Z"
+  },
+  "createdBy": "67b28e29c5603b7e36d45a4b",
+  "_class": "S12P11D110.ssacle.domain.feed.entity.Feed",
+  "updatedAt": "2025-02-17T07:37:55.817+00:00"
+},
+{
+  "_id": {
+    "$oid": "67b2ebff8b5028326d6a116e"
+  },
+  "study": "67ade75cf1346ffe4a2b8591",
+  "title": "이번주 공지사항",
+  "content": "이번주는 다들 일정이 바빠서 한 주 쉬어가겠습니다.",
+  "createdAt": {
+    "$date": "2025-02-17T07:57:51.981Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-17T07:57:51.981Z"
+  },
+  "createdBy": "67b28e29c5603b7e36d45a4b",
+  "_class": "S12P11D110.ssacle.domain.feed.entity.Feed"
+}]
