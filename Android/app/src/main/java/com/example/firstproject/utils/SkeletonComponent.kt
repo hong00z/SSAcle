@@ -24,10 +24,10 @@ fun skeletonComponent(): Brush {
     val transition = rememberInfiniteTransition()
     val translateAnim = transition.animateFloat(
         initialValue = 0f,
-        targetValue = 500f,
+        targetValue = 1000f,
         animationSpec = infiniteRepeatable(
             animation = tween(
-                durationMillis = 500,
+                durationMillis = 1000,
                 easing = FastOutSlowInEasing
             ),
             repeatMode = RepeatMode.Reverse

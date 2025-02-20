@@ -38,6 +38,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -67,7 +70,9 @@ import com.example.firstproject.data.repository.RemoteDataSource
 import com.example.firstproject.ui.mypage.MypageViewModel
 import com.example.firstproject.ui.theme.notosans
 import com.example.firstproject.ui.theme.pretendard
+import com.example.firstproject.utils.skeletonComponent
 import com.rootachieve.requestresult.RequestResult
+import kotlinx.coroutines.delay
 
 @Composable
 fun HomeScreen(
@@ -94,9 +99,9 @@ fun HomeScreen(
     val allStudyList by homeViewModel.allStudyList.collectAsStateWithLifecycle()
 
 
-//    myStudyListResult.onNone {
-//        homeViewModel.
-//    }
+    var isJoinedState by remember { mutableStateOf(false) }
+    var isUserState by remember { mutableStateOf(false) }
+
 
     // 홈 화면 들어올 때 통신
     LaunchedEffect(Unit) {
@@ -115,34 +120,31 @@ fun HomeScreen(
     }
 
     LaunchedEffect(getJoinedStudyResult) {
-        Log.d("참여 중 상태 변경", "내 스터디 목록: $myJoinedStudyList ")
-        if (myJoinedStudyList == null) Log.d("참여 중 상태 변경", "내 스터디 목록 null ㅋㅋ ")
+//        Log.d("참여 중 상태 변경", "내 스터디 목록: $myJoinedStudyList ")
+//        if (myJoinedStudyList == null) Log.d("참여 중 상태 변경", "내 스터디 목록 null ㅋㅋ ")
+        delay(700)
+        if (getJoinedStudyResult.isSuccess()) {
+
+            isJoinedState = true
+        }
     }
 
     LaunchedEffect(getUserProfileResult) {
         if (getUserProfileResult.isSuccess()) {
             if (getUserInfo != null) {
-                Log.d("홈 화면에서 프로필 조회", "${getUserInfo.data}")
+//                Log.d("홈 화면에서 프로필 조회", "${getUserInfo.data}")
                 MyApplication.NICKNAME = getUserInfo.data?.nickname ?: ""
                 MyApplication.IMAGE_URL =
                     RemoteDataSource().getImageUrl(getUserInfo.data?.image ?: "")
-                Log.d("홈 화면에서 닉네임 저장", "${MyApplication.NICKNAME}")
-                Log.d("홈 화면 이미지 주소", "${MyApplication.IMAGE_URL}")
+//                Log.d("홈 화면에서 닉네임 저장", "${MyApplication.NICKNAME}")
+//                Log.d("홈 화면 이미지 주소", "${MyApplication.IMAGE_URL}")
             }
+            delay(700)
+            isUserState = true
         }
 
     }
 
-
-//
-//    LaunchedEffect(myStudyListResult) {
-//        myStudyListResult.onSuccess { data ->
-//
-//        }
-//        myStudyListResult.onFailure { code, e ->
-//
-//        }
-//    }
 
     Scaffold(
         topBar = {
@@ -191,87 +193,75 @@ fun HomeScreen(
                 TitleTextView("내 스터디 목록")
                 Spacer(Modifier.height(16.dp))
 
-                // 내 스터디 목록이 null이 아닐 때
-                if (myJoinedStudyList != null) {
-                    if (myJoinedStudyList.isEmpty()) {
-                        Card(
+                if (!(isJoinedState && isUserState)) {
+                    Log.d("홈 화면", "스켈레톤???? ")
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(90.dp)
+                            .padding(horizontal = 12.dp)
+                            .clip(RoundedCornerShape(5.dp))
+                            .background(skeletonComponent()),
+                    )
+                } else {
+                    Log.d("홈 화면", "통신 완료???? ")
+                    // 내 스터디 목록이 null이 아닐 때
+                    if (myJoinedStudyList != null) {
+                        if (myJoinedStudyList.isEmpty()) {
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(90.dp)
+                                    .padding(horizontal = 12.dp)
+                                    .shadow(
+                                        elevation = 2.dp,
+                                        shape = RoundedCornerShape(10.dp),
+                                        clip = true,
+                                    ),
+                                shape = RoundedCornerShape(5.dp),
+                                colors = CardDefaults.cardColors(containerColor = Color.White),
+                                border = BorderStroke(
+                                    1.dp,
+                                    colorResource(R.color.border_light_color)
+                                )
+                            ) {
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .background(Color(0xFFF2F2F4)),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+                                    Text(
+                                        text = "스터디에 참가해 보는 건 어떠세요?",
+                                        fontFamily = pretendard,
+                                        fontWeight = FontWeight(500),
+                                        fontSize = 15.sp,
+                                        letterSpacing = 1.sp,
+                                        color = Color(0xFFA9A9AB)
+                                    )
+                                }
+
+                            }
+                            Spacer(Modifier.height(28.dp))
+                        } else {
+                            MyStudyItem(myJoinedStudyList, navController = navController)
+                        }
+                    }
+                    // 내 스터디 목록이 null일 때
+                    else {
+                        Box(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(90.dp)
                                 .padding(horizontal = 12.dp)
-                                .shadow(
-                                    elevation = 2.dp,
-                                    shape = RoundedCornerShape(10.dp),
-                                    clip = true,
-                                ),
-                            shape = RoundedCornerShape(5.dp),
-                            colors = CardDefaults.cardColors(containerColor = Color.White),
-                            border = BorderStroke(
-                                1.dp,
-                                colorResource(R.color.border_light_color)
-                            )
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .background(Color(0xFFF2F2F4)),
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Center
-                            ) {
-                                Text(
-                                    text = "스터디에 참가해 보는 건 어떠세요?",
-                                    fontFamily = pretendard,
-                                    fontWeight = FontWeight(500),
-                                    fontSize = 15.sp,
-                                    letterSpacing = 1.sp,
-                                    color = Color(0xFFA9A9AB)
-                                )
-                            }
-
-                        }
-                        Spacer(Modifier.height(20.dp))
-                    } else {
-                        MyStudyItem(myJoinedStudyList, navController = navController)
-                    }
-                }
-                // 내 스터디 목록이 null일 때
-                else {
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(90.dp)
-                            .padding(horizontal = 0.dp)
-                            .shadow(
-                                elevation = 2.dp,
-                                shape = RoundedCornerShape(10.dp),
-                                clip = true,
-                            ),
-                        shape = RoundedCornerShape(5.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color.White),
-                        border = BorderStroke(
-                            1.dp,
-                            colorResource(R.color.border_light_color)
+                                .clip(RoundedCornerShape(5.dp))
+                                .background(skeletonComponent()),
                         )
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(Color(0xFFF2F2F4)),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Text(
-                                text = "스터디에 참가해 보는 건 어떠세요?",
-                                fontFamily = pretendard,
-                                fontWeight = FontWeight(500),
-                                fontSize = 15.sp,
-                                letterSpacing = 1.sp,
-                                color = Color(0xFFA9A9AB)
-                            )
-                        }
-
                     }
                 }
+
+
 
                 Spacer(Modifier.height(32.dp))
 
@@ -318,7 +308,20 @@ fun HomeScreen(
                     )
                 }
                 Spacer(Modifier.height(20.dp))
-                StudyListCard(openStudyList = allStudyList, navController = navController)
+                if (!(isJoinedState && isUserState)) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(196.dp)
+                            .padding(horizontal = 8.dp)
+                            .clip(RoundedCornerShape(5.dp))
+                            .background(skeletonComponent()),
+                    )
+                }
+                else {
+                    StudyListCard(openStudyList = allStudyList, navController = navController)
+                }
+
                 Spacer(Modifier.height(8.dp))
             }
 
