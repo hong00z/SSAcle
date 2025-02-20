@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+
+    android:paddingVertical="16dp">
 
     <!-- 프로필 이미지 -->
     <ImageView
@@ -26,7 +27,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/last_message"
         app:layout_constraintEnd_toStartOf="@id/chat_time"
@@ -43,7 +44,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/gray"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/chat_title"
         app:layout_constraintStart_toStartOf="@id/chat_title"
@@ -57,7 +58,7 @@
         android:layout_height="wrap_content"
         android:text="오전 10:54"
         android:textColor="@color/gray"
-        android:textSize="14sp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/chat_title" />
 
@@ -68,10 +69,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:background="@drawable/unread_count_bg"
-        android:paddingHorizontal="8dp"
-        android:paddingVertical="4dp"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="2dp"
         android:textColor="@android:color/white"
-        android:textSize="14sp"
+        android:textSize="11sp"
         android:textStyle="bold"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"

@@ -16,4 +16,10 @@
         <item name="android:textSize">20sp</item>
         <item name="colorControlNormal">@color/primary_color</item>
     </style>
+
+    <style name="topbar_textstyle">
+        <item name="fontFamily">@font/pretendard_bold</item>
+        <item name="android:textSize">22sp</item>
+        <item name="colorControlNormal">@color/primary_color</item>
+    </style>
 </resources>

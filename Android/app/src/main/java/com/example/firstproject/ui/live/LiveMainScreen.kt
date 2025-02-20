@@ -70,52 +70,60 @@ fun LiveMainScreen(
         if (getJoinedStudyResult.isProgress()) {
             // 로딩 중
             isLoading = true
-            Log.d("선택 화면","로딩 중")
+            Log.d("선택 화면", "로딩 중")
 //            delay(1000)
         } else if (getJoinedStudyResult.isSuccess()) {
             // 통신 성공
             isLoading = false
-            Log.d("선택 화면","통신 완료")
+            Log.d("선택 화면", "통신 완료")
         }
 
     }
 
     if (myJoinedStudyList != null) {
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.White)
-                .padding(top = 16.dp)
         ) {
-            items(myJoinedStudyList) {study ->
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(140.dp)
-                        .padding(horizontal = 24.dp)
-                        .shadow(
-                            elevation = 1.dp,
-                            shape = RoundedCornerShape(10.dp),
-                            clip = true,
+
+            Spacer(Modifier.height(8.dp))
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White)
+                    .padding(top = 8.dp)
+            ) {
+                items(myJoinedStudyList) { study ->
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(140.dp)
+                            .padding(horizontal = 24.dp)
+                            .shadow(
+                                elevation = 1.dp,
+                                shape = RoundedCornerShape(10.dp),
+                                clip = true,
+                            )
+                            .clickable {
+                                // 클릭하면 라이브 방으로 이동
+                                onNavigateToVideo(study.id, study.studyName)
+
+                            },
+                        shape = RoundedCornerShape(5.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.White),
+                        border = BorderStroke(
+                            1.dp,
+                            colorResource(R.color.border_light_color)
                         )
-                        .clickable {
-                            // 클릭하면 라이브 방으로 이동
-                            onNavigateToVideo(study.id, study.studyName)
-
-                        },
-                    shape = RoundedCornerShape(5.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
-                    border = BorderStroke(
-                        1.dp,
-                        colorResource(R.color.border_light_color)
-                    )
-                ) {
-                    StudyListItem(study)
+                    ) {
+                        StudyListItem(study)
+                    }
+                    Spacer(Modifier.height(28.dp))
                 }
-                Spacer(Modifier.height(20.dp))
+
+
             }
-
-
         }
     } else {
         // 참여 중인 스터디가 없을 때 나타날 화면

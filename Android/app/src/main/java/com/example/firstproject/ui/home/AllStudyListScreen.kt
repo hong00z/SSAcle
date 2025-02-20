@@ -248,6 +248,6 @@ private fun StudyInfoItem(navController: NavController, studyInfo: StudyDTO) {
         }
         Spacer(Modifier.height(14.dp))
 
-        Divider(color = Color(0xFF949494), modifier = Modifier.padding(horizontal = 8.dp))
+        Divider(color = Color(0xFFBCBCBC), modifier = Modifier.padding(horizontal = 24.dp))
     }
 }

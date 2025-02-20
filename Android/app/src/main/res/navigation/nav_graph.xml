@@ -175,8 +175,12 @@
     </fragment>
     <fragment
         android:id="@+id/studyNotificationFragment"
-        android:name="com.example.firstproject.ui.home.detail.StudyNotificationFragment"
-        android:label="StudyNotificationFragment" />
+        android:name="com.example.firstproject.ui.home.studydetail.StudyNotificationFragment"
+        android:label="StudyNotificationFragment" >
+        <action
+            android:id="@+id/action_studyNotificationFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/inboxListFragment"
         android:name="com.example.firstproject.ui.home.notification.InboxListFragment"
