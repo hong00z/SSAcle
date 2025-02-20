@@ -119,7 +119,7 @@ public class UserService {
         // 3. 프로필 이미지 수정 후 저장
         try{
             // 3-1. 이미지 기본값: 빈 문자열
-            String uniqueFileName = "";
+            String uniqueFileName;
 
             // 파일이 null이거나 빈 값이 아니면 파일이름 저장
             if (file != null && !file.isEmpty()) {
@@ -141,10 +141,10 @@ public class UserService {
                 // 3.4 파일 저장
                 Files.write(filePath, file.getBytes());
                 logger.info("File saved successfully: {}", filePath.toAbsolutePath());
-            }
-            // 3.5 저장된 파일명을 TempUser 엔티티에 반영 +  파일이 null이거나 빈 값이면 빈 스트링
-            user.setImage(uniqueFileName);
 
+                // 3.5 저장된 파일명을 TempUser 엔티티에 반영 +  파일이 null이거나 빈 값이면 빈 스트링
+                user.setImage(uniqueFileName);
+            }
 
 
         }catch (IOException e){
