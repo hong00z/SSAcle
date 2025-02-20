@@ -189,4 +189,12 @@ object MainRepository {
     suspend fun acceptStudyJoin(accessToken: String, request: SendJoinRequestDTO): RequestResult<Unit> {
         return remoteDataSource.acceptJoinStudy(accessToken, request)
     }
+    
+    // 프로필 수정
+    suspend fun editUserProfile(
+        accessToken: String,
+        request: EditProfileRequestDTO,
+        imageFile: File?) : RequestResult<CommonResponseDTO<EditProfileResponseDTO>> {
+        return remoteDataSource.editUserProfile(accessToken,request, imageFile)
+    }
 }
