@@ -12,48 +12,38 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- 상단 툴바 -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:background="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/toolbar_title"
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/chatDetailToolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="16dp"
-                android:text="채팅 목록"
-                android:textColor="@color/primary_color"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_height="?attr/actionBarSize"
+                android:background="@android:color/white"
+                app:titleCentered="true"
+                app:titleTextAppearance="@style/topbar_textstyle"
+                app:titleTextColor="@color/primary_color"
+                app:title="스터디 채팅방" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/light_gray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/constraintLayout" />
+        </com.google.android.material.appbar.AppBarLayout>
+
 
         <!-- SwipeRefreshLayout 감싸기 -->
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefreshLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:paddingHorizontal="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/constraintLayout">
+            app:layout_constraintTop_toBottomOf="@id/appBarLayout">
 
             <!-- 채팅 목록 -->
             <androidx.recyclerview.widget.RecyclerView
@@ -61,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
-                android:padding="8dp"
+                android:paddingVertical="6dp"
                 tools:itemCount="10"
                 tools:listitem="@layout/item_chat" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
