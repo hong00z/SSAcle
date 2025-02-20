@@ -23,6 +23,7 @@ import com.example.firstproject.data.model.dto.response.Profile
 import com.example.firstproject.data.repository.MainRepository
 import com.example.firstproject.data.repository.RemoteDataSource
 import com.example.firstproject.databinding.FragmentMypageBinding
+import com.example.firstproject.ui.mypage.EditMyPageFragment.Companion
 import com.rootachieve.requestresult.RequestResult
 import kotlinx.coroutines.launch
 
@@ -37,7 +38,7 @@ class MypageFragment : Fragment() {
 
     private val mypageViewModel: MypageViewModel by activityViewModels()
 
-    private var userProfile: Profile? = null
+    private lateinit var userProfile: Profile
 
     val repository = MainRepository
 
@@ -48,16 +49,21 @@ class MypageFragment : Fragment() {
     ): View {
         _binding = FragmentMypageBinding.inflate(inflater, container, false)
 
-        // 서버와 통신
         observeViewModel()
         mypageViewModel.getUserProfile()
 
         binding.apply {
-            editLayout.setOnClickListener {
+            llEdit.setOnClickListener {
                 findNavController().navigate(R.id.editMyPageFragment)
             }
         }
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mypageViewModel.getUserProfile()
+        Log.d(TAG, "onResume: ")
     }
 
     private fun observeViewModel() {
@@ -66,21 +72,23 @@ class MypageFragment : Fragment() {
                 mypageViewModel.getProfileResult.collect { result ->
                     when (result) {
                         is RequestResult.Progress -> {
-                            Log.d("Mypage", "로딩 중...")
+                            Log.d(TAG, "로딩 중...")
                         }
 
                         is RequestResult.Success -> {
-                            userProfile = result.data.data
-                            Log.d("Mypage", "사용자 정보: $userProfile")
+                            userProfile = result.data.data!!
+                            Log.d(TAG, "사용자 정보: $userProfile")
 
-                            binding.profileImage.load(RemoteDataSource().getImageUrl(userProfile!!.image)) {
+                            binding.ivProfileImage.load(RemoteDataSource().getImageUrl(userProfile.image)) {
+                                placeholder(R.drawable.img_default_profile)
+                                error(R.drawable.img_default_profile)
                                 crossfade(true)
                                 transformations(CircleCropTransformation())
                             }
 
-                            binding.campusText.text = "${userProfile?.campus} 캠퍼스"
-                            binding.generation.text = "${userProfile?.term}"
-                            binding.nicknameText.text = userProfile?.nickname ?: ""
+                            binding.campusText.text = "${userProfile.campus} 캠퍼스"
+                            binding.generation.text = userProfile.term
+                            binding.nicknameText.text = userProfile.nickname
                             binding.emailText.text = EMAIL
 
                             binding.tagsContainer.removeAllViews() // 기존 태그 초기화
@@ -102,7 +110,7 @@ class MypageFragment : Fragment() {
                                 addTags(binding.tagsContainer, topics, tagsColors)
                             }
                             binding.meetingDaysContainer.removeAllViews() // 기존 날짜 초기화
-                            userProfile?.meetingDays?.let { days ->
+                            userProfile.meetingDays.let { days ->
                                 if (days.isNotEmpty()) {
                                     addMeetingDays(binding.meetingDaysContainer, days)
                                 }
@@ -110,7 +118,30 @@ class MypageFragment : Fragment() {
                         }
 
                         is RequestResult.Failure -> {
-                            Log.e("Mypage", "오류 발생: ${result.exception?.message}")
+                            Log.e(TAG, "오류 발생: ${result.exception?.message}")
+                        }
+
+                        else -> Unit
+                    }
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mypageViewModel.editProfileResult.collect { result ->
+                    when (result) {
+                        is RequestResult.Progress -> {
+                            Log.d(EditMyPageFragment.TAG, "로딩 중...")
+                        }
+
+                        is RequestResult.Success -> {
+                            Log.d(TAG, "edit success")
+                            mypageViewModel.getUserProfile()
+                        }
+
+                        is RequestResult.Failure -> {
+                            Log.e(EditMyPageFragment.TAG, "오류 발생: ${result.exception?.message}")
                         }
 
                         else -> Unit

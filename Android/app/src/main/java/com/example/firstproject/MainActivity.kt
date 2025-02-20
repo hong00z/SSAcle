@@ -37,7 +37,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        val tokenManager = TokenManager(this)
         val accessToken = tokenManager.getAccessToken()
 
         if (accessToken.isNullOrEmpty()) {

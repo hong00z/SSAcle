@@ -1,6 +1,8 @@
 package com.example.firstproject.ui.mypage
 
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,20 +11,20 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.example.firstproject.MyApplication.Companion.EMAIL
-import com.example.firstproject.R
+import com.example.firstproject.data.model.dto.request.EditProfileRequestDTO
 import com.example.firstproject.data.repository.RemoteDataSource
 import com.example.firstproject.databinding.FragmentEditMyPageBinding
 import com.example.firstproject.ui.theme.TagAdapter
 import com.rootachieve.requestresult.RequestResult
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.io.File
 
 class EditMyPageFragment : Fragment() {
 
@@ -34,10 +36,17 @@ class EditMyPageFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val mypageViewModel: MypageViewModel by activityViewModels()
+    private lateinit var myTags: List<String>
+    private var newUri: Uri? = null
 
     private val pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
-            binding.profileImage.setImageURI(uri)
+            Log.d(TAG, "uri: $uri")
+            newUri = uri
+            binding.ivProfileImage.load(uri) {
+                crossfade(true)
+                transformations(CircleCropTransformation())
+            }
         }
     }
 
@@ -49,16 +58,16 @@ class EditMyPageFragment : Fragment() {
         _binding = FragmentEditMyPageBinding.inflate(inflater, container, false)
 
         binding.apply {
-            editFinishText.setOnClickListener {
-                findNavController().navigate(R.id.mypageFragment)
-
+            btnFinish.setOnClickListener {
+                editUserProfile()
+                findNavController().popBackStack()
             }
 
-            cameraIcon.setOnClickListener {
+            ivAlbum.setOnClickListener {
                 pickImage.launch("image/*")
             }
-            txtCancle.setOnClickListener {
-                findNavController().navigate(R.id.mypageFragment)
+            btnCancel.setOnClickListener {
+                findNavController().popBackStack()
             }
         }
 
@@ -77,11 +86,13 @@ class EditMyPageFragment : Fragment() {
                 }
             },
             onSelectedTagsUpdated = { selectedTags ->
-                binding.txtSelectedTags.text = "선택된 태그: " + selectedTags.joinToString(", ")
+                Log.d(TAG, "선택된 태그: $selectedTags")
+                binding.tvSelectedTags.text = "선택된 태그: " + selectedTags.joinToString(", ")
+                myTags = selectedTags
             }
         )
 
-        binding.tagsRecyclerView.apply {
+        binding.rvTags.apply {
             adapter = tagAdapter
             layoutManager = GridLayoutManager(context, 3)
         }
@@ -92,50 +103,51 @@ class EditMyPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // ViewModel의 프로필 데이터를 수집하여 UI 업데이트
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mypageViewModel.getProfileResult.collect { result ->
-                    when (result) {
-                        is RequestResult.Progress -> {
-                            // 로딩 중 UI 처리
-                            // 예: ProgressBar 보이기 등
-                        }
-
-                        is RequestResult.Success -> {
-                            // 성공적으로 프로필 데이터를 받아온 경우 UI 업데이트
-                            val profile = result.data.data!!
-                            binding.profileImage.load(RemoteDataSource().getImageUrl(profile.image)) {
-                                crossfade(true)
-                                transformations(CircleCropTransformation())
-                            }
-                            binding.tvCampus.text = "${profile.campus} ${profile.term}"
-                            binding.etNickname.setText(profile.nickname)
-                            binding.tvEmail.text = EMAIL // 혹은 MyApplication.EMAIL 등
-
-                            Log.d(TAG, "topics= ${profile.topics}")
-                            // 태그, 미팅일 등 다른 UI 업데이트
-                            (binding.tagsRecyclerView.adapter as? TagAdapter)?.setSelectedTags(
-                                profile.topics
-                            )
-
-                        }
-
-                        is RequestResult.Failure -> {
-                            Toast.makeText(
-                                requireContext(),
-                                "오류 발생: ${result.exception?.message}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-
-                        else -> Unit
-                    }
+            val result = mypageViewModel.getProfileResult.first { it is RequestResult.Success }
+            if (result is RequestResult.Success) {
+                val profile = result.data.data!!
+                binding.ivProfileImage.load(RemoteDataSource().getImageUrl(profile.image)) {
+                    crossfade(true)
+                    transformations(CircleCropTransformation())
                 }
+                binding.tvCampus.text = "${profile.campus} ${profile.term}"
+                binding.etNickname.setText(profile.nickname)
+                binding.tvEmail.text = EMAIL
+
+                Log.d(TAG, "topics= ${profile.topics}")
+                myTags = profile.topics
+                (binding.rvTags.adapter as? TagAdapter)?.setSelectedTags(profile.topics)
             }
         }
+
     }
 
+    private fun editUserProfile() {
+        val imageFile: File? = newUri?.let { uri ->
+            File(getRealPathFromURI(uri))
+        }
+
+        val nickname = binding.etNickname.text.toString().trim()
+        val topics = myTags
+        val meetingDays = listOf("월")
+
+        val request = EditProfileRequestDTO(nickname, topics, meetingDays)
+
+        mypageViewModel.editUserProfile(request, imageFile)
+    }
+
+    private fun getRealPathFromURI(uri: Uri): String {
+        var filePath = ""
+        val cursor = requireContext().contentResolver.query(uri, null, null, null, null)
+        if (cursor != null) {
+            cursor.moveToFirst()
+            val index = cursor.getColumnIndex(MediaStore.Images.Media.DATA)
+            filePath = cursor.getString(index)
+            cursor.close()
+        }
+        return filePath
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
