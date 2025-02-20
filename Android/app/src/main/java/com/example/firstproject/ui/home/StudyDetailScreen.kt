@@ -1,6 +1,7 @@
 package com.example.firstproject.ui.home
 
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -27,6 +28,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
@@ -50,6 +53,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -64,9 +68,12 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.firstproject.MyApplication
 import com.example.firstproject.R
+import com.example.firstproject.data.model.dto.request.AuthRequestDTO
+import com.example.firstproject.data.model.dto.request.SendJoinRequestDTO
 import com.example.firstproject.data.model.dto.response.Feed
 import com.example.firstproject.data.model.dto.response.Member
 import com.example.firstproject.data.model.dto.response.MyJoinedStudyListDtoItem
+import com.example.firstproject.ui.matching.FindViewModel
 import com.example.firstproject.ui.theme.gmarket
 import com.example.firstproject.ui.theme.pretendard
 import com.example.firstproject.utils.CommonUtils
@@ -79,11 +86,12 @@ fun StudyDetailScreen(
     navController: NavController,
 //    id: String,
     studyDetailViewModel: StudyDetailViewModel = viewModel(),
+    findViewModel: FindViewModel = viewModel(),
     onNavigateToVideo: (String, String) -> Unit,
     onNavigateToChat: (String) -> Unit,
     onNotificationClick: (String) -> Unit
 ) {
-
+    val context = LocalContext.current
 
     val getStudyInfo by studyDetailViewModel.studyDetailResult.collectAsStateWithLifecycle()
     val studyInfo = (getStudyInfo as? RequestResult.Success)?.data
@@ -109,6 +117,7 @@ fun StudyDetailScreen(
     val isJoining = remember { mutableStateOf(false) }
     val isHostMember = remember { mutableStateOf(false) }
 
+    var isInviteSent by remember { mutableStateOf(false) }
 
     LaunchedEffect(studyId) {
         studyId?.let {
@@ -145,263 +154,297 @@ fun StudyDetailScreen(
         Log.d("방장 인가?", "${isHostMember.value}")
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-    ) {
-        Box {
-            DetailTopBar(
-                title = "스터디 상세보기",
-                onBackPress = {
-                    // 뒤로가기
-                    navController.navigate("homeScreen")
-                },
-                onNotificationClick = {
-                    onNotificationClick(studyId ?: "")
-                    Log.d("메시지 클릭", "전달 ${studyId}")
-                },
-            )
-        }
-        Spacer(Modifier.height(16.dp))
-
+    Box(Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .background(Color.White)
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                val tag = studyTopic?.let { TopicTagEnum.fromTitle(it) }
-                Text(
-                    text = studyName ?: "",
-                    fontFamily = pretendard,
-                    fontWeight = FontWeight(700),
-                    fontSize = 22.sp,
-                    letterSpacing = 1.sp,
-                    modifier = Modifier.fillMaxWidth(0.8f),
-                    maxLines = 2
+            Box {
+                DetailTopBar(
+                    title = "스터디 상세보기",
+                    onBackPress = {
+                        // 뒤로가기
+                        navController.navigate("homeScreen")
+                    },
+                    onNotificationClick = {
+                        onNotificationClick(studyId ?: "")
+                        Log.d("메시지 클릭", "전달 ${studyId}")
+                    },
+                    isMember = isJoining.value
                 )
-                Spacer(Modifier.weight(1f))
-
-                tag?.let {
-                    StackTag(
-                        stackTitle = it.title,
-                        tint = colorResource(tag.colorId)
-                    )
-                }
             }
+            Spacer(Modifier.height(16.dp))
 
-            Spacer(Modifier.height(24.dp))
-
-            Row(
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(IntrinsicSize.Min)
-                    .padding(horizontal = 48.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                val days = listOf("월", "화", "수", "목", "금", "토", "일")
-
-                days.forEachIndexed { index, day ->
-                    Text(
-                        text = day,
-                        fontFamily = pretendard,
-                        fontWeight = if (meetingDays?.contains(day) == true) FontWeight(700)
-                        else FontWeight(600),
-                        fontSize = if (meetingDays?.contains(day) == true) 17.sp
-                        else 16.sp,
-                        modifier = Modifier
-                            .weight(1f),
-                        textAlign = TextAlign.Center,
-                        color = if (meetingDays?.contains(day) == true) colorResource(R.color.primary_color)
-                        else Color(0xFFC2C2C2)
-                    )
-
-                    if (index < 6) {
-                        VerticalDivider(
-                            thickness = 1.dp,
-                            color = Color(0xFFD9D9D9)
-                        )
-
-                    }
-
-                }
-            }
-            Spacer(Modifier.height(20.dp))
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(horizontal = 36.dp)
-            ) {
-                if (content != null) {
-                    ContentInfoCard(content)
-                }
-            }
-            Spacer(Modifier.height(36.dp))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
-                verticalAlignment = Alignment.Bottom
-            ) {
-
-                TitleText("스터디 구성원")
-                Spacer(Modifier.width(12.dp))
-                Text(
-                    text = "${currentCount} / ${totalCount} 명",
-                    fontFamily = pretendard,
-                    fontWeight = FontWeight(500),
-                    fontSize = 14.sp,
-                    color = colorResource(R.color.primary_color)
-                )
-
-            }
-            Spacer(Modifier.height(24.dp))
-            if (membersList != null) {
-                JoinUserProfiles(membersList)
-            }
-
-            if (isJoining.value) {
-                Spacer(Modifier.height(20.dp))
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 36.dp),
-                    horizontalArrangement = Arrangement.Center
+                        .padding(horizontal = 32.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Card(
-                        modifier = Modifier
-                            .width(150.dp)
-                            .height(100.dp)
-                            .shadow(
-                                elevation = 4.dp,
-                                shape = RoundedCornerShape(10.dp),
-                                clip = true
-                            )
-                            .clickable { onNavigateToChat(studyId ?: "") },
-                        shape = RoundedCornerShape(10.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color.White),
-                        border = BorderStroke(1.dp, colorResource(R.color.border_light_color))
-                    ) {
-                        Column(
-                            modifier = Modifier.fillMaxSize(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Image(
-                                painter = painterResource(R.drawable.img_chatting),
-                                null,
-                                modifier = Modifier.size(48.dp)
-                            )
-                            Spacer(Modifier.height(8.dp))
-                            Text(
-                                text = "스터디 채팅방",
-                                fontFamily = pretendard,
-                                fontWeight = FontWeight(600),
-                                fontSize = 14.5.sp
-                            )
-                        }
+                    val tag = studyTopic?.let { TopicTagEnum.fromTitle(it) }
+                    Text(
+                        text = studyName ?: "",
+                        fontFamily = pretendard,
+                        fontWeight = FontWeight(700),
+                        fontSize = 22.sp,
+                        letterSpacing = 1.sp,
+                        modifier = Modifier.fillMaxWidth(0.8f),
+                        maxLines = 2
+                    )
+                    Spacer(Modifier.weight(1f))
+
+                    tag?.let {
+                        StackTag(
+                            stackTitle = it.title,
+                            tint = colorResource(tag.colorId)
+                        )
                     }
-                    Spacer(Modifier.width(28.dp))
-                    Card(
-                        modifier = Modifier
-                            .width(150.dp)
-                            .height(100.dp)
-                            .shadow(
-                                elevation = 4.dp,
-                                shape = RoundedCornerShape(10.dp),
-                                clip = true
+                }
+
+                Spacer(Modifier.height(24.dp))
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(IntrinsicSize.Min)
+                        .padding(horizontal = 48.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    val days = listOf("월", "화", "수", "목", "금", "토", "일")
+
+                    days.forEachIndexed { index, day ->
+                        Text(
+                            text = day,
+                            fontFamily = pretendard,
+                            fontWeight = if (meetingDays?.contains(day) == true) FontWeight(700)
+                            else FontWeight(600),
+                            fontSize = if (meetingDays?.contains(day) == true) 17.sp
+                            else 16.sp,
+                            modifier = Modifier
+                                .weight(1f),
+                            textAlign = TextAlign.Center,
+                            color = if (meetingDays?.contains(day) == true) colorResource(R.color.primary_color)
+                            else Color(0xFFC2C2C2)
+                        )
+
+                        if (index < 6) {
+                            VerticalDivider(
+                                thickness = 1.dp,
+                                color = Color(0xFFD9D9D9)
                             )
-                            .clickable {
-                                onNavigateToVideo(studyId ?: "", studyName ?: "")
-                                Log.d("실시간 모각공 버튼", "${studyId}")
-                            },
-                        shape = RoundedCornerShape(10.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color.White),
-                        border = BorderStroke(1.dp, colorResource(R.color.border_light_color))
-                    ) {
-                        Column(
-                            modifier = Modifier.fillMaxSize(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Image(
-                                painter = painterResource(R.drawable.img_mic),
-                                null,
-                                modifier = Modifier.size(48.dp)
-                            )
-                            Spacer(Modifier.height(8.dp))
-                            Text(
-                                text = "실시간 모각공",
-                                fontFamily = pretendard,
-                                fontWeight = FontWeight(600),
-                                fontSize = 14.5.sp
-                            )
+
                         }
 
                     }
                 }
-//                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(20.dp))
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .padding(horizontal = 36.dp)
+                ) {
+                    if (content != null) {
+                        ContentInfoCard(content)
+                    }
+                }
+                Spacer(Modifier.height(36.dp))
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 32.dp),
+                    verticalAlignment = Alignment.Bottom
+                ) {
+
+                    TitleText("스터디 구성원")
+                    Spacer(Modifier.width(12.dp))
+                    Text(
+                        text = "${currentCount} / ${totalCount} 명",
+                        fontFamily = pretendard,
+                        fontWeight = FontWeight(500),
+                        fontSize = 14.sp,
+                        color = colorResource(R.color.primary_color)
+                    )
+
+                }
+                Spacer(Modifier.height(24.dp))
+                if (membersList != null) {
+                    JoinUserProfiles(membersList)
+                }
+
+                if (isJoining.value) {
+                    Spacer(Modifier.height(20.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 44.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Card(
+                            modifier = Modifier
+                                .width(124.dp)
+                                .height(100.dp)
+                                .shadow(
+                                    elevation = 4.dp,
+                                    shape = RoundedCornerShape(10.dp),
+                                    clip = true
+                                )
+                                .clickable { onNavigateToChat(studyId ?: "") },
+                            shape = RoundedCornerShape(10.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color.White),
+                            border = BorderStroke(1.dp, colorResource(R.color.border_light_color))
+                        ) {
+                            Column(
+                                modifier = Modifier.fillMaxSize(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Image(
+                                    painter = painterResource(R.drawable.img_chatting),
+                                    null,
+                                    modifier = Modifier.size(48.dp)
+                                )
+                                Spacer(Modifier.height(8.dp))
+                                Text(
+                                    text = "스터디 채팅방",
+                                    fontFamily = pretendard,
+                                    fontWeight = FontWeight(600),
+                                    fontSize = 14.5.sp
+                                )
+                            }
+                        }
+                        Spacer(Modifier.weight(1f))
+                        Card(
+                            modifier = Modifier
+                                .width(124.dp)
+                                .height(100.dp)
+                                .shadow(
+                                    elevation = 4.dp,
+                                    shape = RoundedCornerShape(10.dp),
+                                    clip = true
+                                )
+                                .clickable {
+                                    onNavigateToVideo(studyId ?: "", studyName ?: "")
+                                    Log.d("실시간 모각공 버튼", "${studyId}")
+                                },
+                            shape = RoundedCornerShape(10.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color.White),
+                            border = BorderStroke(1.dp, colorResource(R.color.border_light_color))
+                        ) {
+                            Column(
+                                modifier = Modifier.fillMaxSize(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Image(
+                                    painter = painterResource(R.drawable.img_mic),
+                                    null,
+                                    modifier = Modifier.size(48.dp)
+                                )
+                                Spacer(Modifier.height(8.dp))
+                                Text(
+                                    text = "라이브 스터디",
+                                    fontFamily = pretendard,
+                                    fontWeight = FontWeight(600),
+                                    fontSize = 14.5.sp
+                                )
+                            }
+
+                        }
+                    }
+                    //                Spacer(Modifier.height(12.dp))
+                }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(36.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    TitleText("공지사항")
+                    Spacer(Modifier.weight(1f))
+
+                    if (isHostMember.value) {
+                        Box(
+                            modifier = Modifier
+                                .width(64.dp)
+                                .height(28.dp)
+                                .background(color = Color.Black, shape = RoundedCornerShape(50.dp))
+                                .clickable {
+
+                                },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_add_plus),
+                                    null,
+                                    tint = Color.White,
+                                    modifier = Modifier.size(16.dp),
+                                )
+                                Text(
+                                    "글쓰기", fontFamily = pretendard,
+                                    fontWeight = FontWeight(700),
+                                    fontSize = 12.sp,
+                                    color = Color.White
+                                )
+                                Spacer(Modifier.width(4.dp))
+                            }
+                        }
+                    }
+
+                }
+
+                if (feedsList != null) {
+                    feedsList.forEachIndexed { index, feed ->
+                        NoticeItem(feed)
+                    }
+                }
+
+
             }
 
+        }
 
+        if (!isJoining.value) {
+            Button(
+                onClick = {
+                    findViewModel.sendJoinStudy(
+                        SendJoinRequestDTO(studyId ?: "")) { success ->
 
-            Row(
+                        if (success) {
+                            isInviteSent = true
+                        } else {
+                            Toast.makeText(context, "죄송합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(36.dp),
-                verticalAlignment = Alignment.CenterVertically
+                    .height(48.dp)
+                    .align(Alignment.BottomCenter)
+                    .padding(horizontal = 36.dp),
+                colors = ButtonDefaults.buttonColors(colorResource(R.color.primary_color)),
+                enabled = !isInviteSent
             ) {
-                TitleText("공지사항")
-                Spacer(Modifier.weight(1f))
-
-                if (isHostMember.value) {
-                    Box(
-                        modifier = Modifier
-                            .width(64.dp)
-                            .height(28.dp)
-                            .background(color = Color.Black, shape = RoundedCornerShape(50.dp))
-                            .clickable {
-
-                            },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_add_plus),
-                                null,
-                                tint = Color.White,
-                                modifier = Modifier.size(16.dp),
-                            )
-                            Text(
-                                "글쓰기", fontFamily = pretendard,
-                                fontWeight = FontWeight(700),
-                                fontSize = 12.sp,
-                                color = Color.White
-                            )
-                            Spacer(Modifier.width(4.dp))
-                        }
-                    }
-                }
-
+                Text(
+                    text = if(isInviteSent) "신청 완료" else "가입 신청",
+                    fontSize = 18.sp,
+                    fontFamily = pretendard,
+                    fontWeight = FontWeight(500),
+                    color = Color.White
+                )
             }
-
-            if (feedsList != null) {
-                feedsList.forEachIndexed { index, feed ->
-                    NoticeItem(feed)
-                }
-            }
-
-
         }
 
     }
@@ -413,7 +456,8 @@ private fun DetailTopBar(
     title: String,
     tint: Color = colorResource(R.color.primary_color),
     onBackPress: () -> Unit,
-    onNotificationClick: () -> Unit
+    onNotificationClick: () -> Unit,
+    isMember: Boolean
 ) {
     Box(
         Modifier
@@ -446,22 +490,25 @@ private fun DetailTopBar(
 
         )
 
-        IconButton(
-            modifier = Modifier
-                .padding(end = 8.dp)
-                .align(Alignment.CenterEnd),
-            onClick = {
-                // 알림 목록 화면으로
-                onNotificationClick()
+        if (isMember) {
+            IconButton(
+                modifier = Modifier
+                    .padding(end = 8.dp)
+                    .align(Alignment.CenterEnd),
+                onClick = {
+                    // 알림 목록 화면으로
+                    onNotificationClick()
+                }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_mail),
+                    contentDescription = null,
+                    tint = tint,
+                    modifier = Modifier.size(32.dp)
+                )
             }
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_mail),
-                contentDescription = null,
-                tint = tint,
-                modifier = Modifier.size(32.dp)
-            )
         }
+
 
     }
 }

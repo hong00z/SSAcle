@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.home.detail.SecondFragment">
+    tools:context=".ui.home.studydetail.SecondFragment">
 
     <androidx.compose.ui.platform.ComposeView
         android:id="@+id/second_compose_view"

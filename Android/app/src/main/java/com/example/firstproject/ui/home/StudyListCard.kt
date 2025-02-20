@@ -55,9 +55,10 @@ fun StudyListCard(openStudyList: List<StudyDTO>, navController: NavController) {
                         Log.d("홈 목록에서 누름", "스터디아이디: ${study.studyId}")
 
                         navController.navigate("studyDetailScreen")
-                    }
+                    },
+                    study = study
                 )
-                Spacer(Modifier.height(18.dp))
+                Spacer(Modifier.height(20.dp))
             }
 
         }
@@ -65,7 +66,7 @@ fun StudyListCard(openStudyList: List<StudyDTO>, navController: NavController) {
 }
 
 @Composable
-private fun StudyItem(title: String, topic: String, modifier: Modifier) {
+private fun StudyItem(title: String, topic: String, modifier: Modifier, study: StudyDTO) {
     val tag = TopicTagEnum.fromTitle(topic)
     Row(
         modifier = modifier
@@ -84,8 +85,14 @@ private fun StudyItem(title: String, topic: String, modifier: Modifier) {
             fontWeight = FontWeight(500),
             fontSize = 16.sp
         )
-
-
+        Spacer(Modifier.weight(1f))
+        Text(
+            text = "${study.memberCount} / ${study.count}명",
+            fontFamily = pretendard,
+            fontWeight = FontWeight(500),
+            fontSize = 15.sp,
+        )
+        Spacer(Modifier.width(12.dp))
     }
 
 }
