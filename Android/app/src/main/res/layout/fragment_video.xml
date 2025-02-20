@@ -201,9 +201,13 @@
                 android:background="@drawable/button_outline"
                 android:paddingHorizontal="32dp"
                 android:text="라이브 종료"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/pretendard_bold"
+                android:backgroundTint="@color/red"
+
+                />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

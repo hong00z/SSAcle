@@ -756,7 +756,7 @@ private fun NoticeItem(feed: Feed) {
                     contentAlignment = Alignment.Center
                 ) {
                     AsyncImage(
-                        model = profile_writer, contentDescription = null,
+                        model = RemoteDataSource().getImageUrl(profile_writer), contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .clip(CircleShape)
