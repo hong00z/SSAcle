@@ -170,7 +170,8 @@ interface APIService {
     @PATCH("/api/user/profile")
     suspend fun editUserProfile(
         @Header("Authorization") accessToken: String,
-        @Body request: EditProfileRequestDTO
+        @Part("request") request: RequestBody,
+        @Part file: MultipartBody.Part?
     ): Response<CommonResponseDTO<EditProfileResponseDTO>>
 
     // 유저에게 스터디 초대(가입) 요청
