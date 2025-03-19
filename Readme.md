@@ -110,7 +110,9 @@
 - **온디바이스 AI를 위한 최적화**: 9초 영상 분석 시 100초 → 7초로 감소
 
 
-## 팀원
+## 팀원 및 역할
+
+![image](https://github.com/user-attachments/assets/fe742339-528e-4cb3-b2af-c650bbf8aa1b)
 
 | 역할 | 이름 |
 | --- | --- |
@@ -119,6 +121,7 @@
 | AI | 김웅기, 이호정 |
 | WebRTC | 정찬우 |
 | Infra | 장홍준 |
+
 
 
 ## 요구 사항
