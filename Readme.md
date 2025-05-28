@@ -130,9 +130,9 @@
 
 ## 요구 사항
 
-### [API 명세서](https://www.notion.so/0f095bdffce24ece9c096314463bc30d?pvs=21)
+### [API 명세서](https://pinnate-caravan-2ab.notion.site/0f095bdffce24ece9c096314463bc30d?v=184653e381fc8109bc77000cfbe43d8d)
 
-### [스키마](https://www.notion.so/e4c9075a2b574e7888fff138a5b2d5ea?pvs=21)
+### [스키마](https://pinnate-caravan-2ab.notion.site/e4c9075a2b574e7888fff138a5b2d5ea)
 
 ### **외부 API**
 
