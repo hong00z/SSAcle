@@ -1,12 +1,16 @@
-# SSAcle - SSAFY 생을 위한 스터디 관리 통합 앱
+# 📚 SSAcle
 
-## 개요
+### Samsung Software Academy For Youth 12th - 공통 프로젝트
+#### SSAFY 생을 위한 스터디 관리 통합 앱
+
+> 2025.01.13 ~ 2025.02.21
+
+<br>
+
+---
+
 **SSAcle(싸클)** 은 SSAFY 교육생뿐만 아니라 수료생까지, **싸피 출신이라면 누구든 참여할 수 있는 스터디 관리 통합 앱**입니다.
-
-
-
-## 개발 기간
-**2025. 01. 13 ~ 2025. 02. 21 (총 6주)**
+약 170명을 대상으로 “SSAFY 소통 앱에서 가장 유용할 것 같은 기능”에 대해 설문조사를 실시한 결과, 약 46%가 “스터디 관련 기능”을 선택하였고 이를 기반으로 스터디 모집과 취업 준비를 위한 기능을 제공하는 앱을 개발하게 되었습니다.
 
 
 ## 주요 서비스
@@ -25,7 +29,7 @@
 
 
 ## 기술 스택
-![시스템 아키텍처](images/시스템아키텍처.png)
+![시스템 아키텍처](docs/images/시스템아키텍처.png)
 ### FE
 ![Kotlin](https://img.shields.io/badge/kotlin-%237F52FF.svg?style=for-the-badge&logo=kotlin&logoColor=white)![Android Studio](https://img.shields.io/badge/android%20studio-346ac1?style=for-the-badge&logo=android%20studio&logoColor=white) (LadyBug)
 
@@ -53,11 +57,11 @@
 ## 핵심 기능 상세 설명
 
 ### **1. 온보딩 및 메인 화면**
-| <img src="images/온보딩1.png" width="200"> | <img src="images/온보딩2.png" width="200"> | <img src="images/온보딩3.png" width="200"> | <img src="images/온보딩4.png" width="200"> | <img src="images/온보딩5.png" width="200"> |
+| <img src="docs/images/온보딩1.png" width="200"> | <img src="docs/images/온보딩2.png" width="200"> | <img src="docs/images/온보딩3.png" width="200"> | <img src="docs/images/온보딩4.png" width="200"> | <img src="docs/images/온보딩5.png" width="200"> |
 |:---:|:---:|:---:|:---:|:---:|
 | 로그인 화면 | 카카오 로그인 | 학적 인증 | 닉네임 중복 검사 | 사용자 정보 입력 |
 
-| <img src="images/메인_스켈레톤UI.png" width="200"> | <img src="images/메인_초기가입.png" width="200"> | <img src="images/메인.png" width="200"> |
+| <img src="docs/images/메인_스켈레톤UI.png" width="200"> | <img src="docs/images/메인_초기가입.png" width="200"> | <img src="docs/images/메인.png" width="200"> |
 |:---:|:---:|:---:|
 | 스켈레톤 UI | 최초 메인 화면 | 메인 화면 |
 
@@ -65,14 +69,14 @@
 - DB에 있는 가상의 학적정보를 활용해 SSAFY 교육생 및 수료생 본인 인증 지원
 
 ### **2. 매칭 서비스**
-| <img src="images/매칭_스터디원추천1.png" width="200"> | <img src="images/매칭_스터디원추천2.png" width="200"> | <img src="images/매칭_스터디추천.png" width="200"> |
+| <img src="docs/images/매칭_스터디원추천1.png" width="200"> | <img src="docs/images/매칭_스터디원추천2.png" width="200"> | <img src="docs/images/매칭_스터디추천.png" width="200"> |
 |:---:|:---:|:---:|
 | 스터디원 구인 시 희망 스터디 선택 | 스터디원 구인 결과 | 스터디 찾기 결과 |
 
 - 필터링 및 코사인 유사도 알고리즘을 활용하여 최적의 스터디 및 스터디원 매칭
 
 ### **3. 라이브 스터디**
-| <img src="images/라이브스터디2.png" width="200"> | <img src="images/스터디상세.png" width="200"> | <img src="images/라이브스터디.png" width="200"> |
+| <img src="docs/images/라이브스터디2.png" width="200"> | <img src="docs/images/스터디상세.png" width="200"> | <img src="docs/images/라이브스터디.png" width="200"> |
 |:---:|:---:|:---:|
 | Navbar 라이브 | 스터디 상세 | 라이브 스터디 |
 
@@ -80,14 +84,14 @@
 - MediaSoup + Socket.io를 활용한 시그널링 서버 및 미디어 서버 구축
 
 ### 4. 스터디 단체 채팅방
-| <img src="images/스터디채팅방.png" width="200"> | <img src="images/스터디채팅방_상세.png" width="200"> |
+| <img src="docs/images/스터디채팅방.png" width="200"> | <img src="docs/images/스터디채팅방_상세.png" width="200"> |
 |:---:|:---:|
 | Navbar 채팅 | 스터디 채팅방 |
 
 - Socket.io + MongoDB를 사용한 실시간 채팅 서버 구현
 
 ### **5. AI 자기소개서 첨삭 기능**
-| <img src="images/AI자소서피드백.png" width="200"> | <img src="images/AI자소서피드백2.png" width="200"> | <img src="images/AI자소서피드백3.png" width="200"> |
+| <img src="docs/images/AI자소서피드백.png" width="200"> | <img src="docs/images/AI자소서피드백2.png" width="200"> | <img src="docs/images/AI자소서피드백3.png" width="200"> |
 |:---:|:---:|:---:|
 | AI 자소서 피드백 | 자소서 피드백 상세 | 피드백 결과 |
 
@@ -96,11 +100,11 @@
 - 수정된 부분을 스트리밍 UI를 사용하여 붉은색으로 표시 후 PDF 파일로 저장 가능 (스크랩 기능 지원)
 
 ### **6. AI 면접 피드백 서비스**
-| <img src="images/AI시선피드백.png" width="200"> | <img src="images/AI표정피드백1.png" width="200"> |
+| <img src="docs/images/AI시선피드백.png" width="200"> | <img src="docs/images/AI표정피드백1.png" width="200"> |
 |:---:|:---:|
 | AI 시선 피드백 | AI 표정 피드백 |
 
-| <img src="images/AI표정피드백2.png" width="200"> | <img src="images/AI표정피드백3.png" width="200"> | <img src="images/AI시선피드백2.png" width="200"> | <img src="images/AI표정피드백4.png" width="200"> | <img src="images/AI표정피드백5.png" width="200"> |
+| <img src="docs/images/AI표정피드백2.png" width="200"> | <img src="docs/images/AI표정피드백3.png" width="200"> | <img src="docs/images/AI시선피드백2.png" width="200"> | <img src="docs/images/AI표정피드백4.png" width="200"> | <img src="docs/images/AI표정피드백5.png" width="200"> |
 |:---:|:---:|:---:|:---:|:---:|
 |  |  |  |  |  |
 
@@ -110,7 +114,9 @@
 - **온디바이스 AI를 위한 최적화**: 9초 영상 분석 시 100초 → 7초로 감소
 
 
-## 팀원
+## 팀원 및 역할
+
+![image](https://github.com/user-attachments/assets/fe742339-528e-4cb3-b2af-c650bbf8aa1b)
 
 | 역할 | 이름 |
 | --- | --- |
@@ -121,11 +127,12 @@
 | Infra | 장홍준 |
 
 
+
 ## 요구 사항
 
-### [API 명세서](https://www.notion.so/0f095bdffce24ece9c096314463bc30d?pvs=21)
+### [API 명세서](https://pinnate-caravan-2ab.notion.site/0f095bdffce24ece9c096314463bc30d?v=184653e381fc8109bc77000cfbe43d8d)
 
-### [스키마](https://www.notion.so/e4c9075a2b574e7888fff138a5b2d5ea?pvs=21)
+### [스키마](https://pinnate-caravan-2ab.notion.site/e4c9075a2b574e7888fff138a5b2d5ea)
 
 ### **외부 API**
 
