@@ -1,6 +1,6 @@
 # 📚 SSAcle
 
-### Samsung Software Academy For Youth 12th - 공통 프로젝트
+### Samsung SW·AI Academy For Youth 12th - 공통 프로젝트
 #### SSAFY 생을 위한 스터디 관리 통합 앱
 
 > 2025.01.13 ~ 2025.02.21
